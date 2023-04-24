@@ -1,0 +1,19 @@
+.style {
+    font-weight: bold;
+    color: black;
+  }
+
+.button {
+    background: #009000;
+    border-color: #009000;
+    color: white;
+}
+
+.nav-link {
+    color: black;
+  }
+
+.nav-link:hover {
+    color: green;
+    font-weight: bold;
+}
