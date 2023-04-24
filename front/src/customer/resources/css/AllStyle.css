@@ -1,7 +1,7 @@
 .section{
   display: flex;
 }
-.card {
+.account_card {
   background-color: #dbe2d872;
   flex-basis: 100%;
   margin: 15px;
