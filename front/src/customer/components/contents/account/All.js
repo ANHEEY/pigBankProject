@@ -10,7 +10,7 @@ function All () {
         <div className="container">
             <main className="main">
                 <section className="section">
-                    <div className="account_card" >
+                    <div className="card" >
                         <div>
                             <h4>예금계좌</h4>
                             <AllDeposit />
@@ -22,7 +22,7 @@ function All () {
                             </a>
                         </div>
                     </div>
-                    <div className="account_card" >
+                    <div className="card" >
                         <div>
                             <h4>적금계좌</h4>
                             <AllSaving />
@@ -34,7 +34,7 @@ function All () {
                             </a>
                         </div>
                     </div>
-                    <div class="account_card" >
+                    <div class="card" >
                         <div>
                             <h4>대출계좌</h4>
                             <AllLoan />

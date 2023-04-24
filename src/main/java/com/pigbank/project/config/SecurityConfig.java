@@ -19,8 +19,8 @@ import com.pigbank.project.jwt.JwtAuthenticationFilter;
 @EnableGlobalMethodSecurity(securedEnabled=true,prePostEnabled=true)//secured 어노테이션 활성화, preAuthorize/PostAuthorize 어노테이션 활성화
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-//	@Autowired
-//	private CorsConfig corsConfig;
+	@Autowired
+	private CorsConfig corsConfig;
 	
 	@Bean	//해당 메서드의 리턴되는 오브젝트를 IOC 컨테이너로 등록해준다.
 	public BCryptPasswordEncoder passwordEncoder() {
@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)	//세션을 사용하지 않겠다.
 			.and()
-			//.addFilter(corsConfig.corsFilter())	//cors 정책에서 벗어날 수 있다....아마도? 시큐리티 필터에 등록해서 인증을 받겠다.
+			.addFilter(corsConfig.corsFilter())	//cors 정책에서 벗어날 수 있다....아마도? 시큐리티 필터에 등록해서 인증을 받겠다.
 			.addFilter(new JwtAuthenticationFilter(authenticationManager()))
 			.formLogin().disable()	//formLogin 사용안함
 			.httpBasic().disable()	//httpBasic 사용안함		

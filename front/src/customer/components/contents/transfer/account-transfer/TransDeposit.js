@@ -5,45 +5,8 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
-import ApiService from "../transfer-service/ApiService";
 
 class TransDeposit extends Component {
-
-    constructor(props){
-        super(props);
-
-        this.state={
-            acounts:[],
-            message: null,
-            selectedacount: '',
-        };
-        this.onSelectedAccount = this.onSelectedAccount.bind(this);
-    }
-
-    // 라이프 사이클 중 컴포넌트가 생성된 후 사용자에게 보여지기까지의 전체 과정을 랜더링
-
-    componentDidMount(){
-        this.reloadAccountList();
-    }
-
-    reloadAccountList = () => {
-       ApiService.fetchAccountList()    
-            .then(res=>{
-                this.setState({
-                    acounts:res.data
-                })
-            })
-            .catch(err=>{
-                console.log('fetchAccountList() Error!!',err);
-            });
-      }
-
-    onSelectedAccount(acount) {
-        this.setState({
-            selectedacount: acount,
-        })
-    }
-
     render (){
     return (
             <Container >
@@ -53,24 +16,21 @@ class TransDeposit extends Component {
                 <tbody>
                     <tr>
                         <td>
-                        <InputGroup.Text id="basic-addon1"  >출금 계좌번호</InputGroup.Text>
+                        <InputGroup.Text id="basic-addon1" >출금 계좌번호</InputGroup.Text>
                         </td>
                         <td>
                         <Form.Control
-                            value={this.state.selectedacount}
                             placeholder="-없이 입력해주세요"
                             aria-label="Username"
                             aria-describedby="basic-addon1"
                             />  
                         </td>    
-                             <td>
-                             <Form.Select aria-label="Default select example" >
-                                        <option>계좌선택</option>
-                                    {this.state.acounts.map((acount) => (
-                                       <option key={acount.acNumber} onClick={this.onSelectedAccount}>{acount.acNumber}</option>
-                                       ))}
+                             <td><Form.Select aria-label="Default select example">
+                                    <option>계좌선택</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
                                 </Form.Select> 
-                                
                              </td>
                              <td><Button variant="light">잔액조회</Button>{' '} </td>
                     </tr>
