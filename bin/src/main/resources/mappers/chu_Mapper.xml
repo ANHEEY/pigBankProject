@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+     
+    <!-- namespace="패키지명.인터페이스" -->
+<mapper namespace="com.pigbank.project.dao.ChuMapper">
+
+	<select id="savingList" resultType="com.pigbank.project.dto.SavingProductDTO">
+		SELECT * FROM savings_product
+	</select>
+	
+	
+	<select id="depositList" resultType="com.pigbank.project.dto.DepositProductDTO">
+		SELECT * FROM deposit_product
+	</select>
+	
+	<select id="depositAccountList" resultType="com.pigbank.project.dto.DepositAccountDTO">
+		SELECT * FROM d_account_tbl
+	</select>
+	
+	<select id="savingAccountList" resultType="com.pigbank.project.dto.SavingAccountDTO">
+		SELECT * FROM s_account_tbl
+	</select>
+	
+	<select id="loanAccountList" resultType="com.pigbank.project.dto.LoanAccountDTO">
+		SELECT * FROM loan_req_tbl
+		WHERE lreqnum = 1
+	</select>
+	
+</mapper>

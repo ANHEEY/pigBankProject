@@ -41,13 +41,18 @@ import PdLoan from "../../contents/product/loan/PdLoan";
 import PdLoanDetail from '../../contents/product/loan/PdLoanDetail';
 
 // 상품|펀드상품
-import OpenFund from "../../contents/product/fund/OpenFund";
-import PdFundList from "../../contents/product/fund/PdFundList";
-import PdFundHaving from "../../contents/product/fund/PdFundHaving";
-import PdFundDetail from "../../contents/product/fund/PdFundDetail";
+import FundApplication from "../../contents/product/fund/FundApplication";
+import FundProductList from "../../contents/product/fund/FundProductList";
+import FundProductDetail from "../../contents/product/fund/FundProductDetail";
+
 // 환율
 import ExchangeRate from "../../contents/exchangerate/ExchangeRate";
 import ExchangeRateCal from "../../contents/exchangerate/ExchangeRateCal";
+
+// 펀드
+import FundAccountInfo from "../../contents/fund/FundAccountInfo";
+import FundHavingList from "../../contents/fund/FundHavingList";
+
 // 고객센터
 import CsBoard from "../../contents/cscenter/CsBoard";
 import CsBoardDetail from "../../contents/cscenter/CsBoardDetail";
@@ -114,16 +119,18 @@ const AppRouter = () => {
             {/* 상품(대출) */}
             <Route path="/product/loan/pdLoan" Component={PdLoan} />
             <Route path="/product/loan/pdLoanDetail" Component={PdLoanDetail} />
-
             {/* 상품(펀드) */}
-            <Route path="/product/fund/open_fund" Component={OpenFund} />
-            <Route path="/product/fund/pdfundList" Component={PdFundList} />
-            <Route path="/product/fund/pdfundHaving" Component={PdFundHaving} />
-            <Route path="/product/fund/pdfundDetail" Component={PdFundDetail} />
+            <Route path="/product/fund/application" Component={FundApplication} />
+            <Route path="/product/fund/list" Component={FundProductList} />
+            <Route path="/product/fund/detail" Component={FundProductDetail} />
 
             {/* 환율 */}
             <Route path="/exchangerate/exchange" Component={ExchangeRate} />
             <Route path="/exchangerate/exchange_cal" Component={ExchangeRateCal} />
+
+            {/* 펀드 */}
+            <Route path="/fund/info" Component={FundAccountInfo} />
+            <Route path="/fund/having" Component={FundHavingList} />
 
             {/* 고객센터 */}
             <Route path="/cscenter/cs_board" Component={CsBoard} />

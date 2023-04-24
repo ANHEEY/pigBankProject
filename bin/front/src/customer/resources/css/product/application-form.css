@@ -1,0 +1,28 @@
+.applicaiton{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    width: 1024px;
+    background-color: #dbe2d872;
+    border-radius: 20px;
+
+}
+.formArea{
+    padding: 30px;
+    width: 1024px;
+}
+h1{
+    color: rgb(51, 97, 71);
+}
+h5{
+    color: #979797;
+}
+.limitInfo{
+    padding-left: 200px;
+    color: #979797;
+}
+.chkAgree{
+    text-align: center;
+    padding: 20px;
+}

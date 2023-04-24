@@ -111,22 +111,16 @@ function Header () {
                                         <Link to ="/customer/product/loan/pdLoan">대출</Link>
                                     </li>
                                     <li className="dropdown">
-                                        <Link to ="/customer/product/fund/pdfundList">
+                                        <Link to ="/customer/product/fund/list">
                                             <span>펀드</span> 
                                             <i className="bi bi-chevron-right"></i>
                                         </Link>
                                         <ul>
                                             <li>
-                                                <Link to ="/customer/product/fund/open_fund">펀드계좌개설</Link>
+                                                <Link to ="/customer/product/fund/application">펀드계좌개설</Link>
                                             </li>
                                             <li>
-                                                <Link to ="/customer/product/fund/pdfundList">펀드리스트</Link>
-                                            </li>
-                                            <li>
-                                                <Link to ="/customer/product/fund/pdfundHaving">펀드보유내역</Link>
-                                            </li>
-                                            <li>
-                                                <Link to ="/customer/product/fund/pdfundDetail">펀드거래내역</Link>
+                                                <Link to ="/customer/product/fund/list">펀드리스트</Link>
                                             </li>
                                         </ul>
                                     </li>
@@ -143,6 +137,20 @@ function Header () {
                                     </li>
                                     <li>
                                         <Link to ="/customer/exchangerate/exchange_cal">환율계산기</Link>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li className="dropdown">
+                                <Link to ="/">
+                                    <span>펀드</span> 
+                                    <i className="bi bi-chevron-down"></i>
+                                </Link>
+                                <ul>
+                                    <li>
+                                        <Link to ="/customer/fund/having">보유내역</Link>
+                                    </li>
+                                    <li>
+                                        <Link to ="/customer/fund/info">거래내역</Link>
                                     </li>
                                 </ul>
                             </li>
