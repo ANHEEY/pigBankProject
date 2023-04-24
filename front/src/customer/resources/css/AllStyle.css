@@ -12,10 +12,10 @@
   padding: 30px;
   text-align: center;
 }
-.card h4{
+.account_card h4{
       color: #6ab64e;
 }
-.card a{
+.account_card a{
   color: #545454;
   font-size: 12px;
 }

@@ -11,9 +11,12 @@
 		SELECT * FROM savings_product
 	</select>
 	
-	
 	<select id="depositList" resultType="com.pigbank.project.dto.DepositProductDTO">
 		SELECT * FROM deposit_product
+	</select>
+	
+	<select id="loanList" resultType="com.pigbank.project.dto.LoanProductDTO">
+		SELECT * FROM loan_product
 	</select>
 	
 	<select id="depositAccountList" resultType="com.pigbank.project.dto.DepositAccountDTO">
