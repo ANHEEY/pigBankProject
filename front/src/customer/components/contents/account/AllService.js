@@ -26,5 +26,4 @@ class AllService {
     }
   }
 
-
 export default new AllService();
