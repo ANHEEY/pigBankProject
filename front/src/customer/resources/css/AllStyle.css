@@ -1,7 +1,7 @@
 .section{
   display: flex;
 }
-.card {
+.account_card {
   background-color: #dbe2d872;
   flex-basis: 100%;
   margin: 15px;
@@ -12,10 +12,10 @@
   padding: 30px;
   text-align: center;
 }
-.card h4{
+.account_card h4{
       color: #6ab64e;
 }
-.card a{
+.account_card a{
   color: #545454;
   font-size: 12px;
 }

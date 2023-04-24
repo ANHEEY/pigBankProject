@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
 import com.pigbank.project.dto.LoanAccountDTO;
+import com.pigbank.project.dto.LoanProductDTO;
 import com.pigbank.project.dto.SavingAccountDTO;
 import com.pigbank.project.dto.SavingProductDTO;
 import com.pigbank.project.service.ChuServiceImpl;
@@ -52,6 +53,17 @@ public class ChuController {
 		logger.info("<<< url - depositList >>>");
 		
 		List<DepositProductDTO> list = service.depositList(req, model);
+		System.out.println(list);
+		return list;
+	}
+	
+	//대출상품조회
+	@GetMapping(value="/loan")
+	public List<LoanProductDTO> loanList(HttpServletRequest req, Model model)
+			throws ServletException, IOException {
+		logger.info("<<< url - depositList >>>");
+		
+		List<LoanProductDTO> list = service.loanList(req, model);
 		System.out.println(list);
 		return list;
 	}

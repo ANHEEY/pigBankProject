@@ -15,6 +15,7 @@ import com.pigbank.project.dao.ChuMapper;
 import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
 import com.pigbank.project.dto.LoanAccountDTO;
+import com.pigbank.project.dto.LoanProductDTO;
 import com.pigbank.project.dto.SavingAccountDTO;
 import com.pigbank.project.dto.SavingProductDTO;
 
@@ -42,6 +43,16 @@ public class ChuServiceImpl implements ChuService{
 		System.out.println("서비스 - 예금상품리스트");
 		List<DepositProductDTO> list;
 		list = dao.depositList();
+		
+		return list;
+	}
+	
+	@Override
+	public List<LoanProductDTO> loanList(HttpServletRequest req, Model model) 
+			throws ServletException, IOException {
+		System.out.println("서비스 - 예금상품리스트");
+		List<LoanProductDTO> list;
+		list = dao.loanList();
 		
 		return list;
 	}
