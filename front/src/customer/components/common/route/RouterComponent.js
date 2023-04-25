@@ -71,79 +71,81 @@ import MainLayout from "../main/MainLayout";
 const AppRouter = () => {
     return(
 
-        <Routes  path="/customer/*" Component={Layout} >
+        <Routes  path="/*" Component={Layout} >
             {/* 고객 메인페이지 */}
             <Route path="/*" Component={MainLayout} />
 
             {/* 조회 */}
-            <Route path="/account/all" Component={All} />
-            <Route path="/account/account" Component={Account} />
-            <Route path="/account/deposit" Component={Deposit} />
-            <Route path="/account/saving" Component={Saving} />
-            <Route path="/account/sleep" Component={Sleep} />
+            <Route path="/customer/account/all" Component={All} />
+            <Route path="/customer/account/account" Component={Account} />
+            <Route path="/customer/account/deposit" Component={Deposit} />
+            <Route path="/customer/account/saving" Component={Saving} />
+            <Route path="/customer/account/sleep" Component={Sleep} />
 
             {/* 대출조회 */}
-            <Route path="/account/loan_state" Component={LoanState} />
-            <Route path="/account/loan" Component={Loan} />
+            <Route path="/customer/account/loan_state" Component={LoanState} />
+            <Route path="/customer/account/loan" Component={Loan} />
             
             {/* 이체 */}
-            <Route path="/transfer/trans_deposit" Component={TransDeposit} />
-            <Route path="/transfer/trans_reConfirm" Component={TransReConfirm} />
-            <Route path="/transfer/trans_accept" Component={TransAccept} />
+            <Route path="/customer/transfer/trans_deposit" Component={TransDeposit} />
+            <Route path="/customer/transfer/trans_reConfirm" Component={TransReConfirm} />
+            <Route path="/customer/transfer/trans_accept" Component={TransAccept} />
 
             {/* 자동이체 */}
-            <Route path="/transfer/add_auto_trans" Component={AddAutoTrans} />
-            <Route path="/transfer/auto_trans" Component={AutoTrans} />
-            <Route path="/transfer/auto_trans_check" Component={AutoTransCheck} />
-            <Route path="/transfer/auto_trans_reConfirm" Component={AutoTransReConfirm} />
-            <Route path="/transfer/auto_trans_detail" Component={AutoTransDetail} />
-            <Route path="/transfer/auto_trans_accept" Component={AutoTransAccept} />
+            <Route path="/customer/transfer/add_auto_trans" Component={AddAutoTrans} />
+            <Route path="/customer/transfer/auto_trans" Component={AutoTrans} />
+            <Route path="/customer/transfer/auto_trans_check" Component={AutoTransCheck} />
+            <Route path="/customer/transfer/auto_trans_reConfirm" Component={AutoTransReConfirm} />
+            <Route path="/customer/transfer/auto_trans_detail" Component={AutoTransDetail} />
+            <Route path="/customer/transfer/auto_trans_accept" Component={AutoTransAccept} />
 
             {/* 이체한도 */}
-            <Route path="/transfer/trans_limit" Component={TransLimit} />
-            <Route path="/transfer/trans_limit_accept" Component={TransLimitAccept} />
-            <Route path="/transfer/trans_reConfirm" Component={TransReConfirm} />
-            <Route path="/transfer/auto_trans_accept" Component={AutoTransAccept} />
-            <Route path="/transfer/trans_accept" Component={TransAccept} />
-            <Route path="/transfer/auto_trans_detail" Component={AutoTransDetail} />
+            <Route path="/customer/transfer/trans_limit" Component={TransLimit} />
+            <Route path="/customer/transfer/trans_limit_accept" Component={TransLimitAccept} />
+            <Route path="/customer/transfer/trans_reConfirm" Component={TransReConfirm} />
+            <Route path="/customer/transfer/auto_trans_accept" Component={AutoTransAccept} />
+            <Route path="/customer/transfer/trans_accept" Component={TransAccept} />
+            <Route path="/customer/transfer/auto_trans_detail" Component={AutoTransDetail} />
 
             {/* 상품(입출금) */}
-            <Route path="/product/pdAccount" Component={PdAccount} />
-            <Route path="/product/account/application" Component={ProductApplication} />
+            <Route path="/customer/product/pdAccount" Component={PdAccount} />
+            <Route path="/customer/product/account/application" Component={ProductApplication} />
             {/* 상품(예금) */}
-            <Route path="/product/pdDeposit" Component={PdDeposit} />
-            <Route path="/product/deposit/application" Component={DepositApplication} />
+            <Route path="/customer/product/pdDeposit" Component={PdDeposit} />
+            <Route path="/customer/product/deposit/application" Component={DepositApplication} />
             {/* 상품(적금) */}
-            <Route path="/product/pdSaving" Component={PdSaving} />
-            <Route path="/product/saving/application" Component={SavingApplication} />
+            <Route path="/customer/product/pdSaving" Component={PdSaving} />
+            <Route path="/customer/product/saving/application" Component={SavingApplication} />
+          
             {/* 상품(대출) */}
-            <Route path="/product/loan/pdLoan" Component={PdLoan} />
-            <Route path="/product/loan/pdLoanDetail" Component={PdLoanDetail} />
+            <Route path="/customer/product/loan/pdLoan" Component={PdLoan} />
+            <Route path="/customer/product/loan/pdLoanDetail" Component={PdLoanDetail} />
+          
             {/* 상품(펀드) */}
-            <Route path="/product/fund/application" Component={FundApplication} />
-            <Route path="/product/fund/list" Component={FundProductList} />
-            <Route path="/product/fund/detail" Component={FundProductDetail} />
+            <Route path="/customer/product/fund/application" Component={FundApplication} />
+            <Route path="/customer/product/fund/list" Component={FundProductList} />
+            <Route path="/customer/product/fund/detail" Component={FundProductDetail} />
 
             {/* 환율 */}
-            <Route path="/exchangerate/exchange" Component={ExchangeRate} />
-            <Route path="/exchangerate/exchange_cal" Component={ExchangeRateCal} />
+            <Route path="/customer/exchangerate/exchange" Component={ExchangeRate} />
+            <Route path="/customer/exchangerate/exchange_cal" Component={ExchangeRateCal} />
 
             {/* 펀드 */}
-            <Route path="/fund/info" Component={FundAccountInfo} />
-            <Route path="/fund/having" Component={FundHavingList} />
+            <Route path="/customer/fund/info" Component={FundAccountInfo} />
+            <Route path="/customer/fund/having" Component={FundHavingList} />
 
             {/* 고객센터 */}
-            <Route path="/cscenter/cs_board" Component={CsBoard} />
-            <Route path="/cscenter/cs_board_detail" Component={CsBoardDetail}/>
-            <Route path="/cscenter/chatting" Component={Chatting} />
+            <Route path="/customer/cscenter/cs_board" Component={CsBoard} />
+            <Route path="/customer/cscenter/cs_board_detail" Component={CsBoardDetail}/>
+            <Route path="/customer/cscenter/chatting" Component={Chatting} />
 
             {/* 마이페이지 */}
-            <Route path="/mypage/mypage" Component={Mypage} />
-            <Route path="/mypage/money" Component={Money} />
+            <Route path="/customer/mypage/mypage" Component={Mypage} />
+            <Route path="/customer/mypage/money" Component={Money} />
 
             {/* 로그인 / 회원가입 */}
-            <Route path="/login/login" Component={Login} />
-            <Route path="/join/join" Component={Join} />
+            <Route path="/customer/login/login" Component={Login} />
+            <Route path="/customer/join/join" Component={Join} />
         </Routes>
     )
 }
