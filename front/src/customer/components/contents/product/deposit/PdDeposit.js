@@ -1,130 +1,123 @@
- // 예금 상품
- import React, { Component } from "react";
- import {Table, TableHead, TableRow, TableCell,  TableBody } from "@mui/material";
- import {Link} from 'react-router-dom';
- import PdDepositService from './PdDepositService';
- 
- 
-  
- class PdDeposit extends Component{
+// 예금 상품
+import { Typography } from "@mui/material";
+import React from "react";
+import {Form, Col, Row, Button, InputGroup, ListGroup, Stack } from 'react-bootstrap';
+import { useNavigate,Link } from "react-router-dom";
 
 
-    constructor(props){
-        super(props);
-
-        this.state={
-            members:[],
-            message: null,
-            selectedOption: ""
-        }
-    }
-  
-    // 라이프 사이클 중 컴포넌트가 생성된 후 사용자에게 보여지기까지의 전체 과정을 랜더링
-
-    componentDidMount(){
-        this.reloadMemberList();
+function PdDeposit () {
+    const style = {
+        color: "green",
     }
 
-    reloadMemberList = () => {
-        PdDepositService.fetchMembers()
-            .then(res=>{
-                this.setState({
-                    members:res.data
-                })
-            })
-            .catch(err=>{
-                console.log('reloadMemberList() Error!!',err);
-            });
-      }
-      
-      handleChange = (event) => {
-        this.setState({
-          selectedOption: event.target.value
-        });
-      }
-      
-      render() {
-        // members에서 selectedOption과 일치하는 항목만 필터링
-        const filteredMembers = this.state.members.filter(
-          (member) => member.dpdName.indexOf(this.state.selectedOption) !== -1
-        );
+    const label = {
+        textAlign: "center",
+    }
+
+    const navigate = useNavigate();
+    
+    const goDetail=(dpdName)=> { 
+
+        /* window.localStorage.setItem(); */
+        window.localStorage.setItem("dpdName", dpdName);
+        navigate('/customer/product/deposit/pdDepositDetail');
+        // PdDepositService.pdDepositDetailInfo(dpdName)
+        //     .then(res=>{
+
+        // });
+    }
+
+    return (
+       <div className="container">
+        <br/><br/><br/><br/>
+        <Form>
+            <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
+            <Form.Label column sm="2" style={label}>
+            * 상품명
+            </Form.Label>
+            <Col sm="10">
+                <InputGroup className="mb-3">
+                    <Form.Control
+                    placeholder="찾으시는 예금상품명을 입력하세요."
+                    aria-label="Recipient's username"
+                    aria-describedby="basic-addon2"
+                    />
+                    <Button variant="outline-secondary" id="button-addon2">
+                    Button
+                    </Button>
+                </InputGroup>
+            </Col>
+            </Form.Group>
+        </Form>
         
-        return (
-        <main className="main">
-            <section className="section">
-             
-            </section>
-            
-            <section className="section">
-            <div className="container">
-                <h2>예금상품</h2>
-                
-                <select value={this.state.selectedOption} onChange={this.handleChange}>
-                  <option value="">예금상품이름</option>
-                  {this.state.members.map((member) => (
-                    <option key={member.dpdName} value={member.dpdName}>{member.dpdName}</option>
-                  ))}
-                </select>
-              
-
-              
-              
-                <div class="card text-center">
-                    
-                    <div class="card-header">
-                        <ul class="nav nav-tabs card-header-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link disabled">예금</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" ><Link to="/customer/product/pdLoan">대출</Link></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" ><Link to="/customer/product/pdSaving">적금</Link></a>
-                        </li>
-                        </ul>
-                    </div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <hr />
+        <ListGroup variant="flush">
+            <ListGroup.Item>
+            <Row>
+                <Stack direction="horizontal" gap={3}>
+                <div>
+                        <p>인터넷뱅킹 | 피그뱅크 | 예금상품</p>
+                        <Typography variant="h4" style={{ fontWeight: 'bold'}}>예금상품명</Typography><br />
+                        <p>상품설명</p>
+                        <p>금리 <span style={style}>5%</span></p>
                 </div>
-
-                <div class="card-body">
-                    <Table>
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>예금상품이름</TableCell>
-                          <TableCell>가입기간</TableCell>
-                          <TableCell>예금상품금리</TableCell>
-                          <TableCell>예금상품설명</TableCell>
-                          <TableCell>예금최소금액</TableCell>
-                          <TableCell>예금최대금액</TableCell>
-                          <TableCell>중도해지시금리</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {filteredMembers.map((member) => (
-                          <TableRow key={member.dpdName}>
-                            <TableCell>{member.dpdName}</TableCell>
-                            <TableCell>{member.dperiod}</TableCell>
-                            <TableCell>{member.drate}</TableCell>
-                            <TableCell>{member.dcontent}</TableCell>
-                            <TableCell>{member.dmin}</TableCell>
-                            <TableCell>{member.dmax}</TableCell>
-                            <TableCell>{member.dcxlRate}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                    
+                <div className="ms-auto">
+                <Button variant="success" onClick={goDetail}>신청하기</Button>
                 </div>
+                </Stack>
+            </Row>
 
-            </div>
-              
+            </ListGroup.Item>
+        </ListGroup>
 
-            </section>
-        </main>
-        );
-      }
+        <hr />
+        <ListGroup variant="flush">
+            <ListGroup.Item>
+            <Row>
+                <Stack direction="horizontal" gap={3}>
+                <div>
+                        <p>인터넷뱅킹 | 피그뱅크 | 예금상품</p>
+                        <Typography variant="h4" style={{ fontWeight: 'bold'}}>예금상품명</Typography><br />
+                        <p>상품설명</p>
+                        <p>금리 <span style={style}>5%</span></p>
+                </div>
+                <div className="ms-auto">
+                <Button variant="success" onClick={goDetail}>신청하기</Button>
+                </div>
+                </Stack>
+            </Row>
+
+            </ListGroup.Item>
+        </ListGroup>
+
+        <hr />
+        <ListGroup variant="flush">
+            <ListGroup.Item>
+            <Row>
+                <Stack direction="horizontal" gap={3}>
+                <div>
+                        <p>인터넷뱅킹 | 피그뱅크 | 예금상품</p>
+                        <Typography variant="h4" style={{ fontWeight: 'bold'}}>예금상품명</Typography><br />
+                        <p>상품설명</p>
+                        <p>금리 <span style={style}>5%</span></p>
+                </div>
+                <div className="ms-auto">
+                <Button variant="success" onClick={goDetail}>신청하기</Button>
+                </div>
+                </Stack>
+            </Row>
+
+            </ListGroup.Item>
+        </ListGroup>
+        <Link to = '/customer/product/deposit/application'><h5>이곳을 클릭하면 상품 가입 페이지로 이동합니다 </h5></Link>
+        </div>
+      
+)
+
 }
- 
-  export default PdDeposit;
- 
+export default PdDeposit;
  

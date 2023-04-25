@@ -1,28 +1,30 @@
-import React from 'react';
+//예금 상세 페이지
 import { Table, Tab, Tabs, Row, Col, Container, Button, Card, Stack } from 'react-bootstrap';
 import { SlCalender, SlGraph } from "react-icons/sl";
 import { BsCash } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
 import '../../../../resources/css/PdLoanStyle.css';
-import PdLoanInfo from './PdLoanInfo';
+import React from 'react';
+import PdDepositService from './PdDepositService';
 
+//import Calculator1 from '../loan/Calculator1';
 
-import Calculator from './Calculator';
+function PdDepositDetail() {
 
-function PdLoanDetail() {
+  // componentDidMount(){
+  //   this.loadDetail();
+  // }
 
-  const navigate = useNavigate();
-
-  const goRegister = () => { 
-
-    /* window.localStorage.setItem(); */
-    navigate('/customer/product/loan/pdLoanApplication');
+  const loadDetail = () =>{
+    PdDepositService.pdDepositDetailInfo(window.localStorage.getItem("dPdName"))
+      .then(res=>{
+        let detail = res.data;
+      })
   }
 
   return (
     <Container>
-      <Card>
-        <Card.Header as="h2">든든한 행복 대출</Card.Header>
+    <Card>
+        <Card.Header as="h2">든든한 행복 예금</Card.Header>
         <br/><br/>
         <Card.Body>
           <Row>
@@ -35,38 +37,37 @@ function PdLoanDetail() {
             </Col>
             <Col>
               <SlGraph size="30" color="#009000" />
-              <Card.Title className="mt-3">대출 금리</Card.Title>
+              <Card.Title className="mt-3">예금 금리</Card.Title>
               <Card.Text>
                 3%
               </Card.Text>
             </Col>
             <Col>
               <BsCash size="30" color="#009000"/>
-              <Card.Title className="mt-3">대출 금액</Card.Title>
+              <Card.Title className="mt-3">예금 금액</Card.Title>
               <Card.Text>
-                최소 1만원부터 최대 100만원까지
+                최소 100만원부터 최대 3000만원까지
               </Card.Text>
             </Col>
           </Row>
         <br/><br/>
         <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto">
-          <Button className="button" size="lg" onClick={goRegister}>대출신청</Button>
+          <Button className="button" size="lg">상품가입</Button>
           <Button variant="outline-dark" size="lg"> 상품목록</Button>
         </Stack>
         <br/>
         </Card.Body>
         <Card.Footer>
         
-        <Card.Title className="mt-3" as="h4">대출 계산기</Card.Title>
+        <Card.Title className="mt-3" as="h4">예금 계산기</Card.Title>
           <br/>
-          { /*원리(금), 만기상환 tabs 시작 */}
-          <Calculator /> 
+          { /*원리(금), 만기상환 tabs 시작  <Calculator1 />  */}
+         
       </Card.Footer>
     </Card>
     <br />
     <br />
     <br />
-
     <Tabs
       defaultActiveKey="profile"
       id="fill-tab-example"
@@ -75,7 +76,7 @@ function PdLoanDetail() {
     >
 
     <Tab eventKey="home" title="상품안내">
-        <PdLoanInfo /> 
+     
     </Tab>
 
       <Tab eventKey="profile" title="금리및이율">
@@ -83,7 +84,7 @@ function PdLoanDetail() {
             <hr />
             <Row className="justify-content-md-center"> 
               <Col className="style" lg={2} >
-                대출금리
+                예금금리
               </Col>
               <Col>
                   <Table bordered>
@@ -139,66 +140,66 @@ function PdLoanDetail() {
               </Col>
             </Row> 
         </Container>
-     </Tab>
-     <Tab eventKey="longer-tab" title="이용안내">
-       <Container>
-          <hr />
-          <Row className="justify-content-md-center"> 
-            <Col className="style" lg={2}>
-              담보
-            </Col>
-            <Col>
-                  <p>
-                    - 무보증
-                  </p>
-            </Col>
-          </Row>
+    </Tab>
+    <Tab eventKey="longer-tab" title="이용안내">
+      <Container>
+        <hr />
+        <Row className="justify-content-md-center"> 
+          <Col className="style" lg={2}>
+            담보
+          </Col>
+          <Col>
+                <p>
+                  - 무보증
+                </p>
+          </Col>
+        </Row>
 
         <hr />
-          <Row className="justify-content-md-center"> 
-            <Col className="style" lg={2}>
-              기한연장 관련 안내
-            </Col>
-            <Col>
-                  <p>
-                    - 일시상환방식 대출의 기한연장은 대출만기일 1개월 이전부터 가능하며, 만기일 전까지 영업점을 방문하셔서 필요한 절차(기한연장, 재대출, 대출상환 등)를 진행하셔야 
-                  대출금에 대한 연체이자 발생 등 불이익이 발생하지 않습니다. 단, 은행이 정한 기준에 따라 자동기한연장 대상으로 선정 시 자동기한연장에 대해 동의하는 경우 자동기한연장 처리됩니다.
-                  자동기한연장의 동의는 인터넷뱅킹, 콜센터, 영업점을 통하여 등록 가능합니다.
-                  ※ 분할상환을 선택하는 경우 기한연장은 불가합니다.
-                  </p>
-            </Col>
-          </Row> 
+        <Row className="justify-content-md-center"> 
+          <Col className="style" lg={2}>
+            기한연장 관련 안내
+          </Col>
+          <Col>
+                <p>
+                  - 일시상환방식 대출의 기한연장은 대출만기일 1개월 이전부터 가능하며, 만기일 전까지 영업점을 방문하셔서 필요한 절차(기한연장, 재대출, 대출상환 등)를 진행하셔야 
+                대출금에 대한 연체이자 발생 등 불이익이 발생하지 않습니다. 단, 은행이 정한 기준에 따라 자동기한연장 대상으로 선정 시 자동기한연장에 대해 동의하는 경우 자동기한연장 처리됩니다.
+                자동기한연장의 동의는 인터넷뱅킹, 콜센터, 영업점을 통하여 등록 가능합니다.
+                ※ 분할상환을 선택하는 경우 기한연장은 불가합니다.
+                </p>
+          </Col>
+        </Row> 
 
-         <hr />
-         <Row className="justify-content-md-center"> 
-            <Col className="style" lg={2}>
-              상품 가입채널
-            </Col>
-            <Col>
+        <hr />
+        <Row className="justify-content-md-center"> 
+          <Col className="style" lg={2}>
+            상품 가입채널
+          </Col>
+          <Col>
               <p>
               - 영업점, 고객센터 (1588-0000 - 0 - 2)
               </p>
-           </Col>
-          </Row>
+          </Col>
+        </Row>
 
-           <hr />
-          <Row className="justify-content-md-center"> 
-            <Col className="style" lg={2}>
-              필요서류
-            </Col>
-            <Col>
+        <hr />
+        <Row className="justify-content-md-center"> 
+          <Col className="style" lg={2}>
+            필요서류
+          </Col>
+          <Col>
                 <p>
                 - 본인신분증 (주민등록증, 자동차운전면허증,국내에서 발행한 여권 등)<br />
                 - 재직확인서류 (재직증명서 등)<br />
                 - 소득확인서류 (근로소득원천징수영수증 등)<br />
                 </p>
-           </Col>
-          </Row>
-        </Container>
-      </Tab>
-    </Tabs>
+          </Col>
+        </Row>
+      </Container>
+    </Tab>
+  </Tabs>
   </Container>
   );
 }
 
-export default PdLoanDetail;
+export default PdDepositDetail;
