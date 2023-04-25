@@ -20,7 +20,10 @@ public class CustomerServiceImpl implements CustomerService{
 	
 	@Override
 	public void insertCustomer(CustomerDTO customerDTO) {
+		System.out.println("service - insertCustomer");
+		System.out.println("customerDTO : "+customerDTO);
 		String encryptPwd = passwordEncoder.encode(customerDTO.getPwd());
+		System.out.println("encryptPwd : "+encryptPwd);
 		customerDTO.setPwd(encryptPwd);
 		
 		dao.insertCustomer(customerDTO);

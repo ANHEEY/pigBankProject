@@ -7,22 +7,20 @@ import axios from 'axios';  // npm install -f axios@^1.3.5
 // - 리액트에서 이를 구현하기 위해선 Axios를 사용한다. 기존 HTML이나 JSP에서 사용한 Ajax 역할을 한다고 생각하면 된다.
 // - npm install -f axios@^1.3.5
 
-const MEMBER_API_BASE_URL = "http://localhost:8081/deposit";
-const DEPOSIT_URL = "http://localhost:8081/";
+const CUSTOMER_URL = "http://localhost:8081/";
 
+class ApiService {
 
-
-class PdDepositService {
-    fetchMembers() {
-      console.log('fetchMembers 호출!!')
-      return axios.get(MEMBER_API_BASE_URL );
+    customerJoin(customer) {
+      console.log('회원가입!!!');
+      return axios.post(CUSTOMER_URL+"customerJoin",customer);
     }
 
-    pdDepositDetailInfo(dPdName){
-      console.log('pdDepositDetailInfo 호출!')
-      return axios.get(DEPOSIT_URL+"depositDetailInfo"+dPdName);
+    customerLogin(customerInfo){
+        console.log('로그인!!!!!');
+        console.log(customerInfo);
+        return axios.post(CUSTOMER_URL+"login",customerInfo);
     }
-  }
-
-
-export default new PdDepositService();
+    
+}
+export default new ApiService();
