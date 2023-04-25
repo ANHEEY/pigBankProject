@@ -10,4 +10,6 @@ import com.pigbank.project.dto.AccountDTO;
 public interface LeeMapper {
 	
 	public List<AccountDTO> accountList(String id);
+	
+	public AccountDTO balance(long acNumber);
 }

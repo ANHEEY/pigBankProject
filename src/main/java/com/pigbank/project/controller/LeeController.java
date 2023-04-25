@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pigbank.project.dto.AccountDTO;
@@ -29,7 +31,7 @@ public class LeeController {
 	
 
 	// http://localhost:8081/Accounts
-	//적금상품조회
+	// 계좌조회
 	@GetMapping(value="/Accounts")
 	public List<AccountDTO> accountList(HttpServletRequest req, Model model)
 			throws ServletException, IOException {
@@ -39,4 +41,14 @@ public class LeeController {
 		System.out.println(list);
 		return list;
 	}
+	// http://localhost:8081/balance
+	@GetMapping(value="/balance")
+	public AccountDTO balance(@RequestBody long acNumber)
+			throws ServletException, IOException {
+		
+		AccountDTO dto = service.balance(acNumber);
+		System.out.println("dto : " + dto);
+		return dto;
+	}
+	
 }

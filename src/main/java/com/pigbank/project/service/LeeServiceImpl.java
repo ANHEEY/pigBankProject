@@ -24,8 +24,15 @@ public class LeeServiceImpl implements LeeService{
 			throws ServletException, IOException {
 		String id = "hong1234";
 		
-		
 		return dao.accountList(id);
+	}
+
+	@Override
+	public AccountDTO balance(long acNumber) 
+			throws ServletException, IOException {
+		System.out.println("acNumber : " + acNumber);
+		acNumber = 11022456542L;
+		return dao.balance(acNumber);
 	}
 
 	

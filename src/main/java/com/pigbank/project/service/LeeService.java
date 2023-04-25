@@ -14,4 +14,6 @@ public interface LeeService {
 	
 	public List<AccountDTO> accountList(HttpServletRequest req, Model model)
 			throws ServletException,IOException;
+	public AccountDTO balance(long acNumber)
+			throws ServletException,IOException;
 }

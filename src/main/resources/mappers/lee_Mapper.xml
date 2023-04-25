@@ -10,4 +10,8 @@
 	<select id="accountList" parameterType="String" resultType="com.pigbank.project.dto.AccountDTO">
 		SELECT acNumber FROM account_tbl WHERE id = #{id}
 	</select>
+	
+	<select id="balance" parameterType="long" resultType="com.pigbank.project.dto.AccountDTO">
+		SELECT acBalance FROM ACCOUNT_TBL WHERE ACNUMBER = #{acNumber}
+	</select>
 </mapper>
