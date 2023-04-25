@@ -1,9 +1,11 @@
 // 계산기
 import {Tab, Tabs, Row, Col, Button, Stack, Form} from 'react-bootstrap';
 import React, { useState } from 'react';
-import CalcResult from './CalcResult';
+import WonriCalc from './WonriCalc';
+import WonriGuemCalc from './WonriGuemCalc';
+import MangiCalc from './MangiCalc';
 
-const Calculator1 = () => {
+const Calculator = () => {
 
     const [showResult, setShowResult] = useState(false);
 
@@ -13,7 +15,7 @@ const Calculator1 = () => {
         rate: "",
     });
     
-    { /* tabs 클릭시 showResult 컨트롤 */}
+    // tabs 클릭시 showResult 컨트롤
     const handleClick = () => {
         setShowResult(false);
     }
@@ -28,24 +30,24 @@ const Calculator1 = () => {
         });
     }
    
-    { /* 계산하기 */}
-    const calculator = () => {
-        setShowResult(true);
-
-        const newData = {
-          amount: inputs.amount,
-          period: inputs.period,
-          rate: inputs.rate,
+    // 계산하기
+    const calculate = (e) => {
+        if((inputs.amount !== 0)&&(inputs.period !== 0)&&(inputs.rate !== 0)) {
+            setShowResult(true);
         }
-  
-        console.log(newData);
-  
-        setInputs({ 
-          amount: "", 
-          period: "", 
-          rate: "" 
+        else {
+            alert("숫자를 입력해주세요.");
+        }
+    }
+     
+    const reset = () => {
+        setInputs({
+            amount: "", 
+            period: "",
+            rate: "",
         })
-        
+
+        setShowResult(false);
     }
 
     return(
@@ -66,9 +68,10 @@ const Calculator1 = () => {
                     id="amount"
                     value={inputs.amount}
                     placeholder="금액"
+                    min={0}
                 />
                 </Col>
-                을
+                만원을
                 <Col sm={2}>
                 <Form.Control onChange={onChange}
                     size="sm"
@@ -76,9 +79,10 @@ const Calculator1 = () => {
                     id="period"
                     value={inputs.period}
                     placeholder="기간"
+                    min={0}
                 />
                 </Col>
-                개월 동안
+                년 동안
                 <Col sm={2}>
                 <Form.Control onChange={onChange}
                     size="sm"
@@ -86,19 +90,18 @@ const Calculator1 = () => {
                     id="rate"
                     value={inputs.rate}
                     placeholder="이자"
+                    min={0}
                 />
                 </Col>
-                %의 적금상품에 저축 &nbsp; &nbsp; &nbsp; &nbsp;       
+                %로 대출 받으면?&nbsp; &nbsp; &nbsp; &nbsp;       
                 <Col sm={3}>
                     <Stack direction="horizontal" gap={3} >
-                        <Button variant="dark" size="sm" onClick={calculator}>계산하기</Button>
-                        <Button variant="outline-dark" size="sm">초기화</Button>
+                        <Button variant="dark" size="sm" onClick={(e) => calculate(e)}>계산하기</Button>
+                        <Button variant="outline-dark" size="sm" onClick={reset}>초기화</Button>
                     </Stack>
                 </Col>
             </Form.Group>
-
-            {showResult && <CalcResult />}
-        
+            {showResult && <WonriGuemCalc props = {inputs} />}
         </Tab>
 
         <Tab eventKey="cal2" title="원금균등상환">
@@ -110,9 +113,10 @@ const Calculator1 = () => {
                     id="amount"
                     value={inputs.amount}
                     placeholder="금액"
+                    min={0}
                 />
                 </Col>
-                을
+                만원을
                 <Col sm={2}>
                 <Form.Control onChange={onChange}
                     size="sm"
@@ -120,9 +124,10 @@ const Calculator1 = () => {
                     id="period"
                     value={inputs.period}
                     placeholder="기간"
+                    min={0}
                 />
                 </Col>
-                개월 동안
+                년동안
                 <Col sm={2}>
                 <Form.Control onChange={onChange}
                     size="sm"
@@ -130,20 +135,18 @@ const Calculator1 = () => {
                     id="rate"
                     vaue={inputs.rate}
                     placeholder="이자"
+                    min={0}
                 />
                 </Col>
-                %의 적금상품에 저축 &nbsp; &nbsp; &nbsp; &nbsp;       
+                %로 대출 받으면? &nbsp; &nbsp; &nbsp; &nbsp;       
                 <Col sm={3}>
                 <Stack direction="horizontal" gap={3} >
-                <Button variant="dark" size="sm" onClick={calculator}>계산하기</Button>
-                <Button variant="outline-dark" size="sm">초기화</Button>
+                    <Button variant="dark" size="sm" onClick={(e) => calculate(e)}>계산하기</Button>
+                    <Button variant="outline-dark" size="sm" onClick={reset}>초기화</Button>
                 </Stack>
                 </Col>
             </Form.Group>
-
-            { /* 계산 결과 테이블  */}
-            {showResult && <CalcResult />}
-
+            {showResult && <WonriCalc props = {inputs} />}
         </Tab>
 
         <Tab eventKey="cal3" title="만기일시상환">
@@ -155,9 +158,10 @@ const Calculator1 = () => {
                     id="amount"
                     value={inputs.amount}
                     placeholder="금액"
+                    min={0}
                 />
                 </Col>
-                을
+                만원을
                 <Col sm={2}> 
                 <Form.Control onChange={onChange}
                     size="sm"
@@ -165,9 +169,10 @@ const Calculator1 = () => {
                     id="period"
                     value={inputs.period}
                     placeholder="기간"
+                    min={0}
                 />
                 </Col>
-                개월 동안
+                년 동안
                 <Col sm={2}>
                 <Form.Control onChange={onChange}
                     size="sm"
@@ -175,23 +180,22 @@ const Calculator1 = () => {
                     id="rate"
                     vaue={inputs.rate}
                     placeholder="이자"
+                    min={0}
                 />
                 </Col>
-                %의 적금상품에 저축 &nbsp; &nbsp; &nbsp; &nbsp;       
+                %로 대출 받으면? &nbsp; &nbsp; &nbsp; &nbsp;       
                 <Col sm={3}>
-                    <Stack direction="horizontal" gap={3} >
-                        <Button variant="dark" size="sm" onClick={calculator}>계산하기</Button>
-                        <Button variant="outline-dark" size="sm">초기화</Button>
-                    </Stack>
+                <Stack direction="horizontal" gap={3} >
+                    <Button variant="dark" size="sm" onClick={(e) => calculate(e)}>계산하기</Button>
+                    <Button variant="outline-dark" size="sm" onClick={reset}>초기화</Button>
+                </Stack>
                 </Col>
-            </Form.Group> 
-
-            {showResult && <CalcResult />}
-
+            </Form.Group>
+            {showResult && <MangiCalc props = {inputs} />}
         </Tab> 
     </Tabs>
     </>
     )
 }
 
-export default Calculator1;
+export default Calculator;

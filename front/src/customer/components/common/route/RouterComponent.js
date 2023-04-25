@@ -39,6 +39,7 @@ import DepositApplication from "../../contents/product/deposit/DepositApplicatio
 // 상품 | 대출상품
 import PdLoan from "../../contents/product/loan/PdLoan";
 import PdLoanDetail from '../../contents/product/loan/PdLoanDetail';
+import PdLoanApplication from '../../contents/product/loan/PdLoanApplication';
 
 // 상품|펀드상품
 import FundApplication from "../../contents/product/fund/FundApplication";
@@ -120,7 +121,8 @@ const AppRouter = () => {
             {/* 상품(대출) */}
             <Route path="/customer/product/loan/pdLoan" Component={PdLoan} />
             <Route path="/customer/product/loan/pdLoanDetail" Component={PdLoanDetail} />
-          
+            <Route path="/customer/product/loan/pdLoanApplication" Component={PdLoanApplication} />
+
             {/* 상품(펀드) */}
             <Route path="/customer/product/fund/application" Component={FundApplication} />
             <Route path="/customer/product/fund/list" Component={FundProductList} />
