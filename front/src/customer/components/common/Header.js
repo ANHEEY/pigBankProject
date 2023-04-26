@@ -141,7 +141,7 @@ function Header () {
                                 </ul>
                             </li>
                             <li className="dropdown">
-                                <Link to ="/">
+                                <Link to ="/customer/fund/having">
                                     <span>펀드</span> 
                                     <i className="bi bi-chevron-down"></i>
                                 </Link>

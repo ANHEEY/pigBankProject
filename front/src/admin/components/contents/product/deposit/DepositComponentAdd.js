@@ -4,7 +4,7 @@ import { TextField, Typography} from "@mui/material";
 class DepositComponentAdd extends Component{
     render(){
         return(
-            <div align="center" >
+            <div className="component-div" align="center" >
                 <Typography variant='h4' align="center" style={style}>예금상품등록</Typography>
                 <TextField 
                  required

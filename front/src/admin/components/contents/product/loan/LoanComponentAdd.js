@@ -6,7 +6,7 @@ import { Typography } from "@mui/material";
 class LoanComponentAdd extends Component{
     render(){
         return(
-            <Container>
+            <Container className="component-div">
                 <Typography variant="h3" textAlign="center" color="black">대출상품등록</Typography><br/><br/>
 
                 <Form>

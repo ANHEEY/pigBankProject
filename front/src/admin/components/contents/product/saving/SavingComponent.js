@@ -7,7 +7,7 @@ class SavingComponent extends Component{
     render(){
         return(
             <>
-                <div>
+                <div className="component-div">
                 <Typography variant='h4' align="center">적금상품</Typography>
                 <Button variant='contained' color='primary' align="center"><Link to="add">상품등록</Link></Button>
                 <Table>

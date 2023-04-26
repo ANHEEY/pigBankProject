@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 class NoticeComponent extends Component{
     render(){
         return(
-            <div>
+            <div className="component-div">
                 <h1><FontAwesomeIcon icon={faHeadset}/> 공지사항 목록</h1>
                 <Link to = "detail">이곳을 클릭하면 공지사항 상세페이지로 이동합니다.</Link>
                 <br/>

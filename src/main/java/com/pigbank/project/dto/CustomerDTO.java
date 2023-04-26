@@ -22,6 +22,7 @@ public class CustomerDTO {
 	private String address;
 	private String hp;
 	private String grade;
+	private String cusState;
 	private Timestamp regDate;
 	private Date birthday;
 	private String authority;
