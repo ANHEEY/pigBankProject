@@ -70,7 +70,7 @@ public class ChuServiceImpl implements ChuService{
 	@Override
 	public List<SavingAccountDTO> savingAccountList(HttpServletRequest req, Model model) 
 			throws ServletException, IOException {
-		System.out.println("서비스 - 예금계좌리스트");
+		System.out.println("서비스 - 적금계좌리스트");
 		List<SavingAccountDTO> list;
 		list = dao.savingAccountList();
 		System.out.println("list : " + list);
@@ -79,7 +79,16 @@ public class ChuServiceImpl implements ChuService{
 	@Override
 	public List<LoanAccountDTO> loanAccountList(HttpServletRequest req, Model model) 
 			throws ServletException, IOException {
-		System.out.println("서비스 - 예금계좌리스트");
+		System.out.println("서비스 - 대출계좌목록");
+		List<LoanAccountDTO> list;
+		list = dao.loanAccountList();
+		System.out.println("list : " + list);
+		return list;
+	}
+
+	@Override
+	public List<LoanAccountDTO> loanState(HttpServletRequest req, Model model) throws ServletException, IOException {
+		System.out.println("서비스 - 대출심사조회");
 		List<LoanAccountDTO> list;
 		list = dao.loanAccountList();
 		System.out.println("list : " + list);

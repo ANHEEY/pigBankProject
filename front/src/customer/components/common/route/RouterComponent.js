@@ -2,10 +2,10 @@ import React from "react";
 import {Route, Routes} from 'react-router-dom'; // BrowserRouter
 
 // 조회
-import All from "../../contents/account/All";
+import All from "../../contents/account/All/All";
 import Account from "../../contents/account/Account";
-import Deposit from "../../contents/account/Deposit";
-import Saving from "../../contents/account/Saving";
+import Deposit from "../../contents/account/Deposit/Deposit";
+import Saving from "../../contents/account/Saving/Saving";
 import Sleep from "../../contents/account/Sleep";
 // 조회|대출조회
 import LoanState from "../../contents/account/loan/LoanState";
@@ -78,11 +78,19 @@ const AppRouter = () => {
             <Route path="/*" Component={MainLayout} />
 
             {/* 조회 */}
+<<<<<<< Updated upstream
             <Route path="/customer/account/all" Component={All} />
             <Route path="/customer/account/account" Component={Account} />
             <Route path="/customer/account/deposit" Component={Deposit} />
             <Route path="/customer/account/saving" Component={Saving} />
             <Route path="/customer/account/sleep" Component={Sleep} />
+=======
+            <Route path="/account/All" Component={All} />
+            <Route path="/account/account" Component={Account} />
+            <Route path="/account/deposit" Component={Deposit} />
+            <Route path="/account/saving" Component={Saving} />
+            <Route path="/account/sleep" Component={Sleep} />
+>>>>>>> Stashed changes
 
             {/* 대출조회 */}
             <Route path="/customer/account/loan_state" Component={LoanState} />

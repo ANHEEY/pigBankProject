@@ -1,12 +1,9 @@
- // 예금 상품
- import React, { Component } from "react";
- 
- import AllService from "./AllService";
- import '../../../resources/css/AllStyle.css';
- 
-  
- class AllDeposit extends Component{
+// 전체조회
+import React, { Component } from "react";
+import '../../../../resources/css/AllStyle.css';
+import AllService from "./AllService";
 
+class AllLoan extends Component{
 
     constructor(props){
         super(props);
@@ -25,7 +22,7 @@
     }
 
     reloadMemberList = () => {
-        AllService.fetchDeposit()
+        AllService.fetchLoan()
             .then(res=>{
                 this.setState({
                     members:res.data
@@ -50,11 +47,11 @@
              
             <ul>
                 {this.state.members.map((member) => (
-                    <li key={member.dnum}>
-                        <p>{member.dpdName}</p>
-                        <p>{member.damount}</p>
-                        <p>{member.dendDate}</p>
-                        <p>{member.djoinDate}</p>
+                    <li key={member.lreqNum}>
+                        <p>{member.lpdName}</p>
+                        <p>{member.lamount}</p>
+                        <p>{member.lreqDate}</p>
+                        <p>{member.trsfLimit}</p>
                     </li>
                 ))}
             </ul>
@@ -64,8 +61,8 @@
           </main>
         );
       }
+    
+
 }
- 
-  export default AllDeposit;
- 
- 
+
+export default AllLoan;

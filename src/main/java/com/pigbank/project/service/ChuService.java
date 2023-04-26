@@ -38,4 +38,9 @@ public interface ChuService {
 	public List<LoanAccountDTO> loanAccountList(HttpServletRequest req, Model model)
 			throws ServletException,IOException;
 	
+	public List<LoanAccountDTO> loanState(HttpServletRequest req, Model model)
+			throws ServletException,IOException;
+	
+	
+	
 }

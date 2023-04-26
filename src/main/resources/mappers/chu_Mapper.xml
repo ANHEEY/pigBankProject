@@ -20,16 +20,23 @@
 	</select>
 	
 	<select id="depositAccountList" resultType="com.pigbank.project.dto.DepositAccountDTO">
-		SELECT * FROM d_account_tbl
+		SELECT da.dNum, a.id, da.acNumber, da.dPdName, da.dAmount, da.dExpAmount, da.dJoinDate, da.dEndDate, da.dDeAccount
+                FROM d_account_tbl da, deposit_product d, account_tbl a
+                WHERE da.dPdName = d.dPdName
+                AND da.acNumber = a.acNumber
+                AND a.id='hong1234'
 	</select>
 	
 	<select id="savingAccountList" resultType="com.pigbank.project.dto.SavingAccountDTO">
-		SELECT * FROM s_account_tbl
+		SELECT *  
+		FROM s_account_tbl s, ACCOUNT_TBL a  
+		WHERE s.ACNUMBER = a.ACNUMBER  
+		AND id='hong1234'
 	</select>
 	
 	<select id="loanAccountList" resultType="com.pigbank.project.dto.LoanAccountDTO">
 		SELECT * FROM loan_req_tbl
-		WHERE lreqnum = 1
+		WHERE id = 'hong1234'
 	</select>
 	
 </mapper>

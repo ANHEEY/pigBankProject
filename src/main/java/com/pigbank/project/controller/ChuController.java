@@ -103,4 +103,16 @@ public class ChuController {
 		
 		return list;
 	}
+
+	//대출상태조회
+	@GetMapping(value="/loanState")
+	public List<LoanAccountDTO> loanState(HttpServletRequest req, Model model)
+			throws ServletException, IOException {
+		logger.info("<<< url - savingAccountList() >>>");
+		
+		List<LoanAccountDTO> list = service.loanState(req, model);
+		System.out.println(list);
+		
+		return list;
+	}
 }
