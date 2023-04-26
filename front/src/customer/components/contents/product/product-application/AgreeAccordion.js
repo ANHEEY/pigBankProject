@@ -1,10 +1,36 @@
 import React from 'react';
 import { Accordion, AccordionItem } from 'react-light-accordion';
 import 'react-light-accordion/demo/css/index.css';
-import { Checkbox } from 'react-input-checkbox';
+//import { input } from 'react-input-checkbox';
 // npm i react-light-accordion
+import { useState } from 'react';
 
-function AgreeAccordion(){
+function AgreeAccordion(props){
+  const [isChecked1, setIsChecked1] = useState(false);
+  const [isChecked2, setIsChecked2] = useState(false);
+
+  // 부모에게 객체로 넘기기 위해 다시 한번 정의
+  const e = {
+    checkbox1 : isChecked1,
+    checkbox2 : isChecked2,
+  }
+
+  function handleCheckbox1() {
+    setIsChecked1(!isChecked1); // 자식 컴포넌트 체트박스 상태 변경
+    props.onAgree({
+      ...e,
+      checkbox1: !isChecked1, // 부모에게 전달한 체크박스 상태 변경
+    });
+  }
+
+  function handleCheckbox2() {
+    setIsChecked2(!isChecked2);
+    props.onAgree({
+      ...e,
+      checkbox2: !isChecked2,
+    });
+  }
+  
   return(
     <div>
         <Accordion atomic={true}>
@@ -28,7 +54,7 @@ function AgreeAccordion(){
 
           </p>
           <div className='chkAgree'>
-            <Checkbox/> 본인은 전자금융거래 이용약관에 대하여 동의합니다.
+            <input type="checkbox" name="isChecked1" checked={isChecked1} onChange={handleCheckbox1} /> 본인은 전자금융거래 이용약관에 대하여 동의합니다.
           </div>
         </AccordionItem>
         <AccordionItem title="개인(신용)정보 수집·이용 및 제공 관련 고객 권리 동의 약관">
@@ -65,7 +91,7 @@ function AgreeAccordion(){
 
           </p>
           <div className='chkAgree'>
-            <Checkbox/> 본인은 개인정보 수집 및 이용에 대하여 동의합니다.
+            <input type="checkbox" name="isChecked2" checked={isChecked2} onChange={handleCheckbox2}/> 본인은 개인정보 수집 및 이용에 대하여 동의합니다.
           </div>
         </AccordionItem>
       </Accordion>

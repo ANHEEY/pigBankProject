@@ -5,8 +5,6 @@ import { BsCash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import '../../../../resources/css/PdLoanStyle.css';
 import PdLoanInfo from './PdLoanInfo';
-
-
 import Calculator from './Calculator';
 
 function PdLoanDetail() {
