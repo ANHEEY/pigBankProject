@@ -45,7 +45,7 @@ public class LeeController {
 	@GetMapping(value="/balance")
 	public AccountDTO balance(@RequestBody long acNumber)
 			throws ServletException, IOException {
-		
+		System.out.println("acNumber : " + acNumber);
 		AccountDTO dto = service.balance(acNumber);
 		System.out.println("dto : " + dto);
 		return dto;

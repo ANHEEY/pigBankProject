@@ -6,63 +6,8 @@ import { Typography } from "@mui/material";
 class DepositComponentAdd extends Component{
     render(){
         return(
-<<<<<<< HEAD
-            <div className="component-div" align="center" >
-                <Typography variant='h4' align="center" style={style}>예금상품등록</Typography>
-                <TextField 
-                 required
-                 id="standard-required"
-                 variant="standard"
-                 label="상품이름 :"
-                 placeholder="Input your d_pdName"
-                /><br/>
-                <TextField 
-                 required
-                 id="standard-required"
-                 variant="standard"
-                 label="가입기간 :"
-                 placeholder="Input your d_period"
-                /><br/>
-                <TextField 
-                 required
-                 id="standard-required"
-                 variant="standard"
-                 label="상품금리 :"
-                 placeholder="Input your d_rate"
-                /><br/>
-                <TextField 
-                 required
-                 id="standard-required"
-                 variant="standard"
-                 label="상품설명 :"
-                 placeholder="Input your d_content"
-                /><br/>
-                <TextField 
-                 required
-                 id="standard-required"
-                 variant="standard"
-                 label="예금최소금액 :"
-                 placeholder="Input your d_min"
-                /><br/>
-                <TextField 
-                 required
-                 id="standard-required"
-                 variant="standard"
-                 label="예금최대금액 :"
-                 placeholder="Input your d_max"
-                /><br/>
-                <TextField 
-                 required
-                 id="standard-required"
-                 variant="standard"
-                 label="중도해지시금리 :"
-                 placeholder="Input your d_cxlRate"
-                /><br/>
-                <button color="light"><Link to="add">상품등록</Link></button>
-=======
             <Container>
                 <Typography variant="h3" textAlign="center" color="black">예금상품등록</Typography><br/><br/>
->>>>>>> 81445f84c84f6fb77f7510ba9c5a4a9f33d43a0c
 
                 <Form>
                     <Form.Group className="mb-3" controlId="formBasicEmail">

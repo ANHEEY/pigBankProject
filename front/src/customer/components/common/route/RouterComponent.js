@@ -78,19 +78,14 @@ const AppRouter = () => {
             <Route path="/*" Component={MainLayout} />
 
             {/* 조회 */}
-<<<<<<< Updated upstream
+
             <Route path="/customer/account/all" Component={All} />
             <Route path="/customer/account/account" Component={Account} />
             <Route path="/customer/account/deposit" Component={Deposit} />
             <Route path="/customer/account/saving" Component={Saving} />
             <Route path="/customer/account/sleep" Component={Sleep} />
-=======
-            <Route path="/account/All" Component={All} />
-            <Route path="/account/account" Component={Account} />
-            <Route path="/account/deposit" Component={Deposit} />
-            <Route path="/account/saving" Component={Saving} />
-            <Route path="/account/sleep" Component={Sleep} />
->>>>>>> Stashed changes
+
+
 
             {/* 대출조회 */}
             <Route path="/customer/account/loan_state" Component={LoanState} />
