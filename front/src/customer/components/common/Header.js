@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPiggyBank} from "@fortawesome/free-solid-svg-icons";
 
 import '../../resources/css/style.css';
+import '../../resources/js/main.js';
 
 import 'bootstrap';
 import '../../resources/vendor/bootstrap/css/bootstrap.min.css';

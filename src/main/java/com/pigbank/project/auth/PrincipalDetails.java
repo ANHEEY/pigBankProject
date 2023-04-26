@@ -21,6 +21,7 @@ public class PrincipalDetails implements UserDetails{
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
+		System.out.println("PrincipalDetails를 탔다");
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new GrantedAuthority() {
 			

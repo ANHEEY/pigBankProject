@@ -15,6 +15,7 @@ import com.pigbank.project.dao.ChuMapper;
 import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
 import com.pigbank.project.dto.LoanAccountDTO;
+import com.pigbank.project.dto.LoanProductDTO;
 import com.pigbank.project.dto.SavingAccountDTO;
 import com.pigbank.project.dto.SavingProductDTO;
 
@@ -47,6 +48,16 @@ public class ChuServiceImpl implements ChuService{
 	}
 	
 	@Override
+	public List<LoanProductDTO> loanList(HttpServletRequest req, Model model) 
+			throws ServletException, IOException {
+		System.out.println("서비스 - 예금상품리스트");
+		List<LoanProductDTO> list;
+		list = dao.loanList();
+		
+		return list;
+	}
+	
+	@Override
 	public List<DepositAccountDTO> depositAccountList(HttpServletRequest req, Model model) 
 			throws ServletException, IOException {
 		System.out.println("서비스 - 예금계좌리스트");
@@ -59,7 +70,7 @@ public class ChuServiceImpl implements ChuService{
 	@Override
 	public List<SavingAccountDTO> savingAccountList(HttpServletRequest req, Model model) 
 			throws ServletException, IOException {
-		System.out.println("서비스 - 예금계좌리스트");
+		System.out.println("서비스 - 적금계좌리스트");
 		List<SavingAccountDTO> list;
 		list = dao.savingAccountList();
 		System.out.println("list : " + list);
@@ -68,7 +79,16 @@ public class ChuServiceImpl implements ChuService{
 	@Override
 	public List<LoanAccountDTO> loanAccountList(HttpServletRequest req, Model model) 
 			throws ServletException, IOException {
-		System.out.println("서비스 - 예금계좌리스트");
+		System.out.println("서비스 - 대출계좌목록");
+		List<LoanAccountDTO> list;
+		list = dao.loanAccountList();
+		System.out.println("list : " + list);
+		return list;
+	}
+
+	@Override
+	public List<LoanAccountDTO> loanState(HttpServletRequest req, Model model) throws ServletException, IOException {
+		System.out.println("서비스 - 대출심사조회");
 		List<LoanAccountDTO> list;
 		list = dao.loanAccountList();
 		System.out.println("list : " + list);

@@ -1,11 +1,13 @@
 import React from "react"
 import AgreeAccordion from "../product-application/AgreeAccordion"
-import {Form,Button, Row, Col,InputGroup} from 'react-bootstrap'
+import {Form,Button, Row, Col,InputGroup,Container} from 'react-bootstrap'
 import '../../../../resources/css/product/application-form.css'
 
 function DepositApplication(){
     return(
-        <div className="applicaiton">
+        
+        <Container className="applicaiton">
+                    <br/><br/><br/><br/>
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" type = "text/css"/>
             <h1>예금 상품 가입</h1>
             <br/>
@@ -83,7 +85,10 @@ function DepositApplication(){
                     <Button style = {{background:'#9dc888' ,border:'#9dc888'}} size="lg" type="submit"> 가입하기 </Button>
                 </div>
             </Form>
-        </div>
+            <br/><br/><br/><br/>
+        </Container>
+
+
     )
 }
-export default DepositApplication
+export default DepositApplication;
