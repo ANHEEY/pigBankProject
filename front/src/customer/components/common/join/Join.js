@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import {Form,Row,Col,Container,Stack,Button} from 'react-bootstrap';
 import { Typography} from "@mui/material";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ApiService from '../ApiService';
+import CustomerService from '../CustomerService';
 import { useNavigate } from "react-router-dom";
 
 
@@ -47,7 +47,7 @@ function Join(){
             birthday:customer.birthday
         }
 
-        ApiService.customerJoin(customerInfo)
+        CustomerService.customerJoin(customerInfo)
             .then(res=> {
                 console.log(customerInfo);
                 navigate('/customer/*');

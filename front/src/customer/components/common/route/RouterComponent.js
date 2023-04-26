@@ -60,6 +60,7 @@ import CsBoard from "../../contents/cscenter/CsBoard";
 import CsBoardDetail from "../../contents/cscenter/CsBoardDetail";
 import Chatting from "../../contents/cscenter/Chatting";
 // 마이페이지
+import CertificationPage from "../../contents/mypage/CertificationPage";
 import Mypage from "../../contents/mypage/Mypage";
 import Money from "../../contents/mypage/Money";
 
@@ -148,6 +149,7 @@ const AppRouter = () => {
             <Route path="/customer/cscenter/chatting" Component={Chatting} />
 
             {/* 마이페이지 */}
+            <Route path="/customer/mypage/certificationPage" Component={CertificationPage} />
             <Route path="/customer/mypage/mypage" Component={Mypage} />
             <Route path="/customer/mypage/money" Component={Money} />
 

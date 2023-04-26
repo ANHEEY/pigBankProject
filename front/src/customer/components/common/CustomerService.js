@@ -9,7 +9,7 @@ import axios from 'axios';  // npm install -f axios@^1.3.5
 
 const CUSTOMER_URL = "http://localhost:8081/";
 
-class ApiService {
+class CustomerService {
 
     customerJoin(customer) {
       console.log('회원가입!!!');
@@ -21,6 +21,12 @@ class ApiService {
         console.log(customerInfo);
         return axios.post(CUSTOMER_URL+"login",customerInfo);
     }
+
+    customerCertification(pwd){
+      console.log('본인인증!!!!!');
+      console.log(pwd);
+      return axios.post(CUSTOMER_URL+"certification",pwd);
+    }
     
 }
-export default new ApiService();
+export default new CustomerService();

@@ -10,7 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.pigbank.project.dao.CustomerMapper;
+import com.pigbank.project.handler.SuccessHandler;
 import com.pigbank.project.jwt.JwtAuthenticationFilter;
+import com.pigbank.project.jwt.JwtAuthorizationFilter;
 
 
 //권한 설정 : security-context.xml
@@ -22,10 +25,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	//@Autowired
 	//private CorsConfig corsConfig;
 	
+	@Autowired
+	private CustomerMapper customerMapper;
+	
 	@Bean	//해당 메서드의 리턴되는 오브젝트를 IOC 컨테이너로 등록해준다.
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
+//	@Bean
+//    public SuccessHandler successHandler(){
+//        return new SuccessHandler();
+//    }
+	
+//	@Autowired
+//	private SuccessHandler successHandler;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -36,23 +50,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)	//세션을 사용하지 않겠다.
 			.and()
 			//.addFilter(corsConfig.corsFilter())	//cors 정책에서 벗어날 수 있다....아마도? 시큐리티 필터에 등록해서 인증을 받겠다.
-
-
-			//.addFilter(new JwtAuthenticationFilter(authenticationManager()))
-
 			.formLogin().disable()	//formLogin 사용안함
-			.httpBasic().disable()	//httpBasic 사용안함		
+			.httpBasic().disable()//httpBasic 사용안함
+			.addFilter(new JwtAuthenticationFilter(authenticationManager()))//반드시 추가
+			.addFilter(new JwtAuthorizationFilter(authenticationManager(),customerMapper))//반드시 추가		
 			.authorizeRequests()
 			.antMatchers("/api/p1/customer/**")
 				.access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 			.antMatchers("/api/p1/admin/**")
 				.access("hasRole('ROLE_ADMIN')")
-//			.anyRequest().permitAll(); //그 외에는 누구든지 들어와라
-			.anyRequest().permitAll()
-			.and()
-			.formLogin()
-			.loginProcessingUrl("/loginProc")
-			.defaultSuccessUrl("/admin/*");
+			.anyRequest().permitAll(); //그 외에는 누구든지 들어와라
+//			.anyRequest().permitAll()
+//			.and()
+//			.formLogin()
+//			.loginProcessingUrl("/loginProc")
+//			.defaultSuccessUrl("/customer/*");
 	
 	}
 }

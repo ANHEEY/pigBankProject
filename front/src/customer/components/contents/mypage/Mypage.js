@@ -47,7 +47,7 @@ function Mypage(props){
             birthday:customer.birthday
         }
 
-        // ApiService.customerJoin(customerInfo)
+        // CustomerService.customerJoin(customerInfo)
         //     .then(res=> {
         //         console.log(customerInfo);
         //         navigate('/customer/*');

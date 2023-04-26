@@ -3,40 +3,32 @@ import {Typography} from "@mui/material";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Form, Row, Col, Container, Stack, Button} from 'react-bootstrap';//npm install react-bootstrap
 import { useNavigate } from "react-router-dom";
-import CustomerService from "../CustomerService";
+import CustomerService from "../../common/CustomerService";
 
 
-function Login() {
+function CertificationPage() {
     const navigate = useNavigate();
 
-    const [customer,setCustomer] = useState({
-        id:"",
-        pwd:""
-    });
+    const [pwd,setPwd] = useState("");
 
     const onChange = (e) => {
         // 이벤트를 부른 요소의 value와 name 키의 값 가져오기
         // value는 그 때의 텍스트
         const {value, name} = e.target;
     
-        setCustomer({
-          ...customer, 
+        setPwd({
+          ...pwd, 
           [name]: value 
         });
     };
 
-    const login = (e)=> {
+    const certification = (e)=> {
         e.preventDefault();
 
-        const customerInfo = {
-            id:customer.id,
-            pwd:customer.pwd
-        }
 
-
-        CustomerService.customerLogin(customerInfo)
+        CustomerService.customerCertification(pwd)
             .then(res=> {
-                console.log(customerInfo);
+                console.log(pwd);
                 console.log(res);
                 navigate('res');
             })
@@ -53,24 +45,10 @@ function Login() {
                 fontSize : 25,
                 fontWieght : 'bold',
                 padding : 16,
-                width : 600,
+                width : 800,
                 align:"center",
             }}><br/><br/>
-                <Typography variant="h2" textAlign="center" color="green">로그인</Typography><br/><br/>
-                <Form.Group as={Row} className="mb-3">
-                <Form.Label column sm={3}>아이디</Form.Label>
-                <Col sm={8}>
-                <Form.Control
-                    size="lg"
-                    type="text"
-                    id="id"
-                    name="id" 
-                    value={customer.id} 
-                    onChange={onChange}
-                    placeholder="아이디를 입력하세요"
-                />
-                </Col>
-                </Form.Group>
+                <Typography variant="h2" textAlign="center" color="green">본인인증</Typography><br/><br/>
                 <br/>
                 <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={3}>비밀번호</Form.Label>
@@ -80,20 +58,20 @@ function Login() {
                     type="password"
                     id="pwd"
                     name="pwd" 
-                    value={customer.pwd}  
+                    value={pwd}
                     onChange={onChange}
                     placeholder="비밀번호를 입력하세요"
                 />
                 </Col>
                 </Form.Group>
                 <br/><br/>
-                <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto">
-                    <Button variant="success" onClick={login}>로그인</Button>
-                    <Button variant="outline-success">취소</Button>
+                <Stack direction="horizontal" gap={2} className="col-md-5 mx-auto">
+                    <Button variant="success" size="lg" onClick={certification}>회원인증</Button>
+                    <Button variant="outline-success" size="lg">취소</Button>
                 </Stack> 
             </Container>
         );
 
 }
 
-export default Login;
+export default CertificationPage;

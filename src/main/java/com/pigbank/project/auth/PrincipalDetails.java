@@ -10,6 +10,14 @@ import com.pigbank.project.dto.CustomerDTO;
 
 import lombok.Data;
 
+/*
+ * - '/loginProc' 주소가 호출되면 시큐리티가 가로채서 대신 로그인을 처리한다
+ * - 로그인이 완료되면 시큐리티 session을 만든다. (Security ContextHolder key에 세션정보 저장)
+ * 
+ * - Security Session => Authentication 객체 => UserDetails => PrincipalDetails
+ * - Authentication 객체는 Object타입이며, CustomerDTO 정보가 들어있어야 한다. UserDetails로 전달
+ * */
+
 @Data
 public class PrincipalDetails implements UserDetails{
 
@@ -30,7 +38,8 @@ public class PrincipalDetails implements UserDetails{
 				return customerDTO.getAuthority();
 			}
 		});
-		
+		System.out.println("authorities : "+authorities);
+		System.out.println("customerDTO.getAuthority() : "+customerDTO.getAuthority());
 		return authorities;
 	}
 	
@@ -43,32 +52,32 @@ public class PrincipalDetails implements UserDetails{
 
 	@Override
 	public String getPassword() {
-		return null;
+		return customerDTO.getPwd();
 	}
 
 	@Override
 	public String getUsername() {
-		return null;
+		return customerDTO.getName();
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return false;
+		return true;
 	}
 
 }
