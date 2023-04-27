@@ -11,8 +11,13 @@ const savingAccount = "http://localhost:8081/savingAccount";
 const loanAccount = "http://localhost:8081/loanAccount";
 const depositAccount = "http://localhost:8081/depositAccount";
 const loanState = "http://localhost:8081/loanState";
+const Account = "http://localhost:8081/account";
 
 class AllService {
+    fetchAccount() {
+      console.log('입출금계좌호출!!')
+      return axios.get(Account);
+    }
     fetchDeposit() {
       console.log('예금계좌호출!!')
       return axios.get(depositAccount);

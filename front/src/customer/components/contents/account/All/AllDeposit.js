@@ -1,8 +1,8 @@
  // 예금 상품
  import React, { Component } from "react";
- 
+ import {Table, TableHead, TableRow, TableCell,  TableBody } from "@mui/material";
  import AllService from "./AllService";
- import '../../../../resources/css/AllStyle.css';
+ 
  
   
  class AllDeposit extends Component{
@@ -34,10 +34,25 @@
             .catch(err=>{
                 console.log('reloadMemberList() Error!!',err);
             });
-      }
+    }
+
+    formatCurrency=(value) => {
+      const formatter = new Intl.NumberFormat("ko-KR", {
+          style: "currency",
+          currency: "KRW",
+      });
+      return formatter.format(value);
+    }
+    acNum(acNumber) {
+      const acNum = acNumber.toString().slice(0, 3) + '-' + acNumber.toString().slice(3);
+      return acNum;
+    }
       
      
       render() {    
+      const tableHeadStyle={
+        fontWeight: "bold",
+      }
         
         return (
           <main className="main">
@@ -47,18 +62,31 @@
             
             <section className="section">
               <div className="container">
-             
-            <ul>
-                {this.state.members.map((member) => (
-                    <li key={member.dnum}>
-                        <p>{member.dpdName}</p>
-                        <p>{member.damount}</p>
-                        <p>{member.dendDate}</p>
-                        <p>{member.djoinDate}</p>
-                    </li>
-                ))}
-            </ul>
+                <Table>
+                  <TableHead >
+                    <TableRow >
+                      <TableCell style={tableHeadStyle}>계좌명</TableCell>
+                      <TableCell style={tableHeadStyle}>계좌번호</TableCell>
+                      <TableCell style={tableHeadStyle}>가입날짜</TableCell>
+                      <TableCell style={tableHeadStyle}>만기날짜</TableCell>
+                      <TableCell style={tableHeadStyle}>잔액</TableCell>
+                    </TableRow>
+                  </TableHead> 
+                
 
+                <TableBody>
+                  {this.state.members.map((member) => (
+                    <TableRow key={member.dnum}>
+                      <TableCell style={{color:"navy"}}>{member.dpdName}</TableCell>
+                      <TableCell>{this.acNum(member.acNumber)}</TableCell>
+                      <TableCell>{member.djoinDate}</TableCell>
+                      <TableCell>{member.dendDate}</TableCell>
+                      <TableCell>{this.formatCurrency(member.damount)}</TableCell>
+                      
+                      </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
               </div>
             </section>
           </main>

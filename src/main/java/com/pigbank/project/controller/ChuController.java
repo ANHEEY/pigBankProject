@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
 import com.pigbank.project.dto.LoanAccountDTO;
@@ -34,6 +35,7 @@ public class ChuController {
 	
 
 	// http://localhost:8081/members
+	
 	
 	//적금상품조회
 	@GetMapping(value="/members")
@@ -68,6 +70,17 @@ public class ChuController {
 		return list;
 	}
 	
+	//입출금통장계좌조회
+	@GetMapping(value="/account")
+	public List<AccountDTO> accountList(HttpServletRequest req, Model model)
+			throws ServletException, IOException {
+		logger.info("<<< url - accountList >>>");
+		
+		List<AccountDTO> list = service.accountList(req, model);
+		System.out.println(list);
+		return list;
+	}
+	
 	//예금계좌조회
 	@GetMapping(value="/depositAccount")
 	public List<DepositAccountDTO> depositAccountList(HttpServletRequest req, Model model)
@@ -96,7 +109,7 @@ public class ChuController {
 	@GetMapping(value="/loanAccount")
 	public List<LoanAccountDTO> loanAccountList(HttpServletRequest req, Model model)
 			throws ServletException, IOException {
-		logger.info("<<< url - savingAccountList() >>>");
+		logger.info("<<< url - loanAccount() >>>");
 		
 		List<LoanAccountDTO> list = service.loanAccountList(req, model);
 		System.out.println(list);
@@ -108,11 +121,13 @@ public class ChuController {
 	@GetMapping(value="/loanState")
 	public List<LoanAccountDTO> loanState(HttpServletRequest req, Model model)
 			throws ServletException, IOException {
-		logger.info("<<< url - savingAccountList() >>>");
+		logger.info("<<< url - loanState() >>>");
 		
 		List<LoanAccountDTO> list = service.loanState(req, model);
 		System.out.println(list);
 		
 		return list;
 	}
+	
+	
 }

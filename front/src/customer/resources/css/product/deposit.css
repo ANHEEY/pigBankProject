@@ -1,0 +1,60 @@
+.container{
+    margin: 50px auto;
+    max-width: 800;
+}
+
+h1{
+    box-shadow: border-box solid #333;
+    
+    text-align: center;
+    font-size: 28px;
+}
+
+.table{
+    border-collapse: collapse; /* 인접한 셀의 경계를 합치기 위해 */
+    width: 100%;
+}
+.thead1{
+    
+}
+
+.thead1 th{
+    text-align: right; /* 세로 가운데 정렬 */
+    justify-content: right;
+}
+
+.thead2{
+    border-bottom: 3px solid #333;
+    font-weight: normal;
+    padding: 10px;
+    background-color: #dbe2d872;
+    text-align: center; /* 가로 가운데 정렬 */
+    vertical-align: middle; /* 세로 가운데 정렬 */
+       
+}
+
+.thead1 th select{
+    background-color:#dbe2d872;
+    border: 3px solid #333;
+    font-weight: lighter;
+    color: 1px solid #333;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 8px;
+    width: 60%;
+}
+.thead1 th select option{
+    color: 3px solid #333;
+}
+  
+.tbody1{
+    
+    text-align: center; 
+    justify-content: center; 
+    
+}
+.tbody1 td{
+    
+}
+
+  

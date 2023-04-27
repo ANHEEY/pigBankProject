@@ -1,0 +1,25 @@
+h2{
+    text-align: center;
+    font-size: 28px;
+}
+
+
+.thead1 {
+    text-align: right; /* 세로 가운데 정렬 */
+    justify-content: right;
+}
+
+.thead1 select{
+    text-align: center;
+    background-color:#dbe2d872;
+    border: 3px solid #333;
+    font-weight: lighter;
+    color: 1px solid #333;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 8px;
+    width: 10%;
+}
+
+
+  

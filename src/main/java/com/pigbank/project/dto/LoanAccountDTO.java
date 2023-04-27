@@ -15,6 +15,7 @@ public class LoanAccountDTO {
 	
 	@Id
 	private long lReqNum;
+	private long acNumber;
 	private String lPdName;
 	private String id;
 	private int lAmount;

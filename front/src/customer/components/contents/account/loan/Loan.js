@@ -1,144 +1,150 @@
 // 대출계좌조회
 import React, { Component } from "react";
-import {Form,Button, Row, Col,InputGroup} from 'react-bootstrap';
+import {Table, TableHead, TableRow, TableCell,  TableBody } from "@mui/material";
 import AllService from "../All/AllService";
-import '../../../../resources/css/product/chu.css';
+import "../../../../resources/css/product/saving.css";
 import {Link} from 'react-router-dom';
 
 
 class Loan extends Component{
 
-            constructor(props){
-                super(props);
-        
-                this.state={
-                    members:[],
-                    message: null,
-                    selectedOption: ""
-                }
-            }
-        
-            // 라이프 사이클 중 컴포넌트가 생성된 후 사용자에게 보여지기까지의 전체 과정을 랜더링
-        
-            componentDidMount(){
-                this.reloadMemberList();
-            }
-        
-            reloadMemberList = () => {
-                AllService.fetchLoan()
-                    .then(res=>{
-                        this.setState({
-                            members:res.data
-                        })
-                    })
-                    .catch(err=>{
-                        console.log('reloadMemberList() Error!!',err);
-                    });
-            }
-            
-            handleChange = (event) => {
-                this.setState({
-                selectedOption: event.target.value
-                });
-            }
-        
-        
-            render(){
-                const filteredMembers = this.state.members.filter(
-                (member) => member.lpdName.indexOf(this.state.selectedOption) !== -1
-                );
-        
-                return (
-                    <div>
-                        <div className="applicaiton">
-                            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" type = "text/css"/>
-                            <h1>대출 계좌 조회</h1><br/>
-                            
-                            
-                            
-                            <Form className="formArea">
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="2">계좌선택</Form.Label>
-                                    <Col sm="5" value={this.state.selectedOption} onChange={this.handleChange}>
-                                        <Form.Select>
-                                            <option value="">계좌선택</option>
-                                                {this.state.members.map((member) => (
-                                            <option key={member.lpdName} value={member.lpdName}>{member.lpdName}</option>
-                                            ))}  
-                                        </Form.Select>                                     
-                                    </Col>
-                                </Form.Group>
-                                
-                            </Form>
-                        
-                            
-                            {filteredMembers.map((member) => (
-                            <Form className="formArea" >
-                                
-                                <hr/>
-                                <br />
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="2">계좌명</Form.Label>
-                                    <Col sm="10">
-                                        <Form.Control readOnly defaultValue={member.lpdName} />
-                                    </Col>
-                                </Form.Group>
-                                <br/>
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="2">계좌번호</Form.Label>
-                                    <Col sm="10">
-                                        <Form.Control readOnly defaultValue={member.lreqNum} />
-                                    </Col>
-                                </Form.Group>
-                                <br/>
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="2">잔액</Form.Label>
-                                    <Col sm="10">
-                                        <Form.Control readOnly defaultValue={member.lamount} />
-                                    </Col>
-                                </Form.Group>
-                                <br/>
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="2">가입기간</Form.Label>
-                                    <Col sm="10">
-                                    <Form.Control readOnly defaultValue={member.lperiod}/>
-                                    </Col>
-                                </Form.Group>
-                                <br/>
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="2">용도</Form.Label>
-                                    <Col sm="10">
-                                    <Form.Control readOnly defaultValue={member.lpurpose}/>
-                                    </Col>
-                                </Form.Group>
-                                <br/>
-                                <Form.Group as={Row}>
-                                    <Form.Label column sm="2">한도</Form.Label>
-                                    <Col sm="10">
-                                        <InputGroup className="mb-3">
-                                            <InputGroup.Text>₩</InputGroup.Text>
-                                            <Form.Control placeholder={member.trsfLimit}/> 
-                                        </InputGroup>
-                                    </Col>
-                                </Form.Group>
-                            </Form>
-                        
-                            ))}
-                             <Button as={Link} to="/customer/account/All" type="submit" style={{ background: '#9dc888', border: '#9dc888' }} size="lg">
-                                HOME
-                            </Button>
-                        
-                        </div>
-    
-                            SELECT *  <br/>
-                            FROM s_account_tbl s, ACCOUNT_TBL a  <br/>
-                            WHERE s.ACNUMBER = a.ACNUMBER  <br/>
-                            AND id='hong1234'; <br/>
-    
-                            <br/>
-                            <br/>
-                    </div>
-            )           
+    constructor(props){
+        super(props);
+
+        this.state={
+            members:[],
+            message: null,
+            selectedOption: ""
         }
+    }
+  
+    // 라이프 사이클 중 컴포넌트가 생성된 후 사용자에게 보여지기까지의 전체 과정을 랜더링
+
+    componentDidMount(){
+        this.reloadMemberList();
+    }
+
+    reloadMemberList = () => {
+        AllService.fetchLoan()
+            .then(res=>{
+                this.setState({
+                    members:res.data
+                })
+            })
+            .catch(err=>{
+                console.log('reloadMemberList() Error!!',err);
+            });
+      }
+      
+      handleChange = (event) => {
+        this.setState({
+          selectedOption: event.target.value
+        });
+      }
+          
+     formatCurrency=(value) => {
+        const formatter = new Intl.NumberFormat("ko-KR", {
+            style: "currency",
+            currency: "KRW",
+        });
+        return formatter.format(value);
+     }
+
+    acNum(acNumber) {
+        const acNum = acNumber.toString().slice(0, 3) + '-' + acNumber.toString().slice(3);
+        return acNum;
+    }
+     
+
+
+      render() {
+        // members에서 selectedOption과 일치하는 항목만 필터링
+        const filteredMembers = this.state.members.filter
+            ((member) =>
+            member.lpdName.indexOf(this.state.selectedOption) !== -1
+          );
+        
+
+        const tableHeadStyle={
+            fontWeight: "bold",
+        }
+
+        return (
+        
+
+        <main className="main">
+            <section className="section">
+             
+            </section>
+            
+            <section className="section">
+            <div className="container">
+                <h2>대출계좌조회</h2>                
+
+                    <p className="thead1">
+                    <select value={this.state.selectedOption} onChange={this.handleChange}>
+                    <option value="">계좌선택</option>
+                        {this.state.members.map((member) => (
+                    <option key={member.lpdName} value={member.lpdName}>{member.lpdName}</option>
+                    ))}
+                    </select>    
+                    </p>  
+                                        
+                <div class="card text-center">
+                    
+                    <div class="card-header" style={{backgroundColor:"#dbe2d872" }}>
+                        <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="/customer/account/Loan">대출계좌</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/customer/account/Saving" ><Link to="/customer/account/Saving">적금계좌</Link></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/customer/account/Deposit"><Link to="/customer/account/Deposit">예금계좌</Link></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/customer/account/LoanState"><Link to="/customer/account/LoanState">대출심사결과조회</Link></a>
+                        </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <Table>
+                      <TableHead >
+                        <TableRow >
+                          <TableCell style={tableHeadStyle}>계좌명</TableCell>
+                          <TableCell style={tableHeadStyle}>계좌번호</TableCell>
+                          <TableCell style={tableHeadStyle}>가입기간</TableCell>
+                          <TableCell style={tableHeadStyle}>용도</TableCell>
+                          <TableCell style={tableHeadStyle}>한도</TableCell>
+                          <TableCell style={tableHeadStyle}>잔액</TableCell>
+                        </TableRow>
+                      </TableHead>
+
+                      {filteredMembers.map((member) => (
+                      <TableBody key={member.lreqNum}>
+                          <TableRow >
+                            <TableCell style={{color:"purple"}}>{member.lpdName}</TableCell>
+                            <TableCell>{this.acNum(member.acNumber)}</TableCell>
+                            <TableCell>{member.lperiod}</TableCell>
+                            <TableCell>{member.lpurpose}</TableCell>
+                            <TableCell>{this.formatCurrency(member.trsfLimit)}</TableCell>
+                            <TableCell>{this.formatCurrency(member.lamount)}</TableCell>
+                           </TableRow>
+                        
+                      </TableBody>
+                      ))}
+                    </Table>
+                    
+                </div>
+            </div>
+              
+            </section>
+          </main>
+        );
+      }
 }
+
 export default Loan;

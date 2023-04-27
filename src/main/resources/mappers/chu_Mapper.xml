@@ -35,8 +35,23 @@
 	</select>
 	
 	<select id="loanAccountList" resultType="com.pigbank.project.dto.LoanAccountDTO">
-		SELECT * FROM loan_req_tbl
-		WHERE id = 'hong1234'
+		SELECT *
+          FROM  l_account_tbl l, loan_req_tbl r
+          WHERE l.LREQNUM  = r.LREQNUM 
+          AND id = 'hong1234'
+	</select>
+	
+	<select id="loanState" resultType="com.pigbank.project.dto.LoanAccountDTO">
+		SELECT lReqNum
+       		 , lPdName
+       		 , lAmount
+        	 , lState
+	    FROM loan_req_tbl
+	    WHERE id = 'hong1234'
+	</select>
+	
+	<select id="accountList" resultType="com.pigbank.project.dto.AccountDTO">
+		SELECT * FROM account_tbl WHERE acNumber=11022456542
 	</select>
 	
 </mapper>

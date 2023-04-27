@@ -1,10 +1,12 @@
-// 전체조회
-import React, { Component } from "react";
-import '../../../../resources/css/AllStyle.css';
-import {Table, TableHead, TableRow, TableCell,  TableBody } from "@mui/material";
-import AllService from "./AllService";
+ // 예금 상품
+ import React, { Component } from "react";
+ import {Table, TableHead, TableRow, TableCell,  TableBody } from "@mui/material";
+ import AllService from "./AllService";
+ 
+ 
+  
+ class AllAccount extends Component{
 
-class AllLoan extends Component{
 
     constructor(props){
         super(props);
@@ -23,7 +25,7 @@ class AllLoan extends Component{
     }
 
     reloadMemberList = () => {
-        AllService.fetchLoan()
+        AllService.fetchAccount()
             .then(res=>{
                 this.setState({
                     members:res.data
@@ -33,24 +35,26 @@ class AllLoan extends Component{
                 console.log('reloadMemberList() Error!!',err);
             });
     }
-      
+
     formatCurrency=(value) => {
-        const formatter = new Intl.NumberFormat("ko-KR", {
-            style: "currency",
-            currency: "KRW",
-        });
-        return formatter.format(value);
+      const formatter = new Intl.NumberFormat("ko-KR", {
+          style: "currency",
+          currency: "KRW",
+      });
+      return formatter.format(value);
     }
+
     acNum(acNumber) {
         const acNum = acNumber.toString().slice(0, 3) + '-' + acNumber.toString().slice(3);
         return acNum;
     }
+      
      
       render() {    
       const tableHeadStyle={
         fontWeight: "bold",
       }
-
+        
         return (
           <main className="main">
             <section className="section">
@@ -59,7 +63,7 @@ class AllLoan extends Component{
             
             <section className="section">
               <div className="container">
-              <Table>
+                <Table>
                   <TableHead >
                     <TableRow >
                       <TableCell style={tableHeadStyle}>계좌명</TableCell>
@@ -68,27 +72,29 @@ class AllLoan extends Component{
                       <TableCell style={tableHeadStyle}>이체한도</TableCell>
                       <TableCell style={tableHeadStyle}>잔액</TableCell>
                     </TableRow>
-                  </TableHead>
+                  </TableHead> 
+                
 
-                  <TableBody>
+                <TableBody>
                   {this.state.members.map((member) => (
-                    <TableRow key={member.lreqNum}>
-                      <TableCell style={{color:"navy"}}>{member.lpdName}</TableCell>
+                    <TableRow key={member.acType}>
+                      <TableCell style={{color:"navy"}}>{member.acType}</TableCell>
                       <TableCell>{this.acNum(member.acNumber)}</TableCell>
-                      <TableCell>{member.lreqDate}</TableCell>
+                      <TableCell>{member.newDate}</TableCell> 
                       <TableCell>{this.formatCurrency(member.trsfLimit)}</TableCell>
-                      <TableCell>{this.formatCurrency(member.lamount)}</TableCell>
+                      <TableCell>{this.formatCurrency(member.acBalance)}</TableCell>
+                      
                       </TableRow>
                   ))}
                 </TableBody>
-               </Table>     
+              </Table>
               </div>
             </section>
           </main>
         );
       }
-    
-
 }
-
-export default AllLoan;
+ 
+  export default AllAccount;
+ 
+ 

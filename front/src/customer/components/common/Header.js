@@ -53,7 +53,7 @@ function Header () {
                                         </Link>
                                         <ul>
                                             <li>
-                                                <Link to ="/customer/account/loan_state">대출심사결과조회</Link>
+                                                <Link to ="/customer/account/LoanState">대출심사결과조회</Link>
                                             </li>
                                             <li>
                                                 <Link to ="/customer/account/loan">대출계좌조회</Link>

@@ -68,7 +68,7 @@ class PdSaving extends Component{
               
                 <div class="card text-center">
                     
-                    <div class="card-header">
+                    <div class="card-header" style={{backgroundColor:"#dbe2d872"}}>
                         <ul class="nav nav-tabs card-header-tabs">
                         <li class="nav-item">
                             <a class="nav-link disabled">적금</a>

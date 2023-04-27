@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 
 
 import com.pigbank.project.dao.ChuMapper;
+import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
 import com.pigbank.project.dto.LoanAccountDTO;
@@ -90,7 +91,16 @@ public class ChuServiceImpl implements ChuService{
 	public List<LoanAccountDTO> loanState(HttpServletRequest req, Model model) throws ServletException, IOException {
 		System.out.println("서비스 - 대출심사조회");
 		List<LoanAccountDTO> list;
-		list = dao.loanAccountList();
+		list = dao.loanState();
+		System.out.println("list : " + list);
+		return list;
+	}
+
+	@Override
+	public List<AccountDTO> accountList(HttpServletRequest req, Model model) throws ServletException, IOException {
+		System.out.println("서비스 - 입출금통장조회");
+		List<AccountDTO> list;
+		list = dao.accountList();
 		System.out.println("list : " + list);
 		return list;
 	}

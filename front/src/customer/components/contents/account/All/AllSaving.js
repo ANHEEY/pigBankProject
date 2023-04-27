@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import '../../../../resources/css/AllStyle.css';
 import AllService from "./AllService";
+import {Table, TableHead, TableRow, TableCell,  TableBody } from "@mui/material";
 
 class AllSaving extends Component{
     
@@ -32,10 +33,26 @@ class AllSaving extends Component{
                 .catch(err=>{
                     console.log('reloadMemberList() Error!!',err);
                 });
-          }
-          
-          render() {  
+        }
 
+        formatCurrency=(value) => {
+            const formatter = new Intl.NumberFormat("ko-KR", {
+                style: "currency",
+                currency: "KRW",
+              });
+              return formatter.format(value);
+        }
+        
+        acNum(acNumber) {
+            const acNum = acNumber.toString().slice(0, 3) + '-' + acNumber.toString().slice(3);
+            return acNum;
+        }
+        
+        render() {  
+        const tableHeadStyle={
+            fontWeight: "bold",
+        }
+        
           return (
             <main className="main">
               <section className="section">
@@ -44,16 +61,34 @@ class AllSaving extends Component{
               
               <section className="section">
                 <div className="container">
-                  <ul>
-                      {this.state.members.map((member) => (
-                          <li key={member.snum}>
-                              <p>{member.spdName}</p>
-                              <p>{member.samount}</p>
-                              <p>{member.sendDate}</p>
-                              <p>{member.sjoinDate}</p>
-                          </li>
-                      ))}
-                  </ul>
+
+                <Table>
+                  <TableHead >
+                    <TableRow >
+                      <TableCell style={tableHeadStyle}>계좌명</TableCell>
+                      <TableCell style={tableHeadStyle}>계좌번호</TableCell>
+                      <TableCell style={tableHeadStyle}>가입날짜</TableCell>
+                      <TableCell style={tableHeadStyle}>만기날짜</TableCell>
+                      <TableCell style={tableHeadStyle}>잔액</TableCell>
+                      
+                    </TableRow>
+                  </TableHead>
+                
+
+                <TableBody>
+                  {this.state.members.map((member) => (
+                    <TableRow key={member.snum}>
+                      <TableCell style={{color:"navy"}}>{member.spdName}</TableCell>
+                      <TableCell>{this.acNum(member.acNumber)}</TableCell>
+                      <TableCell>{member.sendDate}</TableCell>
+                      <TableCell>{member.sjoinDate}</TableCell>
+                      <TableCell>{this.formatCurrency(member.samount)}</TableCell>
+                      </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+
+
                   </div>
                   </section>
                 </main>

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
 
+import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
 import com.pigbank.project.dto.LoanAccountDTO;
@@ -29,6 +30,9 @@ public interface ChuService {
 	public List<LoanProductDTO> loanList(HttpServletRequest req, Model model) 
 			throws ServletException, IOException ;
 		
+	public List<AccountDTO> accountList(HttpServletRequest req, Model model)
+			throws ServletException,IOException;
+	
 	public List<DepositAccountDTO>depositAccountList(HttpServletRequest req, Model model)
 			throws ServletException,IOException;
 	

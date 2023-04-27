@@ -3,13 +3,14 @@ import {Route, Routes} from 'react-router-dom'; // BrowserRouter
 
 // 조회
 import All from "../../contents/account/All/All";
-import Account from "../../contents/account/Account";
+import Account from "../../contents/account/Account/Account";
 import Deposit from "../../contents/account/Deposit/Deposit";
 import Saving from "../../contents/account/Saving/Saving";
 import Sleep from "../../contents/account/Sleep";
 // 조회|대출조회
-import LoanState from "../../contents/account/loan/LoanState";
+
 import Loan from "../../contents/account/loan/Loan";
+import LoanState from "../../contents/account/loan/LoanState";
 
 // 이체
 import TransDeposit from "../../contents/transfer/account-transfer/TransDeposit";
@@ -89,8 +90,8 @@ const AppRouter = () => {
 
 
             {/* 대출조회 */}
-            <Route path="/customer/account/loan_state" Component={LoanState} />
-            <Route path="/customer/account/loan" Component={Loan} />
+            <Route path="/customer/account/LoanState" Component={LoanState} />
+            <Route path="/customer/account/Loan" Component={Loan} />
             
             {/* 이체 */}
             <Route path="/customer/transfer/trans_deposit" Component={TransDeposit} />

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
 import com.pigbank.project.dto.LoanAccountDTO;
@@ -24,11 +25,16 @@ public interface ChuMapper {
 	
 	public List<LoanProductDTO>loanList();
 	
+	public List<AccountDTO> accountList();
+	
 	public List<DepositAccountDTO> depositAccountList();
 	
 	public List<SavingAccountDTO> savingAccountList();
 	
 	public List<LoanAccountDTO> loanAccountList();
+	
+	public List<LoanAccountDTO> loanState();
+	
 
 	
 }
