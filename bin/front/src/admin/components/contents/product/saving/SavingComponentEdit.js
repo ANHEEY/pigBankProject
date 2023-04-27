@@ -6,7 +6,7 @@ import { TextField, Typography} from "@mui/material";
 class SavingComponentEdit extends Component{
     render(){
         return(
-            <div align="center" >
+            <div className="component-div" align="center" >
             <Typography variant='h4' align="center" style={style}>적금상품수정</Typography>
             <TextField 
              required

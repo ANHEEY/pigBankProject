@@ -26,7 +26,6 @@ class SavingComponentAdd extends Component{
                         월 단위로 입력해주세요.
                     </Form.Text>
                     </Form.Group>
-
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>* 적금가능 최고금액</Form.Label>
                     <Form.Control required type="number" placeholder="만원" />

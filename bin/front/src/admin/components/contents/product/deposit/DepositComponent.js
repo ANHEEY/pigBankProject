@@ -2,91 +2,113 @@ import { Typography, Table, TableHead, TableRow, TableCell, Button, TableBody } 
 import React, { Component } from "react";
 import {Link} from 'react-router-dom';
 
-
 class DepositComponent extends Component{
-    render(){
-        return(
-            <>
-                <div>
-                <Typography variant='h4' align="center">예금상품</Typography>
-                <Button variant='contained' color='primary' align="center"><Link to="add">상품등록</Link></Button>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>예금상품이름</TableCell>
-                            <TableCell>가입기간</TableCell>
-                            <TableCell>예금상품금리</TableCell>
-                            <TableCell>예금상품설명</TableCell>
-                            <TableCell>예금최소금액</TableCell>
-                            <TableCell>예금최대금액</TableCell>
-                            <TableCell>중도해지시금리</TableCell>
-                        </TableRow>
-                    </TableHead>
 
-                    <TableBody>
-                        <TableRow>
-                            <TableCell><Link to="detail">든든예금</Link></TableCell>
-                            <TableCell>1년만기</TableCell>
-                            <TableCell>3.05%</TableCell>
-                            <TableCell>든든한예금상품</TableCell>
-                            <TableCell>100,000</TableCell>
-                            <TableCell>1,000,000</TableCell>
-                            <TableCell>0.02</TableCell>
-                        </TableRow>
-                    </TableBody>
+    constructor(props){
+        super(props);
 
-                    <TableBody>
-                        <TableRow>
-                            <TableCell>목돈마련예금</TableCell>
-                            <TableCell>2년만기</TableCell>
-                            <TableCell>23%</TableCell>
-                            <TableCell>목돈마련예금상품</TableCell>
-                            <TableCell>100,000</TableCell>
-                            <TableCell>5,000,000</TableCell>
-                            <TableCell>0.05</TableCell>
-                        </TableRow>
-                    </TableBody>
-
-                    <TableBody>
-                        <TableRow>
-                            <TableCell>내집마련예금</TableCell>
-                            <TableCell>5년만기</TableCell>
-                            <TableCell>17%</TableCell>
-                            <TableCell>내집마련예금상품</TableCell>
-                            <TableCell>10,000,000</TableCell>
-                            <TableCell>50,000,000</TableCell>
-                            <TableCell>0.03</TableCell>
-                        </TableRow>
-                    </TableBody>
-                    
-                    <TableBody>
-                        <TableRow>
-                            <TableCell>결혼준비예금</TableCell>
-                            <TableCell>6개월만기</TableCell>
-                            <TableCell>7%</TableCell>
-                            <TableCell>결혼준비예금상품</TableCell>
-                            <TableCell>10,000,000</TableCell>
-                            <TableCell>20,000,000</TableCell>
-                            <TableCell>0.02</TableCell>
-                        </TableRow>
-                    </TableBody>
-
-                    <TableBody>
-                        <TableRow>
-                            <TableCell>2세계획예금</TableCell>
-                            <TableCell>10개월만기</TableCell>
-                            <TableCell>50%</TableCell>
-                            <TableCell>2세계획예금상품</TableCell>
-                            <TableCell>1,000,000</TableCell>
-                            <TableCell>50,000,000</TableCell>
-                            <TableCell>0.01</TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>    
-                SELECT * FROM  deposit_product;
-                </div>
-            </>            
-        )
+        this.state={
+            members:[],
+            message: null,
+            selectedOption: ""
+        }
     }
+  
+    // 라이프 사이클 중 컴포넌트가 생성된 후 사용자에게 보여지기까지의 전체 과정을 랜더링
+
+    // componentDidMount(){
+    //     this.reloadMemberList();
+    // }
+
+    // reloadMemberList = () => {
+    //     PdSavingService.fetchMembers()
+    //         .then(res=>{
+    //             this.setState({
+    //                 members:res.data
+    //             })
+    //         })
+    //         .catch(err=>{
+    //             console.log('reloadMemberList() Error!!',err);
+    //         });
+    //   }
+      
+      handleChange = (event) => {
+        this.setState({
+          selectedOption: event.target.value
+        });
+      }
+      
+      render() {
+        // members에서 selectedOption과 일치하는 항목만 필터링
+        const filteredMembers = this.state.members.filter(
+          (member) => member.spdName.indexOf(this.state.selectedOption) !== -1
+        );
+        
+        return (
+        <main className="main">
+            <section className="section">
+             
+            </section>
+            
+            <section className="section">
+            <div className="container">
+                <h2>예금상품</h2>
+                
+                {/* <select value={this.state.selectedOption} onChange={this.handleChange}>
+                  <option value="">예금상품이름</option>
+                  {this.state.members.map((member) => (
+                    <option key={member.spdName} value={member.spdName}>{member.spdName}</option>
+                  ))}
+                </select> */}
+
+
+              
+                <div class="card text-center">
+                    
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link disabled">예금</a>
+                        </li>
+        
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>예금상품이름</TableCell>
+                          <TableCell>가입기간</TableCell>
+                          <TableCell>예금상품금리</TableCell>
+                          <TableCell>예금상품설명</TableCell>
+                          <TableCell>예금최소금액</TableCell>
+                          <TableCell>예금최대금액</TableCell>
+                          <TableCell>중도해지시금리</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {filteredMembers.map((member) => (
+                          <TableRow key={member.spdName}>
+                            <TableCell>{member.spdName}</TableCell>
+                            <TableCell>{member.scontent}</TableCell>
+                            <TableCell>{member.speriod}</TableCell>
+                            <TableCell>{member.srate}</TableCell>
+                            <TableCell>{member.smin}</TableCell>
+                            <TableCell>{member.smax}</TableCell>
+                            <TableCell>{member.scxlrate}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                    
+                </div>
+            </div>
+              
+            </section>
+          </main>
+        );
+      }
 }
 export default DepositComponent;

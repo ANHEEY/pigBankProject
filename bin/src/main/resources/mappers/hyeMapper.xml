@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+     
+<mapper namespace="com.pigbank.project.dao.HyeMapper">
+
+	<!-- 회원 정보 목록 -->
+	<select id="listCustomer" resultType="com.pigbank.project.dto.CustomerDTO">
+		SELECT id,name,regDate,grade,cusState
+  		  FROM customer
+ 	  	 ORDER BY regDate DESC
+	</select>
+	
+<!-- 	고객 조회(회원 상세 페이지) 
+	<select id="detailCustomer" parameterType="String" resultType="com.pigbank.project.dto.CustomerAndAccountDTO">
+		SELECT  c.ID ,c.NAME ,c.EMAIL ,c.ADDRESS ,c.HP ,c.BIRTHDAY ,c.GRADE ,c.REGDATE ,c.CUSSTATE ,
+				a.ACNUMBER , a.BANKNAME ,a.ACSTATE ,a.ACBALANCE , a.ACTYPE ,a.NEWDATE ,a.LASTDATE ,a.TRSFLIMIT 
+	  	FROM 	CUSTOMER c ,
+				ACCOUNT_TBL a
+	 	WHERE 	c.ID = a.ID 
+	   	AND 	c.ID = #{id}
+	</select>
+	
+	탈퇴 요청 고객 목록
+	<select id="listWithdrawalCustomer" resultType="com.pigbank.project.dto.CustomerDTO">
+		SELECT id,name,regDate,grade,cusState
+		  FROM customer
+		 WHERE cusState = '탈퇴요청'
+	</select> -->
+</mapper>

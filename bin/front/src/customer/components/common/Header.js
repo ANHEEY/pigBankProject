@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPiggyBank} from "@fortawesome/free-solid-svg-icons";
 
 import '../../resources/css/style.css';
+import '../../resources/js/main.js';
 
 import 'bootstrap';
 import '../../resources/vendor/bootstrap/css/bootstrap.min.css';
@@ -111,22 +112,16 @@ function Header () {
                                         <Link to ="/customer/product/loan/pdLoan">대출</Link>
                                     </li>
                                     <li className="dropdown">
-                                        <Link to ="/customer/product/fund/pdfundList">
+                                        <Link to ="/customer/product/fund/list">
                                             <span>펀드</span> 
                                             <i className="bi bi-chevron-right"></i>
                                         </Link>
                                         <ul>
                                             <li>
-                                                <Link to ="/customer/product/fund/open_fund">펀드계좌개설</Link>
+                                                <Link to ="/customer/product/fund/application">펀드계좌개설</Link>
                                             </li>
                                             <li>
-                                                <Link to ="/customer/product/fund/pdfundList">펀드리스트</Link>
-                                            </li>
-                                            <li>
-                                                <Link to ="/customer/product/fund/pdfundHaving">펀드보유내역</Link>
-                                            </li>
-                                            <li>
-                                                <Link to ="/customer/product/fund/pdfundDetail">펀드거래내역</Link>
+                                                <Link to ="/customer/product/fund/list">펀드리스트</Link>
                                             </li>
                                         </ul>
                                     </li>
@@ -147,6 +142,20 @@ function Header () {
                                 </ul>
                             </li>
                             <li className="dropdown">
+                                <Link to ="/customer/fund/having">
+                                    <span>펀드</span> 
+                                    <i className="bi bi-chevron-down"></i>
+                                </Link>
+                                <ul>
+                                    <li>
+                                        <Link to ="/customer/fund/having">보유내역</Link>
+                                    </li>
+                                    <li>
+                                        <Link to ="/customer/fund/info">거래내역</Link>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li className="dropdown">
                                 <Link to ="/cs_board">
                                     <span>고객센터</span> 
                                     <i className="bi bi-chevron-down"></i>
@@ -156,7 +165,7 @@ function Header () {
                                     <li><Link to ="/customer/cscenter/chatting">채팅상담</Link></li>
                                 </ul>
                             </li>
-                            <li className="dropdown"><Link to ="/customer/mypage/mypage"><span>마이페이지</span> <i className="bi bi-chevron-down"></i></Link>
+                            <li className="dropdown"><Link to ="/customer/mypage/certificationPage"><span>마이페이지</span> <i className="bi bi-chevron-down"></i></Link>
                                 <ul>
                                     <li><Link to ="/customer/mypage/mypage">내 정보</Link></li>
                                     <li><Link to ="/customer/mypage/money">자산관리</Link></li>

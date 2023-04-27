@@ -56,9 +56,9 @@ class RouteComponent extends Component{
                 {/* 고객관리 */}
                 <Route path = "/customer/withdrawal" Component={WithdrawalComponent}/>
                 <Route path = "/customer/info" Component={InfoComponent}/>
-                <Route path = "/customer/info/detail" Component={InfoDetailComponent}/>
-                <Route path = "/customer/withdrawal/detail" Component={InfoDetailComponent}/>
-                
+               
+                <Route path = "/customer/info/detail/:id" Component={InfoDetailComponent}/>
+                <Route path = "/customer/withdrawal/detail/:id" Component={InfoDetailComponent}/>
                 {/* 고객센터 */}
                 <Route path = "/csCenter/notice" Component={NoticeComponent}/>
                 <Route path = "/csCenter/notice/add" Component={NoticeAddComponent}></Route>

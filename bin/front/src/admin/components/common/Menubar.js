@@ -6,24 +6,13 @@ import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch,faUsers,faMoneyCheck,faHeadset} from "@fortawesome/free-solid-svg-icons";
-/*
-    설치해야 할 것
-    1. 사이드바 템플릿
-        npm install --save react @trendmicro/react-sidenav  
-    2. 폰트어썸 (3개 모두)
-        npm i @fortawesome/fontawesome-svg-core
-        npm i @fortawesome/free-solid-svg-icons @fortawesome/free-regular-svg-icons @fortawesome/free-brands-svg-icons
-        npm i @fortawesome/react-fontawesome
-    3. react-navigation
-        npm install react-navigation
-    4. react-router-dom
-        npm install react-router-dom
-*/
+import { faSearch,faUsers,faMoneyCheck,faHeadset,faHouse} from "@fortawesome/free-solid-svg-icons";
+
 function MenuBar() {
     const navigate = useNavigate(); // useNavigate hook 사용
+    
     function selected(selectedKey) {
-      navigate(selectedKey); // navigate 함수를 사용하여 페이지 이동
+      navigate(selectedKey);        // navigate 함수를 사용하여 페이지 이동
     }
     return(
         <div className='menubar'>
@@ -34,7 +23,7 @@ function MenuBar() {
                 <SideNav.Nav defaultSelected="admin">
                     <NavItem eventKey="admin" disabled>
                         <NavIcon>
-                            {/** 아이콘 추가 */}
+                            <FontAwesomeIcon icon={faHouse} />
                         </NavIcon>
                         <NavText>
                             관리자 
