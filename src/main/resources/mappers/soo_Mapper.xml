@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+     
+<mapper namespace="com.pigbank.project.dao.SooMapper">
+
+
+	<!-- 대출상품 목록 -->
+	<select id="showPdLoantList" resultType="com.pigbank.project.dto.LoanProductDTO">
+		SELECT * FROM loan_product
+	</select>
+	
+	<!-- 대출상품 등록 -->
+	<insert id="insertPdLoan" parameterType="com.pigbank.project.dto.LoanProductDTO">
+		INSERT INTO loan_product(lpdName, lcontent, lgrade, lmaxPeriod, lmaxPrice, lrate,  ltype, lcxlRate)
+		VALUES(#{lpdName}, #{lcontent}, #{lgrade}, #{lmaxPeriod}, #{lmaxPrice}, #{lrate}, #{ltype}, #{lcxlRate})
+	</insert>
+	
+	<!-- 대출상품 상세 -->
+	<select id="selectProduct" parameterType="String" resultType="com.pigbank.project.dto.LoanProductDTO">
+		SELECT * FROM loan_product where lpdName=#{lpdName}
+	</select>
+	
+	<!-- 대출상품 수정 -->
+	<update id="updateProduct" parameterType="com.pigbank.project.dto.LoanProductDTO">
+		UPDATE loan_product
+		SET lcontent=#{lcontent}, lgrade=#{lgrade}, lmaxPeriod=#{lmaxPeriod}, lmaxPrice=#{lmaxPrice}, lrate=#{lrate}, ltype=#{ltype}, lcxlRate=#{lcxlRate}
+		WHERE lpdName=#{lpdName}
+	</update>
+	
+</mapper>

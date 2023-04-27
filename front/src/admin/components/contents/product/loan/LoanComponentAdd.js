@@ -1,51 +1,126 @@
-import React, { Component } from "react";
-import { Container, Button, Form, Stack } from 'react-bootstrap'; // npm install react-bootstrap bootstrap
+import { React } from "react";
+import { Button, Form, Stack } from 'react-bootstrap'; // npm install react-bootstrap bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 css를 적용하기 위함
 import { Typography } from "@mui/material";
+import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import LoanApiService from './LoanApiService.js';
 
-class LoanComponentAdd extends Component{
-    render(){
-        return(
-            <Container className="component-div">
-                <Typography variant="h3" textAlign="center" color="black">대출상품등록</Typography><br/><br/>
+const LoanComponentAdd = () =>{
+    // select 박스 값 설정
+    const [lGradeSelected, setLGradeSelected ] = useState('')
+    const [lTypeSelected, setLTypeSelected ] = useState('')
 
-                <Form>
+    const handleSelectChange1 = (e) => {
+        setLGradeSelected(e.target.value)
+    }
+
+    const handleSelectChange2 = (e) => {
+        setLTypeSelected(e.target.value)
+    }
+
+    // Input 값 설정
+    const [inputs, setInputs] = useState({
+        lpdName: "",
+        lcontent: "",
+        lgrade: "",
+        lmaxPeriod: "",
+        lmaxPrice: "",
+        lrate: "",
+        ltype: "",
+        lcxlRate: "",
+    })
+
+    const handleInputValue = (e) => {
+        // 소수점 처리
+        const value = e.target.name === 'lrate' || e.target.name === "lcxlRate"? parseFloat(e.target.value) : e.target.value;
+
+        setInputs(prevState => {
+            return{
+                ...prevState,
+                [e.target.name] : e.target.value
+            }
+        })
+    }
+
+    const navigate = useNavigate();
+
+    // submit 버튼
+    const submit = (e) => {
+        e.preventDefault(); // submit으로 인한 폼 데이터 서버 전송을 막는다.
+
+        let pdLoan = {
+            lpdName: inputs.lpdName,
+            lcontent: inputs.lcontent,
+            lgrade: lGradeSelected,
+            lmaxPeriod: inputs.lmaxPeriod,
+            lmaxPrice: inputs.lmaxPrice,
+            lrate: inputs.lrate,
+            ltype: lTypeSelected,
+            lcxlRate: inputs.lcxlRate
+        }
+        
+        console.log(pdLoan);
+
+        LoanApiService.addProduct(pdLoan) 
+            .then(res => {
+                alert("상품이 등록되었습니다.")
+                console.log("대출상품 등록성공");
+                navigate('/admin/product/loan');
+            })
+            .catch(err => {
+                console.log(' addProduct() 에러', err)
+                console.log(err.code);
+                console.log(err.message);
+                console.log(err.config);
+            })
+
+    }
+   
+    return(
+        <div className="component-div">
+            <Typography variant="h3" textAlign="center" color="black">대출상품등록</Typography><br/><br/>
+            <div style={{width:1000}}>
+                <Form onSubmit={submit}>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>* 대출상품명</Form.Label>
-                    <Form.Control required type="text" placeholder="대출상품명을 입력해주세요." />
+                    <Form.Control required type="text" name="lpdName" value={inputs.lpdName} placeholder="대출상품명을 입력해주세요." onChange={handleInputValue} />
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>* 대출상품설명</Form.Label>
-                    <Form.Control required as="textarea" rows={3} placeholder="대출상품설명을 간략히 적어주세요." />
+                    <Form.Control required as="textarea" rows={3} name="lcontent" value={inputs.lcontent} placeholder="대출상품설명을 간략히 적어주세요." onChange={handleInputValue}/>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>* 대출신청자격</Form.Label>
-                    <Form.Select required>
-                        <option>gold</option>
-                        <option>black</option>
-                        <option>red</option>
-                        <option>yellow</option>
+                    <Form.Select name="lGrade" value={lGradeSelected} onChange={handleSelectChange1} required>
+                        <option value="gold">gold</option>
+                        <option value="black">black</option>
+                        <option value="red">red</option>
+                        <option value="yellow">yellow</option>
                     </Form.Select>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>* 대출가능 최장기간</Form.Label>
-                    <Form.Control required type="text" placeholder="월" />
+                    <Form.Control type="text" name="lmaxPeriod" value={inputs.lmaxPeriod} min={1} max={5} placeholder="년" onChange={handleInputValue} required />
                     <Form.Text className="text-muted">
-                        월 단위로 입력해주세요.
+                        연단위로 입력해주세요.
                     </Form.Text>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>* 대출가능 최고금액</Form.Label>
-                    <Form.Control required type="number" placeholder="만원" />
+                    <Form.Control type="number" name="lmaxPrice" value={inputs.lmaxPrice} min={1} placeholder="만원" onChange={handleInputValue} required />
+                    <Form.Text className="text-muted">
+                        만원단위로 입력해주세요.
+                    </Form.Text>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>* 대출이자</Form.Label>
-                    <Form.Control required type="number" placeholder="%" />
+                    <Form.Control type="number" name="lrate" value={inputs.lrate} min={0.1} step={0.01} placeholder="% "onChange={handleInputValue} required />
                     <Form.Text className="text-muted">
                         소수점 둘째자리까지만 입력해주세요.
                     </Form.Text>
@@ -53,29 +128,29 @@ class LoanComponentAdd extends Component{
 
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>* 대출상환방법</Form.Label>
-                    <Form.Select required>
-                        <option>원리금 균등분할상환</option>
-                        <option>원금 균등분할상환</option>
-                        <option>만기일시상환</option>
+                    <Form.Select name="lType" value={lTypeSelected} onChange={handleSelectChange2} required >
+                        <option value="원리금균등분할상환">원리금 균등분할상환</option>
+                        <option value="원금균등분할상환">원금 균등분할상환</option>
+                        <option value="만기일시상환">만기일시상환</option>
                     </Form.Select>
                     </Form.Group>
                     
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>* 중도상환 수수료율</Form.Label>
-                    <Form.Control type="number" placeholder="%" />
+                    <Form.Control type="number" name="lcxlRate" value={inputs.lCxlRate} min={0.1} step={0.01} placeholder="%" onChange={handleInputValue} required/>
                     <Form.Text className="text-muted">
                         소수점 둘째자리까지만 입력해주세요.
                     </Form.Text>
                     </Form.Group>
 
                     <Stack direction="horizontal" gap={2} className="col-md-2 mx-auto">
-                    <Button variant="success" type="submit">Register</Button>
+                    <Button variant="success" type="submit">AddProduct</Button>
                     <Button variant="outline-secondary" type="reset">Cancel</Button>
                     </Stack>
                 </Form>
-            </Container>   
-        )
-    }
-}
+            </div>
+        </div>
+    )
+ };
 
 export default LoanComponentAdd;

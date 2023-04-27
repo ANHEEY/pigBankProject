@@ -130,7 +130,7 @@ const AppRouter = () => {
             <Route path="/customer/product/loan/pdLoan" Component={PdLoan} />
             <Route path="/customer/product/loan/pdLoanDetail" Component={PdLoanDetail} />
             <Route path="/customer/product/loan/pdLoanApplication" Component={PdLoanApplication} />
-
+            
             {/* 상품(펀드) */}
             <Route path="/customer/product/fund/application" Component={FundApplication} />
             <Route path="/customer/product/fund/list" Component={FundProductList} />

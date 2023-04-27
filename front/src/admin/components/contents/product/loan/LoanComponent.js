@@ -1,72 +1,90 @@
-import { Typography, Table, TableHead, TableRow, TableCell, Button, TableBody } from "@mui/material";
-import React, { Component } from "react";
-import {Link} from 'react-router-dom';
+// 대출상품
+import  React, {useState, useEffect} from "react";
+import { Link } from 'react-router-dom';
+import { Button, Table, Form } from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
+import LoanApiService from "./LoanApiService";
 
-class LoanComponent extends Component{
-    render(){
-        return(
-            <>
-            <div className="component-div">
-            <Typography variant='h4' align="center">대출상품</Typography>
-            <Button variant='contained' color='primary' align="center"><Link to="add">상품등록</Link></Button>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>대출상품이름</TableCell>
-                        <TableCell>대출상품설명</TableCell>
-                        <TableCell>대출신청자격</TableCell>
-                        <TableCell>대출가능최장기간</TableCell>
-                        <TableCell>대출가능최고금액</TableCell>
-                        <TableCell>대출이자</TableCell>
-                        <TableCell>대출상환방법</TableCell>
-                        <TableCell>중도상환수수료율</TableCell>
-                    </TableRow>
-                </TableHead>
 
-                <TableBody>
-                    <TableRow>
-                        <TableCell><Link to="detail">꿀꿀대출</Link></TableCell>
-                        <TableCell>#돼지은행대표상품</TableCell>
-                        <TableCell>조건없음</TableCell>
-                        <TableCell>5년</TableCell>
-                        <TableCell>5,000,000</TableCell>
-                        <TableCell>3.04%</TableCell>
-                        <TableCell>만기상환</TableCell>
-                        <TableCell>11%</TableCell>
-                    </TableRow>
-                </TableBody>
-
-                <TableBody>
-                    <TableRow>
-                    <TableCell>멧돼지대출</TableCell>
-                        <TableCell>#높은금리,#높은대출금액</TableCell>
-                        <TableCell>조건없음</TableCell>
-                        <TableCell>1년</TableCell>
-                        <TableCell>50,000,000</TableCell>
-                        <TableCell>10.04%</TableCell>
-                        <TableCell>만기상환,중도상환 가능</TableCell>
-                        <TableCell>30%</TableCell>
-                    </TableRow>
-                </TableBody>
-
-                <TableBody>
-                    <TableRow>
-                    <TableCell>황금돼지대출</TableCell>
-                        <TableCell>우대고객대출상품</TableCell>
-                        <TableCell>우대고객해당</TableCell>
-                        <TableCell>3년</TableCell>
-                        <TableCell>20,000,000</TableCell>
-                        <TableCell>1.04%</TableCell>
-                        <TableCell>만기상환</TableCell>
-                        <TableCell>5%</TableCell>
-                    </TableRow>
-                </TableBody>
-                
-            </Table>    
-            SELECT * FROM loan_product;<br/>
-            </div>
-        </>            
-        )
+const LoanComponent = () => {
+    
+    const [listPdLoan, setListPdLoan]= useState([])
+    const navigate = useNavigate();
+    const goDetail = (lpdName) => {
+        //navigate(`/admin/product/loan/detail/${id}`);
+    
+        window.localStorage.setItem("lpdName", lpdName);
+        navigate("/admin/product/loan/detail");
     }
+
+    // class 컴포넌트에서의 라이프사이클 역할과 같음
+    useEffect(() => {
+        LoanApiService.fetchProduct()
+          .then(res => {
+            setListPdLoan(res.data);
+          })
+          .catch(err => {
+            console.log('fetchProdcutList Error!', err);
+          });
+    }, []);
+
+     return(
+        <div className="component-div">
+         <div className="admin-title" style={{width:1000}}>
+            대출상품목록
+        </div>
+            <div style={{width:1000}}>
+                <div className="card-body" style={{marginTop: "15px"}}>
+                    <Table responsive striped style={{textAlign:"center"}}>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>대출상품이름</th>
+                            <th>대출상품금리</th>
+                            <th>대출가입기간</th>
+                            <th>대출최대금액</th>
+                            <th>중도해지이자율</th>
+                            <th>상품등록날짜</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {listPdLoan.map(product =>
+                        <tr key={product.lpdname} onClick={() => goDetail(product.lpdName)}>
+                            <td>
+                            <Form>
+                            {['checkbox'].map((type) => (
+                                <div key={`inline-${type}`} className="mb-3">
+                                <Form.Check
+                                    inline
+                                    name="group1"
+                                    type={type}
+                                    id={`inline-${type}-1`}
+                                />
+                                </div>
+                            ))}
+                            </Form>
+                            </td>
+                            <td>{product.lpdName}</td>
+                            <td>{product.lrate}%</td>
+                            <td>{product.lmaxPeriod}년</td>
+                            <td>{product.lmaxPrice.toLocaleString()}만원</td>
+                            <td>{product.lcxlRate}%</td>
+                            <td>{product.lregDate}</td>
+                        </tr>
+                        )}
+                    </tbody>
+                    </Table>
+                    <div className="d-flex justify-content-end">
+                    <Button variant="dark"><Link to="add" style={{color:"white"}}>AddProduct</Link></Button>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+        </div>
+    )
 }
 export default LoanComponent;

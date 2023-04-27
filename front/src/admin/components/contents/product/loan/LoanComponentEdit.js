@@ -1,86 +1,174 @@
-import React, { Component } from "react";
-import {Link} from 'react-router-dom';
-import { TextField, Typography} from "@mui/material";
+import  React, {useState, useEffect} from "react";
+import { Button, Form, Stack } from 'react-bootstrap'; // npm install react-bootstrap bootstrap
+import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 css를 적용하기 위함
+import { Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import LoanApiService from './LoanApiService.js';
 
+const LoanComponentDetail = () => {
 
-class LoanComponentEdit extends Component{
-    render(){
-        return(
-            <div className="component-div" align="center" >
-            <Typography variant='h4' align="center" style={style}>대출상품수정</Typography>
-            <TextField 
-                required
-                id="standard-required"
-                variant="standard"
-                label="꿀꿀대출 :"
-                placeholder="Input your l_pdName"
-            /><br/>
+    useEffect(() => {
+        LoanApiService.fetchProductByName(window.localStorage.getItem("lpdName"))
+          .then(res => {
+            let product = res.data;
+            setInputs({
+                lpdName: product.lpdName,
+                lcontent: product.lcontent,
+                lgrade: product.lgrade,
+                lmaxPeriod: product.lmaxPeriod,
+                lmaxPrice: product.lmaxPrice,
+                lrate: product.lrate,
+                ltype: product.ltype,
+                lcxlRate: product.lcxlRate,
+                lregDate: product.lregDate
+            })
+          })
+          .catch(err => {
+            console.log('fetchProdcutList Error!', err);
+          });
+    }, []);
+    
+    // select 박스 값 설정
+    const [lGradeSelected, setLGradeSelected ] = useState('')
+    const [lTypeSelected, setLTypeSelected ] = useState('')
 
-            <TextField 
-                required
-                id="standard-required"
-                variant="standard"
-                label="#돼지은행대표상품 :"
-                placeholder="Input your l_content"
-            /><br/>
-
-            <TextField 
-                required
-                id="standard-required"
-                variant="standard"
-                label="조건없음 :"
-                placeholder="Input your l_grade"
-            /><br/>
-
-            <TextField 
-                required
-                id="standard-required"
-                variant="standard"
-                label="5년 :"
-                placeholder="Input your l_maxPeriod"
-            /><br/>
-
-            <TextField 
-                required
-                id="standard-required"
-                variant="standard"
-                label="5,000,000 :"
-                placeholder="Input your l_max"
-            /><br/>
-
-            <TextField 
-                required
-                id="standard-required"
-                variant="standard"
-                label="3.04 :"
-                placeholder="Input your l_type"
-            /><br/>
-
-            <TextField 
-                required
-                id="standard-required"
-                variant="standard"
-                label="만기상환 :"
-                placeholder="Input your l_type"
-            /><br/>
-
-            <TextField 
-                required
-                id="standard-required"
-                variant="standard"
-                label="11% :"
-                placeholder="Input your l_cxlRate"
-            /><br/>
-
-            <button color="light"><Link to="">수정완료</Link></button>
-            SELECT * FROM loan_product WHERE l_pdName='';
-        </div>      
-        )
+    const handleSelectChange1 = (e) => {
+        setLGradeSelected(e.target.value)
     }
-   
+
+    const handleSelectChange2 = (e) => {
+        setLTypeSelected(e.target.value)
+    }
+
+    // Input 값 설정
+    const [inputs, setInputs] = useState({
+        lpdName: "",
+        lcontent: "",
+        lgrade: "",
+        lmaxPeriod: "",
+        lmaxPrice: "",
+        lrate: "",
+        ltype: "",
+        lcxlRate: "",
+    })
+
+    const handleInputValue = (e) => {
+        // 소수점 처리
+        const value = e.target.name === 'lrate' || e.target.name === "lcxlRate"? parseFloat(e.target.value) : e.target.value;
+
+        setInputs(prevState => {
+            return{
+                ...prevState,
+                [e.target.name] : e.target.value
+            }
+        })
+    }
+
+    const navigate = useNavigate();
+
+    // submit 버튼
+    const submit = (e) => {
+        e.preventDefault(); // submit으로 인한 폼 데이터 서버 전송을 막는다.
+
+        let pdLoan = {
+            lpdName: inputs.lpdName,
+            lcontent: inputs.lcontent,
+            lgrade: lGradeSelected,
+            lmaxPeriod: inputs.lmaxPeriod,
+            lmaxPrice: inputs.lmaxPrice,
+            lrate: inputs.lrate,
+            ltype: lTypeSelected,
+            lcxlRate: inputs.lcxlRate
+        }
+        
+        console.log(pdLoan);
+
+        LoanApiService.editProduct(pdLoan) 
+            .then(res => {
+                alert("상품이 수정되었습니다.")
+                console.log("대출상품 수정성공");
+                navigate('/admin/product/loan');
+            })
+            .catch(err => {
+                console.log(' editProduct 에러', err)
+            })
+
+    }
+    return(
+        <div className="component-div">
+         <div className="admin-title" style={{width:1000}}>
+            대출상품 상세페이지
+        </div>
+        <div style={{width:1000}}>
+            <Form onSubmit={submit}>
+                <Form.Group className="mb-3">
+                <Form.Label>* 대출상품명</Form.Label>
+                <Form.Control readOnly type="text" name="lpdName" value={inputs.lpdName} placeholder="대출상품명을 입력해주세요." onChange={handleInputValue} required />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>* 대출상품설명</Form.Label>
+                <Form.Control as="textarea" rows={3} name="lcontent" value={inputs.lcontent} placeholder="대출상품설명을 간략히 적어주세요." onChange={handleInputValue} required />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>* 대출신청자격</Form.Label>
+                <Form.Select name="lGrade" value={lGradeSelected} onChange={handleSelectChange1} required>
+                    <option value="gold">gold</option>
+                    <option value="black">black</option>
+                    <option value="red">red</option>
+                    <option value="yellow">yellow</option>
+                </Form.Select>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>* 대출가능 최장기간</Form.Label>
+                <Form.Control type="text" name="lmaxPeriod" value={inputs.lmaxPeriod} min={1} max={5} placeholder="년" onChange={handleInputValue} required />
+                <Form.Text className="text-muted">
+                    연단위로 입력해주세요.
+                </Form.Text>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>* 대출가능 최고금액</Form.Label>
+                <Form.Control type="number" name="lmaxPrice" value={inputs.lmaxPrice} min={1} placeholder="만원" onChange={handleInputValue} required />
+                <Form.Text className="text-muted">
+                    만원단위로 입력해주세요.
+                </Form.Text>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>* 대출이자</Form.Label>
+                <Form.Control type="number" name="lrate" value={inputs.lrate} min={0.1} step={0.01} placeholder="% "onChange={handleInputValue} required />
+                <Form.Text className="text-muted">
+                    소수점 둘째자리까지만 입력해주세요.
+                </Form.Text>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>* 대출상환방법</Form.Label>
+                <Form.Select name="lType" value={lTypeSelected} onChange={handleSelectChange2} required >
+                    <option value="원리금균등분할상환">원리금 균등분할상환</option>
+                    <option value="원금균등분할상환">원금 균등분할상환</option>
+                    <option value="만기일시상환">만기일시상환</option>
+                </Form.Select>
+                </Form.Group>
+                
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>* 중도상환 수수료율</Form.Label>
+                <Form.Control type="number" name="lcxlRate" value={inputs.lcxlRate} min={0.1} step={0.01} placeholder="%" onChange={handleInputValue} required/>
+                <Form.Text className="text-muted">
+                    소수점 둘째자리까지만 입력해주세요.
+                </Form.Text>
+                </Form.Group>
+
+                <Stack direction="horizontal" gap={2} className="col-md-2 mx-auto">
+                <Button variant="success" type="submit">수정</Button>
+                <Button variant="outline-secondary" type="button">취소</Button>
+                </Stack>
+            </Form>
+        </div>
+    </div> 
+    )
 }
-const style =  {
-    display: 'flex',
-    justifyContent: 'center'
-}
-export default LoanComponentEdit;
+export default LoanComponentDetail;

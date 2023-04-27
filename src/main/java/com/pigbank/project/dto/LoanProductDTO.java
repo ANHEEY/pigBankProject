@@ -1,5 +1,7 @@
 package com.pigbank.project.dto;
 
+import java.sql.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -12,14 +14,15 @@ import lombok.Data;
 public class LoanProductDTO {
 	
 	@Id
-	private String lPdName;
-	private String lContent;
-	private String lGrade;
-	private int lMaxPeriod;
-	private int lMax;
-	private int lRate;
-	private String lType;
-	private int lCxlRate;
+	private String lpdName;
+	private String lcontent;
+	private String lgrade;
+	private int lmaxPeriod;
+	private int lmaxPrice; // 컬럼명 바꿈
+	private double lrate;
+	private String ltype;
+	private double lcxlRate;
+	private Date lregDate;
 	
 
 }
