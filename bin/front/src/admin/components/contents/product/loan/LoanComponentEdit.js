@@ -6,7 +6,7 @@ import { TextField, Typography} from "@mui/material";
 class LoanComponentEdit extends Component{
     render(){
         return(
-            <div align="center" >
+            <div className="component-div" align="center" >
             <Typography variant='h4' align="center" style={style}>대출상품수정</Typography>
             <TextField 
                 required

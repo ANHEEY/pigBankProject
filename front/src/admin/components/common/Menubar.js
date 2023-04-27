@@ -21,6 +21,10 @@ function MenuBar() {
             >
                 <SideNav.Toggle />
                 <SideNav.Nav defaultSelected="admin">
+                    <NavItem>
+                        <NavIcon></NavIcon>
+                        <NavText></NavText>
+                    </NavItem>
                     <NavItem eventKey="admin" disabled>
                         <NavIcon>
                             <FontAwesomeIcon icon={faHouse} />

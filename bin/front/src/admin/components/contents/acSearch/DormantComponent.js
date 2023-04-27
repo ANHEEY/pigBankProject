@@ -6,7 +6,7 @@ import Table from 'react-bootstrap/Table';
 class DormantComponent extends Component{
     render(){
         return(
-            <div>
+            <div className="component-div">
                 <h1><FontAwesomeIcon icon={faSearch}/> 휴면계좌조회</h1>
                 <ul>
                     <li>1. 휴면 계좌 전체 출력 </li>

@@ -6,7 +6,7 @@ import Table from 'react-bootstrap/Table';
 class AcDepositComponent extends Component{
     render(){
         return(
-            <div>
+            <div className="component-div">
                 <h1><FontAwesomeIcon icon={faSearch}/> 이체내역</h1>
                 <ul>
                     <li>1. 이체내역 출력 (당일날짜기준) </li>

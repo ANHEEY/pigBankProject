@@ -17,12 +17,23 @@
 /*  회원 개인 정보 table */
 .admin-customer-info{
     width: 1000px;
-    margin: 30px 0 50px 0 ;
+    margin: 30px 0 80px 0 ;
 }
-.admin-customer-info th,td{
-    padding:  20px 10px;
+.admin-customer-info th{
+    text-align: end;
+    padding:  15px 10px;
     color: #595959;
 }
+.table-title th{
+    text-align: center;
+}
+.admin-customer-info td{
+    text-align: center;
+    padding:  15px 10px;
+    color: #595959;
+}
+
+
 
 /*  회원 계좌 정보 table */
 .admin-customer-account{
@@ -31,9 +42,15 @@
 }
 .admin-customer-account th,td{
     padding:  10px 10px;
+    text-align: center;
+    color: #666666;
 }
 .admin-customer-account tbody{
     padding:  20px 10px;
     text-align: center;
     color: #595959;
+}
+
+.customer_total_amount{
+
 }

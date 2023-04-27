@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 class AccountComponent extends Component{
     render(){
         return(
-            <div>
+            <div className="component-div">
                 <h1><FontAwesomeIcon icon={faSearch}/> 계좌목록 </h1>
                 <ul>
                     <li>1. 전체계좌 출력 (최신순) </li>
