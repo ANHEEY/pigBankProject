@@ -1,5 +1,8 @@
 package com.pigbank.project.dto;
 
+
+import java.sql.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -19,6 +22,6 @@ public class SavingProductDTO {
 	private int smin;
 	private int smax;
 	private int scxlrate;
-	
+	private Date sregdate;
 
 }

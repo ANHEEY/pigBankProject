@@ -5,31 +5,34 @@
      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
      
 <mapper namespace="com.pigbank.project.dao.KimMapper">
-	<!-- accountProduct -->
-
 	<!-- admin-SavingProduct -->
 	<select id="sPdList" resultType="com.pigbank.project.dto.SavingProductDTO">
 		SELECT * FROM savings_product
-		ORDER BY sRegDate DESC
+		 WHERE show = 'y'
+		 ORDER BY sRegDate DESC
 	</select>
 	<select id="findByPdName" parameterType="String" resultType="com.pigbank.project.dto.SavingProductDTO">
 		SELECT * FROM savings_product
 		WHERE sPdName = #{spdname}
 	</select>
 	<insert id="sPdInsert" parameterType="com.pigbank.project.dto.SavingProductDTO">
-		INSERT INTO savings_product(sPdName, sContent, sPeriod, sRate, sMin, sMax, sCxlRate)
-		 VALUES(#{spdname}, #{scontent}, #{speriod}, #{srate}, #{smin}, #{smax}, #{scxlrate})
+		INSERT INTO savings_product(sPdName, sContent, sPeriod, sRate, sMin, sMax, sCxlRate, sRegDate)
+		 VALUES(#{spdname}, #{scontent}, #{speriod}, #{srate}, #{smin}, #{smax}, #{scxlrate}, #{sregdate})
 	</insert>
-<!--
  	<update id="sPdUpdate" parameterType="com.pigbank.project.dto.SavingProductDTO">
 		UPDATE TABLE savings_product
 		   SET sPdName=#{spdname}, sContent=#{scontent}, sPeriod=#{speriod}, sRate=#{srate}, sMin=#{smin}, sMax=#{smax}, sCxlRate=#{scxlrate}
 		 WHERE sPdName = #{spdname}
-	</update> 
-	<delete id="sPdDelete" parameterType="String">
-		DELETE FROM savings_product
-		WHERE sPdName = #{spdname}
-	</delete>
--->
+	</update>	 
+ 	<update id="sPdDelete" parameterType="String">
+		UPDATE TABLE savings_product
+		   SET show = 'n'
+		 WHERE sPdName = #{spdname}
+	</update>
+	
+	<!-- cust-Account(자유일출금) -->
+	
+	
+	<!-- cust-SavingAccount(적금계좌 생성) -->
 	
 </mapper>

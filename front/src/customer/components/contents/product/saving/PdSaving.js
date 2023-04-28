@@ -1,12 +1,36 @@
 // 적금 상품d
 import { Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {Form, Col, Row, Button, InputGroup, ListGroup, Stack } from 'react-bootstrap';
 import { useNavigate, Link } from "react-router-dom";
 
 import PdSavingService from './PdSavingService';
 
 function PdSaving () {
+
+    const [pdSavingList, setPdSavingList] = useState([]);
+
+    useEffect(() => {
+        reloadPdSavingList();
+    }, []);
+
+    const reloadPdSavingList = () => {
+        PdSavingService.fetchMembers()
+        .then((res) => {
+            setPdSavingList(res.data)
+        })
+        .catch((err) => {
+            console.log('reloadPdSavingList() Error!!', err);
+        })
+    }
+
+    const navigator = useNavigate();
+
+    const goDetail = (spdname) => {
+
+        window.localStorage.setItem("spdname", spdname);
+        navigator('/customer/product/saving/pdSavingDetail');
+    }
 
     const style = {
         color: "green",
@@ -16,21 +40,8 @@ function PdSaving () {
         textAlign: "center",
     }
 
-    const navigate = useNavigate();
-    
-    const goDetail=(dpdName)=> { 
-
-        /* window.localStorage.setItem(); */
-        window.localStorage.setItem("dpdName", dpdName);
-        navigate('/customer/product/saving/pdSavingDetail');
-        // PdSavingService.pdDepositDetailInfo(dpdName)
-        //     .then(res=>{
-
-        // });
-    }
-
     return (
-       <div className="container">
+    <div className="container">
         <br/><br/><br/><br/>
         <Form style={{width: "90%"}}>
             <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
@@ -40,7 +51,7 @@ function PdSaving () {
             <Col sm="10">
                 <InputGroup className="mb-3">
                     <Form.Control
-                    placeholder="찾으시는 예금상품명을 입력하세요."
+                    placeholder="찾으시는 적금상품명을 입력하세요."
                     aria-label="Recipient's username"
                     aria-describedby="basic-addon2"
                     />
@@ -55,71 +66,31 @@ function PdSaving () {
         <br/>
         <br/>
         <br/>
-        <hr />
-        <ListGroup variant="flush">
-            <ListGroup.Item>
-            <Row>
-                <Stack direction="horizontal" gap={3}>
-                <div>
-                        <p>인터넷뱅킹 | 피그뱅크 | 적금상품</p>
-                        <Typography variant="h4" style={{ fontWeight: 'bold'}}>적금상품명</Typography><br />
-                        <p>상품설명</p>
-                        <p>금리 <span style={style}>5%</span></p>
-                </div>
-                <div className="ms-auto">
-                <Button variant="success" onClick={goDetail}>신청하기</Button>
-                </div>
-                </Stack>
-            </Row>
 
-            </ListGroup.Item>
-        </ListGroup>
-
-        <hr />
-        <ListGroup variant="flush">
-            <ListGroup.Item>
-            <Row>
-                <Stack direction="horizontal" gap={3}>
-                <div>
-                        <p>인터넷뱅킹 | 피그뱅크 | 적금상품</p>
-                        <Typography variant="h4" style={{ fontWeight: 'bold'}}>적금상품명</Typography><br />
-                        <p>상품설명</p>
-                        <p>금리 <span style={style}>5%</span></p>
+        {pdSavingList.map(pdSaving =>
+                <div key={pdSaving.spdname}>
+                    <hr />
+                    <ListGroup variant="flush">
+                        <ListGroup.Item>
+                        <Row >
+                            <Stack direction="horizontal" gap={3} >
+                            <div >
+                                <p>인터넷뱅킹 | 피그뱅크 | 적금상품</p>
+                                <Typography variant="h4" style={{ fontWeight: 'bold'}}>{pdSaving.spdname}</Typography><br />
+                                <p>{pdSaving.scontent}</p>
+                                <p>금리 <span style={style}>{pdSaving.srate}%</span></p>
+                            </div>
+                            <div className="ms-auto">
+                            <Button variant="success" onClick={() => goDetail(pdSaving.spdname)}>신청하기</Button>
+                            </div>
+                            </Stack>
+                        </Row>
+                        </ListGroup.Item>
+                    </ListGroup>
                 </div>
-                <div className="ms-auto">
-                <Button variant="success" onClick={goDetail}>신청하기</Button>
-                </div>
-                </Stack>
-            </Row>
-
-            </ListGroup.Item>
-        </ListGroup>
-
-        <hr />
-        <ListGroup variant="flush">
-            <ListGroup.Item>
-            <Row>
-                <Stack direction="horizontal" gap={3}>
-                <div>
-                        <p>인터넷뱅킹 | 피그뱅크 | 적금상품</p>
-                        <Typography variant="h4" style={{ fontWeight: 'bold'}}>적금상품명</Typography><br />
-                        <p>상품설명</p>
-                        <p>금리 <span style={style}>5%</span></p>
-                </div>
-                <div className="ms-auto">
-                <Button variant="success" onClick={goDetail}>신청하기</Button>
-                </div>
-                </Stack>
-            </Row>
-
-            </ListGroup.Item>
-        </ListGroup>
+            )}
         </div>
-
-
-
     );
+
 }
-
-
 export default PdSaving;

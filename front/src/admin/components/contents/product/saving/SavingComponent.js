@@ -1,4 +1,4 @@
-import { Table, TableHead, TableRow, TableCell, Button, TableBody } from "@mui/material";
+import { Button, Table, Form } from 'react-bootstrap';
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { BiListCheck } from "react-icons/bi";
@@ -36,39 +36,44 @@ function SavingComponent() {
         <div className="component-div">
             <div className="admin-title">
             <BiListCheck /> 적금상품
-            </div>
-            <Button variant='primary' align="left"><Link to="add">상품등록</Link></Button>
-            <Table>
-            <TableHead>
-                <TableRow>
-                <TableCell>적금상품이름</TableCell>
-                <TableCell>가입기간</TableCell>
-                <TableCell>적금상품금리</TableCell>
-                <TableCell>적금상품설명</TableCell>
-                <TableCell>적금최소금액</TableCell>
-                <TableCell>적금최대금액</TableCell>
-                <TableCell>중도해지시금리</TableCell>
-                <TableCell>버튼</TableCell>
-                </TableRow>
-            </TableHead>
-
-            <TableBody>
-                {pdSavingList.map(pdSaving =>
-                <TableRow key={pdSaving.spdname}>
-                    <TableCell>{pdSaving.spdname}</TableCell>
-                    <TableCell>{pdSaving.speriod}</TableCell>
-                    <TableCell>{pdSaving.srate}</TableCell>
-                    <TableCell>{pdSaving.scontent}</TableCell>
-                    <TableCell>{pdSaving.smin}</TableCell>
-                    <TableCell>{pdSaving.smax}</TableCell>
-                    <TableCell>{pdSaving.scxlrate}</TableCell>
-                    <TableCell>
-                        <Button onClick={() => goRegister(pdSaving.spdname)}>상세페이지</Button>
-                    </TableCell>
-                </TableRow>
-                )}
-            </TableBody>
-            </Table>
+            </div><br/>
+            <div style={{width:1000}}>
+                <div className="card-body" style={{marginTop: "20px"}}>
+                    <Table responsive striped style={{textAlign:"center"}}>
+                        <thead>
+                            <tr>
+                                <th>상품명</th>
+                                <th>상품금리</th>
+                                <th>가입기간</th>
+                                <th>최소금액</th>
+                                <th>최대금액</th>
+                                <th>중도해지시금리</th>
+                                <th>상품등록일</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {pdSavingList.map(pdSaving =>
+                                <tr key={pdSaving.spdname}>
+                                    <td>{pdSaving.spdname}</td>
+                                    <td>{pdSaving.srate}%</td>
+                                    <td>{pdSaving.speriod}개월</td>
+                                    <td>{pdSaving.smin}만원</td>
+                                    <td>{pdSaving.smax}만원</td>
+                                    <td>{pdSaving.scxlrate}%</td>
+                                    <td>{pdSaving.sregdate}</td>
+                                    <td>
+                                        <button className="customerinfoBtn" onClick={() => goRegister(pdSaving.spdname)}>상세페이지</button>
+                                    </td>
+                                </tr>
+                            )}  
+                        </tbody>
+                    </Table>
+                    <div className="d-flex justify-content-end">
+                    <Button variant="dark"><Link to="add" style={{color:"white"}}>상품등록</Link></Button>
+                    </div>
+                </div>
+            </div><br /><br /><br />
         </div>
         </>
     )

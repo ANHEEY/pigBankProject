@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.pigbank.project.dto.AccountDTO;
+import com.pigbank.project.dto.SavingAccountDTO;
 import com.pigbank.project.dto.SavingProductDTO;
 
 @Mapper
@@ -27,7 +28,10 @@ public interface KimMapper {
 	public void sPdDelete(String sPdName);
 	
 	// [Customer]
-	// 입출금 계좌 생성
+	// Account 입출금 계좌 생성
 	public void aPdInsert(AccountDTO aPdDTO);
+	
+	// SavingAccount 적금계좌생성
+	public void custSPdInsert(SavingAccountDTO custSPdDTO);
 	
 }

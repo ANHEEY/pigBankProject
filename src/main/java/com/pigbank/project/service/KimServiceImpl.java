@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 
 import com.pigbank.project.dao.KimMapper;
 import com.pigbank.project.dto.AccountDTO;
+import com.pigbank.project.dto.SavingAccountDTO;
 import com.pigbank.project.dto.SavingProductDTO;
 
 @Service
@@ -56,12 +57,18 @@ public class KimServiceImpl implements KimService {
 		dao.sPdDelete(sPdName);
 	}
 	
-	// [account]
-	@Override // 자유입출금계좌 생성
+	@Override // account - 자유입출금계좌 생성
 	public void insertAPd(AccountDTO aPdDTO) throws ServletException, IOException {
 		System.out.println("Service - InsertAPd");
 		
 		dao.aPdInsert(aPdDTO);
+	}
+
+	// [custoemr_SavingProduct]
+	@Override // 적금계좌 생성
+	public void insertCustSPd(SavingAccountDTO custSPdDTO) throws ServletException, IOException {
+		System.out.println("Service - Customer InsertSPd");
+		
 	}
 
 	
