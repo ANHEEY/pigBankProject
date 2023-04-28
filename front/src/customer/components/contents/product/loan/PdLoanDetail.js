@@ -1,4 +1,5 @@
-import React from 'react';
+// 고객 대출상품 상세 페이지
+import React, {useState, useEffect} from 'react';
 import { Table, Tab, Tabs, Row, Col, Container, Button, Card, Stack } from 'react-bootstrap';
 import { SlCalender, SlGraph } from "react-icons/sl";
 import { BsCash } from "react-icons/bs";
@@ -6,21 +7,35 @@ import { useNavigate } from "react-router-dom";
 import '../../../../resources/css/PdLoanStyle.css';
 import PdLoanInfo from './PdLoanInfo';
 import Calculator from './Calculator';
+import PdLoanService from './PdLoanService.js';
 
 function PdLoanDetail() {
+  const [product, setProduct] = useState({});
 
+  // 라이프라이클
+  useEffect(() => {
+    PdLoanService.fetchProductByName(window.localStorage.getItem("lpdName"))
+      .then(res => {
+        let product = res.data;
+        setProduct(product)
+      })
+      .catch(err => {
+        console.log('fetchProdcutList Error!', err);
+      });
+  }, []);
+
+  // 신청하기 버튼
   const navigate = useNavigate();
-
-  const goRegister = () => { 
-
-    /* window.localStorage.setItem(); */
+  const goRegister = (lpdName) => { 
+    window.localStorage.removeItem("lpdName");
+    window.localStorage.setItem("lpdName", lpdName);
     navigate('/customer/product/loan/pdLoanApplication');
   }
 
   return (
     <Container>
       <Card>
-        <Card.Header as="h2">든든한 행복 대출</Card.Header>
+        <Card.Header as="h2">{product.lpdName}</Card.Header>
         <br/><br/>
         <Card.Body>
           <Row>
@@ -28,27 +43,29 @@ function PdLoanDetail() {
               <SlCalender size="30" color="#009000"/>
               <Card.Title className="mt-3">가입기간</Card.Title>
               <Card.Text>
-                최대 3년
+                최대 {product.lmaxPeriod}년
               </Card.Text>
             </Col>
             <Col>
               <SlGraph size="30" color="#009000" />
               <Card.Title className="mt-3">대출 금리</Card.Title>
               <Card.Text>
-                3%
+                {product.lrate}%
               </Card.Text>
             </Col>
             <Col>
               <BsCash size="30" color="#009000"/>
               <Card.Title className="mt-3">대출 금액</Card.Title>
               <Card.Text>
-                최소 1만원부터 최대 100만원까지
+              {product.lmaxPrice && (
+                <span>최대 {product.lmaxPrice.toLocaleString()}만원</span>
+              )}
               </Card.Text>
             </Col>
           </Row>
         <br/><br/>
         <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto">
-          <Button className="button" size="lg" onClick={goRegister}>대출신청</Button>
+          <Button className="button" size="lg" onClick={() => goRegister(product.lpdName)}>대출신청</Button>
           <Button variant="outline-dark" size="lg"> 상품목록</Button>
         </Stack>
         <br/>
@@ -73,7 +90,7 @@ function PdLoanDetail() {
     >
 
     <Tab eventKey="home" title="상품안내">
-        <PdLoanInfo /> 
+        <PdLoanInfo props={product}/> 
     </Tab>
 
       <Tab eventKey="profile" title="금리및이율">
@@ -85,7 +102,7 @@ function PdLoanDetail() {
               </Col>
               <Col>
                   <Table bordered>
-                    <thead>
+                    <thead style={{textAlign: "center"}}>
                       <tr>
                         <th>기준</th>
                         <th>기준금리</th>

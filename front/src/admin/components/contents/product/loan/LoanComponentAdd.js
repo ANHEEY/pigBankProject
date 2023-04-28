@@ -19,9 +19,26 @@ const LoanComponentAdd = () =>{
         setLTypeSelected(e.target.value)
     }
 
+    // reset 버튼 
+    const handelResetButton = () => {
+        setInputs({
+            lpdName: "",
+            lsubTitle: "",
+            lcontent: "",
+            lgrade: "",
+            lmaxPeriod: "",
+            lmaxPrice: "",
+            lrate: "",
+            ltype: "",
+            lcxlRate: "",
+            lregDate: ""
+    });
+    };
+
     // Input 값 설정
     const [inputs, setInputs] = useState({
         lpdName: "",
+        lsubTitle: "",
         lcontent: "",
         lgrade: lGradeSelected,
         lmaxPeriod: "",
@@ -51,6 +68,7 @@ const LoanComponentAdd = () =>{
 
         let pdLoan = {
             lpdName: inputs.lpdName,
+            lsubTitle: inputs.lsubTitle,
             lcontent: inputs.lcontent,
             lgrade: lGradeSelected,
             lmaxPeriod: inputs.lmaxPeriod,
@@ -79,7 +97,9 @@ const LoanComponentAdd = () =>{
    
     return(
         <div className="component-div">
-            <Typography variant="h3" textAlign="center" color="black">대출상품등록</Typography><br/><br/>
+            <div className="admin-title" style={{width:1000}}>
+            대출상품등록
+            </div>
             <div style={{width:1000}}>
                 <Form onSubmit={submit}>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -88,8 +108,13 @@ const LoanComponentAdd = () =>{
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>* 대출상품 한줄요약</Form.Label>
+                    <Form.Control required as="textarea" rows={3} name="lsubTitle" value={inputs.lsubTitle} placeholder="대출상품 한줄요약을 간략히 입력해주세요." onChange={handleInputValue}/>
+                    </Form.Group>
+
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>* 대출상품설명</Form.Label>
-                    <Form.Control required as="textarea" rows={3} name="lcontent" value={inputs.lcontent} placeholder="대출상품설명을 간략히 적어주세요." onChange={handleInputValue}/>
+                    <Form.Control required as="textarea" rows={3} name="lcontent" value={inputs.lcontent} placeholder="대출상품설명을 입력해주세요." onChange={handleInputValue}/>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -147,7 +172,7 @@ const LoanComponentAdd = () =>{
 
                     <Stack direction="horizontal" gap={2} className="col-md-2 mx-auto">
                     <Button variant="success" type="submit">상품등록</Button>
-                    <Button variant="outline-secondary" type="reset">취소</Button>
+                    <Button variant="outline-secondary" onClick={() => handelResetButton()}>취소</Button>
                     </Stack>
                 </Form>
             </div>

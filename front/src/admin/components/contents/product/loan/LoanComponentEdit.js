@@ -12,6 +12,7 @@ const LoanComponentDetail = () => {
             let product = res.data;
             setInputs({
                 lpdName: product.lpdName,
+                lsubTitle: product.lsubTitle,
                 lcontent: product.lcontent,
                 lgrade: product.lgrade,
                 lmaxPeriod: product.lmaxPeriod,
@@ -30,6 +31,22 @@ const LoanComponentDetail = () => {
     // select 박스 값 설정
     const [lGradeSelected, setLGradeSelected ] = useState('')
     const [lTypeSelected, setLTypeSelected ] = useState('')
+    
+    // reset 버튼 
+    const handelResetButton = () => {
+    setInputs({
+        lpdName: "",
+        lsubTitle: "",
+        lcontent: "",
+        lgrade: "",
+        lmaxPeriod: "",
+        lmaxPrice: "",
+        lrate: "",
+        ltype: "",
+        lcxlRate: "",
+        lregDate: ""
+    });
+    };
 
     const handleSelectChange1 = (e) => {
         setLGradeSelected(e.target.value)
@@ -42,12 +59,13 @@ const LoanComponentDetail = () => {
     // Input 값 설정
     const [inputs, setInputs] = useState({
         lpdName: "",
+        lsubTitle: "",
         lcontent: "",
-        lgrade: "",
+        lgrade: lGradeSelected,
         lmaxPeriod: "",
         lmaxPrice: "",
         lrate: "",
-        ltype: "",
+        ltype: lTypeSelected,
         lcxlRate: "",
     })
 
@@ -71,6 +89,7 @@ const LoanComponentDetail = () => {
 
         let pdLoan = {
             lpdName: inputs.lpdName,
+            lsubTitle: inputs.lsubTitle,
             lcontent: inputs.lcontent,
             lgrade: lGradeSelected,
             lmaxPeriod: inputs.lmaxPeriod,
@@ -106,6 +125,11 @@ const LoanComponentDetail = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>* 대출상품 한줄요약</Form.Label>
+                <Form.Control required as="textarea" rows={3} name="lsubTitle" value={inputs.lsubTitle} placeholder="대출상품 한줄요약을 간략히 입력해주세요." onChange={handleInputValue}/>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>* 대출상품설명</Form.Label>
                 <Form.Control as="textarea" rows={3} name="lcontent" value={inputs.lcontent} placeholder="대출상품설명을 간략히 적어주세요." onChange={handleInputValue} required />
                 </Form.Group>
@@ -113,6 +137,7 @@ const LoanComponentDetail = () => {
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>* 대출신청자격</Form.Label>
                 <Form.Select name="lGrade" value={lGradeSelected} onChange={handleSelectChange1} required>
+                    <option value="ALL">신청가능한 자격 등급을 선택헤주세요.</option>
                     <option value="gold">gold</option>
                     <option value="black">black</option>
                     <option value="red">red</option>
@@ -138,7 +163,7 @@ const LoanComponentDetail = () => {
 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>* 대출이자</Form.Label>
-                <Form.Control type="number" name="lrate" value={inputs.lrate} min={0.1} step={0.01} placeholder="% "onChange={handleInputValue} required />
+                <Form.Control type="number" name="lrate" value={inputs.lrate} min={0.01} step={0.01} placeholder="% "onChange={handleInputValue} required />
                 <Form.Text className="text-muted">
                     소수점 둘째자리까지만 입력해주세요.
                 </Form.Text>
@@ -147,6 +172,7 @@ const LoanComponentDetail = () => {
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>* 대출상환방법</Form.Label>
                 <Form.Select name="lType" value={lTypeSelected} onChange={handleSelectChange2} required >
+                    <option value="미지정">상환방법을 선택하세요.</option>
                     <option value="원리금균등분할상환">원리금 균등분할상환</option>
                     <option value="원금균등분할상환">원금 균등분할상환</option>
                     <option value="만기일시상환">만기일시상환</option>
@@ -155,7 +181,7 @@ const LoanComponentDetail = () => {
                 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>* 중도상환 수수료율</Form.Label>
-                <Form.Control type="number" name="lcxlRate" value={inputs.lcxlRate} min={0.1} step={0.01} placeholder="%" onChange={handleInputValue} required/>
+                <Form.Control type="number" name="lcxlRate" value={inputs.lcxlRate} min={0.01} step={0.01} placeholder="%" onChange={handleInputValue} required/>
                 <Form.Text className="text-muted">
                     소수점 둘째자리까지만 입력해주세요.
                 </Form.Text>
@@ -163,7 +189,7 @@ const LoanComponentDetail = () => {
 
                 <Stack direction="horizontal" gap={2} className="col-md-2 mx-auto">
                 <Button variant="success" type="submit">수정</Button>
-                <Button variant="outline-secondary" type="button">취소</Button>
+                <Button variant="outline-secondary" onClick={() => handelResetButton()}>취소</Button>
                 </Stack>
             </Form>
         </div>

@@ -55,7 +55,6 @@ public class SooController {
 		System.out.println("pdLoanAdd");
 	}
 
-		
 	// 1건 select
 	@GetMapping("/admin/{lpdName}")
 	public LoanProductDTO fetchProductByName(@PathVariable String lpdName)		
@@ -65,8 +64,7 @@ public class SooController {
 		return service.selectProduct(lpdName);
 	}
 		
-	
-	// update
+	// 대출상품 수정
 	@PutMapping("/admin/edit/{lpdName}")
 	public void editPdLoan(@PathVariable String lpdName, @RequestBody LoanProductDTO dto)		
 		throws ServletException, IOException {
@@ -76,8 +74,8 @@ public class SooController {
 		System.out.println("[ edit 성공~~ ]");
 	}
 	
-	// delete
-	@DeleteMapping("/admin/delete/{lpdName}")
+	// 대출상품 삭제
+	@PutMapping("/admin/delete/{lpdName}")
 	public void deletePdLoan(@PathVariable String lpdName)
 		throws ServletException, IOException {
 		logger.info("<<< url - deletePdLoan() >>>");
@@ -85,4 +83,14 @@ public class SooController {
 		service.deleteProduct(lpdName);
 		System.out.println("[ Delete 성공~~ ]");
 	}
+	
+//	// 대출상품 신청
+//	@PostMapping(value="/admin/addReq")
+//	public void requestPdLoan(@RequestBody LoanProductDTO loanProductDTO)
+//		throws ServletException, IOException {
+//		logger.info("<<< url - requestPdLoan() >>>");
+//		
+//		service.deleteProduct(lpdName);
+//		System.out.println("[ Delete 성공~~ ]");
+//	}
 }

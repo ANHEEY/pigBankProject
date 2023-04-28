@@ -32,7 +32,7 @@ class LoanApiService {
 
     // delete
     deleteProduct(lpdName) {
-        return axios.delete(LOAN_API_BASE_URL + '/admin/delete/' + lpdName);
+        return axios.put(LOAN_API_BASE_URL + '/admin/delete/' + lpdName);
     }
 
 }

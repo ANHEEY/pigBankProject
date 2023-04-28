@@ -10,6 +10,7 @@ import '../../../../resources/css/customer/detail_customer.css'
 const LoanComponent = () => {
     const [listPdLoan, setListPdLoan]= useState([])
     const navigate = useNavigate();
+    
     // 상세화면 페이지 이동
     const goDetail = (lpdName) => {
         //navigate(`/admin/product/loan/detail/${id}`);

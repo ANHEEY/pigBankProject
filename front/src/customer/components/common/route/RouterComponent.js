@@ -91,11 +91,10 @@ const AppRouter = () => {
             <Route path="/customer/account/saving" Component={Saving} />
             <Route path="/customer/account/sleep" Component={Sleep} />
 
-
-
             {/* 대출조회 */}
             <Route path="/customer/account/LoanState" Component={LoanState} />
             <Route path="/customer/account/Loan" Component={Loan} />
+            <Route path="/customer/account/loan/LoanSchedule" Component={LoanSchedule} />
             
             {/* 이체 */}
             <Route path="/customer/transfer/trans_deposit" Component={TransDeposit} />

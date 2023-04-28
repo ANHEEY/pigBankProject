@@ -8,13 +8,13 @@
 
 	<!-- 대출상품 목록 -->
 	<select id="showPdLoantList" resultType="com.pigbank.project.dto.LoanProductDTO">
-		SELECT * FROM loan_product
+		SELECT * FROM loan_product WHERE show='y'
 	</select>
 	
 	<!-- 대출상품 등록 -->
 	<insert id="insertPdLoan" parameterType="com.pigbank.project.dto.LoanProductDTO">
-		INSERT INTO loan_product(lpdName, lcontent, lgrade, lmaxPeriod, lmaxPrice, lrate,  ltype, lcxlRate)
-		VALUES(#{lpdName}, #{lcontent}, #{lgrade}, #{lmaxPeriod}, #{lmaxPrice}, #{lrate}, #{ltype}, #{lcxlRate})
+		INSERT INTO loan_product(lpdName, lsubTitle, lcontent, lgrade, lmaxPeriod, lmaxPrice, lrate,  ltype, lcxlRate)
+		VALUES(#{lpdName}, #{lsubTitle}, #{lcontent}, #{lgrade}, #{lmaxPeriod}, #{lmaxPrice}, #{lrate}, #{ltype}, #{lcxlRate})
 	</insert>
 	
 	<!-- 대출상품 상세 -->
@@ -25,13 +25,14 @@
 	<!-- 대출상품 수정 -->
 	<update id="updateProduct" parameterType="com.pigbank.project.dto.LoanProductDTO">
 		UPDATE loan_product
-		SET lcontent=#{lcontent}, lgrade=#{lgrade}, lmaxPeriod=#{lmaxPeriod}, lmaxPrice=#{lmaxPrice}, lrate=#{lrate}, ltype=#{ltype}, lcxlRate=#{lcxlRate}
+		SET lsubTitle=#{lsubTitle}, lcontent=#{lcontent}, lgrade=#{lgrade}, lmaxPeriod=#{lmaxPeriod}, lmaxPrice=#{lmaxPrice}, lrate=#{lrate}, ltype=#{ltype}, lcxlRate=#{lcxlRate}
 		WHERE lpdName=#{lpdName}
 	</update>
 	
 	<!-- 대출상품 삭제 -->
 	<update id="deleteProduct" parameterType="String">
-		DELETE loan_product
+		UPDATE loan_product
+		SET show='n'
 		WHERE lpdName=#{lpdName}
 	</update>
 	

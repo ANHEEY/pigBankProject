@@ -56,6 +56,10 @@ const LoanComponentDetail = () => {
                         <td style={{width: '70%', textAlign: 'center'}}>{product.lpdName}</td>
                     </tr>
                     <tr>
+                        <th>대출설명 한줄요약</th>
+                        <td>{product.lsubTitle}</td>
+                    </tr>
+                    <tr>
                         <th>대출상품설명</th>
                         <td>{product.lcontent}</td>
                     </tr>

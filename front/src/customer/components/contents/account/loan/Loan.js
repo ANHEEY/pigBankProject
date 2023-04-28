@@ -133,7 +133,7 @@ class Loan extends Component{
                             <TableCell>{this.formatCurrency(member.lamount)}</TableCell>
                             <TableCell>
                                 <Stack gap={2} className="col-md-8">
-                                <Button variant="outline-secondary"><Link to="/LoanSchedule" style={{color:"black"}}>상환스케쥴</Link></Button>
+                                <Button variant="outline-secondary"><Link to="LoanSchedule" style={{color:"black"}}>상환스케쥴</Link></Button>
                                 <Button variant="outline-secondary" type="button">상환내역</Button>
                                 </Stack>
                             </TableCell>

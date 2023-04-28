@@ -15,6 +15,7 @@ public class LoanProductDTO {
 	
 	@Id
 	private String lpdName;
+	private String lsubTitle;
 	private String lcontent;
 	private String lgrade;
 	private int lmaxPeriod;
