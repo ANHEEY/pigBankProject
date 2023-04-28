@@ -1,9 +1,16 @@
-import { Component } from "react";
+import React from "react";
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
+import { useParams  } from "react-router-dom";
 
-class AutoTransAccept extends Component {
-    render(){
+function AutoTransAccept () {
+    const {selectedAccount , selectedMyAccount, yourMemo, myMemo, tAmount, transferCycle,startDate,endDate} = useParams();
+
+    const sDate = new Date(startDate)
+    const eDate = new Date(endDate)
+    const sMonth = (sDate.getMonth() +1);
+    const eMonth = (eDate.getMonth() +1);
+    const date = (eMonth - sMonth);
         return(
             <div align='center'>
                 <div class="w-50 p-3" align='center'>
@@ -12,31 +19,44 @@ class AutoTransAccept extends Component {
                         <tbody>
                             <tr>
                                 <th>받는분</th>
-                                <td align='right'>이정재</td>
+                                <td align='right'>{yourMemo}</td>
                             </tr>
                             <tr>
                                 <th>받는계좌</th>
-                                <td align='right'></td>
+                                <td align='right'>{selectedMyAccount}</td>
                             </tr>
+                            </tbody>
+                            </Table>
                             <br/>
                             <hr/>
+                            <Table>
+                                <tbody>
                             <tr>
                                 <th>자동이체주기</th>
-                                <td align='right'></td>
+                                <td align='right'>{transferCycle}</td>
                             </tr>
                             <tr>
                                 <th>자동이체기간</th>
-                                <td align='right'></td>
+                                <td align='right'>{date}개월</td>
                             </tr>
+                            </tbody>
+                            </Table>
+
                             <br/>
                             <hr/>
+                            <Table>
+                            <tbody>
                             <tr>
-                                <th>보낸금액</th>
-                                <td align='right'></td>
+                                <th>출금계좌</th>
+                                <td align="right">{selectedAccount}</td>
                             </tr>
                             <tr>
-                                <th>수수료</th>
-                                <td align='right'></td>
+                                <th>보낸금액</th>
+                                <td align='right'>{tAmount}</td>
+                            </tr>
+                            <tr>
+                                <th>내 메모</th>
+                                <td align='right'>{myMemo}</td>
                             </tr>
                         </tbody>
                     </Table>
@@ -45,5 +65,4 @@ class AutoTransAccept extends Component {
             </div>
         )
     }
-}
 export default AutoTransAccept;

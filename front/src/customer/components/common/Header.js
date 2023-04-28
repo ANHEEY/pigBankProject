@@ -75,7 +75,7 @@ function Header () {
                                         <Link to ="/customer/transfer/trans_deposit">계좌이체</Link>
                                     </li>
                                     <li className="dropdown">
-                                        <Link to ="/customer/transfer/auto_trans!">
+                                        <Link to ="/customer/transfer/add_auto_trans">
                                             <span>자동이체</span> 
                                             <i className="bi bi-chevron-right"></i>
                                         </Link>

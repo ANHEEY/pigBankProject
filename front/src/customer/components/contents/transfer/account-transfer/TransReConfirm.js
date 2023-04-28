@@ -7,10 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 function TransReConfirm (props) {
 
-    const [datas, setData] = useState([]);
-    const acPwd= props.data[1];
+    const acPwd = props.data[1];
     const selectedAccount = props.data[0];
-    const [message, setMessage] = useState(null);
     const yourMemo = props.data[5];
     const myMemo = props.data[4];
     const tAmount = props.data[3];
@@ -42,15 +40,9 @@ function TransReConfirm (props) {
 
           TransferService.save(acnumber)
             .then(res => {
-              setMessage(acnumber.acpwd + '성공');
               console.log(acnumber);
               console.log(selectedAccount);
-              navigate(`/customer/transfer/trans_accept/
-              ${selectedAccount}/
-              ${selectedMyAccount}/
-              ${yourMemo}/
-              ${myMemo}/
-              ${tAmount}`);
+              navigate(`/customer/transfer/trans_accept/${selectedAccount}/${selectedMyAccount}/${yourMemo}/${myMemo}/${tAmount}`);            
             })
             .catch(err => {
               console.log('error', err);
@@ -60,9 +52,11 @@ function TransReConfirm (props) {
     return(
     <Container>
         <div align='center'>
-        <a href="/customer/transfer/trans_deposit"><Button variant="secondary" size="lg" >
-        초기화
-        </Button></a>
+            <a href="/customer/transfer/trans_deposit">
+                <Button variant="secondary" size="lg" >
+                초기화
+                </Button>
+            </a>
         </div>
         <h3>이체 확인</h3>
         <hr />

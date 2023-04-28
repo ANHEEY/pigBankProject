@@ -12,7 +12,6 @@ function Account(props) {
 
   const [data, setData] = useState([]);
   const [accounts, setAccounts] = useState([]);
-  const [message, setMessage] = useState(null);
   const [selectedAccount, setSelectedAccount] = useState('');
   const [selectedBalance, setSelectedBalance] = useState('');
   const [selectedMyAccount, setSelectedMyAccount] = useState('');
@@ -20,7 +19,6 @@ function Account(props) {
   const [myMemo, setMyMemo] = useState('');
   const [yourMemo, setYourMemo] = useState('');
   const [acPwd, setAcPwd] = useState('');
-  const [acnumber, setAcnumber] = useState('');
   const [showComponent, setShowComponent] = useState(false);
   const [bankName, setBankName] = useState('');
 
@@ -57,26 +55,22 @@ function Account(props) {
 
         const handleClick = (e) => {
           e.preventDefault();
-
-          setShowComponent(true);
-
-          let acNumber = [  selectedAccount,  acPwd,  selectedMyAccount,  tAmount,  myMemo,  yourMemo, bankName];
-
-          let acnumber = {
-            acNumber: selectedAccount,
-            acpwd: acPwd,
-            tdepositnum: Number(selectedMyAccount),
-            tamount: Number(tAmount),
-            myMemo: myMemo,
-            yourMemo: yourMemo,
-            tdepositBank: bankName
-          };
+         
+        let acNumber = [selectedAccount,  
+                        acPwd,  
+                        selectedMyAccount,  
+                        tAmount,  
+                        myMemo,  
+                        yourMemo, 
+                        bankName];
           
-          setAcnumber(acnumber);
-
-          props.onData(acNumber);
-          setData(acNumber);
-          };
+            console.log(selectedAccount)
+            setShowComponent(true);
+            
+            props.onData(acNumber);
+            setData(acNumber);
+           
+        };
 
 
         const accountChange = (event) => {
@@ -95,6 +89,9 @@ function Account(props) {
 
       return (
       <Container >
+        <h2> 계좌이체 </h2>
+        <br />
+        <hr />
         <h3>출금정보</h3>
         <hr />
         <Table align="center">
@@ -224,7 +221,7 @@ function Account(props) {
                 </Table>     
 
         <div className="mb-2" align='center'>
-              <Button variant="primary" size="lg" onClick={handleClick} >
+              <Button variant="primary" size="lg" onClick={handleClick} disabled={!selectedAccount || !acPwd || !selectedMyAccount || !tAmount} >
               다음
               </Button>
           </div>

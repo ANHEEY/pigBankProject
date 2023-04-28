@@ -18,5 +18,5 @@ public interface LeeService {
 	
 	public void InsertTransfer(TransferDTO dto)
 			throws ServletException,IOException;
-	
+
 }

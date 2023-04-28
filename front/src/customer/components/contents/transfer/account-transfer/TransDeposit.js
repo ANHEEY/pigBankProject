@@ -24,8 +24,6 @@ class TransDeposit extends Component {
     return (
       <>
         <Account onData={this.move}/>
-        <p>{this.state.data}</p>
-        
       </>          
         )
     }

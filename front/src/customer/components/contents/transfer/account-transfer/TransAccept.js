@@ -1,7 +1,7 @@
-import React, {useState } from "react";
+import React from "react";
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import { useLocation, useParams  } from "react-router-dom";
+import { useParams  } from "react-router-dom";
 
 function TransAccept () {
 

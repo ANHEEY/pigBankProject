@@ -108,7 +108,7 @@ const AppRouter = () => {
             <Route path="/customer/transfer/auto_trans_check" Component={AutoTransCheck} />
             <Route path="/customer/transfer/auto_trans_reConfirm" Component={AutoTransReConfirm} />
             <Route path="/customer/transfer/auto_trans_detail" Component={AutoTransDetail} />
-            <Route path="/customer/transfer/auto_trans_accept" Component={AutoTransAccept} />
+            <Route path="/customer/transfer/auto_trans_accept/:selectedAccount/:selectedMyAccount/:yourMemo/:myMemo/:tAmount/:transferCycle/:startDate/:endDate" Component={AutoTransAccept} />
 
             {/* 이체한도 */}
             <Route path="/customer/transfer/trans_limit" Component={TransLimit} />

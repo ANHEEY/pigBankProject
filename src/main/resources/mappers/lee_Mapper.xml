@@ -21,4 +21,16 @@
 			        #{yourMemo}, sysdate)
 	</insert>
 	
+	<update id="updateAccount" parameterType="com.pigbank.project.dto.TransferDTO">
+		UPDATE ACCOUNT_TBL 
+		SET ACBALANCE = ACBALANCE - #{tAmount}
+		WHERE ACNUMBER = #{acNumber}
+	</update>
+	
+	<update id="updateAccountnext" parameterType="com.pigbank.project.dto.TransferDTO">
+		UPDATE ACCOUNT_TBL
+		SET ACBALANCE = ACBALANCE + #{tAmount}
+		WHERE ACNUMBER = #{acNumber}
+	</update>
+	
 </mapper>
