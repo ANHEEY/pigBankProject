@@ -30,10 +30,10 @@ class LoanApiService {
         return axios.put(LOAN_API_BASE_URL + '/admin/edit/' + pdLoan.lpdName, pdLoan);
     }
 
-    // // delete
-    // deleteMember(memberID) {
-    //     return axios.delete(MEMBER_API_BASE_URL + '/' + memberID);
-    // }
+    // delete
+    deleteProduct(lpdName) {
+        return axios.delete(LOAN_API_BASE_URL + '/admin/delete/' + lpdName);
+    }
 
 }
 export default new LoanApiService();

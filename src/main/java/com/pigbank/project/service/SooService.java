@@ -28,4 +28,8 @@ public interface SooService {
 	public void editProduct(LoanProductDTO loanProdctDTO)
 			throws ServletException,IOException;
 	
+	// 대출 상품 삭제
+	public void deleteProduct(String lpdName)
+			throws ServletException,IOException;
+	
 }

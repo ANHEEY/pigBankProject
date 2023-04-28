@@ -27,6 +27,17 @@ const LoanComponentDetail = () => {
         window.localStorage.setItem("lpdName", lpdName);
         navigate("/admin/product/loan/edit");
     }
+
+    // delete 버튼
+    const deleteProduct = (lpdName) => {
+        LoanApiService.deleteProduct(lpdName)
+        .then(res => {
+            navigate("/admin/product/loan");
+        })
+        .catch(err => {
+            console.log('deleteMember() 에러!', err);
+        });
+    }
     
     return(
         <>
@@ -82,7 +93,7 @@ const LoanComponentDetail = () => {
         <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto">
         <Button variant="secondary" size="medium"><Link to="/admin/product/loan" style={{color:"white"}}>목록</Link></Button>
         <Button variant="success" size="medium" onClick={() => edit(product.lpdName)}>수정</Button>
-        <Button variant="outline-secondary" size="medium"><Link to="" style={{color:"black"}}>삭제</Link></Button>
+        <Button variant="outline-secondary" size="medium" style={{color:"black"}} onClick={() => deleteProduct(product.lpdName)}>삭제</Button>
         </Stack><br/><br/><br/> 
     </div>  
     </>             

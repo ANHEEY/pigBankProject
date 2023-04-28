@@ -4,12 +4,13 @@ import { Link } from 'react-router-dom';
 import { Button, Table, Form } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import LoanApiService from "./LoanApiService";
+import '../../../../resources/css/customer/detail_customer.css'
 
 
 const LoanComponent = () => {
-    
     const [listPdLoan, setListPdLoan]= useState([])
     const navigate = useNavigate();
+    // 상세화면 페이지 이동
     const goDetail = (lpdName) => {
         //navigate(`/admin/product/loan/detail/${id}`);
     
@@ -38,18 +39,32 @@ const LoanComponent = () => {
                     <Table responsive striped style={{textAlign:"center"}}>
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th>
+                            <Form>
+                            {['checkbox'].map((type) => (
+                                <div key={`inline-${type}`} className="mb-3">
+                                <Form.Check
+                                    inline
+                                    name="group1"
+                                    type={type}
+                                    id={`inline-${type}-1`}
+                                />
+                                </div>
+                            ))}
+                            </Form>
+                            </th>
                             <th>대출상품이름</th>
                             <th>대출상품금리</th>
                             <th>대출가입기간</th>
                             <th>대출최대금액</th>
                             <th>중도해지이자율</th>
                             <th>상품등록날짜</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {listPdLoan.map(product =>
-                        <tr key={product.lpdname} onClick={() => goDetail(product.lpdName)}>
+                        <tr key={product.lpdname}>
                             <td>
                             <Form>
                             {['checkbox'].map((type) => (
@@ -70,12 +85,15 @@ const LoanComponent = () => {
                             <td>{product.lmaxPrice.toLocaleString()}만원</td>
                             <td>{product.lcxlRate}%</td>
                             <td>{product.lregDate}</td>
+                            <td>
+                                <button className="customerinfoBtn" onClick={() => goDetail(product.lpdName)}>상세페이지</button>
+                            </td>
                         </tr>
                         )}
                     </tbody>
                     </Table>
                     <div className="d-flex justify-content-end">
-                    <Button variant="dark"><Link to="add" style={{color:"white"}}>AddProduct</Link></Button>
+                    <Button variant="dark"><Link to="add" style={{color:"white"}}>상품등록</Link></Button>
                     </div>
                 </div>
             </div>

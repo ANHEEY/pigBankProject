@@ -55,4 +55,12 @@ public class SooServiceImpl implements SooService{
 		dao.updateProduct(loanProdctDTO);
 	}
 
+	// 대출상품 삭제
+	@Override
+	public void deleteProduct(String lpdName) throws ServletException, IOException {
+		System.out.println("service - deleteProduct");
+		
+		dao.deleteProduct(lpdName);
+	}
+
 }

@@ -4,6 +4,7 @@ import {Table, TableHead, TableRow, TableCell,  TableBody } from "@mui/material"
 import AllService from "../All/AllService";
 import "../../../../resources/css/product/saving.css";
 import {Link} from 'react-router-dom';
+import { Button, Stack } from 'react-bootstrap'; // npm install react-bootstrap bootstrap
 
 
 class Loan extends Component{
@@ -56,8 +57,7 @@ class Loan extends Component{
     }
      
 
-
-      render() {
+    render() {
         // members에서 selectedOption과 일치하는 항목만 필터링
         const filteredMembers = this.state.members.filter
             ((member) =>
@@ -70,8 +70,6 @@ class Loan extends Component{
         }
 
         return (
-        
-
         <main className="main">
             <section className="section">
              
@@ -112,14 +110,15 @@ class Loan extends Component{
 
                 <div class="card-body">
                     <Table>
-                      <TableHead >
-                        <TableRow >
+                      <TableHead>
+                        <TableRow>
                           <TableCell style={tableHeadStyle}>계좌명</TableCell>
                           <TableCell style={tableHeadStyle}>계좌번호</TableCell>
                           <TableCell style={tableHeadStyle}>가입기간</TableCell>
                           <TableCell style={tableHeadStyle}>용도</TableCell>
                           <TableCell style={tableHeadStyle}>한도</TableCell>
-                          <TableCell style={tableHeadStyle}>잔액</TableCell>
+                          <TableCell style={tableHeadStyle}>상환잔액</TableCell>
+                          <TableCell style={tableHeadStyle}>업무</TableCell>
                         </TableRow>
                       </TableHead>
 
@@ -132,16 +131,22 @@ class Loan extends Component{
                             <TableCell>{member.lpurpose}</TableCell>
                             <TableCell>{this.formatCurrency(member.trsfLimit)}</TableCell>
                             <TableCell>{this.formatCurrency(member.lamount)}</TableCell>
+                            <TableCell>
+                                <Stack gap={2} className="col-md-8">
+                                <Button variant="outline-secondary"><Link to="/LoanSchedule" style={{color:"black"}}>상환스케쥴</Link></Button>
+                                <Button variant="outline-secondary" type="button">상환내역</Button>
+                                </Stack>
+                            </TableCell>
                            </TableRow>
-                        
                       </TableBody>
                       ))}
                     </Table>
-                    
                 </div>
-            </div>
-              
+            </div> 
             </section>
+            <br />
+            <br />
+            <br />
           </main>
         );
       }

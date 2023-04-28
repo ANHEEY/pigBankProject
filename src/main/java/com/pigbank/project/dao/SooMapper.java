@@ -20,4 +20,7 @@ public interface SooMapper {
 	
 	// 대출상품 수정
 	public void updateProduct(LoanProductDTO loanProdctDTO);
+	
+	// 대출상품 삭제
+	public void deleteProduct(String lpdName);
 }

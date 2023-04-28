@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,7 +68,7 @@ public class SooController {
 	
 	// update
 	@PutMapping("/admin/edit/{lpdName}")
-	public void editPdLoan(@RequestBody LoanProductDTO dto)		
+	public void editPdLoan(@PathVariable String lpdName, @RequestBody LoanProductDTO dto)		
 		throws ServletException, IOException {
 		logger.info("<<< url - editPdLoan >>>");
 		
@@ -75,13 +76,13 @@ public class SooController {
 		System.out.println("[ edit 성공~~ ]");
 	}
 	
-//	// delete
-//	@DeleteMapping("/{id}")
-//	public void memberDelete(@PathVariable int id)
-//		throws ServletException, IOException {
-//		logger.info("<<< url - memberDelete() >>>");
-//		
-//		service.deleteMember(id);;
-//		System.out.println("[ Delete 성공~~ ]");
-//	}
+	// delete
+	@DeleteMapping("/admin/delete/{lpdName}")
+	public void deletePdLoan(@PathVariable String lpdName)
+		throws ServletException, IOException {
+		logger.info("<<< url - deletePdLoan() >>>");
+		
+		service.deleteProduct(lpdName);
+		System.out.println("[ Delete 성공~~ ]");
+	}
 }

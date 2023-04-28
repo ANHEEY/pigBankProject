@@ -1,88 +1,123 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Container, Button, Form, Stack } from 'react-bootstrap'; // npm install react-bootstrap bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 css를 적용하기 위함
 import { Typography } from "@mui/material";
-import { IoIosAddCircleOutline } from "react-icons/io";
+import AdminDepositService from "./AdminDepositService";
+import { useNavigate } from "react-router-dom";
 
-class DepositComponentAdd extends Component{
-    render(){
+function DepositComponentAdd(){
+    const navigate = useNavigate();
+
+    const [depositProduct, setDepositProduct] = useState({
+        dpdName:'',
+            dcontent:'',
+            dperiod:'',
+            dmin:'',
+            dmax:'',
+            drate:'',
+            dcxlRate:''
+    })
+    
+    
+    const onChange = (e) =>{
+        const {value, name} = e.target;
+    
+        setDepositProduct({
+            ...depositProduct, 
+          [name]: value 
+        });
+    }
+
+    const saveDepositPd = (e) =>{
+        e.preventDefault();
+
+        const product = {
+            dpdName:depositProduct.dpdName,
+            dcontent:depositProduct.dcontent,
+            dperiod:depositProduct.dperiod,
+            dmin:depositProduct.dmin,
+            dmax:depositProduct.dmax,
+            drate:depositProduct.drate,
+            dcxlRate:depositProduct.dcxlRate
+        }
+
+        AdminDepositService.depositPdSave(product)
+            .then(res=>{
+                alert("정상적으로 등록되었습니다.");
+                navigate('/admin/product/deposit');
+            })
+            .catch(err => {
+                console.log('depositPdSave() 에러!!', err);
+            });
+
+        
+    }
         return(
             <div className="component-div">
                 <div className="admin-title">
-                    <IoIosAddCircleOutline /> 예금상품등록
+                   예금상품등록
                 </div>
                 <Container><br/><br/>
-                    <Form>
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>* 예금상품명</Form.Label>
-                        <Form.Control required type="text" placeholder="예금상품명을 입력해주세요." />
-                        </Form.Group>
+                <Form>
+                    <Form.Group className="mb-3" controlId="formGroupDpdName">
+                    <Form.Label>* 예금상품명</Form.Label>
+                    <Form.Control required type="text" name="dpdName"
+                        value={depositProduct.dpdName} placeholder="예금상품명을 입력해주세요." onChange={onChange} />
+                    </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>* 예금상품설명</Form.Label>
-                        <Form.Control required as="textarea" rows={3} placeholder="예금상품설명을 간략히 적어주세요." />
-                        </Form.Group>
+                    <Form.Group className="mb-3" controlId="formGroupDcontent">
+                    <Form.Label>* 예금상품설명</Form.Label>
+                    <Form.Control required as="textarea" name="dcontent"
+                         value={depositProduct.dcontent} rows={3} placeholder="예금상품설명을 적어주세요." onChange={onChange} />
+                    </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>* 예금신청자격</Form.Label>
-                        <Form.Select required>
-                            <option>gold</option>
-                            <option>black</option>
-                            <option>red</option>
-                            <option>yellow</option>
-                        </Form.Select>
-                        </Form.Group>
+                    <Form.Group className="mb-3" controlId="formGroupDperiod">
+                    <Form.Label>* 예금 가입 기간</Form.Label>
+                    <Form.Control required type="number" name="dperiod"
+                        value={depositProduct.dperiod} placeholder="월" onChange={onChange} />
+                    <Form.Text className="text-muted">
+                        월 단위로 입력해주세요.
+                    </Form.Text>
+                    </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>* 예금가능 최장기간</Form.Label>
-                        <Form.Control required type="text" placeholder="월" />
-                        <Form.Text className="text-muted">
-                            월 단위로 입력해주세요.
-                        </Form.Text>
-                        </Form.Group>
+                    <Form.Group className="mb-3" controlId="formGroupDmin">
+                    <Form.Label>* 예금가능 최소금액</Form.Label>
+                    <Form.Control required type="number" name="dmin"
+                        value={depositProduct.dmin} placeholder="만원" onChange={onChange} />
+                    </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>* 예금가능 최고금액</Form.Label>
-                        <Form.Control required type="number" placeholder="만원" />
-                        </Form.Group>
+                    <Form.Group className="mb-3" controlId="formGroupDmax">
+                    <Form.Label>* 예금가능 최고금액</Form.Label>
+                    <Form.Control required type="number" name="dmax"
+                        value={depositProduct.dmax} placeholder="만원" onChange={onChange} />
+                    </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>* 예금이자</Form.Label>
-                        <Form.Control required type="number" placeholder="%" />
-                        <Form.Text className="text-muted">
-                            소수점 둘째자리까지만 입력해주세요.
-                        </Form.Text>
-                        </Form.Group>
-    {/* 
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>* 예금상환방법</Form.Label>
-                        <Form.Select required>
-                            <option>원리금 균등분할상환</option>
-                            <option>원금 균등분할상환</option>
-                            <option>만기일시상환</option>
-                        </Form.Select>
-                        </Form.Group> */}
-                        
-                        {/* <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>* 중도상환 수수료율</Form.Label>
-                        <Form.Control type="number" placeholder="%" />
-                        <Form.Text className="text-muted">
-                            소수점 둘째자리까지만 입력해주세요.
-                        </Form.Text>
-                        </Form.Group> */}
+                    <Form.Group className="mb-3" controlId="formGroupDrate">
+                    <Form.Label>* 예금이자</Form.Label>
+                    <Form.Control required type="number" name="drate"
+                        value={depositProduct.drate} placeholder="%" onChange={onChange} />
+                    <Form.Text className="text-muted">
+                        소수점 둘째자리까지만 입력해주세요.
+                    </Form.Text>
+                    </Form.Group>
+                    
+                    <Form.Group className="mb-3" controlId="formGroupDcxlRate">
+                    <Form.Label>* 중도 해지시 금리</Form.Label>
+                    <Form.Control type="number" name="dcxlRate"
+                        value={depositProduct.dcxlRate} placeholder="%" onChange={onChange} />
+                    <Form.Text className="text-muted">
+                        소수점 둘째자리까지만 입력해주세요.
+                    </Form.Text>
+                    </Form.Group> 
 
-                        <Stack direction="horizontal" gap={2} className="col-md-2 mx-auto">
-                        <Button variant="success" type="submit">Register</Button>
-                        <Button variant="outline-secondary" type="reset">Cancel</Button>
-                        </Stack>
-                    </Form>
-                </Container>
+                    <Stack direction="horizontal" gap={2} className="col-md-2 mx-auto">
+                    <Button variant="success" onClick={saveDepositPd}>Register</Button>
+                    <Button variant="outline-secondary" type="reset">Cancel</Button>
+                    </Stack>
+                </Form>
+            </Container>   
             </div>
-        )
+        );
     }
-// const style =  {
-//     display: 'flex',
-//     justifyContent: 'center'}
- }
 
 export default DepositComponentAdd;

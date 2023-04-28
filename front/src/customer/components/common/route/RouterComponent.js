@@ -7,15 +7,17 @@ import Account from "../../contents/account/Account/Account";
 import Deposit from "../../contents/account/Deposit/Deposit";
 import Saving from "../../contents/account/Saving/Saving";
 import Sleep from "../../contents/account/Sleep";
-// 조회|대출조회
 
+// 조회|대출조회
 import Loan from "../../contents/account/loan/Loan";
 import LoanState from "../../contents/account/loan/LoanState";
+import LoanSchedule from "../../contents/account/loan/LoanSchedule";
 
 // 이체
 import TransDeposit from "../../contents/transfer/account-transfer/TransDeposit";
 import TransReConfirm from "../../contents/transfer/account-transfer/TransReConfirm";
 import TransAccept from "../../contents/transfer/account-transfer/TransAccept";
+
 // 이체|자동이체
 import AddAutoTrans from "../../contents/transfer/auto-transfer/AddAutoTrans";
 import AutoTrans from "../../contents/transfer/auto-transfer/AutoTrans";
@@ -23,6 +25,7 @@ import AutoTransReConfirm from "../../contents/transfer/auto-transfer/AutoTransR
 import AutoTransAccept from "../../contents/transfer/auto-transfer/AutoTransAccept";
 import AutoTransCheck from "../../contents/transfer/auto-transfer/AutoTransCheck";
 import AutoTransDetail from "../../contents/transfer/auto-transfer/AutoTransDetail";
+
 // 이체|이체한도
 import TransLimit from "../../contents/transfer/limit/TransLimit";
 import TransLimitAccept from "../../contents/transfer/limit/TransLimitAccept";

@@ -1,7 +1,6 @@
 import  React, {useState, useEffect} from "react";
 import { Button, Form, Stack } from 'react-bootstrap'; // npm install react-bootstrap bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 css를 적용하기 위함
-import { Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import LoanApiService from './LoanApiService.js';
 

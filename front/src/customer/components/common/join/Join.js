@@ -50,7 +50,7 @@ function Join(){
         CustomerService.customerJoin(customerInfo)
             .then(res=> {
                 console.log(customerInfo);
-                navigate('/customer/*');
+                navigate(res);
             })
         .catch(err => {
         console.log('customerJoin() 에러!!', err);

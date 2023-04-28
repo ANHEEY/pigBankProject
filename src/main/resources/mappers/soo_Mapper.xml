@@ -29,4 +29,10 @@
 		WHERE lpdName=#{lpdName}
 	</update>
 	
+	<!-- 대출상품 삭제 -->
+	<update id="deleteProduct" parameterType="String">
+		DELETE loan_product
+		WHERE lpdName=#{lpdName}
+	</update>
+	
 </mapper>
