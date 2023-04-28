@@ -25,4 +25,7 @@ public class AccountDTO {
 	private Date lastDate;
 	private long trsfLimit;
 	
+	// 고객에서 조인한 이름
+	private String name;
+	
 }

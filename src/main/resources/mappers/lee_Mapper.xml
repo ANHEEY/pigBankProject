@@ -8,10 +8,17 @@
 <mapper namespace="com.pigbank.project.dao.LeeMapper">
 
 	<select id="accountList" parameterType="String" resultType="com.pigbank.project.dto.AccountDTO">
-		SELECT acNumber FROM account_tbl WHERE id = #{id}
+		SELECT act.acnumber, act.acbalance, act.bankName, cs.name
+		  FROM ACCOUNT_TBL act, CUSTOMER cs
+		  WHERE act.id = cs.id
+		    AND act.id = #{id}
 	</select>
 	
-	<select id="balance" parameterType="long" resultType="com.pigbank.project.dto.AccountDTO">
-		SELECT acBalance FROM ACCOUNT_TBL WHERE ACNUMBER = #{acNumber}
-	</select>
+	<insert id="insertTransfer" parameterType="com.pigbank.project.dto.TransferDTO">
+		INSERT INTO TRANSFER_TBL(tNum, acNumber, tDepositnum, tDepositBank, tType, tAmount, myMemo, yourMemo, tDate)
+			VALUES((SELECT NVL(MAX(tNum) + 1, 1) FROM TRANSFER_TBL), #{acNumber},
+			        #{tDepositnum}, #{tDepositBank}, #{tType}, #{tAmount}, #{myMemo},
+			        #{yourMemo}, sysdate)
+	</insert>
+	
 </mapper>

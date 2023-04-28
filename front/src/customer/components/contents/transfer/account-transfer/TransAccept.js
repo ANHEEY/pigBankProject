@@ -1,9 +1,13 @@
-import { Component } from "react";
+import React, {useState } from "react";
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
+import { useLocation, useParams  } from "react-router-dom";
 
-class TransAccept extends Component {
-    render(){
+function TransAccept () {
+
+
+    const {selectedAccount , selectedMyAccount, yourMemo, myMemo, tAmount} = useParams();
+
         return(
             <div align='center'>
                 <div class="w-50 p-3" align='center'>
@@ -12,21 +16,29 @@ class TransAccept extends Component {
                         <tbody>
                             <tr>
                                 <th>받는분</th>
-                                <td align='right'>이정재</td>
+                                <td align='right'>{yourMemo}</td>
                             </tr>
                             <tr>
                                 <th>받는계좌</th>
-                                <td align='right'>938002-00-266491</td>
+                                <td align='right'>{selectedAccount}</td>
                             </tr>
+                            </tbody>
+                            </Table>
                             <br/>
                             <hr/>
+                            <Table>
+                        <tbody>
                             <tr>
                                 <th>보낸금액</th>
-                                <td align='right'>2,300,000원</td>
+                                <td align='right'>{tAmount}</td>
                             </tr>
                             <tr>
-                                <th>수수료</th>
-                                <td align='right'></td>
+                                <th>보낸계좌</th>
+                                <td align='right'>{selectedMyAccount}</td>
+                            </tr>
+                            <tr>
+                                <th>나의 메모</th>
+                                <td align="right">{myMemo}</td>
                             </tr>
                         </tbody>
                     </Table>
@@ -35,5 +47,4 @@ class TransAccept extends Component {
             </div>
         )
     }
-}
 export default TransAccept;

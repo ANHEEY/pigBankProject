@@ -9,11 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
 
 import com.pigbank.project.dto.AccountDTO;
+import com.pigbank.project.dto.TransferDTO;
 
 public interface LeeService {
 	
 	public List<AccountDTO> accountList(HttpServletRequest req, Model model)
 			throws ServletException,IOException;
-	public AccountDTO balance(long acNumber)
+	
+	public void InsertTransfer(TransferDTO dto)
 			throws ServletException,IOException;
+	
 }

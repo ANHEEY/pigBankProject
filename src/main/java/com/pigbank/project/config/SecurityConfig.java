@@ -11,7 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.pigbank.project.dao.CustomerMapper;
-import com.pigbank.project.handler.SuccessHandler;
+
 import com.pigbank.project.jwt.JwtAuthenticationFilter;
 import com.pigbank.project.jwt.JwtAuthorizationFilter;
 

@@ -13,11 +13,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.SavingProductDTO;
+import com.pigbank.project.dto.TransferDTO;
 import com.pigbank.project.service.LeeServiceImpl;
 
 @CrossOrigin(origins="**", maxAge=3600)
@@ -38,17 +40,18 @@ public class LeeController {
 		logger.info("<<< url - accountList >>>");
 		
 		List<AccountDTO> list = service.accountList(req, model);
+		
 		System.out.println(list);
 		return list;
 	}
-	// http://localhost:8081/balance
-	@GetMapping(value="/balance")
-	public AccountDTO balance(@RequestBody long acNumber)
+	
+	@PostMapping(value="/Transfer")
+	public void insertTransfer(@RequestBody TransferDTO dto)
 			throws ServletException, IOException {
-		System.out.println("acNumber : " + acNumber);
-		AccountDTO dto = service.balance(acNumber);
-		System.out.println("dto : " + dto);
-		return dto;
+				logger.info("<<< url - InsertTransfer");
+		
+				System.out.println("dto : " + dto);
+				service.InsertTransfer(dto);
 	}
 	
 }

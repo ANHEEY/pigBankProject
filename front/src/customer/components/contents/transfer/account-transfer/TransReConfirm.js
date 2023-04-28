@@ -1,56 +1,116 @@
+import React, {useState , useEffect } from "react";
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
+import TransferService from "../transfer-service/TransferService";
+import { useNavigate } from "react-router-dom";
 
-function TransReConfirm () {
+function TransReConfirm (props) {
+
+    const [datas, setData] = useState([]);
+    const acPwd= props.data[1];
+    const selectedAccount = props.data[0];
+    const [message, setMessage] = useState(null);
+    const yourMemo = props.data[5];
+    const myMemo = props.data[4];
+    const tAmount = props.data[3];
+    const selectedMyAccount= props.data[2];
+    const [currentTime, setCurrentTime] = useState(null);
+    
+    const navigate = useNavigate();
+
+    
+        useEffect(() => {
+            const now = new Date();
+            const year = now.getFullYear(); // 년 정보 가져오기
+            const month = now.getMonth() + 1; // 월 정보 가져오기 (0부터 시작하므로 +1 필요)
+            const date = now.getDate(); // 일 정보 가져오기
+            setCurrentTime(`${year}-${month}-${date}`);
+            }, []);
+    
+    const reloadReConfirmList = (e) => {
+        e.preventDefault();
+
+        let acnumber = {
+            acNumber: Number(selectedAccount),
+            tdepositnum: Number(selectedMyAccount),
+            tamount: Number(tAmount),
+            myMemo: myMemo,
+            yourMemo: yourMemo,
+            tdepositBank: props.data[6],
+          };
+
+          TransferService.save(acnumber)
+            .then(res => {
+              setMessage(acnumber.acpwd + '성공');
+              console.log(acnumber);
+              console.log(selectedAccount);
+              navigate(`/customer/transfer/trans_accept/
+              ${selectedAccount}/
+              ${selectedMyAccount}/
+              ${yourMemo}/
+              ${myMemo}/
+              ${tAmount}`);
+            })
+            .catch(err => {
+              console.log('error', err);
+            });
+          
+          };
     return(
     <Container>
+        <div align='center'>
+        <a href="/customer/transfer/trans_deposit"><Button variant="secondary" size="lg" >
+        초기화
+        </Button></a>
+        </div>
         <h3>이체 확인</h3>
         <hr />
         <Table>
                 <tbody>
                     <tr>
                         <th>이체 일시</th>
-                        <td align='right'>2022.06.08 11:20:11</td>
+                        <td align='right'>{currentTime}</td>
                     </tr>
                     <tr>
                         <th>예금주</th>
-                        <td align='right'></td>
+                        <td align='right'>{props.data[4]}</td>
                     </tr>
                     <tr>
                         <th>출금계좌</th>
-                        <td align='right'></td>
+                        <td align='right'>{props.data[0]}</td>
                     </tr>
+                    </tbody>
+                    </Table>
                     <br/>
                     <hr/>
-                    <tr>
+                    <Table>
+                    <tbody>
+                        <tr>
                         <th>받는 분</th>
-                        <td align='right'></td>
+                        <td align='right'>{props.data[5]}</td>
                     </tr>
                     <tr>
                         <th>받는계좌</th>
-                        <td align='right'></td>
+                        <td align='right'>{props.data[2]}</td>
                     </tr>
+                    </tbody>
+                    </Table>
                     <br />
                     <hr />
+                    <Table>
+                    
+                    <tbody>
                     <tr>
                         <th>이체금액</th>
-                        <td align='right'></td>
+                        <td align='right'>{props.data[3]}원</td>
                     </tr>
-                    <tr>
-                        <th>수수료</th>
-                        <td align='right'></td>
-                    </tr>
-                </tbody>
+                    </tbody>
         </Table>
                 <div align='right'>
-                    <a href="/customer/transfer/trans_deposit"><Button variant="secondary" size="lg">
-                    이전
-                    </Button></a>
-                    {' '} 
-                    <a href='/customer/transfer/trans_accept'><Button variant="primary" size="lg">
+                    <Button variant="primary" size="lg" onClick={reloadReConfirmList}>
                     이체    
-                    </Button></a>
+                    </Button>
                 </div>
     </Container>
     )

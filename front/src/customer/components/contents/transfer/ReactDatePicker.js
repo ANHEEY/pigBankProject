@@ -12,6 +12,7 @@ const ReactDatePicker = () => {
       return (
           <div>
             <DatePicker
+                type="date"
                 locale={ko}
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
