@@ -1,21 +1,20 @@
 import React, { useState } from "react";
 import { Container, Button, Form, Stack } from 'react-bootstrap'; // npm install react-bootstrap bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 css를 적용하기 위함
-import { Typography } from "@mui/material";
 import AdminDepositService from "./AdminDepositService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 
 function DepositComponentAdd(){
     const navigate = useNavigate();
 
     const [depositProduct, setDepositProduct] = useState({
         dpdName:'',
-            dcontent:'',
-            dperiod:'',
-            dmin:'',
-            dmax:'',
-            drate:'',
-            dcxlRate:''
+        dcontent:'',
+        dperiod:'',
+        dmin:'',
+        dmax:'',
+        drate:'',
+        dcxlRate:''
     })
     
     
@@ -110,9 +109,9 @@ function DepositComponentAdd(){
                     </Form.Text>
                     </Form.Group> 
 
-                    <Stack direction="horizontal" gap={2} className="col-md-2 mx-auto">
-                    <Button variant="success" onClick={saveDepositPd}>Register</Button>
-                    <Button variant="outline-secondary" type="reset">Cancel</Button>
+                    <Stack direction="horizontal" gap={2} className="col-md-4 mx-auto">
+                    <Button variant="success" onClick={saveDepositPd}>상품등록</Button>
+                    <Button variant="outline-secondary"><Link to="/admin/product/deposit" style={{color:'gray'}}>취소</Link></Button>
                     </Stack>
                 </Form>
             </Container>   

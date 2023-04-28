@@ -1,8 +1,11 @@
-import { Table, TableHead, TableRow, TableCell, Button, TableBody } from "@mui/material";
+import { Form,Button,Table } from 'react-bootstrap';
 import React, { useState,useEffect } from "react";
 import {Link} from 'react-router-dom';
 import AdminDepositService from "./AdminDepositService";
 import { useNavigate } from "react-router-dom";
+import { BiListCheck } from "react-icons/bi";
+import '../../../../resources/css/customer/detail_customer.css';
+
 
 function DepositComponent(){
   const navigate = useNavigate();
@@ -12,10 +15,6 @@ function DepositComponent(){
     // 라이프 사이클 중 컴포넌트가 생성된 후 사용자에게 보여지기까지의 전체 과정을 랜더링
 
     useEffect(() => {
-      depositList();
-    }, []);
-
-    const depositList = () => {
       AdminDepositService.depositPdList()
             .then(res=>{
               setDepositProduct(res.data);
@@ -23,53 +22,85 @@ function DepositComponent(){
             .catch(err=>{
                 console.log('depositPdList() Error!!',err);
             });
-      }
+    }, []);
 
     const detailProduct = (dpdName)=>{
       window.localStorage.setItem("dpdName", dpdName);
       navigate('/admin/product/deposit/detail');
     }
-                    
-        return (
-        
-            <div className="component-div">
-                <h1 style={{
-                  textAlign:"center"
-                }}>예금상품</h1>   
-                <Button variant='contained' color='success' align="center" size="lg"><Link to="add" style={{color:"white"}}>상품등록</Link></Button>
-                <div className="card-body">
-                  <div style={{width:1300}}>
-                    <Table>
-                      <TableHead>
-                        <TableRow>
-                          <TableCell style={{width:200, textAlign:'center'}}>예금상품이름</TableCell>
-                          <TableCell style={{width:100, textAlign:'center'}}>가입기간</TableCell>
-                          <TableCell style={{width:100, textAlign:'center'}}>예금상품금리</TableCell>
-                          <TableCell style={{width:400, textAlign:'center'}}>예금상품설명</TableCell>
-                          <TableCell style={{width:200, textAlign:'center'}}>예금최소금액</TableCell>
-                          <TableCell style={{width:200, textAlign:'center'}}>예금최대금액</TableCell>
-                          <TableCell style={{width:100, textAlign:'center'}}>중도해지시금리</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                         {depositProducts.map((product) => (
-                          <TableRow key={product.dpdName}>
-                            <TableCell style={{textAlign:'center'}} onClick={()=>detailProduct(product.dpdName)}>{product.dpdName}</TableCell>
-                            <TableCell style={{textAlign:'center'}}>{product.dperiod}개월</TableCell>                            
-                            <TableCell style={{textAlign:'center'}}>{product.drate}%</TableCell>
-                            <TableCell style={{textAlign:'center'}}>{product.dcontent}</TableCell>
-                            <TableCell style={{textAlign:'center'}}>{product.dmin}만원</TableCell>
-                            <TableCell style={{textAlign:'center'}}>{product.dmax}만원</TableCell>
-                            <TableCell style={{textAlign:'center'}}>{product.dcxlRate}%</TableCell>
-                          </TableRow>
-                        ))} 
-                      </TableBody>
-                    </Table>
-                    
-                </div>
-            </div>
-           </div>   
-
-        );
+    return (
+      <>
+      <div className="component-div">
+          <div className="admin-title">
+          <BiListCheck /> 예금상품
+          </div>
+          <div style={{width:1000}}>
+              <div className="card-body" style={{marginTop: "20px"}}>
+                  <Table responsive striped style={{textAlign:"center"}}>
+                      <thead>
+                          <tr>
+                            <th>
+                              <Form>
+                              {['checkbox'].map((type) => (
+                                  <div key={`inline-${type}`} className="mb-3">
+                                  <Form.Check
+                                      inline
+                                      name="group1"
+                                      type={type}
+                                      id={`inline-${type}-1`}
+                                  />
+                                  </div>
+                              ))}
+                              </Form>
+                              </th>
+                              <th>예금상품명</th>
+                              <th>예금상품금리</th>
+                              <th>가입기간</th>
+                              <th>예금최소금액</th>
+                              <th>예금최대금액</th>
+                              <th>중도해지시금리</th>
+                              <th>상품등록일</th>
+                              <th></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {depositProducts.map(product =>
+                              <tr key={product.dpdName}>
+                                  <td>
+                                  <Form>
+                                  {['checkbox'].map((type) => (
+                                      <div key={`inline-${type}`} className="mb-3">
+                                      <Form.Check
+                                          inline
+                                          name="group1"
+                                          type={type}
+                                          id={`inline-${type}-1`}
+                                      />
+                                      </div>
+                                  ))}
+                                  </Form>
+                                  </td>
+                                  <td>{product.dpdName}</td>
+                                  <td>{product.drate}%</td>
+                                  <td>{product.dperiod}개월</td>
+                                  <td>{product.dmin}만원</td>
+                                  <td>{product.dmax}만원</td>
+                                  <td>{product.dcxlRate}%</td>
+                                  <td>{product.dregDate}</td>
+                                  <td>
+                                      <button className="customerinfoBtn" onClick={()=>detailProduct(product.dpdName)}>상세페이지</button>
+                                  </td>
+                              </tr>
+                          )}  
+                      </tbody>
+                  </Table>
+                  <div className="d-flex justify-content-end">
+                  <Button variant="dark"><Link to="add" style={{color:"white"}}>상품등록</Link></Button>
+                  </div>
+              </div>
+          </div><br /><br /><br />
+      </div>
+      </>
+  )              
       }
 export default DepositComponent;

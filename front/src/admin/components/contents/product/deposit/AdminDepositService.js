@@ -26,6 +26,16 @@ class AdminDepositService {
       console.log('예금상품상세페이지');
       return axios.get(DEPOSIT_URL+"depositPdDetail/"+dPdName);
     }
+
+    depositPdUpdate(product){
+      console.log('예금상품수정페이지');
+      return axios.put(DEPOSIT_URL+"depositPdUpdate/"+product.dpdName,product);
+    }
+
+    depositPdDelete(dPdName){
+      console.log('예금상품삭제');
+      return axios.put(DEPOSIT_URL+"depositPdDelete/"+dPdName);
+    }
   }
 
 export default new AdminDepositService();

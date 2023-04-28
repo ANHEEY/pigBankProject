@@ -14,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -78,9 +80,10 @@ public class HeeController {
       return "/customer/*";
    }
 
-   //예금상품등록
+   //관리자 예금상품등록
    @PostMapping(value="/depositPdSave")
-   public void depositPdSave(@RequestBody DepositProductDTO depositProductDTO) {
+   public void depositPdSave(@RequestBody DepositProductDTO depositProductDTO) 
+		   throws ServletException, IOException {
       logger.info("url - depositPdSave");
       
       System.out.println("DepositProductDTO : "+depositProductDTO.getDcontent());
@@ -96,7 +99,8 @@ public class HeeController {
    
    //관리자 예금상품리스트
    @GetMapping(value="/depositProductList")
-   public List<DepositProductDTO> depositProductList() {
+   public List<DepositProductDTO> depositProductList() 
+		   throws ServletException, IOException {
       logger.info("url - depositProductList");
 
       return service.depositProductListAction();      
@@ -104,11 +108,55 @@ public class HeeController {
 
    //관리자 예금 상세페이지  depositPdDetail
    @GetMapping(value="/depositPdDetail/{dpdName}")
-   public DepositProductDTO depositPdDetail(@PathVariable String dpdName) {
+   public DepositProductDTO depositPdDetail(@PathVariable String dpdName) 
+		   throws ServletException, IOException {
       logger.info("url - depositPdDetail");
       System.out.println("dpdName : "+dpdName);
-      System.out.println("service.depositPdDetail(dpdName) : "+service.depositPdDetail(dpdName));
-      return service.depositPdDetail(dpdName);      
+      
+      return service.depositPdDetailAction(dpdName);      
    }
+   
+   //관리자 예금 수정 depositPdUpdate
+   @PutMapping(value="/depositPdUpdate/{dpdName}")
+   public void depositPdUpdate(@PathVariable String dpdName, @RequestBody DepositProductDTO depositProductDTO) 
+		   throws ServletException, IOException {
+	   logger.info("url - depositPdUpdate");
+	   
+	   System.out.println("dpdName : "+dpdName);
+	   System.out.println("depositProductDTO : "+depositProductDTO);
+	   service.depositPdUpdateAction(depositProductDTO);
+   }
+   
+   //관리자 예금 삭제 depositPdDelete
+   @PutMapping(value="/depositPdDelete/{dpdName}")
+   public void depositPdDelete(@PathVariable String dpdName) 
+		   throws ServletException, IOException {
+	   logger.info("url - depositPdDelete");
+	   
+	   System.out.println("dpdName : "+dpdName);
+	   
+	   service.depositPdDeleteAction(dpdName);	   
+   }
+   
+   //고객 예금 상품 리스트
+   @GetMapping(value="/pdDepositList")
+   public List<DepositProductDTO> pdDepositList()
+   		throws ServletException, IOException {
+	   logger.info("url - pdDepositList");
+	   
+	   return service.pdDepositListAction();
+   }
+   
+   //고객 예금 상품 상세페이지
+   @GetMapping(value="/pdDepositDetailInfo/{dpdName}")
+   public DepositProductDTO pdDepositDetailInfo(@PathVariable String dpdName)
+   		throws ServletException, IOException{
+	   logger.info("url - pdDepositDetailInfo");
+	   
+	   System.out.println("dpdName : "+dpdName);
+	   
+	   return service.pdDepositDetailInfoAction(dpdName);
+   }
+   
    
 }

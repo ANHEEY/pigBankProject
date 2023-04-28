@@ -70,7 +70,6 @@ class MainBoard extends Component{
                         <Box ml={7}>
                             <List variant="outlined" sx={{ width: 300, bgcolor: 'background.body', borderRadius: 'sm',boxShadow: 'sm'}} >
                                 <ListItem nested>
-                                
                                     <ListSubheader>예금상품추천</ListSubheader>
                                     {this.state.members1.map((member1) => (
                                     <List key={member1.dpdName}>

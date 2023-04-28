@@ -57,12 +57,47 @@ public class CustomerServiceImpl implements CustomerService{
 
    //관리자 예금 상품상세페이지
    @Override
-   public DepositProductDTO depositPdDetail(String dpdName) {
+   public DepositProductDTO depositPdDetailAction(String dpdName) {
       System.out.println("service - depositPdDetail");
-      System.out.println("dao.depositPdDetail(dpdName) : "+dao.depositPdDetail(dpdName));
       
       return dao.depositPdDetail(dpdName);
    }
+
+   //관리자 예금 상품 수정
+	@Override
+	public void depositPdUpdateAction(DepositProductDTO depositProductDTO) {
+		 System.out.println("service - depositPdUpdateAction");
+		 
+		 dao.depositPdUpdate(depositProductDTO);
+	}
+
+	//관리자 예금 상품 삭제
+	@Override
+	public void depositPdDeleteAction(String dpdName) {
+		System.out.println("service - depositPdDeleteAction");
+		
+		dao.depositPdDelete(dpdName);
+	}
+
+	//---------------------------------------------------------------------------------------
+	
+	//고객 예금 상품 리스트
+	@Override
+	public List<DepositProductDTO> pdDepositListAction() {
+		System.out.println("service - pdDepositListAction");
+		
+		return dao.pdDepositList();
+	}
+	
+	//고객 예금 상품 상세페이지
+	@Override
+	public DepositProductDTO pdDepositDetailInfoAction(String dpdName) {
+		System.out.println("service - pdDepositDetailInfoAction");
+		
+		return dao.pdDepositDetailInfo(dpdName);
+	}
+
+
    
    
 

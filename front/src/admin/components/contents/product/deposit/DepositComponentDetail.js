@@ -1,5 +1,4 @@
 import React, { useState,useEffect } from "react";
-import { Typography, Table, TableRow, TableCell, TableBody,TableHead } from "@mui/material";
 import {Link} from 'react-router-dom';
 import {Button, Stack } from 'react-bootstrap';
 import '../../../../resources/css/savingProduct/detail_sPd.css';
@@ -20,10 +19,6 @@ function DepositComponentDetail(){
     });
 
     useEffect(()=>{
-        depositDetail();
-    },[]);
-        
-    const depositDetail=() =>{
         AdminDepositService.depositPdDetail(window.localStorage.getItem("dpdName"))
             .then(res=>{
                 setDepositProduct(res.data);
@@ -31,6 +26,22 @@ function DepositComponentDetail(){
             })
             .catch(err => {
                 console.log('depositPdDetail() Error!!!', err);
+            })
+    },[]);
+
+    const depositPdEdit=(dpdName)=>{
+        window.localStorage.setItem("dpdName", dpdName);
+        navigate('/admin/product/deposit/edit');
+    }
+
+    const deletePd=(dpdName)=>{
+        AdminDepositService.depositPdDelete(dpdName)
+            .then(res=>{
+                alert(dpdName+' 상품의 삭제가 완료되었습니다!');
+                navigate('/admin/product/deposit');
+            })
+            .catch(err => {
+                console.log('depositPdDelete() Error!!!', err);
             })
     }
         return(
@@ -77,9 +88,9 @@ function DepositComponentDetail(){
                     </table>
                 </div><br/><br/>
                 <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto">
-                <Button variant="success" type="submit" size="medium"><Link to="">목록</Link></Button>
-                <Button variant="success" type="submit" size="medium">수정</Button>
-                <Button variant="outline-secondary" type="reset" size="medium"><Link to="">삭제</Link></Button>
+                <Button variant="secondary" size="medium"><Link to="/admin/product/deposit"  style={{color:"white"}}>목록</Link></Button>
+                <Button variant="success" type="submit" size="medium" onClick={()=>depositPdEdit(depositProduct.dpdName)}>수정</Button>
+                <Button variant="outline-secondary" type="reset" size="medium" onClick={()=>deletePd(depositProduct.dpdName)}>삭제</Button>
                 </Stack><br/><br/><br/> 
             </div>
             </>            

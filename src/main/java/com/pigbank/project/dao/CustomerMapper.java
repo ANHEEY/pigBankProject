@@ -19,4 +19,15 @@ public interface CustomerMapper {
    public List<DepositProductDTO> depositProductList();
    
    public DepositProductDTO depositPdDetail(String dpdName);
+
+   public void depositPdUpdate(DepositProductDTO depositProductDTO);
+   
+   public void depositPdDelete(String dpdName);
+   
+   //-------------------------------------------------------------------
+   
+   public List<DepositProductDTO> pdDepositList();
+   
+   public DepositProductDTO pdDepositDetailInfo(String dpdName);
+   
 }

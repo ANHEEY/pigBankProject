@@ -28,4 +28,27 @@
       SELECT * FROM DEPOSIT_PRODUCT WHERE dPdName = #{dpdName}
    </select>
    
+   <update id="depositPdUpdate" parameterType="com.pigbank.project.dto.DepositProductDTO">
+   	UPDATE DEPOSIT_PRODUCT 
+   	   SET dPeriod=#{dperiod}, dRate=#{drate}, dContent=#{dcontent}, dMin=#{dmin}, dMax=#{dmax}, dCxlRate=#{dcxlRate}
+ 	 WHERE dPdName =#{dpdName}
+   </update>
+   
+   <update id="depositPdDelete" parameterType="String">
+   		UPDATE DEPOSIT_PRODUCT 
+		   SET show='n'
+		 WHERE dPdName =#{dpdName} 
+   </update>
+   
+   <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+	<select id="pdDepositList" resultType="com.pigbank.project.dto.DepositProductDTO">
+		SELECT * FROM DEPOSIT_PRODUCT WHERE show='y'
+	</select>
+	
+	<select id="pdDepositDetailInfo" parameterType="String" resultType="com.pigbank.project.dto.DepositProductDTO">
+		SELECT * FROM deposit_product WHERE dPdName=#{dpdName}
+	</select>   
+	
+	
 </mapper>

@@ -16,7 +16,14 @@ public interface CustomerService {
    
    public List<DepositProductDTO> depositProductListAction();
 
-   public DepositProductDTO depositPdDetail(String dpdName);
+   public DepositProductDTO depositPdDetailAction(String dpdName);
 
+   public void depositPdUpdateAction(DepositProductDTO depositProductDTO);
+   
+   public void depositPdDeleteAction(String dpdName);
+   
+   public DepositProductDTO pdDepositDetailInfoAction(String dpdName);
+   
+   public List<DepositProductDTO> pdDepositListAction();
    
 }

@@ -15,12 +15,19 @@ const DEPOSIT_URL = "http://localhost:8081/";
 class PdDepositService {
     fetchMembers() {
       console.log('fetchMembers 호출!!')
-      return axios.get(MEMBER_API_BASE_URL );
+      return axios.get(MEMBER_API_BASE_URL);
     }
 
-    pdDepositDetailInfo(dPdName){
+    //고객 예금 상품 리스트
+    pdDepositList(){
+      console.log('pdDepositList 호출!')
+      return axios.get(DEPOSIT_URL+"pdDepositList");
+    }
+
+    //고객 예금 상품 상세페이지
+    pdDepositDetailInfo(dpdName){
       console.log('pdDepositDetailInfo 호출!')
-      return axios.get(DEPOSIT_URL+"depositDetailInfo"+dPdName);
+      return axios.get(DEPOSIT_URL+"pdDepositDetailInfo/"+dpdName);
     }
   }
 

@@ -34,6 +34,21 @@ function Join(){
         });
     };
 
+    const validateId = (id) => {
+        const regex = /^[a-z0-9]{8,15}$/;
+        return regex.test(id);
+    };
+      
+    const validatePassword = (password) => {
+        const regex = /^[a-z0-9]{12,20}$/;
+        return regex.test(password);
+    };
+      
+    const validateName = (name) => {
+        const regex = /^[가-힣]{2,5}$/;
+        return regex.test(name);
+    };
+
     const join = (e)=> {
         e.preventDefault();
 
@@ -42,10 +57,76 @@ function Join(){
             pwd:customer.pwd,
             name:customer.name,
             email:customer.email1+"@"+customer.email2,
-            address:customer.postcode+customer.address1+customer.address2,
+            address:customer.postcode+"/"+customer.address1+"/"+customer.address2,
             hp:customer.hp,
             birthday:customer.birthday
         }
+
+
+        if(!customerInfo.id){
+            alert("아이디를 입력하세요!")
+            return false;
+        }
+        else if (!validateId(customerInfo.id)) {
+            alert("아이디는 소문자, 숫자 조합 8자 이상 15자 이하이어야 합니다!");
+            return false;
+        }
+          
+        if(!customerInfo.pwd){
+            alert("비밀번호를 입력하세요!")
+            return false;
+        }
+        else if (!validatePassword(customerInfo.pwd)) {
+            alert("비밀번호는 소문자, 숫자 조합 12자 이상 20자 이하이어야 합니다!");
+            return false;
+        }
+
+        if(!customer.repwd){
+            alert("확인 비밀번호를 입력하세요!")
+            return false;
+        }
+
+        if (customer.pwd !== customer.repwd){
+            alert("비밀번호와 확인 비밀번호는 일치해야합니다!");
+            return false;
+        }
+          
+        if(!customerInfo.name){
+            alert("이름을 입력하세요!");
+            return false;
+        }
+        else if (!validateName(customerInfo.name)) {
+            alert("이름은 한글 2자 이상 5자 이하이어야 합니다!");
+            return false;
+        }
+
+        if(!customer.email1){
+            alert("이메일을 입력하세요!");
+            return false;
+        }
+        else if(!customer.email2){
+            alert("이메일 도메인을 입력하세요!")
+            return false;
+        }
+
+        if(!customerInfo.address){
+            alert("주소를 입력하세요!");
+            return false;
+        }
+
+        if(!customerInfo.hp){
+            alert("핸드폰 번호를 입력하세요!");
+            return false;
+        }
+
+        if(!customerInfo.birthday){
+            alert("생일을 입력하세요!");
+            return false;
+        }
+
+
+
+
 
         CustomerService.customerJoin(customerInfo)
             .then(res=> {
@@ -54,12 +135,9 @@ function Join(){
             })
         .catch(err => {
         console.log('customerJoin() 에러!!', err);
-        });
-
-        
+        });        
     }
     
-
     return( 
         <Container style={{
             width : 1000,
@@ -81,8 +159,8 @@ function Join(){
                 </Form.Group>
                 <br/>
                 <Form.Group as={Row} className="mb-3" controlId="formGroupRePassword">
-                    <Form.Label column sm={2}>비밀번호 확인</Form.Label>
-                    <Col sm={10}><Form.Control type="password" placeholder="소문자, 숫자 조합 12자 이상 20자 이하"
+                    <Form.Label column sm={2}>확인 비밀번호</Form.Label>
+                    <Col sm={10}><Form.Control type="password" placeholder="비밀번호와 동일하게 입력해주세요"
                                 name="repwd" value={customer.repwd}  onChange={onChange} /></Col>
                 </Form.Group>
                 <br/>
