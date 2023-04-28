@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 
 import com.pigbank.project.dao.SooMapper;
 import com.pigbank.project.dto.LoanProductDTO;
+import com.pigbank.project.dto.LoanRequestDTO;
 
 @Service
 public class SooServiceImpl implements SooService{
@@ -19,6 +20,7 @@ public class SooServiceImpl implements SooService{
 	@Autowired
 	private SooMapper dao;
 	
+	// 관리자
 	// 대출 상품 리스트
 	@Override
 	public List<LoanProductDTO> pdLoanList(HttpServletRequest req, Model model)
@@ -61,6 +63,20 @@ public class SooServiceImpl implements SooService{
 		System.out.println("service - deleteProduct");
 		
 		dao.deleteProduct(lpdName);
+	}
+
+	// 고객
+	// 대출 상품 신청
+	@Override
+	public void requestProduct(LoanRequestDTO loanRequestDTO) throws ServletException, IOException {
+		System.out.println("service - requestProduct");
+		
+		// 일단 하드코딩 (로그인 해결되면 그때 소스 정리)
+		String id = "hong1234";
+		loanRequestDTO.setId(id);
+		
+		dao.requestProduct(loanRequestDTO);
+		
 	}
 
 }

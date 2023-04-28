@@ -9,7 +9,8 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name="loan_req_tbl")
+// 테이블명 잘못 적어놓아 수정했습니다. 테이블명은 신중히 적어야합니다. 전체적으로 다 에러나요.
+@Table(name="l_account_tbl")
 @Data
 public class LoanAccountDTO {
 	

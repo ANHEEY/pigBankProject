@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.pigbank.project.dto.LoanProductDTO;
+import com.pigbank.project.dto.LoanRequestDTO;
 import com.pigbank.project.service.SooServiceImpl;
 
 @CrossOrigin(origins="**", maxAge=3600)
@@ -34,7 +35,7 @@ public class SooController {
 	private SooServiceImpl service;
 	
 	// 대출 상품 리스트
-	@GetMapping(value="/admin/list")
+	@GetMapping(value="/loan/admin/list")
 	public List<LoanProductDTO> loanProductList(HttpServletRequest req, Model model)
 		throws ServletException, IOException {
 			logger.info("<<< url - loanProductList >>>");
@@ -45,7 +46,7 @@ public class SooController {
 	}
 	
 	// 대출 상품 추가
-	@PostMapping(value="/admin/add")
+	@PostMapping(value="/loan/admin/add")
 	public void addPdLoan(@RequestBody LoanProductDTO loanProductDTO)
 			throws ServletException, IOException {
 		logger.info("<<< url - pdLoanAdd >>>");
@@ -56,7 +57,7 @@ public class SooController {
 	}
 
 	// 1건 select
-	@GetMapping("/admin/{lpdName}")
+	@GetMapping("/loan/admin/{lpdName}")
 	public LoanProductDTO fetchProductByName(@PathVariable String lpdName)		
 		throws ServletException, IOException {
 		logger.info("<<< url - fetchProductByName >>>");
@@ -65,7 +66,7 @@ public class SooController {
 	}
 		
 	// 대출상품 수정
-	@PutMapping("/admin/edit/{lpdName}")
+	@PutMapping("/loan/admin/edit/{lpdName}")
 	public void editPdLoan(@PathVariable String lpdName, @RequestBody LoanProductDTO dto)		
 		throws ServletException, IOException {
 		logger.info("<<< url - editPdLoan >>>");
@@ -75,7 +76,7 @@ public class SooController {
 	}
 	
 	// 대출상품 삭제
-	@PutMapping("/admin/delete/{lpdName}")
+	@PutMapping("/loan/admin/delete/{lpdName}")
 	public void deletePdLoan(@PathVariable String lpdName)
 		throws ServletException, IOException {
 		logger.info("<<< url - deletePdLoan() >>>");
@@ -84,13 +85,13 @@ public class SooController {
 		System.out.println("[ Delete 성공~~ ]");
 	}
 	
-//	// 대출상품 신청
-//	@PostMapping(value="/admin/addReq")
-//	public void requestPdLoan(@RequestBody LoanProductDTO loanProductDTO)
-//		throws ServletException, IOException {
-//		logger.info("<<< url - requestPdLoan() >>>");
-//		
-//		service.deleteProduct(lpdName);
-//		System.out.println("[ Delete 성공~~ ]");
-//	}
+	// 대출상품 신청
+	@PostMapping(value="/customer/addReq")
+	public void requestPdLoan(@RequestBody LoanRequestDTO loanRequestDTO)
+		throws ServletException, IOException {
+		logger.info("<<< url - requestPdLoan() >>>");
+		
+		service.requestProduct(loanRequestDTO);
+		System.out.println("[ Delete 성공~~ ]");
+	}
 }

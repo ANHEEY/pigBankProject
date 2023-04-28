@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.pigbank.project.dto.LoanProductDTO;
+import com.pigbank.project.dto.LoanRequestDTO;
 
 @Mapper
 public interface SooMapper {
@@ -23,4 +24,7 @@ public interface SooMapper {
 	
 	// 대출상품 삭제
 	public void deleteProduct(String lpdName);
+	
+	// 대출상품 신청
+	public void requestProduct(LoanRequestDTO loanRequestDTO);
 }

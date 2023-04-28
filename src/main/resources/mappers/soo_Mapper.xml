@@ -36,4 +36,10 @@
 		WHERE lpdName=#{lpdName}
 	</update>
 	
+	<!-- 대출상품 신청 -->
+	<insert id="requestProduct" parameterType="com.pigbank.project.dto.LoanRequestDTO">
+		INSERT INTO loan_req_tbl(lReqNum, lPdName, id, lAmount, lPeriod, lPurpose, lIncome, lState, lReqDate, acPwd, trsfLimit)
+		VALUES((SELECT NVL(MAX(lReqNum)+1, 1) FROM loan_req_tbl), #{lpdName}, #{id}, #{lamount}, #{lperiod}, #{lpurpose}, #{lincome}, #{lstate}, #{lreqDate}, #{acPwd}, #{trsfLimit})
+	</insert>
+	
 </mapper>
