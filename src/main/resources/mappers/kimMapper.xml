@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <!DOCTYPE mapper
+     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+     
+<mapper namespace="com.pigbank.project.dao.KimMapper">
+	<!-- accountProduct -->
+
+	<!-- admin-SavingProduct -->
+	<select id="sPdList" resultType="com.pigbank.project.dto.SavingProductDTO">
+		SELECT * FROM savings_product
+		ORDER BY sRegDate DESC
+	</select>
+	<select id="findByPdName" parameterType="String" resultType="com.pigbank.project.dto.SavingProductDTO">
+		SELECT * FROM savings_product
+		WHERE sPdName = #{spdname}
+	</select>
+	<insert id="sPdInsert" parameterType="com.pigbank.project.dto.SavingProductDTO">
+		INSERT INTO savings_product(sPdName, sContent, sPeriod, sRate, sMin, sMax, sCxlRate)
+		 VALUES(#{spdname}, #{scontent}, #{speriod}, #{srate}, #{smin}, #{smax}, #{scxlrate})
+	</insert>
+<!--
+ 	<update id="sPdUpdate" parameterType="com.pigbank.project.dto.SavingProductDTO">
+		UPDATE TABLE savings_product
+		   SET sPdName=#{spdname}, sContent=#{scontent}, sPeriod=#{speriod}, sRate=#{srate}, sMin=#{smin}, sMax=#{smax}, sCxlRate=#{scxlrate}
+		 WHERE sPdName = #{spdname}
+	</update> 
+	<delete id="sPdDelete" parameterType="String">
+		DELETE FROM savings_product
+		WHERE sPdName = #{spdname}
+	</delete>
+-->
+	
+</mapper>

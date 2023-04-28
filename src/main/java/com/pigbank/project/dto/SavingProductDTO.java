@@ -12,12 +12,12 @@ import lombok.Data;
 public class SavingProductDTO {
 	
 	@Id
-	private String sPdName;
-	private String sContent;
-	private int sPeriod;
-	private int sRate;
-	private int sMin;
-	private int sMax;
+	private String spdname;
+	private String scontent;
+	private int speriod;
+	private double srate;
+	private int smin;
+	private int smax;
 	private int scxlrate;
 	
 

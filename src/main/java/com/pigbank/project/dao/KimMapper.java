@@ -10,11 +10,12 @@ import com.pigbank.project.dto.SavingProductDTO;
 @Mapper
 public interface KimMapper {
 
-	// 입출금 계좌 생성
-	public void accountInsert(AccountDTO acDTO);
-	
+	// [Admin]
 	// 적금상품 목록
 	public List<SavingProductDTO> sPdList();
+	
+	// 1건 조회
+	public SavingProductDTO findByPdName(String spdname);
 	
 	// 적금상품 등록
 	public void sPdInsert(SavingProductDTO sPdDTO);
@@ -24,5 +25,9 @@ public interface KimMapper {
 	
 	// 적금상품 삭제
 	public void sPdDelete(String sPdName);
+	
+	// [Customer]
+	// 입출금 계좌 생성
+	public void aPdInsert(AccountDTO aPdDTO);
 	
 }

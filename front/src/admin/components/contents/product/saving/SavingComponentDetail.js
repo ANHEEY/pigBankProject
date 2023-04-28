@@ -1,43 +1,75 @@
-import React, { Component } from "react";
-import { Typography, Table, TableRow, TableCell, TableBody,TableHead } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import {Button, Stack } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
+import '../../../../resources/css/savingProduct/detail_sPd.css';
+import SavingApiService from "./SavingApiService";
 
-class SavingComponentDetail extends Component{
-    render(){
-        return(
-            <>
-            <div className="component-div">
-            <Typography variant='h4' align="center">상품상세</Typography>
-            <Table>
-                <TableHead>
-                        <TableRow>
-                            <TableCell>적금상품이름</TableCell>
-                            <TableCell>가입기간</TableCell>
-                            <TableCell>적금상품금리</TableCell>
-                            <TableCell>적금상품설명</TableCell>
-                            <TableCell>적금최소금액</TableCell>
-                            <TableCell>적금최대금액</TableCell>
-                            <TableCell>중도해지시금리</TableCell>
-                        </TableRow>
-                </TableHead>
+function SavingComponentDetail () {
+    
+    const [selectByPdName, setSelectByPdName] = useState([]); 
 
-                <TableBody>
-                    <TableRow>
-                        <TableCell>든든한적금</TableCell>
-                        <TableCell>22.02.14</TableCell>
-                        <TableCell>3.05%</TableCell>
-                        <TableCell>든든한적금</TableCell>
-                        <TableCell>100,000</TableCell>
-                        <TableCell>1,000,000</TableCell>
-                        <TableCell>0.02%</TableCell>
-                        <TableCell><button color="light"><Link to="edit">상품수정</Link></button></TableCell>
-                    </TableRow>
-                </TableBody>
-            </Table>
-            SELECT * FROM savings_product where s_pdName = ''; 
-            </div>
-            </>            
-        )
-    }
+    useEffect(() => {
+        console.log(window.localStorage.getItem("spdname"));
+        SavingApiService.selectByPdName( window.localStorage.getItem("spdname"))
+        .then((res) => {
+            setSelectByPdName(res.data)
+        })
+        .catch((err) => {
+            console.log('loadPdSavingByPdName() Error!!', err);
+        })
+
+    }, []);
+
+    return(
+        <>
+          <div className="component-div">
+           <div className="admin-title">
+               상품 상세페이지
+           </div>
+           <div className="sPd-detailTable"><br/><br/>
+               <table className="sPd-detailTable-info" style={{width: 900}}>
+                   <thead className="sPd-detailTable-title">
+                       <tr><th colSpan={2}>Product</th></tr>
+                   </thead>
+                        <tbody key={selectByPdName.spdname}>
+                            <tr>
+                                <th style={{width: '30%'}}>상품명</th>
+                                <td style={{width: '70%', textAlign: 'center'}}>{selectByPdName.spdname}</td>
+                            </tr>
+                            <tr>
+                                <th>상품설명</th>
+                                <td>{selectByPdName.scontent}</td>
+                            </tr>
+                            <tr>
+                                <th>가입기간</th>
+                                <td>{selectByPdName.speriod}개월</td>
+                            </tr>
+                            <tr>
+                                <th>적금가입 최소금액</th>
+                                <td>{selectByPdName.smin}만원</td>
+                            </tr>
+                            <tr>
+                                <th>적금가입 최대금액</th>
+                                <td>{selectByPdName.smax}만원</td>
+                            </tr>
+                            <tr>
+                                <th>적용금리</th>
+                                <td>{selectByPdName.srate}</td>
+                            </tr>
+                            <tr>
+                                <th>중도해지시금리</th>
+                                <td>{selectByPdName.scxlrate}</td>
+                            </tr>
+                        </tbody>
+               </table>
+           </div><br/><br/>
+           <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto">
+           <Button variant="success" type="submit" size="medium"><Link to="">목록</Link></Button>
+           <Button variant="success" type="submit" size="medium">수정</Button>
+           <Button variant="outline-secondary" type="reset" size="medium"><Link to="">삭제</Link></Button>
+           </Stack><br/><br/><br/> 
+       </div>  
+       </>             
+   )
 }
 export default SavingComponentDetail;

@@ -7,6 +7,10 @@ class DepositComponentEdit extends Component{
     render(){
         return(
             <div  className="component-div" align="center" >
+                <div className="admin-title">
+                    예금상품수정
+                </div>
+
             <Typography variant='h4' align="center" style={style}>예금상품수정</Typography>
             <TextField 
              required

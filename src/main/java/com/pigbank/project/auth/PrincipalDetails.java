@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.pigbank.project.dto.CustomerDTO;
 
 import lombok.Data;
+import lombok.Getter;
 
 /*
  * - '/loginProc' 주소가 호출되면 시큐리티가 가로채서 대신 로그인을 처리한다
@@ -36,6 +37,8 @@ public class PrincipalDetails implements UserDetails{
 			@Override
 			public String getAuthority() {
 				return customerDTO.getAuthority();
+						
+				
 			}
 		});
 		System.out.println("authorities : "+authorities);

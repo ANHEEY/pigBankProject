@@ -1,0 +1,21 @@
+
+.sPd-addTable-title {
+    padding: 15px 0 0 0;
+    letter-spacing: 1px;
+    border-bottom:3px ;
+    border-style: solid;
+    border-color: #8e8e8e;
+    font-size: 28px;
+    font-weight: bold;
+    color: #666666;
+}
+
+/* savingProductAdd table */
+.sPd-addTable-info{
+    width: 1000px;
+    margin: 30px 0 50px 0 ;
+}
+.sPd-addTable-info th,td{
+    padding:  10px 10px;
+    color: #595959;
+}

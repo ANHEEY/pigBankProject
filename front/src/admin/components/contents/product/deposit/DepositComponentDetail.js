@@ -7,7 +7,9 @@ class DepositComponentDetail extends Component{
         return(
             <>
             <div className="component-div">
-            <Typography variant='h4' align="center">상품상세</Typography>
+                <div className="admin-title">
+                    상품 상세페이지
+                </div>
             <Table>
                 <TableHead>
                         <TableRow>

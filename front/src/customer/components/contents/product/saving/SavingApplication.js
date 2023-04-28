@@ -18,7 +18,7 @@ function SavingApplication(){
     
     
     return(
-        <div className="applicaiton">
+        <div className="applicaiton container">
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" type = "text/css"/>
             <h1>적금 상품 가입</h1>
             <br/>

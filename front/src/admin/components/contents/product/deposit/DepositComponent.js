@@ -1,52 +1,20 @@
-import { Typography, Table, TableHead, TableRow, TableCell, Button, TableBody } from "@mui/material";
+import { Table, TableHead, TableRow, TableCell, Button, TableBody } from "@mui/material";
 import React, { Component } from "react";
 import {Link} from 'react-router-dom';
+import { BiListCheck } from "react-icons/bi";
 
 class DepositComponent extends Component{
-
-    constructor(props){
-        super(props);
-
-        this.state={
-            members:[],
-            message: null,
-            selectedOption: ""
-        }
-    }
   
-    // 라이프 사이클 중 컴포넌트가 생성된 후 사용자에게 보여지기까지의 전체 과정을 랜더링
-
-    // componentDidMount(){
-    //     this.reloadMemberList();
-    // }
-
-    // reloadMemberList = () => {
-    //     PdSavingService.fetchMembers()
-    //         .then(res=>{
-    //             this.setState({
-    //                 members:res.data
-    //             })
-    //         })
-    //         .catch(err=>{
-    //             console.log('reloadMemberList() Error!!',err);
-    //         });
-    //   }
-      
-      handleChange = (event) => {
-        this.setState({
-          selectedOption: event.target.value
-        });
-      }
       
       render() {
         // members에서 selectedOption과 일치하는 항목만 필터링
-        const filteredMembers = this.state.members.filter(
-          (member) => member.spdName.indexOf(this.state.selectedOption) !== -1
-        );
+        // const filteredMembers = this.state.members.filter(
+        //   (member) => member.spdName.indexOf(this.state.selectedOption) !== -1
+        // );
         
         return (
         <main className="main">
-            <section className="section">
+            {/* <section className="section">
              
             </section>
             
@@ -62,7 +30,7 @@ class DepositComponent extends Component{
                 </select> */}
 
 
-              
+{/*               
                 <div class="card text-center">
                     
                     <div class="card-header">
@@ -106,7 +74,7 @@ class DepositComponent extends Component{
                 </div>
             </div>
               
-            </section>
+            </section> */}
           </main>
         );
       }
