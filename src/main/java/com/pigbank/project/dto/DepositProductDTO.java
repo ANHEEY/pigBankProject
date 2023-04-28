@@ -10,15 +10,15 @@ import lombok.Data;
 @Table(name="deposit_product")
 @Data
 public class DepositProductDTO {
-	
-	@Id
-	private String dpdName;
-	private int dperiod;
-	private int drate;
-	private String dcontent; 
-	private int dmin;
-	private int dmax;
-	private int dcxlRate;
-	
+   
+   @Id
+   private String dpdName;
+   private int dperiod;
+   private double drate;
+   private String dcontent; 
+   private int dmin;
+   private int dmax;
+   private double dcxlRate;
+   
 
 }

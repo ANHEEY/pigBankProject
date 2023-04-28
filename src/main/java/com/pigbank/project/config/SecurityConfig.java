@@ -50,7 +50,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)	//세션을 사용하지 않겠다.
 			.and()
 			//.addFilter(corsConfig.corsFilter())	//cors 정책에서 벗어날 수 있다....아마도? 시큐리티 필터에 등록해서 인증을 받겠다.
-			.formLogin().disable()	//formLogin 사용안함
+			//.formLogin().disable()   //formLogin 사용안함
+	        .formLogin()
+	        .loginProcessingUrl("/login")
+	        .and()         
 			.httpBasic().disable()//httpBasic 사용안함
 			.addFilter(new JwtAuthenticationFilter(authenticationManager()))//반드시 추가
 			.addFilter(new JwtAuthorizationFilter(authenticationManager(),customerMapper))//반드시 추가		

@@ -6,13 +6,26 @@
      
 <mapper namespace="com.pigbank.project.dao.CustomerMapper">
 
-	<insert id="insertCustomer" parameterType="com.pigbank.project.dto.CustomerDTO">
-		INSERT INTO customer(id, pwd, name, email, address, hp, birthday, key)
-		VALUES(#{id},#{pwd},#{name},#{email},#{address},#{hp},#{birthday},5555)
-	</insert>
+   <insert id="insertCustomer" parameterType="com.pigbank.project.dto.CustomerDTO">
+      INSERT INTO customer(id, pwd, name, email, address, hp, birthday, key)
+      VALUES(#{id},#{pwd},#{name},#{email},#{address},#{hp},#{birthday},5555)
+   </insert>
 
-	<select id="loginCustomer" parameterType="String" resultType="com.pigbank.project.dto.CustomerDTO">
-		SELECT * FROM customer WHERE id=#{id}
-	</select>
-	
+   <select id="loginCustomer" parameterType="String" resultType="com.pigbank.project.dto.CustomerDTO">
+      SELECT * FROM customer WHERE id=#{id}
+   </select>
+   
+   <insert id="depositPdSave" parameterType="com.pigbank.project.dto.DepositProductDTO">
+      INSERT INTO DEPOSIT_PRODUCT(dPdName,dPeriod,dRate,dContent,dMin,dMax,dCxlRate)
+      VALUES(#{dpdName},#{dperiod},#{drate},#{dcontent},#{dmin},#{dmax},#{dcxlRate})
+   </insert>
+   
+   <select id="depositProductList" resultType="com.pigbank.project.dto.DepositProductDTO">
+      SELECT * FROM DEPOSIT_PRODUCT WHERE show='y'ORDER BY dRegDate DESC
+   </select>
+   
+   <select id="depositPdDetail" parameterType="String" resultType="com.pigbank.project.dto.DepositProductDTO">
+      SELECT * FROM DEPOSIT_PRODUCT WHERE dPdName = #{dpdName}
+   </select>
+   
 </mapper>
