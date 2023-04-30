@@ -28,4 +28,16 @@
 		  FROM customer
 		 WHERE cusState = '탈퇴요청'
 	</select>
+
+	<update id="updateStateApproval" parameterType="String">
+		UPDATE CUSTOMER
+		SET CUSSTATE  = '탈퇴승인',SHOW = 'n'
+		WHERE id = #{id}
+	</update>
+	<update id = "updateStateReject" parameterType="String">
+		UPDATE CUSTOMER
+		SET CUSSTATE  = '탈퇴불가능(사유:잔액존재)',SHOW = 'n'
+		WHERE id = #{id}
+	</update>
+
 </mapper>

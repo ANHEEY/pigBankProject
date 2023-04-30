@@ -15,7 +15,9 @@ class Layout extends Component{
                 <Header/>
                 <div className="contents">
                     <MenuBar/>
-                    <RouteComponent/>
+                    <div className="component-contents">
+                        <RouteComponent/>
+                    </div>
                 </div>
             </>
         )

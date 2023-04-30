@@ -19,4 +19,9 @@ public interface HyeMapper {
 	
 	// 탈퇴 요청 고객 목록
 	public List<CustomerDTO> listWithdrawalCustomer();
+
+	// 탈퇴 승인
+	public void updateStateApproval(String id);
+	// 탈퇴요청거부
+	public void updateStateReject(String id);
 }

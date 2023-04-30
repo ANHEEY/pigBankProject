@@ -5,10 +5,12 @@ import MainBoard from "../main/MainBoard";
 import piggy_bank from "../../../resources/img/piggy_bank.jpg"
 import bank_img from '../../../resources/img/bank_img.png';
 
+import '../../../resources/css/style.css'
+
 // MainCarousels 삭제 후 MainLayout 안에 캐주얼 + 보드 합침
 function MainLayout() {
     return (
-        <div className='carousel'>
+        <div className='carousel' >
             <Carousel style={{ width: '100%', height: '600px'}}>
                 <Carousel.Item>
                     <img className="d-block w-100 h-280" 

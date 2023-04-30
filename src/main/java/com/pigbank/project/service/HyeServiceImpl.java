@@ -56,7 +56,19 @@ public class HyeServiceImpl implements HyeService{
 		List<CustomerDTO> list = dao.listWithdrawalCustomer();
 		return list;
 	}
+	/*****************		탈퇴 승인		***************/
+	public void updateStateApproval(String id)
+			throws ServletException,IOException{
+		System.out.println("========== 서비스 | updateStateApproval | ==========");
+		dao.updateStateApproval(id);
+	};
+	// 탈퇴 거절
+	public void updateStateReject(String id)
+			throws ServletException, IOException{
+		System.out.println("========== 서비스 | updateStateApproval | ==========");
+		dao.updateStateReject(id);
 
+	};
 
 
 }

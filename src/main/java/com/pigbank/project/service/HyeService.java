@@ -26,8 +26,13 @@ public interface HyeService {
 	//탈퇴 요청 고객 목록
 	public List<CustomerDTO> listCustomerWithdrawal(HttpServletRequest req, Model model)
 			throws ServletException, IOException;
-	
 
+	// 탈퇴 승인
+	public void updateStateApproval(String id)
+		throws ServletException,IOException;
+	// 탈퇴 거절
+	public void updateStateReject(String id)
+		throws ServletException, IOException;
 	//고객 검색(나중에)
 	
 	

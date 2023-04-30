@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers} from "@fortawesome/free-solid-svg-icons";
 
@@ -11,8 +11,16 @@ import AccountListComponent from "./AccountListComponent";
 function InfoDetailComponent(){
     // url에서 id값을 받아오는  useParams
     const { id } = useParams();
+    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
     const [customer, setCustomer] = useState(null);
-    
+    const [total , setTotal] = useState();
+    const handleTotalAmountChange = (totalAmount) => {
+        console.log('잔액:', totalAmount);
+        setTotal(totalAmount);
+        console.log("total : " + total);
+    }
+
     // 데이터를 가져올때 useEffect 
     useEffect(() => {
         CustomerApiService.infoCustomer(id)
@@ -23,6 +31,45 @@ function InfoDetailComponent(){
             console.log('infoDetail() 에러', err);
         });
     },[id]);
+
+    function updateCustomerState(id) {
+        if(total === '0' ){
+            alert("업데이트 함수를 탑니다.");
+            CustomerApiService.updateCustomerState(id)
+            .then(res => {
+                setIsLoading(false);
+                alert('승인 처리했습니다.');
+                navigate(-1);
+            })
+            .catch(err => {
+                console.log("updateCustomerState 에러",err)
+                setIsLoading(false);
+            })
+        }else{
+            alert("잔액이 존재하여 승인 불가능 합니다.");
+        }
+        if (isLoading) {
+            return <div>로딩 중...</div>;
+        }
+    }
+    function rejectCustomerState(id){
+        if(total !== 0){
+            alert("탈퇴요청을 거절하시겠습니까?");
+            CustomerApiService.rejectCustomerState(id)
+            .then(res =>{
+                setIsLoading(false);
+                alert(' "탈퇴불가능(사유:잔액존재)" 변경 완료')
+                navigate(-1);
+            })
+            .catch(err =>{
+                console.log("rejectCustomerState 에러",err)
+                setIsLoading(false);
+            })
+        }
+        if (isLoading){
+            return <div>로딩즁@@@</div>
+        }
+    }
     /* '?' 을 붙이는 이유 = null값을 방지하기 위해 (Optional Chaining )*/
     return (
         <div className="component-div">
@@ -32,9 +79,16 @@ function InfoDetailComponent(){
             <div className="admin-customer-detail">
                 <table className="admin-customer-info">
                     <thead>
-                        <tr className="table-title">
-                            <th colSpan={2}>고객 정보</th>
-                        </tr>
+                        {customer?.cusState === '탈퇴승인' &&(
+                            <tr className="table-title">
+                                <th colSpan={2}>탈퇴 고객 정보</th>
+                            </tr>
+                        )}
+                        {customer?.cusState !== '탈퇴승인' && (
+                            <tr className="table-title">
+                                <th colSpan={2}>고객 정보</th>
+                            </tr>
+                        )}
                     </thead>
                     <tbody>
                         <tr>
@@ -91,11 +145,24 @@ function InfoDetailComponent(){
                         </tr>
                         <tr>
                             <th>상태</th>
-                            <td>{customer?.cusState}</td>
+                            <td>
+                                {customer?.cusState === '탈퇴요청' &&(
+                                    <div className="updateState">
+                                        {customer?.cusState}
+                                        <button onClick={() => updateCustomerState(id)}>탈퇴승인</button>
+                                        <button onClick={() => rejectCustomerState(id)}>요청거절</button>
+                                    </div>
+                                )}
+                                {customer?.cusState !== '탈퇴요청' && (
+                                    <div className="updateState">
+                                        {customer?.cusState}
+                                    </div>
+                                )}
+                            </td>
                         </tr>
                     </tbody>
                 </table>
-                <AccountListComponent/>
+                <AccountListComponent onTotalAmountChange={handleTotalAmountChange} />
             </div>
         </div>
     )

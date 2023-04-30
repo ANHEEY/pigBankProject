@@ -111,20 +111,6 @@ function Header () {
                                     <li>
                                         <Link to ="/customer/product/loan/pdLoan">대출</Link>
                                     </li>
-                                    <li className="dropdown">
-                                        <Link to ="/customer/product/fund/list">
-                                            <span>펀드</span> 
-                                            <i className="bi bi-chevron-right"></i>
-                                        </Link>
-                                        <ul>
-                                            <li>
-                                                <Link to ="/customer/product/fund/application">펀드계좌개설</Link>
-                                            </li>
-                                            <li>
-                                                <Link to ="/customer/product/fund/list">펀드리스트</Link>
-                                            </li>
-                                        </ul>
-                                    </li>
                                 </ul>
                             </li>
                             <li className="dropdown">
@@ -147,6 +133,12 @@ function Header () {
                                     <i className="bi bi-chevron-down"></i>
                                 </Link>
                                 <ul>
+                                    <li>
+                                        <Link to ="/customer/product/fund/application">펀드계좌개설</Link>
+                                    </li>
+                                    <li>
+                                        <Link to ="/customer/product/fund/list">펀드리스트</Link>
+                                    </li>
                                     <li>
                                         <Link to ="/customer/fund/having">보유내역</Link>
                                     </li>

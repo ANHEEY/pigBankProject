@@ -2,6 +2,7 @@ package com.pigbank.project.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,11 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.CustomerDTO;
@@ -55,5 +52,18 @@ public class HyeController {
 		throws ServletException, IOException{
 		logger.info("== URL || listWithdrawal == ");
 		return service.listCustomerWithdrawal(req, model);
+	}
+	/*****************		탈퇴 승인 (Update)		***************/
+	@PutMapping("/updateCustomerState/{id}")
+	public void updateCustomer(@PathVariable String id, @RequestBody Map<String, Object> body)
+			throws ServletException, IOException {
+		logger.info("== URL || updateCustomer == ");
+		service.updateStateApproval(id);
+	}
+	@PutMapping("/rejectCustomerState/{id}")
+	public void rejectCustomer(@PathVariable String id, @RequestBody Map<String, Object> body)
+		throws ServletException, IOException{
+		logger.info("=== url | rejectCustomer ==");
+		service.updateStateReject(id);
 	}
 }

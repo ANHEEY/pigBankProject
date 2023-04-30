@@ -25,8 +25,13 @@ class CustomerApiService{
     }
     // 탈퇴 승인으로 변경
     updateCustomerState(id){
-        console.log('관리자 | 탈퇴 승인으로 변경')
-        return axios.post(CONTROLLER_API + 'updateCustomerState/' + id)
+        console.log('관리자 | 탈퇴 승인으로 변경 update' )
+        return axios.put(CONTROLLER_API + 'updateCustomerState/' + id,{id:id})
+    }
+    // 탈퇴 요청 거절
+    rejectCustomerState(id){
+        console.log('관리자 |  탈퇴요청거절 update ')
+        return axios.put(CONTROLLER_API + 'rejectCustomerState/' + id, {id:id})
     }
 }
 export default new CustomerApiService();
