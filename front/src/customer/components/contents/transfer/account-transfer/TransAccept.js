@@ -30,7 +30,7 @@ function TransAccept () {
                         <tbody>
                             <tr>
                                 <th>보낸금액</th>
-                                <td align='right'>{tAmount}</td>
+                                <td align='right'>{tAmount}원</td>
                             </tr>
                             <tr>
                                 <th>보낸계좌</th>

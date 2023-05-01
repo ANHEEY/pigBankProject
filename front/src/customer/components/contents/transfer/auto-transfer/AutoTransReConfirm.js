@@ -67,7 +67,7 @@ function AutoTransReConfirm (props) {
                     </tr>
                     <tr>
                         <th>출금계좌</th>
-                        <td align='right'>{selectedAccount}</td>
+                        <td align='right'>[{bankName}]{selectedAccount}</td>
                     </tr>
                     <tr>
                         <th>이체 시작/종료일</th>

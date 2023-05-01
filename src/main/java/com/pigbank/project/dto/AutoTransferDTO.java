@@ -27,6 +27,7 @@ public class AutoTransferDTO {
 	private String aState;
 	private String myMemo;
 	private String yourMemo;
+	private int aUpdate;
 	
 	
 }

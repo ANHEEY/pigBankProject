@@ -14,6 +14,7 @@ function TransReConfirm (props) {
     const tAmount = props.data[3];
     const selectedMyAccount= props.data[2];
     const [currentTime, setCurrentTime] = useState(null);
+    const mybkName = props.data[6];
     
     const navigate = useNavigate();
 
@@ -34,8 +35,9 @@ function TransReConfirm (props) {
             tdepositnum: Number(selectedMyAccount),
             tamount: Number(tAmount),
             myMemo: myMemo,
+            acPwd: acPwd,
             yourMemo: yourMemo,
-            tdepositBank: props.data[6],
+            tdepositBank: mybkName,
           };
 
           TransferService.save(acnumber)
@@ -68,7 +70,7 @@ function TransReConfirm (props) {
                     </tr>
                     <tr>
                         <th>예금주</th>
-                        <td align='right'>{props.data[4]}</td>
+                        <td align='right'>{props.data[5]}</td>
                     </tr>
                     <tr>
                         <th>출금계좌</th>
@@ -88,6 +90,10 @@ function TransReConfirm (props) {
                         <th>받는계좌</th>
                         <td align='right'>{props.data[2]}</td>
                     </tr>
+                    <tr>
+                        <th>은행명</th>
+                        <td align='right'>{mybkName}</td>
+                    </tr>
                     </tbody>
                     </Table>
                     <br />
@@ -98,6 +104,15 @@ function TransReConfirm (props) {
                     <tr>
                         <th>이체금액</th>
                         <td align='right'>{props.data[3]}원</td>
+                    </tr>
+                    <tr>
+                        <th>받는통장메모</th>
+                        <td align='right'>{props.data[5]}</td>
+                        
+                    </tr>
+                    <tr>
+                        <th>내통장메모</th>
+                        <td align='right'>{props.data[4]}</td>
                     </tr>
                     </tbody>
         </Table>

@@ -19,20 +19,22 @@ function Account(props) {
   const [myMemo, setMyMemo] = useState('');
   const [yourMemo, setYourMemo] = useState('');
   const [acPwd, setAcPwd] = useState('');
+  const [notePwd, setNotePwd] = useState('');
   const [showComponent, setShowComponent] = useState(false);
   const [bankName, setBankName] = useState('');
+  const [trsfLimit, setTrsfLimit] = useState('');
+  const [mybkName, setMybkName] = useState('');
 
   
   useEffect(() => {
     reloadAccountList();
-    }, []);
+    }, [acPwd]);
   
     const reloadAccountList = () => {
       TransferService.fetchAccountList()
       .then(res => {
         console.log(res.data);
       setAccounts(res.data);
-      
       })
       
       .catch(err => {
@@ -42,14 +44,14 @@ function Account(props) {
     };
 
       const myAccountChange = (event) => {
-        setSelectedMyAccount(event.target.value);
+        const selectedMyAccountInt = parseInt(event.target.value);
+        const account = accounts.find(account => account.acNumber === selectedMyAccountInt);
+        setSelectedMyAccount(selectedMyAccountInt);
         setYourMemo(accounts[0].name);
-        const selectedAccountInt = parseInt(selectedAccount);
-          const account = accounts.find(account => account.acNumber === selectedAccountInt);
           if (account) {
-            setBankName(account.bankName);
+            setMybkName(account.bankName);
           } else {
-            setBankName('');
+            setMybkName('');
           }
         };
 
@@ -62,19 +64,36 @@ function Account(props) {
                         tAmount,  
                         myMemo,  
                         yourMemo, 
-                        bankName];
-          
-            console.log(selectedAccount)
+                        mybkName];
+          if(acPwd == notePwd) {
+            if(trsfLimit >= tAmount) {
             setShowComponent(true);
             
             props.onData(acNumber);
             setData(acNumber);
-           
+            }
+            else{
+              alert('한도초과 확인후 다시 시도해주세요')
+            }
+          }
+          else {
+            alert("비밀번호 오류 다시시도해주세요");
+          }
         };
 
 
         const accountChange = (event) => {
-          setSelectedAccount(event.target.value);
+          const selectedAccountInt = parseInt(event.target.value);
+          const account = accounts.find(account => account.acNumber === selectedAccountInt);
+
+          setSelectedAccount(selectedAccountInt);
+          if (account) {
+            setAcPwd(account.acPwd);
+            setTrsfLimit(account.trsfLimit);
+            setBankName(account.bankName);
+          } else {
+            setAcPwd('');
+          }
           };
 
         const handleBalanceClick = () => {
@@ -102,8 +121,9 @@ function Account(props) {
         </td>
         <td>
           <Form.Control
+            readOnly
             value={selectedAccount}
-            placeholder="-없이 입력해주세요"
+            placeholder="오른쪽에서 계좌 선택해주세요"
             aria-label="Username"
             aria-describedby="basic-addon1"
             onChange={(event) => setSelectedAccount(event.target.value) }
@@ -113,7 +133,6 @@ function Account(props) {
           <Form.Select aria-label="Default select example" onChange={accountChange}>
             <option>계좌선택</option>
             {accounts.map((account) => (
-              
               <option key={account.acNumber} value={account.acNumber}>
                 [{account.bankName}]{account.acNumber}</option>
             ))}
@@ -137,11 +156,11 @@ function Account(props) {
             </td>
             <td>
             <Form.Control
-                value={acPwd}
+                value={notePwd}
                 type="password"
                 maxLength={4}
                 placeholder="숫자 4자리"
-                onChange={(e) => setAcPwd(e.target.value)}
+                onChange={(e) => setNotePwd(e.target.value)}
                 />  
             </td>    
         </tr>   
@@ -174,7 +193,21 @@ function Account(props) {
                             <option key={account.acNumber} value={account.acNumber}>[{account.bankName}]{account.acNumber}</option>
                         ))}
                     </Form.Select> </td>
-                </tr>                        
+                </tr> 
+                <tr>
+                    <td>
+                        <InputGroup.Text id="basic-addon1" >입금은행</InputGroup.Text>
+                        </td>
+                        <td>
+                        <Form.Control
+                            value={mybkName}
+                            placeholder="은행명"
+                            aria-label="Username"
+                            aria-describedby="basic-addon1"
+                            onChange={(e) => setMybkName(e.target.value)}
+                            />  
+                        </td>    
+                    </tr>                       
                 <tr>
                     <td>
                         <InputGroup.Text id="basic-addon1" >이체금액</InputGroup.Text>
@@ -221,7 +254,7 @@ function Account(props) {
                 </Table>     
 
         <div className="mb-2" align='center'>
-              <Button variant="primary" size="lg" onClick={handleClick} disabled={!selectedAccount || !acPwd || !selectedMyAccount || !tAmount} >
+              <Button variant="primary" size="lg" onClick={handleClick} disabled={!selectedAccount || !notePwd || !selectedMyAccount || !tAmount} >
               다음
               </Button>
           </div>

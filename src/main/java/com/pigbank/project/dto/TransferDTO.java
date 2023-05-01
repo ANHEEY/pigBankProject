@@ -23,4 +23,7 @@ public class TransferDTO {
 	private String myMemo;
 	private String yourMemo;
 	private Date tDate;
+	
+	// 계좌에서 조인한 비밀번호
+	private int acPwd;
 }

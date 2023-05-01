@@ -8,7 +8,7 @@
 <mapper namespace="com.pigbank.project.dao.LeeMapper">
 
 	<select id="accountList" parameterType="String" resultType="com.pigbank.project.dto.AccountDTO">
-		SELECT act.acnumber, act.acbalance, act.bankName, cs.name
+		SELECT act.acnumber, act.acbalance, act.bankName, cs.name, act.acPwd, act.trsfLimit
 		  FROM ACCOUNT_TBL act, CUSTOMER cs
 		  WHERE act.id = cs.id
 		    AND act.id = #{id}
@@ -33,4 +33,25 @@
 		WHERE ACNUMBER = #{acNumber}
 	</update>
 	
+	<insert id="autoInsertTransfer" parameterType="com.pigbank.project.dto.AutoTransferDTO">
+		INSERT INTO auto_transferReg_tbl(aNum,acNumber,aDepositNum,aDepositBank,aDepositAmount,aTransferCycle,aStartDate,aEndDate,myMemo,yourMemo)
+			VALUES((SELECT NVL(MAX(aNum) + 1, 1) FROM auto_transferReg_tbl), #{acNumber}, #{aDepositnum}, #{aDepositBank}, #{aDepositAmount}, #{aTransferCycle}, 
+			#{aStartDate},#{aEndDate},#{myMemo},#{yourMemo})
+	</insert>
+	
+	<select id="autoTransferList" resultType="com.pigbank.project.dto.AutoTransferDTO">
+		select * from auto_transferReg_tbl
+	</select>
+	
+	<update id="updateAutoTransfer" parameterType="java.util.Map">
+		update auto_transferReg_tbl
+		set aState = #{aState}
+		where aNum = #{aNum}
+	</update>
+	
+	<update id="updateAutoTransferCycle" parameterType="java.util.Map">
+		update auto_transferReg_tbl
+		set aUpdate = #{aUpdate} + #{aTransferCycle}
+		where aNum = #{aNum}
+	</update>
 </mapper>

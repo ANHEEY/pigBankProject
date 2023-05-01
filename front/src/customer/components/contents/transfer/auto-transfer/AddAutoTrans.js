@@ -62,6 +62,8 @@ function AddAutoTrans () {
             endDate
         ];
 
+        console.log(bankName);
+
         setShowComponent(true);
         setAuto(datas);
     }
@@ -177,6 +179,20 @@ function AddAutoTrans () {
                         </tr>
                         <tr>
                             <td>
+                                <InputGroup.Text id="basic-addon1" >입금은행</InputGroup.Text>
+                                </td>
+                                <td>
+                                <Form.Control
+                                    value={bankName}
+                                    placeholder="fullName"
+                                    aria-label="Username"
+                                    aria-describedby="basic-addon1"
+                                    onChange={(e) => setBankName(e.target.value)}
+                                    />  
+                                </td>    
+                            </tr> 
+                        <tr>
+                            <td>
                             <InputGroup.Text id="basic-addon1" >이체금액</InputGroup.Text>
                             </td>
                             <td>
@@ -196,6 +212,7 @@ function AddAutoTrans () {
                             </td>
                             <td>
                             <Form.Select aria-label="Floating label select example" onChange={(e) => setTransferCycle(e.target.value)}>
+                                <option>이체주기선택</option>
                                 {number.map((anumber) => (
                                         <option key={anumber} value={anumber}
                                        >{anumber}개월</option>

@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,7 @@ import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.AutoTransferDTO;
 import com.pigbank.project.dto.TransferDTO;
 import com.pigbank.project.service.LeeServiceImpl;
+
 
 @CrossOrigin(origins="**", maxAge=3600)
 @RestController
@@ -58,6 +61,6 @@ public class LeeController {
 			throws ServletException, IOException {
 		logger.info("<<< url - InsertTransfer");
 		System.out.println("dto : " + dto);
-		
+		service.AutoInsertTransfer(dto);
 	}
 }
