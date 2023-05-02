@@ -35,7 +35,7 @@ function SavingComponent() {
         <>
         <div className="component-div">
             <div className="admin-title">
-            <BiListCheck /> 적금상품
+            <BiListCheck size={50}/> 적금상품
             </div><br/>
             <div style={{width:1000}}>
                 <div className="card-body" style={{marginTop: "20px"}}>

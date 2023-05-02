@@ -22,18 +22,19 @@ class SavingApiService {
         return axios.post(ADMIN_API_PRODUCT_SAVING_URL + "adPdInsert", pdSaving);
     }
 
-    // 미작성----------------------------------------------------------------------------
-    // Update
-    updateSaving() {
+    // Update (put 보안상 취약해 요즘 사용하지 않는다고함.)
+    updateSaving(pdSaving) {
         console.log('Admin_pdSavingUpdate');
-        return axios.put(ADMIN_API_PRODUCT_SAVING_URL + "adPdUpdate");
+        console.log(ADMIN_API_PRODUCT_SAVING_URL + "adPdUpdate/" + pdSaving.spdname, pdSaving);
+        return axios.post(ADMIN_API_PRODUCT_SAVING_URL + "adPdUpdate/" + pdSaving.spdname, pdSaving);
     }
 
-
+0
     // Delete
-    deleteSavinc() {
+    deleteSaving(spdname) {
         console.log('Admin_pdSavingDelete');
-        return axios.put(ADMIN_API_PRODUCT_SAVING_URL + "adPdDelete");
+        console.log(ADMIN_API_PRODUCT_SAVING_URL + "adPdDelete/" + spdname)
+        return axios.post(ADMIN_API_PRODUCT_SAVING_URL + "adPdDelete/" + spdname);
     }
     
 

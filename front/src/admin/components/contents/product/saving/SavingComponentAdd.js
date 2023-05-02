@@ -3,9 +3,10 @@ import { Container, Button, Form, Stack } from 'react-bootstrap'; // npm install
 import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 css를 적용하기 위함
 import { IoIosAddCircleOutline } from "react-icons/io";
 import SavingApiService from "./SavingApiService";
+import { Link } from "react-router-dom";
 
 function SavingComponentAdd(props) {
-
+    
     const [spdname, setSPdName] = useState('');
     const [scontent, setSContent] = useState('');
     const [speriod, setSPeriod] = useState('');
@@ -14,7 +15,6 @@ function SavingComponentAdd(props) {
     const [srate, setSRate] = useState('');
     const [scxlrate, setSCxlRate] = useState('');
     const [sregdate, setSRegDate] = useState('');
-    //const [message, setMessage] = useState(null);
 
     const onChange = (e) => {
         const { name, value } = e.target;
@@ -65,9 +65,9 @@ function SavingComponentAdd(props) {
 
         SavingApiService.addPdSaving(pdSaving)
         .then(res => {
-    //    message(pdSaving.sPdName + '상품이 등록되었습니다.');
-           // console.log(message);
-            props.history.push('/adPdSaving');
+            //props.history.push('/adPdSaving');
+            window.alert('상품이 등록되었습니다.');
+            window.location.href = '/admin/product/saving';
         })
         .catch(err => {
             console.log('addPdSaving() Error!!', err);
@@ -76,7 +76,7 @@ function SavingComponentAdd(props) {
     return(
         <div className="component-div">
             <div className="admin-title">
-                <IoIosAddCircleOutline /> 적금상품등록
+                <IoIosAddCircleOutline size={50}/> 적금상품등록
             </div>
             <Container><br/><br/>
                 <Form onSubmit={savePdsaving}>
@@ -139,7 +139,7 @@ function SavingComponentAdd(props) {
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>* 적금이자</Form.Label>
+                    <Form.Label>* 금리</Form.Label>
                     <Form.Control 
                         required 
                         type="number" 
@@ -152,9 +152,23 @@ function SavingComponentAdd(props) {
                     </Form.Text>
                     </Form.Group>
 
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Label>* 중도해지시금리</Form.Label>
+                        <Form.Control 
+                            required 
+                            type="number" 
+                            name="srate" 
+                            value={scxlrate} 
+                            onChange={onChange} 
+                            placeholder="%" />
+                        <Form.Text className="text-muted">
+                            소수점 둘째자리까지만 입력해주세요.
+                        </Form.Text>
+                    </Form.Group>
+
                     <Stack direction="horizontal" gap={2} className="col-md-2 mx-auto">
-                    <Button variant="success" onClick={savePdsaving}>Register</Button>
-                    <Button variant="outline-secondary" type="reset">Cancel</Button>
+                    <Button variant="success" onClick={savePdsaving}>등록</Button>
+                    <Button variant="outline-secondary"><Link to="/admin/product/saving" style={{color:"black"}}>취소</Link></Button>
                     </Stack>
                 </Form>
             </Container>

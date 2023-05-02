@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Tab, Tabs, Row, Col, Container, Button, Card, Stack } from 'react-bootstrap';
 import {MdOutlineDateRange, MdOutlineMoney, MdAutoGraph} from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import PdSavingService from './PdSavingService';
 
 function PdsavingDetail () {
     
+    const [selectBySProduct, setSelectBySProduct] = useState([]);
+
+    useEffect(() => {
+        console.log(window.localStorage.getItem("spdname"));
+        PdSavingService.custSPdDetail(window.localStorage.getItem("spdname"))
+            .then((res) => {
+                setSelectBySProduct(res.data)
+            })
+            .catch((err) => {
+                console.log('PdSavingService.custSPdDetail Error!!', err);
+            })
+
+    }, []);
+
+
     const navigate = useNavigate();
 
     const goRegister = () => { 
@@ -18,7 +34,7 @@ function PdsavingDetail () {
             <br/><br/><br/>
             <Container style={{width: "90%"}}>
                 <Card>
-                    <Card.Header as="h2">직장인우대적금</Card.Header>
+                    <Card.Header as="h2">{selectBySProduct.spdname}</Card.Header>
                     <br/><br/>
                     <Card.Body style={{textAlign:"center"}}>
                     <Row>
@@ -26,21 +42,21 @@ function PdsavingDetail () {
                         <MdOutlineDateRange size="50" color="#009000"/>
                         <Card.Title className="mt-3">가입기간</Card.Title>
                         <Card.Text>
-                            12~36개월
+                            {selectBySProduct.speriod}개월
                         </Card.Text>
                         </Col>
                         <Col>
                         <MdOutlineMoney size="50" color="#009000" />
                         <Card.Title className="mt-3">금액</Card.Title>
                         <Card.Text>
-                            1만원 ~ 3백만원
+                            {selectBySProduct.smin}만원 ~ {selectBySProduct.smax}백만원
                         </Card.Text>
                         </Col>
                         <Col>
                         <MdAutoGraph size="50" color="#009000"/>
                         <Card.Title className="mt-3">최고</Card.Title>
                         <Card.Text>
-                            연 4.05%(36개월)
+                            연 {selectBySProduct.srate}%({selectBySProduct.speriod}개월)
                         </Card.Text>
                         </Col>
                     </Row>
@@ -53,7 +69,7 @@ function PdsavingDetail () {
                     </Card.Body>
                     <Card.Footer>
                     
-                    <Card.Title className="mt-3" as="h4">예금 계산기</Card.Title>
+                    <Card.Title className="mt-3" as="h4">적금 계산기</Card.Title>
                     <br/>
                     { /*원리(금), 만기상환 tabs 시작 */}
  {/* <Calculator />  */}

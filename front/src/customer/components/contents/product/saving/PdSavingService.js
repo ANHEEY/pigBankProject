@@ -9,14 +9,30 @@ import axios from 'axios';  // npm install -f axios@^1.3.5
 
 const MEMBER_API_BASE_URL = "http://localhost:8081/members";
 
+const CUSTOMER_API_PRODUCT_SAVING_URL = "http://localhost:8081/";
 
 
 class PdSavingService {
-    fetchMembers() {
-      console.log('fetchMembers 호출!!')
-      return axios.get(MEMBER_API_BASE_URL );
-    }
+
+  // List
+  fetchMembers() {
+    console.log('fetchMembers 호출!!')
+    return axios.get(MEMBER_API_BASE_URL);
   }
+
+  // customer - 상세페이지 
+  custSPdDetail(spdname) {
+    console.log('custSPdDetail!!')
+    return axios.get(CUSTOMER_API_PRODUCT_SAVING_URL + "custProduct/" + spdname);
+  }
+
+  // customer - 상품 가입페이지
+  custSavingApp(spdname) {
+    console.log('custSavingApp!!')
+    return axios.get(CUSTOMER_API_PRODUCT_SAVING_URL + "" + spdname);
+  }
+
+}
 
   
 

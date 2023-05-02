@@ -28,7 +28,7 @@ public interface KimService {
 	public void updateSPd(SavingProductDTO sPdDTO) throws ServletException, IOException;
 	
 	// 삭제
-	public void deleteSpd(String sPdName) throws ServletException, IOException;
+	public void deleteSpd(String spdname) throws ServletException, IOException;
 	
 	// [account]
 	// 등록

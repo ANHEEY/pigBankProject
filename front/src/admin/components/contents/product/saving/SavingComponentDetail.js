@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {Button, Stack } from 'react-bootstrap';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import '../../../../resources/css/savingProduct/detail_sPd.css';
 import SavingApiService from "./SavingApiService";
 
-// 버튼 수정
 function SavingComponentDetail () {
     
     const [selectByPdName, setSelectByPdName] = useState([]); 
@@ -20,6 +19,26 @@ function SavingComponentDetail () {
         })
 
     }, []);
+
+    const navigate = useNavigate();
+
+    // 수정버튼
+    const edit = (spdname) => {
+        window.localStorage.setItem("spdname", spdname);
+        navigate("/admin/product/saving/edit");
+    }
+
+    // 삭제버튼
+    const sPdDelete = (spdname) => {
+        SavingApiService.deleteSaving(spdname)
+            .then(res => {
+                window.alert('상품이 삭제되었습니다.');
+                navigate("/admin/product/saving");
+            })
+            .catch(err => {
+                console.log('deleteSaving Error!!', err);
+            })
+    }
 
     return(
         <>
@@ -55,11 +74,11 @@ function SavingComponentDetail () {
                             </tr>
                             <tr>
                                 <th>적용금리</th>
-                                <td>{selectByPdName.srate}</td>
+                                <td>{selectByPdName.srate}%</td>
                             </tr>
                             <tr>
                                 <th>중도해지시금리</th>
-                                <td>{selectByPdName.scxlrate}</td>
+                                <td>{selectByPdName.scxlrate}%</td>
                             </tr>
                             <tr>
                                 <th>상품등록일</th>
@@ -69,9 +88,9 @@ function SavingComponentDetail () {
                </table>
            </div><br/><br/>
            <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto">
-            <Button variant="success" ><Link to="/admin/product/saving">목록</Link></Button>
-            <Button variant="success" size="medium"><Link to="/admin/">수정</Link></Button>
-            <Button variant="outline-secondary" type="reset" size="medium"><Link to="">삭제</Link></Button>
+            <Button variant="success" ><Link to="/admin/product/saving" style={{color:"white"}}>목록</Link></Button>
+            <Button variant="success" size="medium" onClick={() => edit(selectByPdName.spdname)}>수정</Button>
+            <Button variant="outline-secondary"  size="medium" style={{color:"black"}} onClick={() => sPdDelete(selectByPdName.spdname)}>삭제</Button>
            </Stack><br/><br/><br/> 
        </div>  
        </>             

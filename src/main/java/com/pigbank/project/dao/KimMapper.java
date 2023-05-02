@@ -25,7 +25,7 @@ public interface KimMapper {
 	public void sPdUpdate(SavingProductDTO sPdDTO);
 	
 	// 적금상품 삭제
-	public void sPdDelete(String sPdName);
+	public void sPdDelete(String spdname);
 	
 	// [Customer]
 	// Account 입출금 계좌 생성

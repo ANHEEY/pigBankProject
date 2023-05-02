@@ -17,15 +17,15 @@
 	</select>
 	<insert id="sPdInsert" parameterType="com.pigbank.project.dto.SavingProductDTO">
 		INSERT INTO savings_product(sPdName, sContent, sPeriod, sRate, sMin, sMax, sCxlRate, sRegDate)
-		 VALUES(#{spdname}, #{scontent}, #{speriod}, #{srate}, #{smin}, #{smax}, #{scxlrate}, #{sregdate})
+		 VALUES(#{spdname}, #{scontent}, #{speriod}, #{srate}, #{smin}, #{smax}, #{scxlrate}, sysdate)
 	</insert>
  	<update id="sPdUpdate" parameterType="com.pigbank.project.dto.SavingProductDTO">
-		UPDATE TABLE savings_product
+		UPDATE savings_product
 		   SET sPdName=#{spdname}, sContent=#{scontent}, sPeriod=#{speriod}, sRate=#{srate}, sMin=#{smin}, sMax=#{smax}, sCxlRate=#{scxlrate}
 		 WHERE sPdName = #{spdname}
 	</update>	 
  	<update id="sPdDelete" parameterType="String">
-		UPDATE TABLE savings_product
+		UPDATE savings_product
 		   SET show = 'n'
 		 WHERE sPdName = #{spdname}
 	</update>

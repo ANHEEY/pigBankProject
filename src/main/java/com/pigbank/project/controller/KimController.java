@@ -60,22 +60,25 @@ public class KimController {
 		System.out.println("PdSavingInsert 성공");   
 	}
 	
-	// 적금상품 수정
-	@PutMapping(value="/adPdUpdate")
+	// 적금상품 수정 @PutMapping(value="/adPdUpdate/{spdname}")
+	@PostMapping(value="/adPdUpdate/{spdname}")
 	public void aPdSavingUpdate(@PathVariable String spdname, @RequestBody SavingProductDTO sPdDTO) throws ServletException, IOException {
 		logger.info("<< URL - aPdSavingUpdate >>");
 		System.out.println(sPdDTO);
-		service.updateSPd(sPdDTO);
 		
+		service.updateSPd(sPdDTO);
 		System.out.println("PdSavingUpdate 성공");
 	}
 	
 	// 적금상품 삭제
-	@PutMapping(value="/adPdDelete")
-	public void aPdSavingDelete(@PathVariable String sPdName) throws ServletException, IOException {
+	// , @RequestBody SavingProductDTO sPdDTO
+	@PostMapping(value="/adPdDelete/{spdname}")
+	public void aPdSavingDelete(@PathVariable String spdname) throws ServletException, IOException {
 		logger.info("<< URL - aPdSavingUpdate >>");
+		System.out.println("spdname: " + spdname);
 		
-		service.deleteSpd(sPdName);	
+		service.deleteSpd(spdname);
+		System.out.println("aPdSavingDelete 성공");
 	}
 	
 	// [고객]
@@ -107,6 +110,14 @@ public class KimController {
 		return service.listAllSPd(req, model);
 	}
 	// 적금 1건 상세조회
-	//@GetMapping(value="")
+	@GetMapping(value="/custProduct/{spdname}")
+	public  SavingProductDTO pdByList(@PathVariable String spdname) throws ServletException, IOException {
+		logger.info("<< URL - (customer)pdByList >>");
+		
+		return service.selectPdSaving(spdname);
+	}
 	
+//	// 적금 가입페이지
+//	@GetMapping(value="/custSavingApp/{spdname}")
+//	public 
 }

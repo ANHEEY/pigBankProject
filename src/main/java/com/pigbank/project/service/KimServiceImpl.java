@@ -51,10 +51,10 @@ public class KimServiceImpl implements KimService {
 	}
 
 	@Override // Admin - 적금상품 삭제
-	public void deleteSpd(String sPdName) throws ServletException, IOException {
+	public void deleteSpd(String spdname) throws ServletException, IOException {
 		System.out.println("Service - (Admin)DeleteSPd");
 		
-		dao.sPdDelete(sPdName);
+		dao.sPdDelete(spdname);
 	}
 	
 	@Override // account - 자유입출금계좌 생성
