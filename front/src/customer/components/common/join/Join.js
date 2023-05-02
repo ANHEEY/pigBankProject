@@ -49,6 +49,11 @@ function Join(){
         return regex.test(name);
     };
 
+    const validateEmail=(email)=>{
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return regex.test(email);
+    }
+
     const join = (e)=> {
         e.preventDefault();
 
@@ -106,6 +111,10 @@ function Join(){
         }
         else if(!customer.email2){
             alert("이메일 도메인을 입력하세요!")
+            return false;
+        }
+        else if(!validateEmail(customerInfo.email)){
+            alert("이메일의 형식에 맞게 입력하세요!");
             return false;
         }
 

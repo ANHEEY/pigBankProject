@@ -39,20 +39,6 @@ function DepositComponent(){
                   <Table responsive striped style={{textAlign:"center"}}>
                       <thead>
                           <tr>
-                            <th>
-                              <Form>
-                              {['checkbox'].map((type) => (
-                                  <div key={`inline-${type}`} className="mb-3">
-                                  <Form.Check
-                                      inline
-                                      name="group1"
-                                      type={type}
-                                      id={`inline-${type}-1`}
-                                  />
-                                  </div>
-                              ))}
-                              </Form>
-                              </th>
                               <th>예금상품명</th>
                               <th>예금상품금리</th>
                               <th>가입기간</th>
@@ -66,20 +52,6 @@ function DepositComponent(){
                       <tbody>
                           {depositProducts.map(product =>
                               <tr key={product.dpdName}>
-                                  <td>
-                                  <Form>
-                                  {['checkbox'].map((type) => (
-                                      <div key={`inline-${type}`} className="mb-3">
-                                      <Form.Check
-                                          inline
-                                          name="group1"
-                                          type={type}
-                                          id={`inline-${type}-1`}
-                                      />
-                                      </div>
-                                  ))}
-                                  </Form>
-                                  </td>
                                   <td>{product.dpdName}</td>
                                   <td>{product.drate}%</td>
                                   <td>{product.dperiod}개월</td>

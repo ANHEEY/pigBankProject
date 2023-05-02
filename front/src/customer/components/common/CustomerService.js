@@ -29,6 +29,21 @@ class CustomerService {
       console.log(pwd);
       return axios.post(URL+"/certification",pwd);
     }
+
+    customerDetail(id){
+      console.log('회원정보!!');
+      return axios.get(URL+"/cusDetail",id);
+    }
+
+    customerUpdate(customerInfo){
+      console.log('회원정보 업데이트!!');
+      return axios.put(URL+"/cusUpdate"+customerInfo.id,customerInfo);
+    }
+
+    customerDelete(id){
+      console.log("회원 탈퇴!!");
+      return axios.put(URL+"/cusDelete",id);
+    }
     
 }
 export default new CustomerService();

@@ -28,9 +28,17 @@ function CertificationPage() {
 
         CustomerService.customerCertification(pwd)
             .then(res=> {
-                console.log(pwd);
-                console.log(res);
-                navigate('res');
+                if(res == 1){
+                    console.log(pwd);
+                    console.log(res);
+                    //아이디를 불러와야함
+                    //window.localStorage.setItem("id",id);
+                    navigate('/customer/mypage/mypage');
+                }else{
+                    alert('본인인증실패!!');
+                    setPwd("");
+                }
+   
             })
         .catch(err => {
         console.log('customerLogin() 에러!!', err);

@@ -6,34 +6,72 @@
      
 <mapper namespace="com.pigbank.project.dao.CustomerMapper">
 
+	<!-- 회원가입 -->
    <insert id="insertCustomer" parameterType="com.pigbank.project.dto.CustomerDTO">
       INSERT INTO customer(id, pwd, name, email, address, hp, birthday, key)
       VALUES(#{id},#{pwd},#{name},#{email},#{address},#{hp},#{birthday},5555)
    </insert>
 
+	<!--  -->
    <select id="loginCustomer" parameterType="String" resultType="com.pigbank.project.dto.CustomerDTO">
       SELECT * FROM customer WHERE id=#{id}
    </select>
    
+   <!--회원 인증  -->
+   <select id="passwordChk" parameterType="String" resultType="String">
+   		SELECT pwd FROM customer WHERE id=#{id}
+   </select>
+   
+<!--    <select id="cusCertification" parameterType="com.pigbank.project.dto.CustomerDTO" resultType="int">
+   		SELECT COUNT(*) FROM customer WHERE id=#{id} AND pwd=#{pwd}
+   </select> -->
+   
+   <!-- 회원 정보 불러오기 -->
+   <select id="customerDetail" parameterType="String" resultType="com.pigbank.project.dto.CustomerDTO">
+   		SELECT * FROM customer WHERE id=#{id}
+   </select>
+   
+   <!--  회원 정보 업데이트 -->
+   <update id="cusUpdate" parameterType="com.pigbank.project.dto.CustomerDTO">
+   		UPDATE customer
+   		   SET pwd=#{pwd},name=#{name},email=#{email},address=#{address},hp=#{hp},birthday=#{birthday}
+   		 WHERE id=#{id}
+   </update>
+      
+   <!-- 회원 탈퇴 신청 -->   
+   <update id="cusDelete" parameterType="String">
+   		UPDATE customer
+   		   SET cusState='탈퇴요청'
+   		 WHERE id=#{id}
+   </update>
+   
+   <!-- /////////////////////////////////////////////////////////////////////////// -->
+   
+   
+   <!-- 관리자 예금 상품 등록 -->
    <insert id="depositPdSave" parameterType="com.pigbank.project.dto.DepositProductDTO">
       INSERT INTO DEPOSIT_PRODUCT(dPdName,dPeriod,dRate,dContent,dMin,dMax,dCxlRate)
       VALUES(#{dpdName},#{dperiod},#{drate},#{dcontent},#{dmin},#{dmax},#{dcxlRate})
    </insert>
    
+   <!-- 관리자 예금 상품 리스트 -->
    <select id="depositProductList" resultType="com.pigbank.project.dto.DepositProductDTO">
       SELECT * FROM DEPOSIT_PRODUCT WHERE show='y'ORDER BY dRegDate DESC
    </select>
    
+   <!-- 관리자 예금 상품상세페이지 -->
    <select id="depositPdDetail" parameterType="String" resultType="com.pigbank.project.dto.DepositProductDTO">
       SELECT * FROM DEPOSIT_PRODUCT WHERE dPdName = #{dpdName}
    </select>
    
+   <!-- 관리자 예금 상품 수정 -->
    <update id="depositPdUpdate" parameterType="com.pigbank.project.dto.DepositProductDTO">
    	UPDATE DEPOSIT_PRODUCT 
    	   SET dPeriod=#{dperiod}, dRate=#{drate}, dContent=#{dcontent}, dMin=#{dmin}, dMax=#{dmax}, dCxlRate=#{dcxlRate}
  	 WHERE dPdName =#{dpdName}
    </update>
    
+   <!-- 관리자 예금 상품 삭제 -->
    <update id="depositPdDelete" parameterType="String">
    		UPDATE DEPOSIT_PRODUCT 
 		   SET show='n'
@@ -42,13 +80,35 @@
    
    <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
+	<!-- 고객 예금 상품 리스트 -->
 	<select id="pdDepositList" resultType="com.pigbank.project.dto.DepositProductDTO">
 		SELECT * FROM DEPOSIT_PRODUCT WHERE show='y'
 	</select>
 	
+	<!-- 고객 예금 상품 상세페이지 -->
 	<select id="pdDepositDetailInfo" parameterType="String" resultType="com.pigbank.project.dto.DepositProductDTO">
 		SELECT * FROM deposit_product WHERE dPdName=#{dpdName}
 	</select>   
+	
+	<!-- /////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	
+	<!-- 고객 자산 관리(예금, 적금, 입출금) -->
+	<select id="assetsManagement1" parameterType="String" resultType="com.pigbank.project.dto.AssetManagementDTO">
+		SELECT sum(ACBALANCE),actype FROM account_tbl WHERE id=#{id} GROUP BY actype
+	</select>
+	
+	<!-- 고객 자산 관리(대출) -->
+	<select id="assetsManagement2" parameterType="String" resultType="com.pigbank.project.dto.AssetManagementDTO">
+		SELECT SUM(lr.lPrincipal), lr.id 
+		  FROM L_ACCOUNT_TBL la, loan_req_tbl lr 
+		WHERE lr.LREQNUM = la.LREQNUM 
+		  AND lr.id=#{id}
+		  AND lr.LSTATE ='승인완료'
+		 GROUP BY lr.id
+	</select>
+	
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	
 	
 	
 </mapper>

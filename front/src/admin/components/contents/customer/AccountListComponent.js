@@ -39,11 +39,7 @@ export default function AccountListComponent(props) {
         const acNum = acNumber.toString().slice(0, 3) + '-' + acNumber.toString().slice(3);
         return acNum;
     }
-<<<<<<< Updated upstream
-    
-=======
 
->>>>>>> Stashed changes
     // 잔액 화폐단위 나타내는 함수
     function formatBalance(value) {
         const formatter = new Intl.NumberFormat("ko-KR", {

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pigbank.project.dto.AssetManagementDTO;
 import com.pigbank.project.dto.CustomerDTO;
 import com.pigbank.project.dto.DepositProductDTO;
 import com.pigbank.project.service.CustomerServiceImpl;
@@ -40,7 +41,7 @@ public class HeeController {
    //@Autowired
    //private JwtAuthenticationFilter jwtAuthenticationFilter;
    
-   //회원가입
+   //고객 회원가입
    @PostMapping(value="/customerJoin")
    public void customerJoin (@RequestBody CustomerDTO customerDTO)
          throws ServletException,IOException{
@@ -80,6 +81,41 @@ public class HeeController {
       return "/customer/*";
    }
 
+   //고객 회원수정 및 탈퇴를 위한 본인 인증
+   @GetMapping(value="/certification")
+   public int cusCertification(@RequestBody CustomerDTO customerDTO) throws ServletException, IOException {
+	   logger.info("url - cusCertification");
+	   
+	   return service.cusCertificationAction(customerDTO);
+   }
+   
+   //고객 정보 불러오기
+   @GetMapping(value="/cusDetail/{id}")
+   public CustomerDTO customerDetail(@PathVariable String id) throws ServletException, IOException {
+	   logger.info("url - customerDetail");
+	   
+	   return service.customerDetailAction(id);
+   }
+   
+   //고객 정보 업데이트
+   @PutMapping(value="/cusUpdate/{id}")
+   public void cusUpdate(@PathVariable String id, @RequestBody CustomerDTO customerDTO) 
+   		throws ServletException, IOException {
+	   logger.info("url - cusUpdate");
+	   
+	   service.cusUpdateAction(customerDTO);
+   }
+   
+   //고객 탈퇴 신청
+   @PutMapping(value="/cusDelete/{id}")
+   public void cusDelete(@PathVariable String id) throws ServletException, IOException {
+	   logger.info("url - cusDelete");
+	   
+	   service.cusDeleteAction(id);
+   }
+   
+   //-------------------------------------------------------------------------------
+   
    //관리자 예금상품등록
    @PostMapping(value="/depositPdSave")
    public void depositPdSave(@RequestBody DepositProductDTO depositProductDTO) 
@@ -138,6 +174,8 @@ public class HeeController {
 	   service.depositPdDeleteAction(dpdName);	   
    }
    
+   //------------------------------------------------------------
+   
    //고객 예금 상품 리스트
    @GetMapping(value="/pdDepositList")
    public List<DepositProductDTO> pdDepositList()
@@ -158,5 +196,15 @@ public class HeeController {
 	   return service.pdDepositDetailInfoAction(dpdName);
    }
    
+   //--------------------------------------------------------------------
+   
+   //자산관리 페이지
+   @GetMapping(value="/assetsManagement/{id}")
+   public List<AssetManagementDTO> assetsManagement(@PathVariable String id)
+		   throws ServletException, IOException {
+	   logger.info("url - assetsManagement");
+	   
+	   return service.assetsManagementAction(id);
+   }
    
 }

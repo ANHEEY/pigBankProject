@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.pigbank.project.dao.CustomerMapper;
+import com.pigbank.project.dto.AssetManagementDTO;
 import com.pigbank.project.dto.CustomerDTO;
 import com.pigbank.project.dto.DepositProductDTO;
 
@@ -20,6 +21,7 @@ public class CustomerServiceImpl implements CustomerService{
    @Autowired
    private CustomerMapper dao;
    
+   //회원가입
    @Override
    public void insertCustomerAction(CustomerDTO customerDTO) {
       System.out.println("service - insertCustomer");
@@ -36,7 +38,43 @@ public class CustomerServiceImpl implements CustomerService{
       System.out.println("service - insertCustomer");
       return 0;
    }
+   
+   //회원 인증
+	@Override
+	public int cusCertificationAction(CustomerDTO customerDTO) {
+		System.out.println("service - cusCertificationAction");
+		//Bcrypt matches 메서드 불러서 비밀번호 체크해야함
+		String encryptPwd = dao.passwordChk(customerDTO.getId());
+		
+		if(passwordEncoder.matches(customerDTO.getPwd(), encryptPwd)) {
+			return 1;
+		}
+			return 0;		
+	}
+   
+   //회원 정보 불러오기
+	@Override
+	public CustomerDTO customerDetailAction(String id) {
+		System.out.println("service - customerDetailAction");
+		
+		return dao.customerDetail(id);
+	}
 
+	//회원 정보 업데이트
+	@Override
+	public void cusUpdateAction(CustomerDTO customerDTO) {
+		System.out.println("service - cusUpdateAction");
+		
+		dao.cusUpdate(customerDTO);
+	}
+	
+	//회원 탈퇴 신청
+	@Override
+	public void cusDeleteAction(String id) {
+		System.out.println("service - cusDeleteAction");
+		
+		dao.cusDelete(id);
+	}   
    //관리자 예금 상품 등록
    @Override
    public void depositPdSaveAction(DepositProductDTO depositProductDTO) {
@@ -97,8 +135,17 @@ public class CustomerServiceImpl implements CustomerService{
 		return dao.pdDepositDetailInfo(dpdName);
 	}
 
-
-   
-   
+	//--------------------------------------------------------------------
+	
+	//고객 자산 관리 페이지
+	@Override
+	public List<AssetManagementDTO> assetsManagementAction(String id) {
+		System.out.println("service - assetsManagementAction");
+		
+		List<AssetManagementDTO> list1 = dao.assetsManagement1(id);
+		List<AssetManagementDTO> list2 = dao.assetsManagement2(id);
+		
+		return null;
+	}
 
 }
