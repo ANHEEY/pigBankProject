@@ -28,6 +28,7 @@ public class CustomerDTO {
 	private String authority;
 	private String key;
 	private String enabled;
+    private String token;
 
 	
 	

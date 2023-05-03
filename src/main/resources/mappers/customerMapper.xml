@@ -17,7 +17,12 @@
       SELECT * FROM customer WHERE id=#{id}
    </select>
    
-   <!--회원 인증  -->
+   <!-- 회원 인증 -->
+   <select id="cusById" parameterType="String" resultType="com.pigbank.project.dto.CustomerDTO">
+   		SELECT * FROM customer WHERE id=#{id}
+   </select>
+   
+   <!--회원 수정,탈퇴 전 인증-->
    <select id="passwordChk" parameterType="String" resultType="String">
    		SELECT pwd FROM customer WHERE id=#{id}
    </select>

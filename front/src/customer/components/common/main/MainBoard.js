@@ -67,7 +67,7 @@ class MainBoard extends Component{
             <div className='container' >
                 <div style={{display: 'flex'}}>
                     <div >
-                        <Box ml={7}>
+                        <Box ml={6}>
                             <List variant="outlined" sx={{ width: 300, bgcolor: 'background.body', borderRadius: 'sm',boxShadow: 'sm'}} >
                                 <ListItem nested>
                                     <ListSubheader>예금상품추천</ListSubheader>
@@ -79,12 +79,18 @@ class MainBoard extends Component{
                                     </List>
                                     ))}
                                 </ListItem>
+                            </List>
+                        </Box>
+                    </div>
+                    <div >
+                        <Box ml={6}>
+                            <List variant="outlined" sx={{ width: 300, bgcolor: 'background.body', borderRadius: 'sm',boxShadow: 'sm'}} >
                                 <ListItem nested>
                                     <ListSubheader>적금상품추천</ListSubheader>
                                     {this.state.members2.map((member2) => (
-                                    <List key={member2.spdName}>
+                                    <List key={member2.spdname}>
                                         <ListItem>
-                                            <ListItemButton>{member2.spdName}</ListItemButton>
+                                            <ListItemButton>{member2.spdname}</ListItemButton>
                                         </ListItem>
                                     </List>
                                     ))}
@@ -93,7 +99,7 @@ class MainBoard extends Component{
                         </Box>
                     </div>
                     <div>    
-                        <Box  ml={7}>
+                        <Box  ml={6}>
                             <List variant="outlined" sx={{ width: 300, bgcolor: 'background.body', borderRadius: 'sm', boxShadow: 'sm'}} >
                                 <ListItem nested>
                                     <ListSubheader>대출상품추천</ListSubheader>
@@ -109,7 +115,7 @@ class MainBoard extends Component{
                         </Box>
                     </div>
                     <div>              
-                        <Box  ml={7}>
+                        <Box  ml={6}>
                             <List variant="outlined" sx={{ width: 300, bgcolor: 'background.body', borderRadius: 'sm', boxShadow: 'sm'}}>
                                 <ListItem nested>
                                     <ListSubheader>공지사항</ListSubheader>

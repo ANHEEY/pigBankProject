@@ -4,9 +4,12 @@ import { Typography} from "@mui/material";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CustomerService from '../CustomerService';
 import { useNavigate } from "react-router-dom";
+import DaumPostcode from 'react-daum-postcode';
+//<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_APP_KEY&libraries=services"></script>
 
 
 function Join(){
+    
     const navigate = useNavigate();
 
     const [customer,setCustomer] = useState({
@@ -22,6 +25,47 @@ function Join(){
         hp:"",
         birthday:""
     });
+
+    const [postcode, setPostcode] = useState('');
+    const [address1, setAddress1] = useState('');
+    const [address2, setAddress2] = useState('');
+
+    const handlePostcode = () => {
+        new window.daum.Postcode({
+          oncomplete: (data) => {
+            let addr = '';
+            let extraAddr = '';
+            if (data.userSelectedType === 'R') {
+              addr = data.roadAddress;
+            } else {
+              addr = data.jibunAddress;
+            }
+            if (data.userSelectedType === 'R') {
+              if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                extraAddr += data.bname;
+              }
+              if (data.buildingName !== '' && data.apartment === 'Y') {
+                extraAddr += extraAddr !== '' ? ', ' + data.buildingName : data.buildingName;
+              }
+              if (extraAddr !== '') {
+                extraAddr = ' (' + extraAddr + ')';
+              }
+              setAddress2(extraAddr);
+            } else {
+                setAddress2('');
+            }
+    
+            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+            setPostcode(data.zonecode);
+            setAddress1(addr);
+            customer.address2.focus();
+          },
+        }).open();
+      };
+
+    const setDomain = (e)=>{
+        setCustomer({ ...customer, email2: e.target.value });
+    }
 
     const onChange = (e) => {
         // 이벤트를 부른 요소의 value와 name 키의 값 가져오기
@@ -140,7 +184,7 @@ function Join(){
         CustomerService.customerJoin(customerInfo)
             .then(res=> {
                 console.log(customerInfo);
-                navigate(res);
+                navigate('/customer/*');
             })
         .catch(err => {
         console.log('customerJoin() 에러!!', err);
@@ -186,12 +230,12 @@ function Join(){
                     @
                     <Col sm={3}><Form.Control type="text" name="email2" value={customer.email2} onChange={onChange} /></Col>
                     <Col sm={3}>
-                    <Form.Select aria-label="Default select example">
-                        <option>직접입력</option>
-                        <option value="1">naver.com</option>
-                        <option value="2">gmail.com</option>
-                        <option value="3">nate.com</option>
-                        <option value="4">hanmail.net</option>
+                    <Form.Select aria-label="Default select example" onChange={setDomain}>
+                        <option value="">직접입력</option>
+                        <option value="naver.com">naver.com</option>
+                        <option value="gmail.com">gmail.com</option>
+                        <option value="nate.com">nate.com</option>
+                        <option value="hanmail.net">hanmail.net</option>
                     </Form.Select></Col>
                 </Form.Group>
                 <br/>
@@ -199,7 +243,7 @@ function Join(){
                     <Form.Label column sm={2}>주소</Form.Label>
                     <Col sm={6}><Form.Control type="text" placeholder="우편번호" 
                                 name="postcode" value={customer.postcode} onChange={onChange}/></Col>
-                    <Col sm={4}><Button variant="success">우편번호찾기</Button></Col>
+                    <Col sm={4}><Button variant="success" onClick={()=>handlePostcode}>우편번호찾기</Button></Col>
                     <br/><br/>
                     <Form.Label column sm={2}>기본주소</Form.Label>
                     <Col sm={10}><Form.Control type="text" placeholder="기본주소"

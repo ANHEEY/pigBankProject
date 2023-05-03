@@ -18,21 +18,21 @@ class CustomerService {
       return axios.post(URL+"/customerJoin",customer);
     }
 
-    customerLogin(customerInfo){
-        console.log('로그인!!!!!');
-        console.log(customerInfo);
-        return axios.post(URL+"/login",customerInfo);
-    }
+    // customerLogin(customerInfo){
+    //     console.log('로그인!!!!!');
+    //     console.log(customerInfo);
+    //     return axios.post(URL+"/login",customerInfo);
+    // }
 
-    customerCertification(pwd){
+    customerCertification(cusInfo){
       console.log('본인인증!!!!!');
-      console.log(pwd);
-      return axios.post(URL+"/certification",pwd);
+      console.log(cusInfo);
+      return axios.post(URL+"/certification",cusInfo);
     }
 
     customerDetail(id){
       console.log('회원정보!!');
-      return axios.get(URL+"/cusDetail",id);
+      return axios.get(URL+"/cusDetail/"+id);
     }
 
     customerUpdate(customerInfo){

@@ -18,6 +18,9 @@ public interface CustomerMapper {
    public CustomerDTO loginCustomer(String id);
    
    //회원 인증
+   public CustomerDTO cusById(String id);
+   
+   //회원 수정, 탈퇴인증
    public String passwordChk(String id);
    
    //public int cusCertification(CustomerDTO customerDTO);

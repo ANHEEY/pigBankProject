@@ -3,7 +3,9 @@ import {Typography} from "@mui/material";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Form, Row, Col, Container, Stack, Button} from 'react-bootstrap';//npm install react-bootstrap
 import { useNavigate } from "react-router-dom";
-import CustomerService from "../CustomerService";
+import { getAuthToken, request, setAuthToken,setId,getId } from '../../helpers/axios_helper';
+import axios from 'axios';   // npm install axios
+
 
 
 function Login() {
@@ -26,6 +28,8 @@ function Login() {
     };
 
     const login = (e)=> {
+        localStorage.clear();
+
         e.preventDefault();
 
         const customerInfo = {
@@ -33,16 +37,40 @@ function Login() {
             pwd:customer.pwd
         }
 
+        request(
+            "POST",
+            "/login",
+            {
+                id: customerInfo.id,
+                pwd: customerInfo.pwd
+            }).
+            then((res) => {
+                setAuthToken(res.data.token);
+                setId(res.data.id);
 
-        CustomerService.customerLogin(customerInfo)
-            .then(res=> {
-                console.log(customerInfo);
-                console.log(res);
-                navigate('res');
+                console.log(res.data.token);
+                console.log(getAuthToken());
+                console.log(res.data.id);
+                console.log(getId());
+                console.log(res.data.authority);
+            
+                axios.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`;
+
+                if(res.data.authority === 'ROLE_USER'){
+                    navigate('/customer/*');
+                    alert(getId()+'님 환영합니다!');
+                }else{
+                    navigate('/admin');
+                    alert(getId()+'관리자님 환영합니다:)');
+                }
+
+                
             })
-        .catch(err => {
-        console.log('customerLogin() 에러!!', err);
-        });
+            .catch((err) => {
+                console.log('login() 에러!!',err)
+                localStorage.clear();
+            }
+        );
 
         
     }

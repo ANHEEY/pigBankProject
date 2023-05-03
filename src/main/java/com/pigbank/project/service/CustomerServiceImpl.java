@@ -1,22 +1,29 @@
 package com.pigbank.project.service;
 
+import java.nio.CharBuffer;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.pigbank.project.dao.CustomerMapper;
 import com.pigbank.project.dto.AssetManagementDTO;
+import com.pigbank.project.dto.CredentialsDTO;
 import com.pigbank.project.dto.CustomerDTO;
 import com.pigbank.project.dto.DepositProductDTO;
+import com.pigbank.project.exception.AppException;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class CustomerServiceImpl implements CustomerService{
 
    @Autowired
-   private BCryptPasswordEncoder passwordEncoder;
+   private PasswordEncoder passwordEncoder;
    
    @Autowired
    private CustomerMapper dao;
@@ -33,23 +40,48 @@ public class CustomerServiceImpl implements CustomerService{
       dao.insertCustomer(customerDTO);
    }
 
+   //회원 로그인
    @Override
-   public int loginCustomerAction(Map<String, String> map) {
-      System.out.println("service - insertCustomer");
-      return 0;
+   public CustomerDTO loginCustomerAction(CustomerDTO customerDTO) {
+      System.out.println("service - loginCustomerAction");
+      return null;
    }
    
    //회원 인증
 	@Override
+	public CustomerDTO cusById(String id) {
+		System.out.println("service - cusById");		
+		
+		return dao.cusById(id);
+	}
+	
+	//로그인
+	@Override
+	public CustomerDTO login(CredentialsDTO credentialsDTO) {
+		System.out.println("service - login");		
+		
+		CustomerDTO customerDTO = dao.cusById(credentialsDTO.getId());
+		
+		if(passwordEncoder.matches(CharBuffer.wrap(credentialsDTO.getPwd()),customerDTO.getPwd())){
+			return customerDTO;
+		}
+		
+		throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
+	}
+   
+   //회원 수정, 탈퇴 전 인증
+	@Override
 	public int cusCertificationAction(CustomerDTO customerDTO) {
 		System.out.println("service - cusCertificationAction");
+		System.out.println("customerDTO : "+customerDTO);
 		//Bcrypt matches 메서드 불러서 비밀번호 체크해야함
 		String encryptPwd = dao.passwordChk(customerDTO.getId());
-		
+		System.out.println("encryptPwd : "+encryptPwd);
 		if(passwordEncoder.matches(customerDTO.getPwd(), encryptPwd)) {
 			return 1;
+		}else {
+			return 0;
 		}
-			return 0;		
 	}
    
    //회원 정보 불러오기
@@ -147,5 +179,9 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		return null;
 	}
+
+
+
+
 
 }

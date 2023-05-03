@@ -24,7 +24,7 @@ import com.pigbank.project.dto.SavingProductDTO;
 import com.pigbank.project.service.ChuServiceImpl;
 
 
-@CrossOrigin(origins="**", maxAge=3600)
+//@CrossOrigin(origins="**", maxAge=3600)
 @RestController
 public class ChuController {
 

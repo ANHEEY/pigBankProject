@@ -28,14 +28,36 @@ function Mypage(){
         customerDetail(window.localStorage.getItem("id"));
     },[]);
 
+    
+
     const customerDetail=(id)=>{
         CustomerService.customerDetail(id)
             .then(res=>{
-                setCustomer(res.data);
+                const fullEmail = res.data.email.split("@");
+                const fullAddress = res.data.address.split("/");
+                setCustomer({
+                    ...res.data,
+                    id:res.data.id,
+                    pwd:"",
+                    repwd:"",
+                    name:res.data.name,
+                    email1:fullEmail[0],
+                    email2:fullEmail[1],
+                    postcode:fullAddress[0],
+                    address1:fullAddress[1],
+                    address2:fullAddress[2],
+                    hp:res.data.hp,
+                    birthday:res.data.birthday
+                });
+                console.log(res.data);
             })
             .catch(err=>{
                 console.log('customerDetail 에러!!!',err);
             });
+    }
+
+    const setDomain = (e)=>{
+        setCustomer({ ...customer, email2: e.target.value });
     }
 
 
@@ -173,13 +195,13 @@ function Mypage(){
                 <Form.Group as={Row} className="mb-3" controlId="formGroupPassword">
                     <Form.Label column sm={2}>비밀번호</Form.Label>
                     <Col sm={10}><Form.Control type="password" placeholder="소문자, 숫자 조합 12자 이상 20자 이하"
-                                name="pwd" value=""  onChange={onChange} /></Col>
+                                name="pwd" value={customer.pwd}  onChange={onChange} /></Col>
                 </Form.Group>
                 <br/>
                 <Form.Group as={Row} className="mb-3" controlId="formGroupRePassword">
                     <Form.Label column sm={2}>비밀번호 확인</Form.Label>
                     <Col sm={10}><Form.Control type="password" placeholder="소문자, 숫자 조합 12자 이상 20자 이하"
-                                name="repwd" value=""  onChange={onChange} /></Col>
+                                name="repwd" value={customer.repwd}  onChange={onChange} /></Col>
                 </Form.Group>
                 <br/>
                 <Form.Group as={Row} className="mb-3" controlId="formGroupName">
@@ -195,12 +217,12 @@ function Mypage(){
                     @
                     <Col sm={3}><Form.Control type="text" name="email2" value={customer.email2} onChange={onChange} /></Col>
                     <Col sm={3}>
-                    <Form.Select aria-label="Default select example">
-                        <option>직접입력</option>
-                        <option value="1">naver.com</option>
-                        <option value="2">gmail.com</option>
-                        <option value="3">nate.com</option>
-                        <option value="4">hanmail.net</option>
+                    <Form.Select aria-label="Default select example" onChange={setDomain}>
+                        <option value="">직접입력</option>
+                        <option value="naver.com">naver.com</option>
+                        <option value="gmail.com">gmail.com</option>
+                        <option value="nate.com">nate.com</option>
+                        <option value="hanmail.net">hanmail.net</option>
                     </Form.Select></Col>
                 </Form.Group>
                 <br/>

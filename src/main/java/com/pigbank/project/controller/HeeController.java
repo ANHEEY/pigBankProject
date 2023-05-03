@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,12 +26,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pigbank.project.config.UserAuthProvider;
 import com.pigbank.project.dto.AssetManagementDTO;
+import com.pigbank.project.dto.CredentialsDTO;
 import com.pigbank.project.dto.CustomerDTO;
 import com.pigbank.project.dto.DepositProductDTO;
 import com.pigbank.project.service.CustomerServiceImpl;
 
-@CrossOrigin(origins="**", maxAge=3600)//, exposedHeaders = "Authorization"
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+//@CrossOrigin(origins="**", maxAge=3600)//, exposedHeaders = "Authorization"
 @RestController
 //@RequestMapping(value="/api/p1")
 public class HeeController {
@@ -37,6 +45,8 @@ public class HeeController {
    
    @Autowired
    private CustomerServiceImpl service;
+   
+   private final UserAuthProvider userAuthProvider;
    
    //@Autowired
    //private JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -52,37 +62,41 @@ public class HeeController {
    }
    
    //로그인
-//   @PostMapping(value="/login")
-//   public void login(@RequestBody CustomerDTO customerDTO, Model model) 
-//         throws ServletException,IOException {
-//      logger.info("url - login");
-//      System.out.println("customerDTO : "+customerDTO);
-//      String id = customerDTO.getId();
-//      String pwd = customerDTO.getPwd();
+   @PostMapping(value="/login")
+   public ResponseEntity<CustomerDTO> login(@RequestBody CredentialsDTO credentialsDTO) 
+         throws ServletException,IOException {
+      logger.info("url - login");
+
+      CustomerDTO customerDTO = service.login(credentialsDTO);
+      String token = userAuthProvider.createToken(customerDTO.getId());
+      System.out.println("token : "+token);
+      customerDTO.setToken(token);
+      
+      System.out.println("login성공");
+      
+      HttpHeaders headers = new HttpHeaders();
+      headers.add("Authorization",token);
+
+      //return ResponseEntity.ok(customerDTO);
+      return new ResponseEntity<>(customerDTO, headers, HttpStatus.OK);
+   }
+   
+//   @RequestMapping(value="/admin/login")
+//   public String adminLogin() throws ServletException, IOException{
+//      logger.info("url - adminLogin");
 //      
-//      model.addAttribute("id", id);
-//      model.addAttribute("pwd", pwd);
-//      //jwtAuthenticationFilter.attemptAuthentication(request, response);
-//      System.out.println("login성공");
-//      //return "redirect:/loginProc";
+//      return "/admin/*";
 //   }
-   
-   @RequestMapping(value="/admin/login")
-   public String adminLogin() throws ServletException, IOException{
-      logger.info("url - adminLogin");
-      
-      return "/admin/*";
-   }
-   
-   @RequestMapping(value="/customer/login")
-   public String customerLogin() throws ServletException, IOException{
-      logger.info("url - customerLogin");
-      
-      return "/customer/*";
-   }
+//   
+//   @RequestMapping(value="/customer/login")
+//   public String customerLogin() throws ServletException, IOException{
+//      logger.info("url - customerLogin");
+//      
+//      return "/customer/*";
+//   }
 
    //고객 회원수정 및 탈퇴를 위한 본인 인증
-   @GetMapping(value="/certification")
+   @PostMapping(value="/certification")
    public int cusCertification(@RequestBody CustomerDTO customerDTO) throws ServletException, IOException {
 	   logger.info("url - cusCertification");
 	   
@@ -195,6 +209,10 @@ public class HeeController {
 	   
 	   return service.pdDepositDetailInfoAction(dpdName);
    }
+   
+   //고객 예금 가입페이지
+   
+   //고객 예금 가입
    
    //--------------------------------------------------------------------
    
