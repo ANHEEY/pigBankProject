@@ -15,7 +15,8 @@ function TransReConfirm (props) {
     const selectedMyAccount= props.data[2];
     const [currentTime, setCurrentTime] = useState(null);
     const mybkName = props.data[6];
-    
+    const name = props.data[7];
+    const bankName = props.data[8];
     const navigate = useNavigate();
 
     
@@ -70,11 +71,11 @@ function TransReConfirm (props) {
                     </tr>
                     <tr>
                         <th>예금주</th>
-                        <td align='right'>{props.data[5]}</td>
+                        <td align='right'>{name}</td>
                     </tr>
                     <tr>
                         <th>출금계좌</th>
-                        <td align='right'>{props.data[0]}</td>
+                        <td align='right'>[{bankName}]{selectedAccount}</td>
                     </tr>
                     </tbody>
                     </Table>
@@ -84,11 +85,11 @@ function TransReConfirm (props) {
                     <tbody>
                         <tr>
                         <th>받는 분</th>
-                        <td align='right'>{props.data[5]}</td>
+                        <td align='right'>{yourMemo}</td>
                     </tr>
                     <tr>
                         <th>받는계좌</th>
-                        <td align='right'>{props.data[2]}</td>
+                        <td align='right'>{selectedMyAccount}</td>
                     </tr>
                     <tr>
                         <th>은행명</th>
@@ -103,16 +104,16 @@ function TransReConfirm (props) {
                     <tbody>
                     <tr>
                         <th>이체금액</th>
-                        <td align='right'>{props.data[3]}원</td>
-                    </tr>
-                    <tr>
-                        <th>받는통장메모</th>
-                        <td align='right'>{props.data[5]}</td>
-                        
+                        <td align='right'>{tAmount}원</td>
                     </tr>
                     <tr>
                         <th>내통장메모</th>
-                        <td align='right'>{props.data[4]}</td>
+                        <td align='right'>{myMemo}</td>
+                    </tr>
+                    <tr>
+                        <th>받는통장메모</th>
+                        <td align='right'>{yourMemo}</td>
+                        
                     </tr>
                     </tbody>
         </Table>

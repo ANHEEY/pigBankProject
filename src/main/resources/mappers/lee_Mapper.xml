@@ -7,8 +7,13 @@
     <!-- namespace="패키지명.인터페이스" -->
 <mapper namespace="com.pigbank.project.dao.LeeMapper">
 
+	<select id="allAccountList" resultType="com.pigbank.project.dto.AccountDTO">
+		select act.acnumber, act.bankName, cs.name
+		from ACCOUNT_TBL act, CUSTOMER cs where act.id = cs.id
+	</select>
+
 	<select id="accountList" parameterType="String" resultType="com.pigbank.project.dto.AccountDTO">
-		SELECT act.acnumber, act.acbalance, act.bankName, cs.name, act.acPwd, act.trsfLimit
+		SELECT act.acnumber, act.acbalance, act.bankName, cs.name, act.acPwd, act.trsfLimit, act.acType
 		  FROM ACCOUNT_TBL act, CUSTOMER cs
 		  WHERE act.id = cs.id
 		    AND act.id = #{id}
@@ -54,4 +59,47 @@
 		set aUpdate = #{aUpdate} + #{aTransferCycle}
 		where aNum = #{aNum}
 	</update>
+	
+	<select id="autoTransferCheck" parameterType="java.util.Map" resultType="com.pigbank.project.dto.AutoTransferDTO">
+		select * from auto_transferReg_tbl
+		where acNumber = #{acNumber}
+		  and aState = #{aState}
+	</select>
+	
+	<select id="autoTransferCheckall" parameterType="java.util.Map" resultType="com.pigbank.project.dto.AutoTransferDTO">
+		select * from auto_transferReg_tbl
+		where acNumber = #{acNumber}
+		  and aState LIKE '%' || #{aState} || '%'
+	</select>
+	
+	<update id="autoTransferCancel" parameterType="java.util.Map">
+		update auto_transferReg_tbl
+		set aState = #{aState}
+		, aCancelDate = sysdate
+		where aNum = #{aNum} 
+	</update>
+	
+	<select id="selectOne" parameterType="int" resultType="com.pigbank.project.dto.AutoTransferDTO">
+		select att.acNumber, att.acancelDate, att.adepositAmount, att.adepositBank, 
+			   att.adepositnum, att.aendDate, att.aregDate, att.anum, 
+			   att.astartDate, att.astate, att.atransferCycle, att.yourMemo, act.trsfLimit
+		from auto_transferReg_tbl att, ACCOUNT_TBL act
+		where act.acNumber = att.acNumber
+		  and att.aNum = #{aNum}
+	</select>
+	
+	<update id="updatedirectlyAutoTransfer">
+		update auto_transferReg_tbl
+		set aDepositAmount = #{aDepositAmount} , 
+		aTransferCycle = #{aTransferCycle}, 
+		aEndDate = #{aEndDate}
+		where aNum = #{aNum}
+	</update>
+	
+	<update id="updatetrsfLimit" parameterType="com.pigbank.project.dto.AccountDTO">
+		update account_tbl
+		set trsfLimit = #{trsfLimit}
+		where acNumber = #{acNumber}
+	</update>
+	
 </mapper>

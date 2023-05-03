@@ -29,5 +29,6 @@ public class AutoTransferDTO {
 	private String yourMemo;
 	private int aUpdate;
 	
-	
+	// 조인한 계좌별 이체한도
+	private long trsfLimit;
 }

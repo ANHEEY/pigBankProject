@@ -7,7 +7,7 @@ import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import TransferService from "../transfer-service/TransferService";
 import AutoTransReConfirm from "./AutoTransReConfirm";
-
+import { getId } from '../../../helpers/axios_helper'
 
 function AddAutoTrans () {
 
@@ -18,37 +18,53 @@ function AddAutoTrans () {
     const [selectedAccount, setSelectedAccount] = useState('');
     const [selectedBalance, setSelectedBalance] = useState('');
     const [acPwd, setAcPwd] = useState('');
+    const [notePwd, setNotePwd] = useState('');
     const [selectedMyAccount, setSelectedMyAccount] = useState('');
     const [tAmount, setTAmount] = useState('');
+    const [trsfLimit, setTrsfLimit] = useState('');
     const [bankName, setBankName] = useState('');
     const [myMemo, setMyMemo] = useState('');
     const [yourMemo, setYourMemo] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [transferCycle, setTransferCycle] = useState('');
-
+    const [mybkName, setMybkName] = useState('');
     const [auto, setAuto] = useState('');
+    const [name, setName] = useState('');
+
+    const [allAccount, setAllAccounts] = useState([]);
+
+    const [id, setId] = useState('');
 
     useEffect(() => {
+        setId(getId());
         reloadAccountList();
-        }, []);
+        allAcountList();
+        }, [acPwd]);
 
     const reloadAccountList = () => {
-        TransferService.fetchAccountList()
+        TransferService.fetchAccountList(id)
         .then(res => {
             console.log(res.data);
         setAccounts(res.data);
         })
         .catch(err => {
+            alert("로그인 하세요.");
             console.log('fetchAccountList() Error!!', err);
         });
     };
 
+    const allAcountList = () => {
+        TransferService.allAccountList()
+          .then(res => {
+              console.log(res.data);
+              setAllAccounts(res.data);
+          })
+      }
+
     const handleClick = (e) => {
         e.preventDefault();
 
-        console.log(transferCycle)
-        
         let datas= [
             selectedAccount ,
             acPwd,
@@ -59,18 +75,56 @@ function AddAutoTrans () {
             yourMemo,
             Number(transferCycle),
             startDate,
-            endDate
+            endDate,
+            mybkName,
+            name
         ];
 
-        console.log(bankName);
-
-        setShowComponent(true);
-        setAuto(datas);
-    }
+        let defaultAccounts = allAccount.filter(all => all.acNumber === selectedMyAccount);
+        let defaultname = allAccount.filter(all => all.name === yourMemo); // 5건
+        let defaultbankName = allAccount.filter(all => all.bankName === mybkName); // 5건
+          
+        if(defaultAccounts.length !== 0){
+            if(defaultname.length !== 0){
+              if(defaultbankName.length !== 0){
+                if(acPwd == notePwd) {
+                  if(trsfLimit >= tAmount) {
+                  setShowComponent(true);
+                  
+                  setAuto(datas);
+                  }
+                  else{
+                    alert('한도초과 확인후 다시 시도해주세요.')
+                  }
+                }
+                else {
+                  alert("비밀번호 오류 다시시도해주세요.");
+                }
+              }else{
+                alert("은행명이 일치하지않습니다 다시 시도해주세요.")
+              }
+            }else{
+              alert("계좌명이 일치하지않습니다 다시 시도해주세요.")
+            }
+          }else {
+            alert("계좌번호가 일치하지 않습니다 다시 시도해주세요.")
+          }
+        };
 
     const accountChange = (event) => {
-        setSelectedAccount(event.target.value);
-        };
+        const selectedAccountInt = parseInt(event.target.value);
+        const account = accounts.find(account => account.acNumber === selectedAccountInt);
+
+        setSelectedAccount(selectedAccountInt);
+        if (account) {
+          setAcPwd(account.acPwd);
+          setTrsfLimit(account.trsfLimit);
+          setBankName(account.bankName);
+          setName(account.name);
+        } else {
+          setAcPwd('');
+        }
+    };
 
     const handleBalanceClick = () => {
         const selectedAccountInt = parseInt(selectedAccount);
@@ -83,16 +137,16 @@ function AddAutoTrans () {
     }; 
 
     const myAccountChange = (event) => {
-        setSelectedMyAccount(event.target.value);
-        setYourMemo(accounts[0].name);
-        const selectedAccountInt = parseInt(selectedAccount);
-          const account = accounts.find(account => account.acNumber === selectedAccountInt);
-          if (account) {
-            setBankName(account.bankName);
-          } else {
-            setBankName('');
-          }
-        };
+        const selectedMyAccountInt = parseInt(event.target.value);
+          const account = accounts.find(account => account.acNumber === selectedMyAccountInt);
+          setSelectedMyAccount(selectedMyAccountInt);
+          setYourMemo(accounts[0].name);
+            if (account) {
+              setMybkName(account.bankName);
+            } else {
+              setMybkName('');
+            }
+          };
 
     return (
         <Container >
@@ -109,8 +163,9 @@ function AddAutoTrans () {
                         </td>
                         <td>
                         <Form.Control
+                            readOnly
                             value={selectedAccount}
-                            placeholder="-없이 입력해주세요"
+                            placeholder="오른쪽에서 계좌 선택해주세요"
                             aria-label="Username"
                             aria-describedby="basic-addon1"
                             onChange={(event) => setSelectedAccount(event.target.value) }
@@ -118,9 +173,11 @@ function AddAutoTrans () {
                         </td>    
                         <td><Form.Select aria-label="Default select example" onChange={accountChange}>
                             <option>계좌선택</option>
-                            {accounts.map((account) => (
+                            {accounts
+                            .filter((account) => account.acType === "입출금통장")
+                            .map((account) => (
                                 <option key={account.acNumber} value={account.acNumber}>
-                                [{account.bankName}]{account.acNumber}</option>
+                                [{account.bankName}]{account.acNumber} || {account.acType}</option>
                             ))}
                                 </Form.Select> 
                              </td>
@@ -130,7 +187,7 @@ function AddAutoTrans () {
                                     disabled={isNaN(selectedAccount) || !selectedAccount}
                                     >잔액조회</Button>{' '} </td>
                             <td>
-                                {selectedBalance}원
+                                <p>{Number(selectedBalance).toLocaleString('ko-kR')}원</p>
                             </td>
                         </tr>
                     <tr>
@@ -139,11 +196,11 @@ function AddAutoTrans () {
                         </td>
                         <td>
                         <Form.Control
-                            value={acPwd}
+                            value={notePwd}
                             type="password"
                             maxLength={4}
                             placeholder="숫자 4자리"
-                            onChange={(e) => setAcPwd(e.target.value)}
+                            onChange={(e) => setNotePwd(e.target.value)}
                             />  
                         </td>    
                     </tr>
@@ -166,13 +223,14 @@ function AddAutoTrans () {
                                 placeholder="-없이 입력해주세요"
                                 aria-label="Username"
                                 aria-describedby="basic-addon1"
-                                onChange={(e) => setSelectedMyAccount(e.target.value)}
+                                onChange={(e) => setSelectedMyAccount(parseInt(e.target.value))}
                                 />  
                             </td>    
                             <td><Form.Select aria-label="Default select example" onChange={myAccountChange}>
                                     <option>본인계좌조회</option>
                                 {accounts.map((account) => (
-                                    <option key={account.acNumber} value={account.acNumber}>[{account.bankName}]{account.acNumber}</option>
+                                    <option key={account.acNumber} value={account.acNumber}>
+                                        [{account.bankName}]{account.acNumber} || {account.acType}</option>
                                 ))}
                                 </Form.Select> 
                              </td>
@@ -183,11 +241,11 @@ function AddAutoTrans () {
                                 </td>
                                 <td>
                                 <Form.Control
-                                    value={bankName}
-                                    placeholder="fullName"
+                                    value={mybkName}
+                                    placeholder="은행명"
                                     aria-label="Username"
                                     aria-describedby="basic-addon1"
-                                    onChange={(e) => setBankName(e.target.value)}
+                                    onChange={(e) => setMybkName(e.target.value)}
                                     />  
                                 </td>    
                             </tr> 
@@ -197,13 +255,12 @@ function AddAutoTrans () {
                             </td>
                             <td>
                             <Form.Control
-                                 value={tAmount}
-                                 placeholder="원(KRW)"
-                                 aria-label="Username"
-                                 aria-describedby="basic-addon1"
-                                 onChange={(e) => setTAmount(e.target.value)}
+                                  value={tAmount ? Number(tAmount).toLocaleString('ko-kR') : ''}
+                                  placeholder="원(KRW)"
+                                  aria-label="Username"
+                                  aria-describedby="basic-addon1"
+                                  onChange={(e) => setTAmount(Number(e.target.value.replace(/[^0-9]/g, '')))}
                                 />  
-                                
                             </td>    
                         </tr>
                         <tr>
@@ -260,22 +317,7 @@ function AddAutoTrans () {
                     <Table>
                         <tbody>
                         <tr>
-                    <       td>
-                            <InputGroup.Text id="basic-addon1" >받는통장 메모</InputGroup.Text>
-                            </td>
-                            <td>
-                            <Form.Control
-                                value={yourMemo}
-                                placeholder="받는 통장(계좌) 명의"
-                                aria-label="Username"
-                                aria-describedby="basic-addon1"
-                                onChange={(e) => setYourMemo(e.target.value)}
-                                />  
-                                
-                            </td>    
-                        </tr>   
-                        <tr>
-                    <       td>
+                         <td>
                             <InputGroup.Text id="basic-addon1" >내통장 메모</InputGroup.Text>
                             </td>
                             <td>
@@ -290,6 +332,20 @@ function AddAutoTrans () {
                             </td>    
                             <td>{' '}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         </tr>
+                        <tr>
+                    <       td>
+                            <InputGroup.Text id="basic-addon1" >받는통장 메모</InputGroup.Text>
+                            </td>
+                            <td>
+                            <Form.Control
+                                value={yourMemo}
+                                placeholder="받는 통장(계좌) 명의"
+                                aria-label="Username"
+                                aria-describedby="basic-addon1"
+                                onChange={(e) => setYourMemo(e.target.value)}
+                                />  
+                            </td>    
+                        </tr> 
 
                     </tbody>
                 </Table>
@@ -298,7 +354,7 @@ function AddAutoTrans () {
                         <Button variant="light" size="lg">조회</Button>
                     </a>{'  '}{' '}
 
-                    <Button variant="primary" size="lg" onClick={handleClick}>
+                    <Button variant="primary" size="lg" onClick={handleClick} disabled={!selectedAccount || !notePwd || !selectedMyAccount || !tAmount}>
                     다음
                     </Button>
                 </div>

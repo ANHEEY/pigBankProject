@@ -1,9 +1,14 @@
 import React from "react";
 import Form from 'react-bootstrap/Form';
 
-function RadioCheck() {
+function RadioCheck(props) {
+  const handlechange = (event) => {
+    const astate = event.target.value;
+    console.log(astate);
+    props.onChange(astate);
+  }
     return (
-        <Form>
+        <Form onChange={handlechange}>
       {['radio'].map((type) => (
         <div key={`inline-${type}`} className="mb-3">
           <Form.Check
@@ -12,6 +17,7 @@ function RadioCheck() {
             name="group1"
             type={type}
             id={`inline-${type}-1`}
+            value={'using'}
           />
           <Form.Check
             inline
@@ -19,6 +25,7 @@ function RadioCheck() {
             name="group1"
             type={type}
             id={`inline-${type}-2`}
+            value={'u'}
           />
           <Form.Check
             inline
@@ -26,6 +33,7 @@ function RadioCheck() {
             name="group1" 
             type={type}
             id={`inline-${type}-3`}
+            value={'unusing'}
           />
         </div>
       ))}

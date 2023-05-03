@@ -3,10 +3,12 @@ package com.pigbank.project.service;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAccessor;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -32,13 +34,22 @@ public class LeeServiceImpl implements LeeService{
 	private LeeMapper dao;
 	
 	@Override
+	public List<AccountDTO> allAccountList(HttpServletRequest req, Model model) 
+			throws ServletException, IOException {
+		
+		
+		return dao.allAccountList();
+	}
+	
+	// 계좌목록 조회
+	@Override
 	public List<AccountDTO> accountList(HttpServletRequest req, Model model) 
 			throws ServletException, IOException {
 		String id = "hong1234";
-		System.out.println("dao : " + dao.accountList(id));
 		return dao.accountList(id);
 	}
 
+	// 단일건 계좌이체
 	@Override
 	public void InsertTransfer(TransferDTO tdto) 
 			throws ServletException, IOException {
@@ -47,7 +58,6 @@ public class LeeServiceImpl implements LeeService{
 		tdto.setTType(tType);
 		// acNumber : 11022456542
 		// tdeposit : 21024565488
-		System.out.println("service tdto : " + tdto);
 		dao.insertTransfer(tdto);
 	
 		dao.updateAccount(tdto);
@@ -71,6 +81,7 @@ public class LeeServiceImpl implements LeeService{
 		dao.updateAccountnext(tdto);
 	}
 
+	// 자동이체 등록
 	@Override
 	public void AutoInsertTransfer(AutoTransferDTO atdto) 
 			throws ServletException, IOException {
@@ -80,8 +91,9 @@ public class LeeServiceImpl implements LeeService{
 		// aDepositnum : 21024565488
 	}
 
+	// 스케쥴러로 시간마다 체크후 자동이체 및 자동이체 상태 변경
 	@Override
-	@Scheduled(cron = "0 0/1 * 1/1 * ?")
+	@Scheduled(cron = "0 0/5 * 1/1 * ?")
 	public void checkScheduled() 
 			throws ServletException, IOException {
 		LocalDate currentDate = LocalDate.now();
@@ -93,7 +105,6 @@ public class LeeServiceImpl implements LeeService{
 		List<AutoTransferDTO> atdtolist = dao.autoTransferList();
 		System.out.println("atdto = " + atdtolist);
 		for(int i = 0; i < atdtolist.size(); i++) {
-			
 			// AutoTransferDTO 자동이체 내역 dto 
 			int aNum = atdtolist.get(i).getANum();
 			long acNumber = atdtolist.get(i).getAcNumber();
@@ -116,33 +127,20 @@ public class LeeServiceImpl implements LeeService{
 			int aendmonth = atdtolist.get(i).getAEndDate().getMonth() + 1;
 			// 끝나는날짜 일
 			int aenddate = atdtolist.get(i).getAEndDate().getDate();
+			// 이체주기
 			int cycle = atdtolist.get(i).getATransferCycle();
+			// 이체주기값 더해주는 값
 			int update = atdtolist.get(i).getAUpdate();
-			// 끝나는 날짜
-			String enddate = (aendyear + "-" + aendmonth + "-" + aenddate);
-			// 오늘 날짜
-			String sysdate = (year + "-" + month + "-" + day);
-			System.out.println("sysdate : " + sysdate);
-			System.out.println("enddate : " + enddate);
 			System.out.println("amonth : " + amonth);
 			System.out.println("adate : " + adate);
 			System.out.println("ayear : " + ayear	);
 			System.out.println("aendmonth : " + aendmonth);
 			System.out.println("update : " + update);
+			System.out.println("시간 : " + currentDate);
 			if(adate == day) {
-				if(amonth + update == month) {
+				if(amonth + update == month) { // 자동이체시 update라는 변수로 이체주기값을 더해서 자동입출금이 안되게 막음
 					if(ayear == year) {						
 						if(aState != "unusing") {
-							if(enddate == sysdate) {
-								System.out.println("2");
-								HashMap<String,Object> map = new HashMap<String,Object>();
-								String unusing = "unusing";
-								map.put("aState", unusing);
-								map.put("aNum", atdtolist.get(i).getANum());
-							
-							dao.updateAutoTransfer(map);
-						}
-						else {
 //								출금		
 							TransferDTO tdto = new TransferDTO();
 							tdto.setAcNumber(acNumber);
@@ -180,7 +178,7 @@ public class LeeServiceImpl implements LeeService{
 							atmap.put("aTransferCycle",atdtolist.get(i).getATransferCycle());
 							System.out.println("성공!");
 							dao.updateAutoTransferCycle(atmap);
-						}
+							break;
 						}
 						else {
 							System.out.println("오늘이아님1");
@@ -191,13 +189,95 @@ public class LeeServiceImpl implements LeeService{
 					}
 				}
 				else {
-					System.out.println("오늘이 아님 2");
+					System.out.println("오늘이 아님 3");
 				}
 			}
 			else {
-				System.out.println("오늘이아님2");
+				System.out.println("오늘이아님4");
 			}
+			System.out.println("연 : " + aendyear + "||"+ year);
+			System.out.println("월 : " + aendmonth + "||"+ month);
+			System.out.println("일 : " + aenddate + "||" + day);
+	// 종료기간에 의한 상태변경
+		if(aendyear == year) {
+			if(aendmonth == month) {
+				if(aenddate == day) {
+					System.out.println("업데이트");
+					HashMap<String,Object> map = new HashMap<String,Object>();
+					String unusing = "unusing";
+					map.put("aState", unusing);
+					map.put("aNum", atdtolist.get(i).getANum());
+				
+					dao.updateAutoTransfer(map);
+				}
+			}
+		}
 		}
 	}
 
+	@Override
+	public List<AutoTransferDTO> AutoTransferCheck(String acNumber,String aState)
+			throws ServletException, IOException {
+		System.out.println(aState);
+		System.out.println(acNumber);
+		List<AutoTransferDTO> list = new ArrayList<AutoTransferDTO>();
+		// 정상
+		if("using".equals(aState)) {
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("aState", aState);
+			map.put("acNumber", acNumber);
+			System.out.println("map(using) : " + map);
+			list = dao.autoTransferCheck(map);
+		}
+		// 해지
+		else if("unusing".equals(aState)) {
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("aState", aState);
+			map.put("acNumber", acNumber);
+			System.out.println("map(unusing) : " + map);
+			list = dao.autoTransferCheck(map);
+		}
+		//전체조건
+		else if("u".equals(aState)){
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("aState", aState);
+			map.put("acNumber", acNumber);
+			System.out.println("map(all) : " + map);
+			list = dao.autoTransferCheckall(map);
+		}
+		System.out.println("list : " + list);
+		return list;
+	}
+
+	@Override
+	public void autoTransferCancel(int aNum) 
+			throws ServletException, IOException {
+		System.out.println("int : " + aNum);
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("aNum", aNum);
+		map.put("aState", "unusing");
+		dao.autoTransferCancel(map);
+	}
+
+	@Override
+	public AutoTransferDTO selectOne(int aNum) 
+			throws ServletException, IOException {
+		System.out.println("anum : " + aNum);
+		return dao.selectOne(aNum);
+	}
+
+	@Override
+	public void updatedirectlyAutoTransfer(AutoTransferDTO dto)
+			throws ServletException, IOException {
+		dao.updatedirectlyAutoTransfer(dto);
+	}
+
+	@Override
+	public void updatetrsfLimit(AccountDTO dto) 
+			throws ServletException, IOException {
+		dao.updatetrsfLimit(dto);
+	}
+
+	
+	
 }

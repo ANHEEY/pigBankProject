@@ -26,4 +26,21 @@ public interface LeeService {
 	public void checkScheduled()
 			throws ServletException,IOException;
 	
+	public List<AutoTransferDTO> AutoTransferCheck(String acNumber,String aState)
+			throws ServletException,IOException;
+	
+	public void autoTransferCancel(int aNum)
+			throws ServletException,IOException;
+	
+	public AutoTransferDTO selectOne(int aNum)
+			throws ServletException,IOException;
+	
+	public void updatedirectlyAutoTransfer(AutoTransferDTO dto)
+			throws ServletException,IOException;
+	
+	public List<AccountDTO> allAccountList(HttpServletRequest req, Model model)
+			throws ServletException,IOException;
+	
+	public void updatetrsfLimit(AccountDTO dto)
+			throws ServletException,IOException;
 }

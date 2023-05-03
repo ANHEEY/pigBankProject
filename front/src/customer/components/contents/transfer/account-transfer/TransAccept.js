@@ -10,7 +10,7 @@ function TransAccept () {
 
         return(
             <div align='center'>
-                <div class="w-50 p-3" align='center'>
+                <div className="w-50 p-3" align='center'>
                     <h3 >이체완료</h3>
                     <Table>
                         <tbody>

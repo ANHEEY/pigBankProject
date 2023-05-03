@@ -17,6 +17,8 @@ function AutoTransReConfirm (props) {
     const transferCycle = props.auto[7];
     const startDate = props.auto[8];
     const endDate = props.auto[9];
+    const mybkName = props.auto[10];
+    const name = props.auto[11];
     
     const navigate = useNavigate();
 
@@ -26,7 +28,7 @@ function AutoTransReConfirm (props) {
         let acnumber = {
             acNumber: Number(selectedAccount),
             adepositnum: Number(selectedMyAccount),
-            adepositBank: bankName,
+            adepositBank: mybkName,
             adepositAmount: Number(tAmount),
             myMemo: myMemo,
             yourMemo: yourMemo,
@@ -63,7 +65,7 @@ function AutoTransReConfirm (props) {
                     </tr>
                     <tr>
                         <th>예금주</th>
-                        <td align='right'>{yourMemo}</td>
+                        <td align='right'>{name}</td>
                     </tr>
                     <tr>
                         <th>출금계좌</th>
@@ -87,6 +89,10 @@ function AutoTransReConfirm (props) {
                         <th>받는계좌</th>
                         <td align='right'>{selectedMyAccount}</td>
                     </tr>
+                    <tr>
+                        <th>은행명</th>
+                        <td align='right'>{mybkName}</td>
+                    </tr>
                     </tbody>
                     </Table>
                     <br />
@@ -96,7 +102,16 @@ function AutoTransReConfirm (props) {
                     <tbody>
                     <tr>
                         <th>이체금액</th>
-                        <td align='right'>{tAmount}</td>
+                        <td align='right'>{tAmount}원</td>
+                    </tr>
+                    <tr>
+                        <th>내통장메모</th>
+                        <td align='right'>{myMemo}</td>
+                    </tr>
+                    <tr>
+                        <th>받는통장메모</th>
+                        <td align='right'>{yourMemo}</td>
+                        
                     </tr>
                 </tbody>
         </Table>

@@ -122,38 +122,6 @@ function Loan() {
                             </Stack>
                         </TableCell>
                         </TableRow>
-<<<<<<< Updated upstream
-                      </TableHead>
-
-                      {filteredMembers.map((member) => (
-                      <TableBody key={member.lreqNum}>
-                          <TableRow >
-                            <TableCell style={{color:"purple"}}>{member.lpdName}</TableCell>
-                            <TableCell>{this.acNum(member.acNumber)}</TableCell>
-                            <TableCell>{member.lperiod}</TableCell>
-                            <TableCell>{member.lpurpose}</TableCell>
-                            <TableCell>{this.formatCurrency(member.trsfLimit)}</TableCell>
-                            <TableCell>{this.formatCurrency(member.lamount)}</TableCell>
-                            <TableCell>
-                                <Stack gap={2} className="col-md-8">
-                                <Button variant="outline-secondary"><Link to="LoanSchedule" style={{color:"black"}}>상환스케쥴</Link></Button>
-                                <Button variant="outline-secondary" type="button">상환내역</Button>
-                                </Stack>
-                            </TableCell>
-                           </TableRow>
-                      </TableBody>
-                      ))}
-                    </Table>
-                </div>
-            </div> 
-            </section>
-            <br />
-            <br />
-            <br />
-          </main>
-        );
-      }
-=======
                     </TableBody>
                     ))}
                 </Table>
@@ -166,7 +134,6 @@ function Loan() {
         </main>
     );
     
->>>>>>> Stashed changes
 }
 
 export default Loan;
