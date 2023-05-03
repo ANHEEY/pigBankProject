@@ -57,7 +57,7 @@ public class KimServiceImpl implements KimService {
 		dao.sPdDelete(spdname);
 	}
 	
-	@Override // account - 자유입출금계좌 생성
+	@Override // customer - 자유입출금계좌 생성
 	public void insertAPd(AccountDTO aPdDTO) throws ServletException, IOException {
 		System.out.println("Service - InsertAPd");
 		

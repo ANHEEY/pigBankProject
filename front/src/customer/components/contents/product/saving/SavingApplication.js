@@ -1,7 +1,8 @@
-import React , { useState }  from "react"
-import AgreeAccordion from "../product-application/AgreeAccordion"
+import React , { useState, useEffect }  from "react"
+import AgreeAccordion from "../product-application/AgreeAccordion" 
 import {Form,Button, Row, Col,InputGroup} from 'react-bootstrap'
 import '../../../../resources/css/product/application-form.css'
+import PdSavingService from "./PdSavingService";
 
 function SavingApplication(){
     const [isAutoTransfer, setIsAutoTransfer] = useState(false);
@@ -16,7 +17,20 @@ function SavingApplication(){
         }
     }   
     
-    
+    // 적금상품명 불러오기
+    const [detailInfo, setDetailInfo] = useState([]);
+
+    useEffect(() => {
+        console.log(window.localStorage.getItem("spdname"));
+        PdSavingService.custSPdDetail(window.localStorage.getItem("spdname"))
+        .then((res) => {
+            setDetailInfo(res.data)
+        })
+        .catch((err) => {
+            console.log(' PdSavingService.custSPdDetail Error!!', err);
+        })
+    }, []);
+
     return(
         <div className="applicaiton container">
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" type = "text/css"/>
@@ -28,7 +42,7 @@ function SavingApplication(){
                 <Form.Group as={Row}>
                     <Form.Label column sm="2">상품명</Form.Label>
                     <Col sm="10">
-                        <Form.Control readOnly defaultValue="이곳에 적금상품명 입력"  />    {/* defaultValue에 이전페이지에서 상품명 받아와 연결하기 */}
+                        <Form.Control readOnly defaultValue={detailInfo.spdname}  />    {/* defaultValue에 이전페이지에서 상품명 받아와 연결하기 */}
                     </Col>
                 </Form.Group>
                 <br/>

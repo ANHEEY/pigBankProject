@@ -20,6 +20,12 @@ class PdSavingService {
     return axios.get(MEMBER_API_BASE_URL);
   }
 
+  // customer - 상품목록
+  custSavingList() {
+    console.log('custSavingList')
+    return axios.get(CUSTOMER_API_PRODUCT_SAVING_URL + "adPdSaving");
+  }
+
   // customer - 상세페이지 
   custSPdDetail(spdname) {
     console.log('custSPdDetail!!')

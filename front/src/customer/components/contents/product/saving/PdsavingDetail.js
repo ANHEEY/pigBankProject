@@ -3,6 +3,7 @@ import { Table, Tab, Tabs, Row, Col, Container, Button, Card, Stack } from 'reac
 import {MdOutlineDateRange, MdOutlineMoney, MdAutoGraph} from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import PdSavingService from './PdSavingService';
+// import SPdResultCalculator from './SPdResultCalculator';
 
 function PdsavingDetail () {
     
@@ -49,7 +50,7 @@ function PdsavingDetail () {
                         <MdOutlineMoney size="50" color="#009000" />
                         <Card.Title className="mt-3">금액</Card.Title>
                         <Card.Text>
-                            {selectBySProduct.smin}만원 ~ {selectBySProduct.smax}백만원
+                            {selectBySProduct.smin}만원 ~ {selectBySProduct.smax}만원
                         </Card.Text>
                         </Col>
                         <Col>
@@ -68,12 +69,11 @@ function PdsavingDetail () {
                     <br/>
                     </Card.Body>
                     <Card.Footer>
-                    
-                    <Card.Title className="mt-3" as="h4">적금 계산기</Card.Title>
-                    <br/>
-                    { /*원리(금), 만기상환 tabs 시작 */}
- {/* <Calculator />  */}
-                </Card.Footer>
+                        <Card.Title className="mt-3" as="h4">적금 계산기</Card.Title>
+                        <br/>
+                        { /*원리(금), 만기상환 tabs 시작 */}
+ {/* <SPdResultCalculator/> */}
+                    </Card.Footer>
                 </Card>
                 <br />
                 <br />
@@ -87,7 +87,44 @@ function PdsavingDetail () {
                 >
 
                 <Tab eventKey="home" title="상품안내">
- {/* <PdLoanInfo />  */}
+                    <Container>
+                        <hr />
+                        <Row className="justify-content-md-center">
+                            <Col className="style" lg={2}>
+                                상품설명
+                            </Col>
+                            <Col>
+                                <p>
+                                    {selectBySProduct.scontent}
+                                </p>
+                            </Col>
+                        </Row>
+
+                        <hr />
+                        <Row className="justify-content-md-center">
+                            <Col className="style" lg={2}>
+                                가입기간
+                            </Col>
+                            <Col>
+                                <p>
+                                    {selectBySProduct.speriod}개월 <br />
+                                    ※ 모든 적금은 최소 12개월부터 가입이 가능합니다.
+                                </p>
+                            </Col>
+                        </Row>
+
+                        <hr />
+                        <Row className="justify-content-md-center">
+                            <Col className="style" lg={2}>
+                                가입금액
+                            </Col>
+                            <Col>
+                                <p>
+                                    월 {selectBySProduct.smin} ~ {selectBySProduct.smax}만원
+                                </p>
+                            </Col>
+                        </Row>
+                    </Container>
                 </Tab>
 
                 <Tab eventKey="profile" title="금리및이율">

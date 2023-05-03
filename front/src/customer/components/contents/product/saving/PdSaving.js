@@ -15,7 +15,7 @@ function PdSaving () {
     }, []);
 
     const reloadPdSavingList = () => {
-        PdSavingService.fetchMembers()
+        PdSavingService.custSavingList()
         .then((res) => {
             setPdSavingList(res.data)
         })
