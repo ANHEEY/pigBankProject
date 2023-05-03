@@ -1,10 +1,13 @@
 package com.pigbank.project.dto;
 
+
 public class ExchangeRateDTO {
+	
 	
     private String name;
     private String price;
     private String change;
+    
 
     public ExchangeRateDTO() {}
 

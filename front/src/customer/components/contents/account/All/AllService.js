@@ -11,6 +11,9 @@ const savingAccount = "http://localhost:8081/savingAccount";
 const loanAccount = "http://localhost:8081/loanAccount";
 const depositAccount = "http://localhost:8081/depositAccount";
 const Account = "http://localhost:8081/account";
+const transferList = "http://localhost:8081/transferList";
+const exchangeUpdate = "http://localhost:8081/exchangeUpdate";
+const exchangeList = "http://localhost:8081/exchangeList";
 
 class AllService {
     fetchAccount() {
@@ -34,7 +37,20 @@ class AllService {
       console.log(id);
       return axios.get(loanAccount + '/listLoanSate/' + id);    
     }
-    
+    fetchTransfer() {
+      console.log('이체내역호출!!')
+      return axios.get(transferList);
+    }
+    fetchExchangeUpdate() {
+      console.log('환율업데이트!!')
+      return axios.get(exchangeUpdate);
+    }
+
+    fetchExchangeList() {
+      console.log('환율정보호출!!')
+      return axios.get(exchangeList);
+    }
+
   }
 
 

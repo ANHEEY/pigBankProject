@@ -1,108 +1,81 @@
 // 적금조회
-import React, { Component } from "react";
-import {Table, TableHead, TableRow, TableCell,  TableBody } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import {Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import AllService from "../All/AllService";
 import {Link} from 'react-router-dom';
 import "../../../../resources/css/product/saving.css";
 
-class Deposit extends Component{
-    
-    
-    constructor(props){
-        super(props);
+function Deposit() {
+  const [members, setMembers] = useState([]);
+  const [selectedOption, setSelectedOption] = useState("");
 
-        this.state={
-            members:[],
-            message: null,
-            selectedOption: ""
-        }
-    }
-  
-    // 라이프 사이클 중 컴포넌트가 생성된 후 사용자에게 보여지기까지의 전체 과정을 랜더링
+  useEffect(() => {
+    reloadMemberList();
+  }, []);
 
-    componentDidMount(){
-        this.reloadMemberList();
-    }
+  const reloadMemberList = () => {
+    AllService.fetchDeposit()
+      .then(res => {
+        setMembers(res.data);
+      })
+      .catch(err => {
+        console.log('reloadMemberList() Error!!',err);
+      });
+  }
 
-    reloadMemberList = () => {
-        AllService.fetchDeposit()
-            .then(res=>{
-                this.setState({
-                    members:res.data
-                })
-            })
-            .catch(err=>{
-                console.log('reloadMemberList() Error!!',err);
-            });
-      }
-      
-      handleChange = (event) => {
-        this.setState({
-          selectedOption: event.target.value
-        });
-      }
+  const handleChange = (event) => {
+    setSelectedOption(event.target.value);
+  }
 
-      formatCurrency=(value) => {
-        const formatter = new Intl.NumberFormat("ko-KR", {
-            style: "currency",
-            currency: "KRW",
-        });
-        return formatter.format(value);
-      }
+  const formatCurrency = (value) => {
+    const formatter = new Intl.NumberFormat("ko-KR", {
+      style: "currency",
+      currency: "KRW",
+    });
+    return formatter.format(value);
+  }
 
-      acNum(acNumber) {
-        const acNum = acNumber.toString().slice(0, 3) + '-' + acNumber.toString().slice(3);
-        return acNum;
-      }
-      
-      render() {
-        // members에서 selectedOption과 일치하는 항목만 필터링
-        const filteredMembers = this.state.members.filter(
-          (member) => member.dpdName.indexOf(this.state.selectedOption) !== -1
-        );
-        
-        const tableHeadStyle={
-            fontWeight: "bold",
-        }
+  const acNum = (acNumber) => {
+    const acNum = acNumber.toString().slice(0, 3) + '-' + acNumber.toString().slice(3);
+    return acNum;
+  }
 
-        return (
-        
+  const filteredMembers = members.filter(
+    (member) => member.dpdName.indexOf(selectedOption) !== -1
+  );
 
-        <main className="main">
-            <section className="section">
-             
-            </section>
-            
-            <section className="section">
-            <div className="container">
-                <h2>예금계좌조회</h2>                
+  const tableHeadStyle={
+    fontWeight: "bold",
+  }
 
-                    <p className="thead1">
-                    <select value={this.state.selectedOption} onChange={this.handleChange}>
-                    <option value="">전체선택</option>
-                        {this.state.members.map((member) => (
-                    <option key={member.dpdName} value={member.dpdName}>{member.dpdName}</option>
-                    ))}
-                    </select>    
-                    </p>  
-                                        
-                <div class="card text-center">
-                    
-                    <div class="card-header" style={{backgroundColor:"#dbe2d872" }}>
-                        <ul class="nav nav-tabs card-header-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="/customer/account/Deposit">예금계좌</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="/customer/account/Saving" ><Link to="/customer/account/Account">입출금</Link></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="/customer/account/Saving" ><Link to="/customer/account/Saving">적금계좌</Link></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="/customer/account/Deposit"><Link to="/customer/account/Deposit">예금계좌</Link></a>
-                        </li>
-                        </ul>
+  return (
+    <main className="main">
+      <section className="section">
+      </section>
+      <section className="section">
+        <div className="container">
+          <h2>예금계좌조회</h2>
+          <p className="thead1">
+            <select value={selectedOption} onChange={handleChange}>
+              <option value="">전체선택</option>
+              {members.map((member) => (
+                <option key={member.dpdName} value={member.dpdName}>{member.dpdName}</option>
+              ))}
+            </select>
+          </p>
+          <div className="card text-center">
+            <div className="card-header" style={{backgroundColor:"#dbe2d872" }}>
+              <ul className="nav nav-tabs card-header-tabs">
+                <li className="nav-item">
+                  <a className="nav-link disabled" href="/customer/account/Deposit">예금계좌</a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link active" href="/customer/account/Saving" ><Link to="/customer/account/Account">입출금</Link></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/customer/account/Deposit"><Link to="/customer/account/Deposit">예금계좌</Link></a>
+                </li>
+                </ul>
                     </div>
                 </div>
 
@@ -122,11 +95,11 @@ class Deposit extends Component{
                         {filteredMembers.map((member) => (
                           <TableRow key={member.dpdName}>
                             <TableCell style={{color:"navy"}}>{member.dpdName}</TableCell>
-                            <TableCell>{this.acNum(member.acNumber)}</TableCell>
+                            <TableCell>{acNum(member.acNumber)}</TableCell>
                             <TableCell>{member.djoinDate}</TableCell>
                             <TableCell>{member.dendDate}</TableCell>
-                            <TableCell>{this.formatCurrency(member.dexpAmount)}</TableCell>
-                            <TableCell>{this.formatCurrency(member.damount)}</TableCell>
+                            <TableCell>{formatCurrency(member.dexpAmount)}</TableCell>
+                            <TableCell>{formatCurrency(member.damount)}</TableCell>
                            </TableRow>
                         ))}
                       </TableBody>
@@ -139,5 +112,5 @@ class Deposit extends Component{
           </main>
         );
       }
-}
+
 export default Deposit;

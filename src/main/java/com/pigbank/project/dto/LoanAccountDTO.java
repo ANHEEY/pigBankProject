@@ -19,12 +19,13 @@ public class LoanAccountDTO {
 	private long acNumber;
 	private String lPdName;
 	private String id;
-	private int lAmount;
+	private int lPrincipal;
 	private int lPeriod; 
 	private String lPurpose;
 	private String lIncome;
 	private String lState;
 	private Date lReqDate;
+	private Date lEndDate;
 	private int acPwd;
 	private long trsfLimit;
 	

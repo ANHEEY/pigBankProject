@@ -1,99 +1,81 @@
  // 예금 상품
- import React, { Component } from "react";
+ import React, { useEffect,useState } from "react";
  import {Table, TableHead, TableRow, TableCell,  TableBody } from "@mui/material";
  import AllService from "./AllService";
  
  
   
- class AllDeposit extends Component{
+ function AllDeposit() {
+  const [members, setMembers] = useState([]);
 
+  useEffect(() => {
+    fetchDepositList();
+  }, []);
 
-    constructor(props){
-        super(props);
-
-        this.state={
-            members:[],
-            message: null,
-            
-        }
+  const fetchDepositList = async () => {
+    try {
+      const res = await AllService.fetchDeposit();
+      setMembers(res.data);
+    } catch (err) {
+      console.log('fetchDepositList() Error!!',err);
     }
-  
-    // 라이프 사이클 중 컴포넌트가 생성된 후 사용자에게 보여지기까지의 전체 과정을 랜더링
+  }
 
-    componentDidMount(){
-        this.reloadMemberList();
-    }
+  const formatCurrency = (value) => {
+    const formatter = new Intl.NumberFormat("ko-KR", {
+      style: "currency",
+      currency: "KRW",
+    });
+    return formatter.format(value);
+  }
 
-    reloadMemberList = () => {
-        AllService.fetchDeposit()
-            .then(res=>{
-                this.setState({
-                    members:res.data
-                })
-            })
-            .catch(err=>{
-                console.log('reloadMemberList() Error!!',err);
-            });
-    }
+  const acNum = (acNumber) => {
+    const acNum = acNumber.toString().slice(0, 3) + '-' + acNumber.toString().slice(3);
+    return acNum;
+  }
 
-    formatCurrency=(value) => {
-      const formatter = new Intl.NumberFormat("ko-KR", {
-          style: "currency",
-          currency: "KRW",
-      });
-      return formatter.format(value);
-    }
-    acNum(acNumber) {
-      const acNum = acNumber.toString().slice(0, 3) + '-' + acNumber.toString().slice(3);
-      return acNum;
-    }
-      
-     
-      render() {    
-      const tableHeadStyle={
-        fontWeight: "bold",
-      }
-        
-        return (
-          <main className="main">
-            <section className="section">
-             
-            </section>
-            
-            <section className="section">
-              <div className="container">
-                <Table>
-                  <TableHead >
-                    <TableRow >
-                      <TableCell style={tableHeadStyle}>계좌명</TableCell>
-                      <TableCell style={tableHeadStyle}>계좌번호</TableCell>
-                      <TableCell style={tableHeadStyle}>가입날짜</TableCell>
-                      <TableCell style={tableHeadStyle}>만기날짜</TableCell>
-                      <TableCell style={tableHeadStyle}>잔액</TableCell>
-                    </TableRow>
-                  </TableHead> 
-                
+  const tableHeadStyle={
+    fontWeight: "bold",
+  }
 
-                <TableBody>
-                  {this.state.members.map((member) => (
-                    <TableRow key={member.dnum}>
-                      <TableCell style={{color:"navy"}}>{member.dpdName}</TableCell>
-                      <TableCell>{this.acNum(member.acNumber)}</TableCell>
-                      <TableCell>{member.djoinDate}</TableCell>
-                      <TableCell>{member.dendDate}</TableCell>
-                      <TableCell>{this.formatCurrency(member.damount)}</TableCell>
-                      
-                      </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              </div>
-            </section>
-          </main>
-        );
-      }
+  return (
+    <main className="main">
+      <section className="section">
+
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <Table>
+            <TableHead >
+              <TableRow >
+                <TableCell style={tableHeadStyle}>계좌명</TableCell>
+                <TableCell style={tableHeadStyle}>계좌번호</TableCell>
+                <TableCell style={tableHeadStyle}>가입날짜</TableCell>
+                <TableCell style={tableHeadStyle}>만기날짜</TableCell>
+                <TableCell style={tableHeadStyle}>잔액</TableCell>
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {members.map((member) => (
+                <TableRow key={member.dnum}>
+                  <TableCell style={{color:"navy"}}>{member.dpdName}</TableCell>
+                  <TableCell>{acNum(member.acNumber)}</TableCell>
+                  <TableCell>{member.djoinDate}</TableCell>
+                  <TableCell>{member.dendDate}</TableCell>
+                  <TableCell>{formatCurrency(member.damount)}</TableCell>
+
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </section>
+    </main>
+  );
 }
- 
-  export default AllDeposit;
+
+export default AllDeposit;
  
  

@@ -17,10 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
+import com.pigbank.project.dto.ExchangeRateDTO;
+import com.pigbank.project.dto.ExchangeRateListDTO;
 import com.pigbank.project.dto.LoanAccountDTO;
 import com.pigbank.project.dto.LoanProductDTO;
 import com.pigbank.project.dto.SavingAccountDTO;
 import com.pigbank.project.dto.SavingProductDTO;
+import com.pigbank.project.dto.TransferDTO;
 import com.pigbank.project.service.ChuServiceImpl;
 
 
@@ -129,5 +132,29 @@ public class ChuController {
 		return list;
 	}
 	
+	//대출상태조회
+	@GetMapping(value="/transferList")
+	public List<TransferDTO> transferList(HttpServletRequest req, Model model)
+			throws ServletException, IOException {
+		logger.info("<<< url - transferAccount() >>>");
+		
+		List<TransferDTO> list = service.transferList(req, model);
+		System.out.println(list);
+		
+		return list;
+	}
+	
+	@GetMapping(value="/exchangeList")
+	public List<ExchangeRateListDTO> exchangeList(HttpServletRequest req, Model model)
+			throws ServletException, IOException {
+		logger.info("<<< url - exchangeList() >>>");
+		
+		List<ExchangeRateListDTO> list = service.exchangeList(req, model);
+		System.out.println(list);
+		
+		return list;
+	}
+
+
 	
 }

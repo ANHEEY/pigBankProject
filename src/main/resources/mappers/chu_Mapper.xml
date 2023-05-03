@@ -51,7 +51,17 @@
 	</select>
 	
 	<select id="accountList" resultType="com.pigbank.project.dto.AccountDTO">
-		SELECT * FROM account_tbl WHERE acNumber=11022456542
+		SELECT *
+		FROM account_tbl
+		WHERE acNumber=11022456542
+	</select>
+	
+	<select id="transferList" resultType="com.pigbank.project.dto.TransferDTO">
+		SELECT * FROM transfer_tbl ORDER BY tNum DESC
+	</select>
+	
+	<select id="exchangeList" resultType="com.pigbank.project.dto.ExchangeRateListDTO">
+		SELECT * FROM chuexchange_tbl2 
 	</select>
 	
 </mapper>

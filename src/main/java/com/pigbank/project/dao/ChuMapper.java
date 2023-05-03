@@ -7,10 +7,14 @@ import org.apache.ibatis.annotations.Mapper;
 import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
+import com.pigbank.project.dto.ExchangeRateDTO;
+import com.pigbank.project.dto.ExchangeRateDTO2;
+import com.pigbank.project.dto.ExchangeRateListDTO;
 import com.pigbank.project.dto.LoanAccountDTO;
 import com.pigbank.project.dto.LoanProductDTO;
 import com.pigbank.project.dto.SavingAccountDTO;
 import com.pigbank.project.dto.SavingProductDTO;
+import com.pigbank.project.dto.TransferDTO;
 
 
 
@@ -35,6 +39,12 @@ public interface ChuMapper {
 	
 	public List<LoanAccountDTO> loanState();
 	
-
+	public List<TransferDTO> transferList();
+	
+	public List<ExchangeRateListDTO> exchangeList();
+	
+	
+	
+	
 	
 }

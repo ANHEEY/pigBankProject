@@ -14,12 +14,29 @@
 	
 	 <update id="exchangeList" parameterType="com.pigbank.project.dto.ExchangeRateDTO">
 	    UPDATE chuexchange_tbl
-	    SET exName = #{exName},
-	        exPrice = #{exPrice},
-	        exRate = #{exRate},
+	    SET exName = #{name},
+	        exPrice = #{price},
+	        exRate = #{change},
 	        exDate = SYSDATE
-	    WHERE exName = #{exName}
+	    WHERE exName = #{name}
 	</update>
 	
+	<!-- <insert id="exchangeList2" parameterType="com.pigbank.project.dto.ExchangeRateDTO2">
+	
+	    INSERT INTO chuexchange_tbl2 (exNo, name, price, buy, sell, send, receive, exDate)
+	    VALUES ((SELECT NVL(MAX(exNo)+1, 1) FROM chuexchange_tbl2),#{name} ,#{price} ,#{buy} ,#{sell} ,#{send} ,#{receive} ,SYSDATE)
+ 	</insert> -->
+	
+	<update id="exchangeList2" parameterType="com.pigbank.project.dto.ExchangeRateDTO2">
+	 	UPDATE chuexchange_tbl2
+	    SET name = #{name},
+	        price = #{price},
+	        buy = #{buy},
+	        sell = #{sell},
+	        send = #{send},
+	        receive = #{receive},
+	        exDate = SYSDATE
+	    WHERE name = #{name}
+ 	</update> 
 </mapper>
 

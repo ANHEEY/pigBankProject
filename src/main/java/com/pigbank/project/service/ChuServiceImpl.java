@@ -12,19 +12,26 @@ import org.springframework.ui.Model;
 
 
 import com.pigbank.project.dao.ChuMapper;
+import com.pigbank.project.dao.Exchange;
 import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
+import com.pigbank.project.dto.ExchangeRateDTO;
+import com.pigbank.project.dto.ExchangeRateListDTO;
 import com.pigbank.project.dto.LoanAccountDTO;
 import com.pigbank.project.dto.LoanProductDTO;
 import com.pigbank.project.dto.SavingAccountDTO;
 import com.pigbank.project.dto.SavingProductDTO;
+import com.pigbank.project.dto.TransferDTO;
 
 @Service
 public class ChuServiceImpl implements ChuService{
 
 	@Autowired
 	private ChuMapper dao;
+	
+	@Autowired
+	private Exchange ex;
 	
 
 	@Override
@@ -104,6 +111,27 @@ public class ChuServiceImpl implements ChuService{
 		System.out.println("list : " + list);
 		return list;
 	}
+
+	@Override
+	public List<TransferDTO> transferList(HttpServletRequest req, Model model) throws ServletException, IOException {
+		System.out.println("서비스 - 이체내역조회");
+		List<TransferDTO> list;
+		list = dao.transferList();
+		System.out.println("list : " + list);
+		return list;
+	}
+
+	@Override
+	public List<ExchangeRateListDTO> exchangeList(HttpServletRequest req, Model model) throws ServletException, IOException {
+		System.out.println("서비스 - 환율조회");
+		List<ExchangeRateListDTO> list;
+		list = dao.exchangeList();
+		System.out.println("list : " + list);
+		
+		return list;
+	}
+
+	
 	
 	
 	
