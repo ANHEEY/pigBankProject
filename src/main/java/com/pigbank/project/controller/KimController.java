@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pigbank.project.dto.AccountDTO;
+import com.pigbank.project.dto.CustomerDTO;
 import com.pigbank.project.dto.SavingAccountDTO;
 import com.pigbank.project.dto.SavingProductDTO;
 import com.pigbank.project.service.KimServiceImpl;
@@ -81,7 +82,15 @@ public class KimController {
 		System.out.println("aPdSavingDelete 성공");
 	}
 	
-	// [고객]
+	// [고객] ------------------------------------------------------------------------------------------------------------------------------------
+	// 1건 고객정보 조회
+//	@GetMapping(value="/custInfoById/{id}")
+//	public List<CustomerDTO> custInfoById(HttpServletRequest req, Model model) throws ServletException, IOException {
+//		logger.info("<< URL - custInfoById(입출금계좌 생성시 고객정보 조회) >>");
+//		
+//		return null;
+//	}
+	
 	// 자유입출금계좌 생성
 	@PostMapping(value="/custAInsert")
 	public void custAccInsert(@RequestBody AccountDTO aPdDTO) throws ServletException, IOException {
@@ -92,7 +101,24 @@ public class KimController {
 		System.out.println("custAccInsert 성공");
 	}
 	
-	// 적금계좌 생성(상품신청)
+	// -----------------------------------------------------------------------------------------------------------------------------------------
+	
+	// 적금 상품 조회 (관리자 서비스, DAO)
+	@GetMapping(value="/custSPdList")
+	public List<SavingProductDTO> custSPdList(HttpServletRequest req, Model model) throws ServletException, IOException {
+		logger.info("<< URL - custSPdList >>");
+		
+		return service.listAllSPd(req, model);
+	}
+	// 적금 1건 상세조회 (관리자 서비스, DAO)
+	@GetMapping(value="/custProduct/{spdname}")
+	public  SavingProductDTO pdByList(@PathVariable String spdname) throws ServletException, IOException {
+		logger.info("<< URL - (customer)pdByList >>");
+		
+		return service.selectPdSaving(spdname);
+	}
+	
+	// 적금계좌 생성(상품 가입페이지)
 	@PostMapping(value="/custSAInsert")
 	public void custSavingInsert(@RequestBody SavingAccountDTO custSPdDTO) throws ServletException, IOException {
 		logger.info("<< URL - customer SavingAccount Insert >>");
@@ -102,22 +128,11 @@ public class KimController {
 		System.out.println("custSavingInsert 성공");
 	}
 	
-	// 적금 상품 조회
-	@GetMapping(value="/custSPdList")
-	public List<SavingProductDTO> custSPdList(HttpServletRequest req, Model model) throws ServletException, IOException {
-		logger.info("<< URL - custSPdList >>");
-		
-		return service.listAllSPd(req, model);
-	}
-	// 적금 1건 상세조회
-	@GetMapping(value="/custProduct/{spdname}")
-	public  SavingProductDTO pdByList(@PathVariable String spdname) throws ServletException, IOException {
-		logger.info("<< URL - (customer)pdByList >>");
-		
-		return service.selectPdSaving(spdname);
-	}
+	// -----------------------------------------------------------------------------------------------------------------------------------------
 	
-//	// 적금 가입페이지
-//	@GetMapping(value="/custSavingApp/{spdname}")
-//	public 
+	// 적금중도해지 조회(적금 1건에 대한 Detail)
+	
+	// 적금금중도해지 페이지(중도해지 신청)
+	
+	
 }

@@ -32,10 +32,10 @@ class PdSavingService {
     return axios.get(CUSTOMER_API_PRODUCT_SAVING_URL + "custProduct/" + spdname);
   }
 
-  // customer - 상품 가입페이지
+  // customer - 상품가입
   custSavingApp(spdname) {
     console.log('custSavingApp!!')
-    return axios.get(CUSTOMER_API_PRODUCT_SAVING_URL + "" + spdname);
+    return axios.get(CUSTOMER_API_PRODUCT_SAVING_URL + "" + spdname, spdname);
   }
 
 }

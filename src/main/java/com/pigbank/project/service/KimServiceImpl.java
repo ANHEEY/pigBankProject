@@ -57,6 +57,11 @@ public class KimServiceImpl implements KimService {
 		dao.sPdDelete(spdname);
 	}
 	
+	// -----------------------------------------------------------------------------------------------------------------------------------------
+	
+	
+	
+	
 	@Override // customer - 자유입출금계좌 생성
 	public void insertAPd(AccountDTO aPdDTO) throws ServletException, IOException {
 		System.out.println("Service - InsertAPd");
@@ -64,6 +69,8 @@ public class KimServiceImpl implements KimService {
 		dao.aPdInsert(aPdDTO);
 	}
 
+	// -----------------------------------------------------------------------------------------------------------------------------------------
+	
 	// [custoemr_SavingProduct]
 	@Override // 적금계좌 생성
 	public void insertCustSPd(SavingAccountDTO custSPdDTO) throws ServletException, IOException {

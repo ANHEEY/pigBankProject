@@ -5,17 +5,52 @@ import '../../../../resources/css/product/application-form.css'
 import PdSavingService from "./PdSavingService";
 
 function SavingApplication(){
+
+    // 약관 동의
+    const [isAgreed, setIsAgreed] = useState({
+        isAgreed1: "",
+        isAgreed2: ""
+    })
+
     const [isAutoTransfer, setIsAutoTransfer] = useState(false);
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (isAutoTransfer) {
-            // 자동이체 등록 페이지로 이동
-            window.location.href = '';
+        if(isAgreed.isAgreed1&&isAgreed.isAgreed2) {
+            if(isAutoTransfer) {
+                alert('적금 신청이 완료되었습니다. 자동이체 등록 페이지로 이동합니다.')
+                window.location.href = '/customer/transfer/add_auto_trans';
+            } else {
+                alert('적금 신청이 완료되었습니다.');
+                window.location.href = '/customer/product/pdSaving';
+            }
         } else {
-            // 가입 완료 페이지로 이동
-            window.location.href = '';
+            alert('이용약관에 동의 후 가입 가능합니다.');
         }
-    }   
+    }
+
+    //     if (isAutoTransfer) {
+    //         if(isAgreed.isAgreed1&&isAgreed.isAgreed2) {
+    //             alert('')
+    //         } else {
+
+    //         }
+    //         // 자동이체 등록 페이지로 이동
+    //         window.location.href = '/customer/transfer/add_auto_trans';
+    //     } else {
+    //         // 가입 완료 상품 리스트로 이동
+    //         window.location.href = '/customer/product/pdSaving';
+    //     }
+    // }  
+
+    const handleCheckedAgreement = (e) => {
+        setIsAgreed(prevState => {
+            return{
+                ...prevState,
+                isAgreed:e.checkbox1,
+                isAgreed:e.checkbox2
+            }
+        });
+    }
     
     // 적금상품명 불러오기
     const [detailInfo, setDetailInfo] = useState([]);
@@ -36,9 +71,9 @@ function SavingApplication(){
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" type = "text/css"/>
             <h1>적금 상품 가입</h1>
             <br/>
-            <AgreeAccordion/>
+            <AgreeAccordion onAgree={handleCheckedAgreement}/>
             <br/>
-            <Form  className="formArea">
+            <Form  className="formArea" onSubmit={handleSubmit}>
                 <Form.Group as={Row}>
                     <Form.Label column sm="2">상품명</Form.Label>
                     <Col sm="10">
@@ -61,7 +96,6 @@ function SavingApplication(){
                             <option value="12">12개월</option>
                             <option value="24">24개월</option>
                             <option value="36">36개월</option>
-                            <option value="48">48개월</option>
                         </Form.Select>
                     </Col>
                 </Form.Group>
@@ -106,4 +140,4 @@ function SavingApplication(){
         </div>
     )
 }
-export default SavingApplication
+export default SavingApplication;
