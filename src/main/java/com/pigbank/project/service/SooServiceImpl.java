@@ -1,7 +1,10 @@
 package com.pigbank.project.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -79,4 +82,163 @@ public class SooServiceImpl implements SooService{
 		
 	}
 
+	// 심사결과 조회
+	@Override
+	public List<LoanRequestDTO> loanStateList(String id)
+			throws ServletException, IOException {
+		System.out.println("service - loanStateList");
+						
+		List<LoanRequestDTO> list = dao.showLoanStateList(id);
+		
+		return list;
+	}
+
+	@Override
+	public List<LoanRequestDTO> loanRequestList() throws ServletException, IOException {
+		System.out.println("service - loanRequestList");
+		
+		List<LoanRequestDTO> list = dao.showLoanReqList();
+		
+		return list;
+	}
+
+	// 대출 신청 승인
+	@Override
+	public void acceptLoan(int lreqNum) throws ServletException, IOException {
+		System.out.println("service - acceptLoan");
+		
+		// 심사 결과 업데이트
+		dao.updateLoanAccept(lreqNum);
+		
+		// 대출계좌 생성
+		dao.createAccount(lreqNum);
+		dao.createLaccount(lreqNum);
+		
+	}
+
+	// 대출 신청 거절
+	@Override
+	public void refuseLoan(int lreqNum, String lreason) throws ServletException, IOException {
+		System.out.println("service - refuseLoan");
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("lreqNum", lreqNum);
+		map.put("lreason", lreason);
+		
+		dao.updateLoanRefuse(map);
+	}
+
+	// 대출 상환 스케쥴표 생성
+	@Override
+	public ArrayList<Map<String, Object>> createLoanPaySchedule(int lreqNum) {
+		System.out.println("service - createLoanPaySchedule");
+		// 계산에 필요한 값들 가져오기 (대출상환방법, 대출금액, 대출금리, 대출기간)
+		LoanRequestDTO dto = dao.getPayInfo(lreqNum);
+		
+		String ltype = dto.getLtype(); // 대출상환종류
+		int lprincipal = dto.getLprincipal() * 10000; // 대출금액 (원 -> 만원)
+		double lrate = dto.getLrate(); // 대출금리
+		int lperiod = dto.getLperiod() * 12; // 대출기간(년 -> 월)
+		
+		ArrayList<Map<String, Object>> list = null;
+	    
+		// 원리금균등분할상환 계산
+		if(ltype.equals("원리금균등분할상환")) {
+		    double m = lrate * 0.01 / 12;  // 월이자율 
+		    double rm = Math.pow(1+m, lperiod); // (1+m)의 개월수 거듭제곱
+		    double bunja = lprincipal * m * rm;
+		    double bunmo = rm - 1;
+		    
+		    int lmonTotal = (int)Math.round(bunja/bunmo); // 매월 상환액 반올림 (원금 + 이자)
+
+		    int lmonRate = 0; // 월이자액 
+		    int balance = lprincipal; // 대출잔액
+		    
+		    // 리스트 생성
+		    list = new ArrayList<Map<String, Object>>();
+		    
+		    for(int i=1; i<=lperiod; i++) {
+		    	// 해쉬맵 생성
+		    	Map<String, Object> map = new HashMap<String, Object>();
+		    	
+		    	lmonRate = (int) Math.round(balance * m); // 월이자액
+		    	int lmonPrice = (int)Math.round(lmonTotal - lmonRate); //월상환원금
+		    	balance -= lmonPrice; // 갚아야할 대출 원금 잔액
+		    	
+		    	// 회차당 상환정보 넣기
+		    	map.put("lpayTurn", i); //회차
+		    	map.put("lmonRate", lmonRate); 
+		    	map.put("lmonPrice", lmonPrice); 
+		    	map.put("lmonTotal", lmonTotal); 
+		    	map.put("balance", balance); // 상환후 대출잔액
+		    	
+		    	// 리스트에 각 회차당 정보 차례대로 넣기
+		    	list.add(map);
+		    }
+		} 
+		
+		// 원금균등분할상환 계산
+		else if(ltype.equals("원금균등분할상환")) {
+		    int lmonPrice = Math.round(lprincipal / lperiod);  // 월 상환 원금 
+		    double m = lrate * 0.01 / 12; // 월이자율
+		    
+		    int lmonTotal = 0;
+		    int balance = lprincipal; // 내야하는 대출 원금 잔액
+		    int lmonRate = 0; // 월이자액 
+		    
+		    // 리스트 생성
+		    list = new ArrayList<Map<String, Object>>();
+		    
+		    for (int i = 1; i <= lperiod; i++) {
+		        // 해쉬맵 생성
+		        Map<String, Object> map = new HashMap<String, Object>();
+		      
+		        lmonRate = (int) Math.round(balance * m); // 남은 상환 원금에 대한 월이자액
+		        lmonTotal = lmonRate + lmonPrice; // 월 상환금
+		        balance -=  lmonPrice; // 상환후 대출 잔액
+		      
+		        // 회차당 상환정보 넣기
+		        map.put("lpayTurn", i); //회차
+		        map.put("lmonRate", lmonRate); 
+		        map.put("lmonPrice", lmonPrice); 
+		        map.put("lmonTotal", lmonTotal); 
+		      
+		        map.put("balance", balance); // 상환후 대출잔액
+		   	    
+		        // 리스트에 각 회차당 정보 차례대로 넣기
+		        list.add(map);
+	        }        
+		}
+		
+		else {
+			double m = lrate * 0.01 / 12; // 월이자율
+			int lmonTotal = 0;
+			int lmonRate = (int) Math.round(lprincipal * m); // 월이자액
+			
+			for(int i = 1; i <= lperiod; i++) {
+				// 해쉬맵 생성
+				Map<String, Object> map = new HashMap<String, Object>();
+				
+				// 만기 전달 까지 계산
+				if(i < lperiod) {
+					map.put("lpayTurn", i); //회차
+			        map.put("lmonRate", lmonRate); 
+			        map.put("lmonPrice", 0); 
+			        map.put("lmonTotal", lmonRate); 
+			        
+			        list.add(map);
+				}
+				else {
+					map.put("lpayTurn", i); //회차
+			        map.put("lmonRate", lmonRate); 
+			        map.put("lmonPrice", lprincipal); 
+			        map.put("lmonTotal", lprincipal + lmonRate); 
+			        
+			        list.add(map);
+				}
+			}
+		}
+	return list;	
+	} 
+	
 }

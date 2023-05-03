@@ -38,8 +38,82 @@
 	
 	<!-- 대출상품 신청 -->
 	<insert id="requestProduct" parameterType="com.pigbank.project.dto.LoanRequestDTO">
-		INSERT INTO loan_req_tbl(lReqNum, lPdName, id, lAmount, lPeriod, lPurpose, lIncome, lState, lReqDate, acPwd, trsfLimit)
-		VALUES((SELECT NVL(MAX(lReqNum)+1, 1) FROM loan_req_tbl), #{lpdName}, #{id}, #{lamount}, #{lperiod}, #{lpurpose}, #{lincome}, #{lstate}, #{lreqDate}, #{acPwd}, #{trsfLimit})
+		INSERT INTO loan_req_tbl(lReqNum, lPdName, id, lPrincipal, lPeriod, lPurpose, lIncome, lState, lReqDate, acPwd, lReason)
+		VALUES((SELECT NVL(MAX(lReqNum)+1, 1) FROM loan_req_tbl), #{lpdName}, #{id}, #{lprincipal}, #{lperiod}, #{lpurpose}, #{lincome}, '승인전', sysdate, #{acPwd}, '승인전')
 	</insert>
+	
+	<!-- 대출 심사 결좌 조회 -->
+	<select id="showLoanStateList" parameterType='String' resultType="com.pigbank.project.dto.LoanRequestDTO">
+		SELECT r.lReqNum, r.lPdName, r.lPrincipal, l.lRate, r.lReqDate, r.lState, r.lReason
+		  FROM loan_req_tbl r, loan_product l
+		 WHERE r.lPdName = l.lPdName
+		   AND r.id = #{id}
+	</select>
+	
+	<!-- 대출 심사 결좌 조회 -->
+	<select id="showLoanReqList" resultType="com.pigbank.project.dto.LoanRequestDTO">
+		SELECT r.lReqNum, r.lPdName, r.lperiod, r.lPrincipal, l.lRate, r.lReqDate, r.lState, r.lReason, c.name, r.id
+		  FROM loan_req_tbl r, loan_product l, customer c
+		 WHERE r.lPdName = l.lPdName
+		   AND c.id = r.id
+	</select>
+	
+	<!-- 대출 신청 승인 상태 업데이트 -->
+	<update id="updateLoanAccept" parameterType="int">
+		UPDATE loan_req_tbl
+		SET lState='승인완료', lReason='승인완료'
+		WHERE lReqNum=#{lreqNum}
+	</update>
+	
+	<!-- 대출 신청 승인 상태 업데이트 -->
+	<update id="updateLoanRefuse" parameterType="java.util.Map">
+		UPDATE loan_req_tbl
+		SET lState='승인거절', lReason=#{lreason}
+		WHERE lReqNum=#{lreqNum}
+	</update>
+	
+	<!-- 대출계좌 생성 1 -->
+	<insert id="createAccount" parameterType="int">
+		INSERT INTO account_tbl(acNumber, id, bankName, acState, acBalance, acType, acPwd, newDate, trsfLimit)
+		SELECT 
+			FLOOR(DBMS_RANDOM.VALUE(3100000000, 3109999999)),
+			(SELECT id FROM loan_req_tbl WHERE lReqNum=#{lreqNum}),
+			'돼지은행',
+			'OPEN',
+			(SELECT lPrincipal FROM loan_req_tbl WHERE lReqNum=#{lreqNum}),
+			'대출계좌',
+			(SELECT acPwd FROM loan_req_tbl WHERE lReqNum=#{lreqNum}),
+			SYSDATE,
+			10000000
+			FROM DUAL
+	</insert>
+	
+	<!-- 대출계좌 생성 2 -->
+	<insert id="createLaccount" parameterType="int">
+		INSERT INTO l_account_tbl(lNum, acNumber, lStartDate, lEndDate, lReqNum)
+			VALUES((SELECT NVL(MAX(lNum)+1, 1) FROM l_account_tbl), 
+				   (SELECT acNumber
+			 		 FROM account_tbl
+			 	    WHERE id = (SELECT id FROM loan_req_tbl WHERE lReqNum = #{lreqNum})
+			  		  AND acType='대출계좌' 
+			  		  AND newDate = (SELECT MAX(newDATE) FROM account_tbl)),
+			       sysdate,
+			       (SELECT ADD_MONTHS(sysdate, (SELECT lPeriod FROM loan_req_tbl WHERE lReqNum = #{lreqNum})) FROM dual),
+				   #{lreqNum})
+	</insert>
+	
+	<!--  대출 상환 스케쥴 생성 -->
+	<!--  1-1. 값 가져오기 -->
+	<select id="getPayInfo" parameterType="int" resultType="com.pigbank.project.dto.LoanRequestDTO">
+		SELECT r.lPrincipal, 
+			   p.lType, 
+			   p.lRate, 
+			   r.lPeriod 
+		  FROM loan_req_tbl r, loan_product p
+		 WHERE r.lPdName = p.lPdName
+		   AND r.lReqNum = #{lreqNum}
+	</select>
+	
+	
 	
 </mapper>

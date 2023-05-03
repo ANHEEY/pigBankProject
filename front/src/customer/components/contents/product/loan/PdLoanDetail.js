@@ -27,7 +27,7 @@ function PdLoanDetail() {
   // 신청하기 버튼
   const navigate = useNavigate();
   const goRegister = (lpdName) => { 
-    window.localStorage.removeItem("lpdName");
+    // window.localStorage.removeItem("lpdName");
     window.localStorage.setItem("lpdName", lpdName);
     navigate('/customer/product/loan/pdLoanApplication');
   }

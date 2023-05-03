@@ -8,7 +8,7 @@ import axios from 'axios'; // npm install -f axios@^1.3.5
 const LOAN_API_BASE_URL = "http://localhost:8081/loan";
 class LoanApiService {
 
-    // list
+    // 대출 상품 list
     fetchProduct() {
          return axios.get(LOAN_API_BASE_URL + '/admin/list');
     }    
@@ -20,19 +20,34 @@ class LoanApiService {
         
     }
 
-    // 1건 select
+    // 대출 상품 1건 select
     fetchProductByName(lpdName)  {
         return axios.get(LOAN_API_BASE_URL + '/admin/' + lpdName);
     }
 
-    // edit
+    // 대출 상품 edit
     editProduct(pdLoan) {
         return axios.put(LOAN_API_BASE_URL + '/admin/edit/' + pdLoan.lpdName, pdLoan);
     }
 
-    // delete
+    // 대출 상품 delete
     deleteProduct(lpdName) {
         return axios.put(LOAN_API_BASE_URL + '/admin/delete/' + lpdName);
+    }
+    
+    // 대출신청목록 list
+    fetchLoanRequest() {
+        return axios.get(LOAN_API_BASE_URL + '/listLoanSate');    
+    }
+
+    // 승인 버튼 update
+    updateAccept(lreqNum) {
+        return axios.put(LOAN_API_BASE_URL + '/acceptLoan/' + lreqNum );    
+    }
+
+    // 승인 버튼 update
+    updateRefuse(lreqNum, lreason) {
+        return axios.put(LOAN_API_BASE_URL + '/refuseLoan/' + lreqNum + '/' + lreason);    
     }
 
 }

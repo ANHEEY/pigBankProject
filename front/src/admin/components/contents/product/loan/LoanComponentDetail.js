@@ -26,6 +26,7 @@ const LoanComponentDetail = () => {
     const edit = (lpdName) => {
         window.localStorage.setItem("lpdName", lpdName);
         navigate("/admin/product/loan/edit");
+        window.localStorage.removeItem("lpdName");
     }
 
     // delete 버튼

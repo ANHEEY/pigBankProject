@@ -1,5 +1,6 @@
 package com.pigbank.project.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -27,4 +28,28 @@ public interface SooMapper {
 	
 	// 대출상품 신청
 	public void requestProduct(LoanRequestDTO loanRequestDTO);
+	
+	// 대출 심사 결과 조회
+	public List<LoanRequestDTO> showLoanStateList(String id);
+	
+	// 대출 신청 목록 조회
+	public List<LoanRequestDTO> showLoanReqList();
+	
+	// 대출 신청 승낙
+	public void updateLoanAccept(int lreqNum);
+	
+	// 대출 신청 거절
+	public void updateLoanRefuse(HashMap<String, Object> map);
+	
+	// 대출 계좌 생성 1
+	public void createAccount(int lreqNum);
+	
+	// 대출 계좌 생성 2
+	public void createLaccount(int lreqNum);
+	
+	// 대출 상환 스케쥴 생성
+	// 1-1. 값 가져오기
+	public LoanRequestDTO getPayInfo(int lreqNum);
+	
+	
 }

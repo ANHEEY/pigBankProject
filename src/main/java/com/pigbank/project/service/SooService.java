@@ -1,7 +1,9 @@
 package com.pigbank.project.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -38,5 +40,24 @@ public interface SooService {
 	// 대출 상품 신청
 	public void requestProduct(LoanRequestDTO loanRequestDTO)
 			throws ServletException,IOException;
+	
+	// 대출 심사 결과 조회(고객용)
+	public List<LoanRequestDTO> loanStateList(String id)
+			throws ServletException, IOException;
+	
+	// 대출 신청 목록 조회(관리자용)
+	public List<LoanRequestDTO> loanRequestList()
+			throws ServletException, IOException;
+
+	// 대출 신청 승인
+	public void acceptLoan(int lreqNum)
+			throws ServletException, IOException;
+	
+	// 대출 신청 거절
+	public void refuseLoan(int lreqNum, String lreason)
+			throws ServletException, IOException;
+	
+	// 대출 상환 스케쥴표 생성
+	public ArrayList<Map<String, Object>> createLoanPaySchedule(int lreqNum);
 	
 }

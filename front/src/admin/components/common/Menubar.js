@@ -60,7 +60,10 @@ function MenuBar() {
                         </NavItem>
                         <NavItem eventKey="acSearch/acDeposit">
                             <NavText>이체내역조회</NavText>
-                        </NavItem>
+                        </NavItem>'
+                        <NavItem eventKey="acSearch/acLoanRequest">
+                            <NavText>대출신청목록조회</NavText>
+                        </NavItem>'
                         <NavItem eventKey="acSearch/acDormant">
                             <NavText>휴면계좌조회</NavText>
                         </NavItem>

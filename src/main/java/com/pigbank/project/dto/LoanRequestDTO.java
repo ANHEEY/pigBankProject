@@ -14,7 +14,7 @@ import lombok.Data;
 public class LoanRequestDTO {
 	
 	@Id
-	private int lreqnum;
+	private int lreqNum;
 	private String lpdName;
 	private int lprincipal;
 	private int lperiod;
@@ -24,6 +24,10 @@ public class LoanRequestDTO {
 	private String lstate;
 	private Date lreqDate;
 	private int acPwd;
-	private int trsfLimit;
+	private String lreason;
 	
+	private double lrate;
+	private String name;
+	private String ltype;
+
 }

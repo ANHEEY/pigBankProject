@@ -16,7 +16,7 @@ import { Table } from 'react-bootstrap';
         const avgMonPrincipal = Math.round(amount / month); // 월 평균 상환 원금
         const avgMonInterest = Math.round(avgMonPrincipal * rate *month);
 
-        // 콤마 찍기
+        // 금액 콤마 찍기
         const comma = (number) => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }

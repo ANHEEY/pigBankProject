@@ -1,7 +1,9 @@
 package com.pigbank.project.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +27,6 @@ import com.pigbank.project.service.SooServiceImpl;
 
 @CrossOrigin(origins="**", maxAge=3600)
 @RestController
-@RequestMapping(value="/loan")
 public class SooController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SooController.class);
@@ -86,7 +87,7 @@ public class SooController {
 	}
 	
 	// 대출상품 신청
-	@PostMapping(value="/customer/addReq")
+	@PostMapping(value="/loan/customer/addReq")
 	public void requestPdLoan(@RequestBody LoanRequestDTO loanRequestDTO)
 		throws ServletException, IOException {
 		logger.info("<<< url - requestPdLoan() >>>");
@@ -94,4 +95,54 @@ public class SooController {
 		service.requestProduct(loanRequestDTO);
 		System.out.println("[ Delete 성공~~ ]");
 	}
+	
+	// 대출 심사 결과 조회 (고객용)
+	@GetMapping(value="/loanAccount/listLoanSate/{id}")
+	public List<LoanRequestDTO> loanStateList(@PathVariable String id)
+		throws ServletException, IOException {
+			logger.info("<<< url - loanStateList >>>");
+			
+			List<LoanRequestDTO> list = service.loanStateList(id);
+			
+			return list;
+	}
+	
+	// 대출 신청 목록 조회 (관리자용)
+	@GetMapping(value="/loan/listLoanSate")
+	public List<LoanRequestDTO> loanStateList()
+		throws ServletException, IOException {
+			logger.info("<<< url - loanStateList >>>");
+			
+			List<LoanRequestDTO> list = service.loanRequestList();
+			
+			return list;
+	}
+	
+	// 대출 신청 승인 
+	@PutMapping("/loan/acceptLoan/{lreqNum}")
+	public void acceptPdLoan(@PathVariable int lreqNum)		
+		throws ServletException, IOException {
+		logger.info("<<< url - acceptPdLoan >>>");
+		
+		// 승인 후 대출계좌 생성
+		service.acceptLoan(lreqNum);
+		
+		// 상환 스케쥴 생성
+		service.createLoanPaySchedule(lreqNum);
+		
+		
+	}
+	
+	// 대출 신청 거절
+	@PutMapping("/loan/refuseLoan/{lreqNum}/{lreason}")
+	public void refusePdLoan(@PathVariable int lreqNum, @PathVariable String lreason)		
+		throws ServletException, IOException {
+		logger.info("<<< url - refusePdLoan >>>");
+		
+		System.out.println(lreason);
+		
+		service.refuseLoan(lreqNum, lreason);
+	}
+	
+	
 }

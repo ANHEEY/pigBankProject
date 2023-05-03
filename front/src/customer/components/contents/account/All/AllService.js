@@ -10,7 +10,6 @@ import axios from 'axios';  // npm install -f axios@^1.3.5
 const savingAccount = "http://localhost:8081/savingAccount";
 const loanAccount = "http://localhost:8081/loanAccount";
 const depositAccount = "http://localhost:8081/depositAccount";
-const loanState = "http://localhost:8081/loanState";
 const Account = "http://localhost:8081/account";
 
 class AllService {
@@ -30,9 +29,10 @@ class AllService {
       console.log('대출계좌호출!!')
       return axios.get(loanAccount);
     }
-    fetchLoanState() {
+    fetchLoanState(id) {
       console.log('대출상태호출!!')
-      return axios.get(loanState);
+      console.log(id);
+      return axios.get(loanAccount + '/listLoanSate/' + id);    
     }
     
   }

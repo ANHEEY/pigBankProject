@@ -17,9 +17,11 @@ function PdLoanApplication() {
     const [isAgreed, setIsAgreed] = useState({
         isAgreed1 : "",
         isAgreed2 : "",
-    }); // 동의 약간 설정 시작
+    }); // 동의 약관 체크박스 설정
+
     const [inputs, setInputs] = useState({
         lpdName: lpdName,
+        id: "",
         lpurpose: "",
         lincome: "",
         lprincipal: "",
@@ -64,6 +66,7 @@ function PdLoanApplication() {
             // 가입 정보를 서버로 보내는 코드
             let loanReq = {
                 lpdName: inputs.lpdName,
+                id: inputs.id,
                 lpurpose: selectedPurpose,
                 lincome: inputs.lincome,
                 lprincipal: Number(inputs.lprincipal),
@@ -78,13 +81,11 @@ function PdLoanApplication() {
                 .then(res => {
                     alert("대출 신청이 완료되었습니다. 심사결과를 기다려주세요.")
                     console.log("대출신청성공");
-                    navigate('/admin/product/loan');
+                    navigate('/customer/product/loan/pdLoan');
                 })
                 .catch(err => {
-                    console.log(' addPdReqList() 에러', err)
+                    console.log('addPdReqList() 에러', err)
                 })
-                    alert('신청이 완료되었습니다.');
-                    navigate('/customer/product/loan/pdLoan');
         }
         else {
             alert('이용약관에 동의해주세요!');
@@ -103,7 +104,7 @@ function PdLoanApplication() {
     };
 
     // 계좌 선택 눌렀을 때
-     const accountChange = (event) => {
+    const accountChange = (event) => {
         setSelectedAccount(event.target.value);
     };
 
@@ -139,14 +140,14 @@ function PdLoanApplication() {
                 <Form.Group as={Row}>
                     <Form.Label column sm="2">대출상품명</Form.Label>
                     <Col sm="10">
-                        <Form.Control name="lpdName" readOnly defaultValue={inputs.lpdName} value={inputs.lpdName}/>
+                        <Form.Control name="lpdName" readOnly value={inputs.lpdName}/>
                     </Col>
                 </Form.Group>
                 <br/>
                 <Form.Group as={Row}>
                     <Form.Label column sm="2">신청자명</Form.Label>
                     <Col sm="10">
-                        <Form.Control name="name" readOnly defaultValue="홍길동" value="홍길동"  />
+                        <Form.Control name="id" readOnly value="홍길동"  />
                     </Col>
                 </Form.Group>
                 <br/>

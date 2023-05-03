@@ -19,6 +19,7 @@ import LoanComponentAdd from "../../contents/product/loan/LoanComponentAdd";
 import LoanComponentDetail from "../../contents/product/loan/LoanComponentDetail";
 import LoanComponentEdit from "../../contents/product/loan/LoanComponentEdit";
 import LoanComponent from "../../contents/product/loan/LoanComponent";
+import LoanRequestList from "../../contents/product/loan/LoanRequestList"
 import SavingComponentDetail from "../../contents/product/saving/SavingComponentDetail";
 import SavingComponentEdit from "../../contents/product/saving/SavingComponentEdit";
 import SavingComponentAdd from "../../contents/product/saving/SavingComponentAdd";
@@ -53,12 +54,15 @@ class RouteComponent extends Component{
                 <Route path = "/acSearch/acAccount" Component={AccountComponent}/>
                 <Route path = "/acSearch/acDeposit" Component={AcDepositComponent}/>
                 <Route path = "/acSearch/acDormant" Component={DormantComponent}/>
+                <Route path = "/acSearch/acLoanRequest" Component={LoanRequestList}/>
+
                 {/* 고객관리 */}
                 <Route path = "/customer/withdrawal" Component={WithdrawalComponent}/>
                 <Route path = "/customer/info" Component={InfoComponent}/>
                
                 <Route path = "/customer/info/detail/:id" Component={InfoDetailComponent}/>
                 <Route path = "/customer/withdrawal/detail/:id" Component={InfoDetailComponent}/>
+                
                 {/* 고객센터 */}
                 <Route path = "/csCenter/notice" Component={NoticeComponent}/>
                 <Route path = "/csCenter/notice/add" Component={NoticeAddComponent}></Route>

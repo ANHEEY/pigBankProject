@@ -3,7 +3,7 @@ import  React, {useState, useEffect} from "react";
 import { Link } from 'react-router-dom';
 import { Button, Table, Form } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
-import LoanApiService from "./LoanApiService";
+import  LoanApiService from "./LoanApiService";
 import '../../../../resources/css/customer/detail_customer.css'
 
 
@@ -14,9 +14,9 @@ const LoanComponent = () => {
     // 상세화면 페이지 이동
     const goDetail = (lpdName) => {
         //navigate(`/admin/product/loan/detail/${id}`);
-    
         window.localStorage.setItem("lpdName", lpdName);
         navigate("/admin/product/loan/detail");
+        window.localStorage.removeItem("lpdName");
     }
 
     // class 컴포넌트에서의 라이프사이클 역할과 같음
@@ -32,7 +32,7 @@ const LoanComponent = () => {
 
      return(
         <div className="component-div">
-         <div className="admin-title" style={{width:1000}}>
+        <div className="admin-title" style={{width:1000}}>
             대출상품목록
         </div>
             <div style={{width:1000}}>
