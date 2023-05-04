@@ -26,9 +26,9 @@ class PdLoanService {
         return axios.get(LOAN_API_BASE_URL + '/admin/' + lpdName);
     }
 
-    // 계좌조회 (Lee Contoller)
-    fetchAccountList()  {
-        return axios.get(ACCOUNT_API_BASE_URL + '/Accounts');
+    // 계좌조회
+    fetchAccountList(id)  {
+        return axios.get(ACCOUNT_API_BASE_URL + '/Accounts', {params: {id: id}});
     }
 
     // 대출 상품 신청

@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 
 import com.pigbank.project.dto.LoanProductDTO;
 import com.pigbank.project.dto.LoanRequestDTO;
+import com.pigbank.project.dto.LoanWillPayDTO;
 
 public interface SooService {
 	
@@ -57,7 +58,16 @@ public interface SooService {
 	public void refuseLoan(int lreqNum, String lreason)
 			throws ServletException, IOException;
 	
+	// 대출 상환 스케쥴 계산
+	public ArrayList<Map<String, Object>> calcLoanPaySchedule(int lreqNum)
+			throws ServletException, IOException;
+	
 	// 대출 상환 스케쥴표 생성
-	public ArrayList<Map<String, Object>> createLoanPaySchedule(int lreqNum);
+	public void createLoanPaySchedule(Map<String, Object> map)
+			throws ServletException, IOException;
+	
+	// 대출 상환 스케쥴표 생성
+	public List<LoanWillPayDTO> LoanScheduleList(int lnum)
+			throws ServletException, IOException;;
 	
 }

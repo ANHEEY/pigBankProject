@@ -11,6 +11,7 @@
     height: 200%;
 
 }
+
 .component-div{
     margin-left: 300px;
     margin-top: 200px;
@@ -19,6 +20,12 @@
     justify-content: space-between;
     align-content: space-between;
     justify-items: center;
+}
+
+.component-div2{
+    margin-left: 200px;
+    margin-top: 200px;
+    justify-content: center;
 }
 
 .admin-title{

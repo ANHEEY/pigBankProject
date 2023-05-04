@@ -41,7 +41,7 @@
 		INSERT INTO loan_req_tbl(lReqNum, lPdName, id, lPrincipal, lPeriod, lPurpose, lIncome, lState, lReqDate, acPwd, lReason)
 		VALUES((SELECT NVL(MAX(lReqNum)+1, 1) FROM loan_req_tbl), #{lpdName}, #{id}, #{lprincipal}, #{lperiod}, #{lpurpose}, #{lincome}, '승인전', sysdate, #{acPwd}, '승인전')
 	</insert>
-	
+		
 	<!-- 대출 심사 결좌 조회 -->
 	<select id="showLoanStateList" parameterType='String' resultType="com.pigbank.project.dto.LoanRequestDTO">
 		SELECT r.lReqNum, r.lPdName, r.lPrincipal, l.lRate, r.lReqDate, r.lState, r.lReason
@@ -113,7 +113,19 @@
 		 WHERE r.lPdName = p.lPdName
 		   AND r.lReqNum = #{lreqNum}
 	</select>
+	<!--  1-2. 대출 상환 일정표 테이블에 insert -->
+	<insert id="insertLoanPaySchedule" parameterType="com.pigbank.project.dto.LoanWillPayDTO">
+		INSERT INTO l_accountPay_tbl(lWillPayNum, lPayTurn, lNum, lMonTotal, lMonPrice, lMonRate)
+			VALUES((SELECT NVL(MAX(lWillPayNum)+1, 1) FROM  l_accountPay_tbl),
+				  #{lpayTurn}, 
+				  (SELECT MAX(lNum) FROM l_account_tbl), 
+				  #{lmonTotal}, 
+				  #{lmonPrice}, 
+				  #{lmonRate})
+	</insert>
 	
-	
-	
+	<!-- 대출 스케쥴 조회  -->
+	<select id="showLoanSchedule" parameterType="int" resultType="com.pigbank.project.dto.LoanWillPayDTO">
+		SELECT * FROM l_accountPay_tbl WHERE lnum=#{lnum} ORDER BY lPayTurn
+	</select>	
 </mapper>

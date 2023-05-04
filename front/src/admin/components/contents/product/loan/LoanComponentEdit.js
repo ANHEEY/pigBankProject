@@ -22,6 +22,7 @@ const LoanComponentDetail = () => {
                 lcxlRate: product.lcxlRate,
                 lregDate: product.lregDate
             })
+            window.localStorage.removeItem("lpdName");
           })
           .catch(err => {
             console.log('fetchProdcutList Error!', err);

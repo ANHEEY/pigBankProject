@@ -105,7 +105,6 @@ function Loan() {
                         <TableCell style={tableHeadStyle}>업무</TableCell>
                     </TableRow>
                     </TableHead>
-
                     {filteredMembers.map((member) => (
                     <TableBody key={member.lreqNum}>
                         <TableRow >
@@ -133,7 +132,6 @@ function Loan() {
         <br />
         </main>
     );
-    
+   
 }
-
 export default Loan;

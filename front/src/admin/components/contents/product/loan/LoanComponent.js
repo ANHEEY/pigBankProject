@@ -16,7 +16,6 @@ const LoanComponent = () => {
         //navigate(`/admin/product/loan/detail/${id}`);
         window.localStorage.setItem("lpdName", lpdName);
         navigate("/admin/product/loan/detail");
-        window.localStorage.removeItem("lpdName");
     }
 
     // class 컴포넌트에서의 라이프사이클 역할과 같음

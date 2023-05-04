@@ -10,7 +10,7 @@ class LoanApiService {
 
     // 대출 상품 list
     fetchProduct() {
-         return axios.get(LOAN_API_BASE_URL + '/admin/list');
+        return axios.get(LOAN_API_BASE_URL + '/admin/list');
     }    
 
     // 대출 상품 insert

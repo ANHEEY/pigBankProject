@@ -2,6 +2,7 @@ package com.pigbank.project.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,9 +21,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.LoanProductDTO;
 import com.pigbank.project.dto.LoanRequestDTO;
+import com.pigbank.project.dto.LoanWillPayDTO;
 import com.pigbank.project.service.SooServiceImpl;
 
 @CrossOrigin(origins="**", maxAge=3600)
@@ -127,9 +132,19 @@ public class SooController {
 		// 승인 후 대출계좌 생성
 		service.acceptLoan(lreqNum);
 		
-		// 상환 스케쥴 생성
-		service.createLoanPaySchedule(lreqNum);
+		// 상환 스케쥴 계산
+		ArrayList<Map<String, Object>> list = service.calcLoanPaySchedule(lreqNum);
+		logger.info("<<< url - calcLoanPaySchedule >>>");
+		System.out.println("controller list : " + list);
 		
+		// 상환 스케쥴표 생성
+		// list 길이 만큼 for문을 돌린다.
+		for(int i = 0; i<list.size(); i++) {
+			logger.info("<<< url - createLoanPaySchedule >>>");
+			// 맵에 담는다.
+			HashMap<String, Object> map = (HashMap<String, Object>)list.get(i);
+			service.createLoanPaySchedule(map);
+		}	
 		
 	}
 	
@@ -142,6 +157,17 @@ public class SooController {
 		System.out.println(lreason);
 		
 		service.refuseLoan(lreqNum, lreason);
+	}
+	
+	// 대출 상환 스케쥴 조회 
+	@GetMapping(value="/loanAccount/listLoanSchedule/{lnum}")
+	public List<LoanWillPayDTO> loanScheduleList(@PathVariable int lnum)
+		throws ServletException, IOException {
+			logger.info("<<< url - loanScheduleList >>>");
+			
+			List<LoanWillPayDTO> list = service.LoanScheduleList(lnum);
+			
+			return list;
 	}
 	
 	

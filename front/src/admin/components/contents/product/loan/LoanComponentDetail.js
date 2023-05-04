@@ -14,6 +14,7 @@ const LoanComponentDetail = () => {
           .then(res => {
             let product = res.data;
             setProduct(product)
+            window.localStorage.removeItem("lpdName");
           })
           .catch(err => {
             console.log('fetchProdcutList Error!', err);
@@ -26,7 +27,6 @@ const LoanComponentDetail = () => {
     const edit = (lpdName) => {
         window.localStorage.setItem("lpdName", lpdName);
         navigate("/admin/product/loan/edit");
-        window.localStorage.removeItem("lpdName");
     }
 
     // delete 버튼
@@ -47,7 +47,7 @@ const LoanComponentDetail = () => {
             대출상품 상세페이지
         </div>
         <div className="sPd-detailTable"><br/><br/>
-            <table clssName="sPd-detailTable-info" style={{width: 900}}>
+            <table className="sPd-detailTable-info" style={{width: 900}}>
                 <thead className="sPd-detailTable-title">
                     <tr><th colSpan={2}>Product</th></tr>
                 </thead>

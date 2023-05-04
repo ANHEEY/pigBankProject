@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import com.pigbank.project.dao.SooMapper;
 import com.pigbank.project.dto.LoanProductDTO;
 import com.pigbank.project.dto.LoanRequestDTO;
+import com.pigbank.project.dto.LoanWillPayDTO;
 
 @Service
 public class SooServiceImpl implements SooService{
@@ -128,10 +129,10 @@ public class SooServiceImpl implements SooService{
 		dao.updateLoanRefuse(map);
 	}
 
-	// 대출 상환 스케쥴표 생성
+	// 대출 상환 스케쥴 계산
 	@Override
-	public ArrayList<Map<String, Object>> createLoanPaySchedule(int lreqNum) {
-		System.out.println("service - createLoanPaySchedule");
+	public ArrayList<Map<String, Object>> calcLoanPaySchedule(int lreqNum) throws ServletException, IOException {
+		System.out.println("service - calcLoanPaySchedule");
 		// 계산에 필요한 값들 가져오기 (대출상환방법, 대출금액, 대출금리, 대출기간)
 		LoanRequestDTO dto = dao.getPayInfo(lreqNum);
 		
@@ -140,6 +141,7 @@ public class SooServiceImpl implements SooService{
 		double lrate = dto.getLrate(); // 대출금리
 		int lperiod = dto.getLperiod() * 12; // 대출기간(년 -> 월)
 		
+		// list 생성
 		ArrayList<Map<String, Object>> list = null;
 	    
 		// 원리금균등분할상환 계산
@@ -174,6 +176,7 @@ public class SooServiceImpl implements SooService{
 		    	
 		    	// 리스트에 각 회차당 정보 차례대로 넣기
 		    	list.add(map);
+		    	System.out.println("원리금 균등 : " + map);
 		    }
 		} 
 		
@@ -207,12 +210,15 @@ public class SooServiceImpl implements SooService{
 		   	    
 		        // 리스트에 각 회차당 정보 차례대로 넣기
 		        list.add(map);
+		        System.out.println("원금 균등 : " + map);
 	        }        
 		}
 		
 		else {
+			// 리스트 생성
+		    list = new ArrayList<Map<String, Object>>();
+		    
 			double m = lrate * 0.01 / 12; // 월이자율
-			int lmonTotal = 0;
 			int lmonRate = (int) Math.round(lprincipal * m); // 월이자액
 			
 			for(int i = 1; i <= lperiod; i++) {
@@ -227,6 +233,7 @@ public class SooServiceImpl implements SooService{
 			        map.put("lmonTotal", lmonRate); 
 			        
 			        list.add(map);
+			        System.out.println("만기일시 : " + map);
 				}
 				else {
 					map.put("lpayTurn", i); //회차
@@ -235,10 +242,36 @@ public class SooServiceImpl implements SooService{
 			        map.put("lmonTotal", lprincipal + lmonRate); 
 			        
 			        list.add(map);
+			        System.out.println("만기일시 : " + map);
 				}
 			}
 		}
 	return list;	
-	} 
+	}
+	
+	// 대출 신청 거절
+	@Override
+	public void createLoanPaySchedule(Map<String, Object> map) throws ServletException, IOException {
+		System.out.println("service - createLoanPaySchedule");
+		
+		// 맵에 담긴 정보들을 꺼내서 dto에 담기 
+		LoanWillPayDTO loanWillPayDTO = new LoanWillPayDTO();
+		
+		loanWillPayDTO.setLpayTurn((int)map.get("lpayTurn"));
+		loanWillPayDTO.setLmonRate((int)map.get("lmonRate"));
+		loanWillPayDTO.setLmonTotal((int)map.get("lmonTotal"));
+		loanWillPayDTO.setLmonPrice((int)map.get("lmonPrice"));
+		
+		// mapper 호출
+		dao.insertLoanPaySchedule(loanWillPayDTO);
+		
+	}
+
+	@Override
+	public List<LoanWillPayDTO> LoanScheduleList(int lnum) throws ServletException, IOException {
+		System.out.println("service - LoanScheduleList");
+		
+		return dao.showLoanSchedule(lnum);
+	}
 	
 }

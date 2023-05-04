@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.pigbank.project.dto.LoanProductDTO;
 import com.pigbank.project.dto.LoanRequestDTO;
+import com.pigbank.project.dto.LoanWillPayDTO;
 
 @Mapper
 public interface SooMapper {
@@ -50,6 +51,12 @@ public interface SooMapper {
 	// 대출 상환 스케쥴 생성
 	// 1-1. 값 가져오기
 	public LoanRequestDTO getPayInfo(int lreqNum);
+	
+	// 1-2. 스케쥴 테이블에 추가
+	public void insertLoanPaySchedule(LoanWillPayDTO loanWillPayDTO);
+	
+	// 대출 상환 스케쥴 조회
+	public List<LoanWillPayDTO> showLoanSchedule(int lnum);
 	
 	
 }

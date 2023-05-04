@@ -93,6 +93,8 @@ const PayLoan = () => {
 
     return(
         <Container>
+            <br />
+            <br />
             <h3>출금정보</h3>
             <hr />
             <Table align="center">
@@ -192,7 +194,7 @@ const PayLoan = () => {
                         </tbody>
                     </Table>     
 
-            <div className="mb-2" align='center'>
+            <div className="mb-2" align='right'>
                 <Button variant="success" size="lg" >
                  납부완료
                 </Button>

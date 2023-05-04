@@ -4,12 +4,15 @@ import { useNavigate } from "react-router-dom";
 import '../../../../resources/css/product/application-form.css'
 import PdLoanService from './PdLoanService.js';
 import AgreeAccordion from "../product-application/AgreeAccordion"
+import { getId } from '../../../helpers/axios_helper'
+
 
 function PdLoanApplication() {
     // 전화면에서 받아온 상품이름
     let lpdName = window.localStorage.getItem("lpdName");
  
     const navigate = useNavigate();
+    const [id, setId] = useState('');
     const [selectedPurpose, setSelectedPurpose] = useState('');
     // const [textOption, setTextOption] = useState(''); // 기타 text 입력값 설정
     const [selectedAccount, setSelectedAccount] = useState('');
@@ -21,7 +24,7 @@ function PdLoanApplication() {
 
     const [inputs, setInputs] = useState({
         lpdName: lpdName,
-        id: "",
+        id: id,
         lpurpose: "",
         lincome: "",
         lprincipal: "",
@@ -32,7 +35,8 @@ function PdLoanApplication() {
 
     useEffect(() => {
         // 계좌 조회 
-        PdLoanService.fetchAccountList()
+        setId(getId());
+        PdLoanService.fetchAccountList(id)
         .then(res => {
         console.log(res.data);
         setMyAccounts(res.data);
@@ -63,10 +67,10 @@ function PdLoanApplication() {
         e.preventDefault();
         // 동의 약관 설정     
         if(isAgreed.isAgreed1 && isAgreed.isAgreed2) {
-            // 가입 정보를 서버로 보내는 코드
+            // 가입 신청 정보를 서버로 보내는 코드
             let loanReq = {
                 lpdName: inputs.lpdName,
-                id: inputs.id,
+                name: inputs.name,
                 lpurpose: selectedPurpose,
                 lincome: inputs.lincome,
                 lprincipal: Number(inputs.lprincipal),
@@ -92,7 +96,7 @@ function PdLoanApplication() {
         }
     }
 
-    // 자식 컴포넌트가 render 될떄 실행되면서 자식으로부터 입력받은 값을 전달받음
+    // 자식 컴포넌트가 render 될때 실행되면서 자식으로부터 입력받은 값을 전달받음
     const handleCheckedAgreement = (e) => {
         setIsAgreed(prevState => {
             return {
@@ -145,9 +149,9 @@ function PdLoanApplication() {
                 </Form.Group>
                 <br/>
                 <Form.Group as={Row}>
-                    <Form.Label column sm="2">신청자명</Form.Label>
+                    <Form.Label column sm="2">신청자</Form.Label>
                     <Col sm="10">
-                        <Form.Control name="id" readOnly value="홍길동"  />
+                        <Form.Control name="id" readOnly value={id}  />
                     </Col>
                 </Form.Group>
                 <br/>
@@ -246,7 +250,9 @@ function PdLoanApplication() {
                         <Form.Select name="acNumber" value={selectedAccount} onChange={accountChange}>
                             <option value="입출금계좌를 선택하세요">입출금계좌를 선택하세요</option>
                                 {/* fetch를 통해 가져온 계좌들을 조회한다. */} 
-                                {myAccounts.map(account => {
+                                {myAccounts
+                                    .filter((account) => account.acType === "입출금통장")
+                                    .map(account => {
                                     return (
                                         <option key={account.acNumber} name="acNumber" value={account.acNumber}>
                                             [{account.bankName}]{acNum(account.acNumber)}

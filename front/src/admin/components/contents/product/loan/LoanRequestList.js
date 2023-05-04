@@ -48,7 +48,7 @@ const LoanRequestList = () => {
           setListLoanRequest(newListLoanRequest);
     }
     return(
-        <div className="component-div">
+        <div className="component-div2">
         <div className="admin-title" style={{width:1300}}>
             대출신청목록조회
         </div>
