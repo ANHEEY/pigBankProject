@@ -38,6 +38,18 @@ class PdSavingService {
     return axios.get(CUSTOMER_API_PRODUCT_SAVING_URL + "" + spdname, spdname);
   }
 
+  // 계좌조회
+  custAccountList(id) {
+    return axios.got(CUSTOMER_API_PRODUCT_SAVING_URL +  "/account" + {params: {id:id}})
+  }
+
+  // customer - 적금계좌 생성
+  addSavingAccount(saccount) {
+    console.log('addSavingAccount!!')
+    return axios.post(CUSTOMER_API_PRODUCT_SAVING_URL, saccount)
+  }
+  
+
 }
 
   

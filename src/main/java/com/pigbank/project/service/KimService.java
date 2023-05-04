@@ -31,6 +31,8 @@ public interface KimService {
 	public void deleteSpd(String spdname) throws ServletException, IOException;
 	
 	// [account]
+	// 1건 고객정보 조회
+	
 	// 등록
 	public void insertAPd(AccountDTO aPdDTO) throws ServletException, IOException;
 
