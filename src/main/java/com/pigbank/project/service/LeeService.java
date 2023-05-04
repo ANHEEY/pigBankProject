@@ -10,11 +10,12 @@ import org.springframework.ui.Model;
 
 import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.AutoTransferDTO;
+import com.pigbank.project.dto.NoticeDTO;
 import com.pigbank.project.dto.TransferDTO;
 
 public interface LeeService {
 	
-	public List<AccountDTO> accountList(HttpServletRequest req, Model model)
+	public List<AccountDTO> accountList(String id)
 			throws ServletException,IOException;
 	
 	public void InsertTransfer(TransferDTO dto)
@@ -42,5 +43,15 @@ public interface LeeService {
 			throws ServletException,IOException;
 	
 	public void updatetrsfLimit(AccountDTO dto)
+			throws ServletException,IOException;
+	
+	// -- 공지사항 
+	public List<NoticeDTO> noticeList(HttpServletRequest req, Model model)
+			throws ServletException,IOException;
+	
+	public NoticeDTO checkonenotice(int nNum)
+			throws ServletException,IOException;
+	
+	public void changenotice(NoticeDTO dto)
 			throws ServletException,IOException;
 }

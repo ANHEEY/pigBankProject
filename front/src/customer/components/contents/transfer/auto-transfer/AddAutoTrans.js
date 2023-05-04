@@ -34,24 +34,23 @@ function AddAutoTrans () {
 
     const [allAccount, setAllAccounts] = useState([]);
 
-    const [id, setId] = useState('');
+    const [id, setId] = useState(getId());
 
     useEffect(() => {
-        setId(getId());
         reloadAccountList();
         allAcountList();
-        }, [acPwd]);
+        
+        }, [id]);
 
     const reloadAccountList = () => {
         TransferService.fetchAccountList(id)
-        .then(res => {
-            console.log(res.data);
-        setAccounts(res.data);
-        })
-        .catch(err => {
-            alert("로그인 하세요.");
-            console.log('fetchAccountList() Error!!', err);
-        });
+            .then(res => {
+                setAccounts(res.data);
+            })
+            .catch(err => {
+                alert("로그인 하세요.");
+                console.log('fetchAccountList() Error!!', err);
+             });
     };
 
     const allAcountList = () => {

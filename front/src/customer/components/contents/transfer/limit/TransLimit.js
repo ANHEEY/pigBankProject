@@ -16,12 +16,11 @@ function TransLimit () {
 
     const navigate = useNavigate();
 
-    const [id, setId] = useState('');
+    const [id, setId] = useState(getId());
 
     useEffect(() => {
-        setId(getId());
         reloadAccountList();
-    }, []);
+    }, [id]);
 
     const reloadAccountList = () => {
         TransferService.fetchAccountList(id)
@@ -31,6 +30,7 @@ function TransLimit () {
          .catch(err => {
             alert("로그인 하세요.");
             console.log('fetchAccountList() Error!!', err);
+            
          })
     }
 
@@ -52,7 +52,7 @@ function TransLimit () {
         else if (isNaN(myvalue)){
             return alert("값을 다시 입력해주세요.")
         }
-        else if (isNaN(selectedAccount) || selectedAccount.length == 0) {
+        else if (isNaN(selectedAccount) || selectedAccount.length === 0) {
             return alert("계좌를 선택해주세요.")
         }
         else{
@@ -110,15 +110,15 @@ function TransLimit () {
                     <td>
                         <Form.Control
                         readOnly
-                        value={trsfLimit}
+                        value={Number(trsfLimit).toLocaleString('ko-kR')+ '원'}
                         aria-label="Username"
                         aria-describedby="basic-addon1"
                     /></td>
                     <td><Form.Control
-                        value={myvalue}
+                        value={Number(myvalue).toLocaleString('ko-kR')+ '원'}
                         aria-label="Username"
                         aria-describedby="basic-addon1"
-                        onChange={(e) => setMyvalue(parseInt(e.target.value))}
+                        onChange={(e) => setMyvalue(Number(e.target.value.replace(/[^0-9]/g, '')))}
                     /></td>
                </tr>
             </tbody>

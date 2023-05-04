@@ -16,12 +16,11 @@ function AutoTrans () {
     const [astate,setAstate] = useState('');
     const [data,setData] = useState([])
 
-    const [id, setId] = useState('');
+    const [id, setId] = useState(getId());
 
     useEffect(() => {
-        setId(getId());
         reloadAccountList();
-    }, []);
+    }, [id]);
     
     const reloadAccountList = () => {
         TransferService.fetchAccountList(id)

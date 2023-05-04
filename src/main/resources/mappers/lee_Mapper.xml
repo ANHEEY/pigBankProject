@@ -102,4 +102,19 @@
 		where acNumber = #{acNumber}
 	</update>
 	
+	<!-- 공지사항 -->
+	<select id="noticeList" resultType="com.pigbank.project.dto.NoticeDTO">
+		select * from notice_tbl
+	</select>
+	
+	<select id="checkonenotice" parameterType="int" resultType="com.pigbank.project.dto.NoticeDTO">
+		select * from notice_tbl where nNum = #{nNum}
+	</select>
+	
+	<update id="changenotice" parameterType="com.pigbank.project.dto.NoticeDTO">
+		update notice_tbl
+		set nTitle = #{nTitle}, nContent = #{nContent}
+		where nNum = #{nNum}
+	</update>
+	
 </mapper>

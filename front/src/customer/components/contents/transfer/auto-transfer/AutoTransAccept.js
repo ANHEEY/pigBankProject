@@ -52,7 +52,7 @@ function AutoTransAccept () {
                             </tr>
                             <tr>
                                 <th>보낸금액</th>
-                                <td align='right'>{tAmount}</td>
+                                <td align='right'>{Number(tAmount).toLocaleString('ko-kR')}원</td>
                             </tr>
                             <tr>
                                 <th>내 메모</th>

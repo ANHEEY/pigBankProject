@@ -5,9 +5,7 @@ import { useParams  } from "react-router-dom";
 
 function TransAccept () {
 
-
     const {selectedAccount , selectedMyAccount, yourMemo, myMemo, tAmount} = useParams();
-
         return(
             <div align='center'>
                 <div className="w-50 p-3" align='center'>
@@ -30,7 +28,7 @@ function TransAccept () {
                         <tbody>
                             <tr>
                                 <th>보낸금액</th>
-                                <td align='right'>{tAmount}원</td>
+                                <td align='right'>{Number(tAmount).toLocaleString('ko-kR')}원</td>
                             </tr>
                             <tr>
                                 <th>보낸계좌</th>

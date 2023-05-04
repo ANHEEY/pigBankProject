@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.AutoTransferDTO;
+import com.pigbank.project.dto.NoticeDTO;
 import com.pigbank.project.dto.TransferDTO;
 
 @Mapper
@@ -54,4 +55,11 @@ public interface LeeMapper {
 	public void updatedirectlyAutoTransfer(AutoTransferDTO dto);
 	
 	public void updatetrsfLimit(AccountDTO dto);
+	
+	// -- 공지사항
+	public List<NoticeDTO> noticeList();
+	// 공지사항 상세페이지
+	public NoticeDTO checkonenotice(int nNum);
+	
+	public void changenotice(NoticeDTO dto);
 }

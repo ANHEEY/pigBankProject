@@ -122,7 +122,8 @@ function AutoTransCheck (props) {
                             {moment(auto.aendDate).diff(auto.astartDate, 'months')}개월
                         </td>
                         <td>
-                            {new Date(auto.acancelDate) ? new Date(auto.acancelDate).toISOString().slice(0, 10) : '*'}
+                        {auto.acancelDate && 
+                        !isNaN(new Date(auto.acancelDate)) ? new Date(auto.acancelDate).toISOString().slice(0, 10) : '*'}
                         </td>
                         <td>
                             {new Date(auto.aregDate).toISOString().slice(0, 10)}

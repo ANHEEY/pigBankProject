@@ -1,8 +1,7 @@
-import { Component } from "react";
+import React, { useEffect, useState } from "react";
 
 
-class NoticeAddComponent extends Component{
-    render(){
+function NoticeAddComponent () {
         return(
             <div className="component-div">
                 <h1> 공지사항 등록 폼 </h1>
@@ -15,5 +14,4 @@ class NoticeAddComponent extends Component{
             </div>
         )
     }
-}
 export default NoticeAddComponent;

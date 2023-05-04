@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.AutoTransferDTO;
+import com.pigbank.project.dto.NoticeDTO;
 import com.pigbank.project.dto.TransferDTO;
 import com.pigbank.project.service.LeeServiceImpl;
 
@@ -50,13 +51,14 @@ public class LeeController {
 		return list;
 	}
 	// http://localhost:8081/Accounts
+	
 	// 계좌조회
 	@GetMapping(value="/Accounts")
-	public List<AccountDTO> accountList(@RequestParam String id, HttpServletRequest req, Model model)
+	public List<AccountDTO> accountList(@RequestParam String id)
 			throws ServletException, IOException {
 		logger.info("<<< url - accountList >>>");
 		System.out.println("id : " + id);
-		List<AccountDTO> list = service.accountList(req, model);
+		List<AccountDTO> list = service.accountList(id);
 		
 		System.out.println(list);
 		return list;
@@ -124,5 +126,33 @@ public class LeeController {
 			throws ServletException, IOException {
 		System.out.println("dto : " + dto);
 		service.updatetrsfLimit(dto);
+	}
+	
+	
+	// -- 공지사항
+	// http://localhost:8081/noticeList
+	@GetMapping(value="/noticeList")
+	public List<NoticeDTO> noticeList(HttpServletRequest req, Model model)
+			throws ServletException,IOException {
+		
+		return service.noticeList(req, model);
+	}
+	
+	// 공지사항 상세페이지
+	@GetMapping(value="/checkonenotice")
+	public NoticeDTO checkonenotice(@RequestParam String nNum)
+			throws ServletException,IOException {
+		System.out.println(nNum);
+		int nnum = Integer.parseInt(nNum);
+		
+		return service.checkonenotice(nnum);
+	}
+	
+	// 공지사항 수정
+	@PostMapping(value="/changenotice")
+	public void changenotice(@RequestBody NoticeDTO dto)
+			throws ServletException,IOException {
+		System.out.println("dto : " + dto);
+		service.changenotice(dto);
 	}
 }

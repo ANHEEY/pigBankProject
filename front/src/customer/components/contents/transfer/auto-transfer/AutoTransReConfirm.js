@@ -102,7 +102,7 @@ function AutoTransReConfirm (props) {
                     <tbody>
                     <tr>
                         <th>이체금액</th>
-                        <td align='right'>{tAmount}원</td>
+                        <td align='right'>{Number(tAmount).toLocaleString('ko-kR')}원</td>
                     </tr>
                     <tr>
                         <th>내통장메모</th>

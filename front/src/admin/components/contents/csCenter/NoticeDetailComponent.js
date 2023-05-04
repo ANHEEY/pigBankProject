@@ -1,16 +1,92 @@
-import { Component } from "react";
+import React, { useEffect, useState } from "react";
+import {  useNavigate, useParams } from "react-router-dom";
+import NoticeApiService from "./NoticeApiService";
+import { Button, Container, Table } from "react-bootstrap";
+import Form from 'react-bootstrap/Form';
+import { FormControlLabel } from "@mui/material";
 
-class NoticeDetailCoponent extends Component{
-    render(){
-        return(
-            <div className="component-div">
-                <h1>공지사항 상세페이지</h1>
-                <div>
-                SELECT * FROM notice_tbl WHERE n_num = ? AND n_show = 'y';
-                    
-                </div>
-            </div>            
-        )
+function NoticeDetailComponent () {
+
+    const {nnum} = useParams();
+    const [ntitle, setNtitle] = useState([]);
+    const [ncontent, setNcontent] = useState([]);
+    const [nregDate, setNregDate] = useState([]);
+    const [nshow, setNShow] = useState([]);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        checkoneNotice(nnum);
+    },[])
+
+    const checkoneNotice = (nnum) => {
+        NoticeApiService.checkoneNotice(nnum)
+            .then(res => {
+               setNtitle(res.data.ntitle);
+               setNcontent(res.data.ncontent);
+               setNregDate(new Date(res.data.nregDate).toISOString().slice(0,10))
+               setNShow(res.data.nshow);
+               console.log(res.data);
+            })
     }
-}
-export default NoticeDetailCoponent;
+
+    const nshowchange = () => {
+        if(nshow === 'Y'){
+            setNShow('N');
+        }
+        else{
+            setNShow('Y');
+        }
+    }
+
+    const change = () => {
+
+        let changeval = {
+            nnum: nnum,
+            ntitle: ntitle,
+            ncontent: ncontent,
+            nshow: nshow
+        }
+
+        console.log("changeval : " , changeval);
+        NoticeApiService.changeshow(changeval)
+            .then(res => {
+                alert('성공');
+                console.log('성공');
+                navigate('/admin/csCenter/notice')
+            })
+    }
+    return( 
+        <div className="component-div" >
+            <div style={{ width: "1200px" }}>
+                <Container>
+                    <Table striped bordered hover>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th ><Form.Control value={ntitle} onChange={(e) => setNtitle(e.target.value)}>
+                                </Form.Control></th>
+                            <td>상태 - {nshow}</td>
+                            <td><Button variant="success" onClick={nshowchange}>변경</Button></td>
+                            <td>{nregDate}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th style={{ width: "50px" }}>내용</th>
+                            <td colspan={4} style={{ width: "500px" }}>
+                                <Form.Control value={ncontent} as="textarea"
+                                onChange={(e) => setNcontent(e.target.value)}></Form.Control></td>
+                        </tr>
+                    </tbody>
+                    </Table>
+                    <div align="right">
+                    <Button variant="success" onClick={change}>변경</Button>{' '}
+                    <Button variant="danger" >게시글삭제</Button>
+                    </div>
+                </Container>
+                </div>
+        </div>
+    );
+    }
+export default NoticeDetailComponent;

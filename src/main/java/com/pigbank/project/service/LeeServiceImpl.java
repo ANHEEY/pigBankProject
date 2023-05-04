@@ -22,13 +22,12 @@ import org.springframework.ui.Model;
 import com.pigbank.project.dao.LeeMapper;
 import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.AutoTransferDTO;
+import com.pigbank.project.dto.NoticeDTO;
 import com.pigbank.project.dto.TransferDTO;
 
 @EnableScheduling
 @Service
 public class LeeServiceImpl implements LeeService{
-	
-	private LocalDate startDate = LocalDate.parse("2023-05-01");
 	
 	@Autowired
 	private LeeMapper dao;
@@ -43,9 +42,8 @@ public class LeeServiceImpl implements LeeService{
 	
 	// 계좌목록 조회
 	@Override
-	public List<AccountDTO> accountList(HttpServletRequest req, Model model) 
+	public List<AccountDTO> accountList(String id) 
 			throws ServletException, IOException {
-		String id = "hong1234";
 		return dao.accountList(id);
 	}
 
@@ -276,6 +274,26 @@ public class LeeServiceImpl implements LeeService{
 	public void updatetrsfLimit(AccountDTO dto) 
 			throws ServletException, IOException {
 		dao.updatetrsfLimit(dto);
+	}
+	
+	
+	// 공지사항
+	@Override
+	public List<NoticeDTO> noticeList(HttpServletRequest req, Model model)
+			throws ServletException,IOException {
+		return dao.noticeList();
+	}
+
+	@Override
+	public NoticeDTO checkonenotice(int nNum) 
+			throws ServletException, IOException {
+		return dao.checkonenotice(nNum);
+	}
+
+	@Override
+	public void changenotice(NoticeDTO dto) 
+			throws ServletException, IOException {
+		dao.changenotice(dto);
 	}
 
 	

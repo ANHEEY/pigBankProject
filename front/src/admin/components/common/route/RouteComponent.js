@@ -23,8 +23,10 @@ import LoanRequestList from "../../contents/product/loan/LoanRequestList"
 import SavingComponentDetail from "../../contents/product/saving/SavingComponentDetail";
 import SavingComponentEdit from "../../contents/product/saving/SavingComponentEdit";
 import SavingComponentAdd from "../../contents/product/saving/SavingComponentAdd";
+
 import NoticeAddComponent from "../../contents/csCenter/NoticeAddComponent";
-import NoticeDetailCoponent from "../../contents/csCenter/NoticeDetailComponent";
+import NoticeDetailComponent from "../../contents/csCenter/NoticeDetailComponent";
+
 import Layout from "../Layout";
 import MainComponents from "../MainComponents";
 
@@ -37,7 +39,7 @@ class RouteComponent extends Component{
                 {/* 상품관리 */}
                 <Route path = "/product/loan" Component={LoanComponent} />
                 <Route path = "/product/loan/add" Component={LoanComponentAdd}/>
-                <Route path = "/product/loan/detail" Component={LoanComponentDetail}/>
+                <Route path = "/product/loan/detail" Component={LoanComponentDetail}/>  
                 <Route path = "/product/loan/edit" Component={LoanComponentEdit}/>           
                 
                 <Route path = "/product/deposit" Component={DepositComponent} />
@@ -65,8 +67,8 @@ class RouteComponent extends Component{
                 
                 {/* 고객센터 */}
                 <Route path = "/csCenter/notice" Component={NoticeComponent}/>
-                <Route path = "/csCenter/notice/add" Component={NoticeAddComponent}></Route>
-                <Route path = "/csCenter/notice/detail" Component={NoticeDetailCoponent}/>
+                <Route path = "/csCenter/notice/add" Component={NoticeAddComponent} />
+                <Route path = "/csCenter/notice/detail/:nnum" Component={NoticeDetailComponent} />
                 <Route path = "/csCenter/chat" Component={ChatComponent}/>
             </Routes>
         )
