@@ -28,6 +28,7 @@ class PdLoanService {
 
     // 계좌조회
     fetchAccountList(id)  {
+        console.log(id);
         return axios.get(ACCOUNT_API_BASE_URL + '/Accounts', {params: {id: id}});
     }
 

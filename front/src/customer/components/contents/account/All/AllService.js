@@ -34,9 +34,10 @@ class AllService {
     }
     fetchLoanState(id) {
       console.log('대출상태호출!!')
+      console.log("apiService:" + id)
       return axios.get(loanAccount + '/listLoanSate/' + id);    
     }
-    setLoanScheduleList(lnum) {
+    fetchLoanSchedule(lnum) {
       console.log('대출스케쥴호출!!')
       return axios.get(loanAccount + '/listLoanSchedule/' + lnum);    
     }
@@ -48,7 +49,6 @@ class AllService {
       console.log('환율업데이트!!')
       return axios.get(exchangeUpdate);
     }
-
     fetchExchangeList() {
       console.log('환율정보호출!!')
       return axios.get(exchangeList);

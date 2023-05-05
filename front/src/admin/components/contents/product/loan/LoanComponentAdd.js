@@ -170,9 +170,10 @@ const LoanComponentAdd = () =>{
                     </Form.Text>
                     </Form.Group>
 
-                    <Stack direction="horizontal" gap={2} className="col-md-2 mx-auto">
+                    <Stack direction="horizontal" gap={2} className="col-md-12 mx-auto" style={{ display: 'flex', justifyContent: 'center' }}>
                     <Button variant="success" type="submit">상품등록</Button>
-                    <Button variant="outline-secondary" onClick={() => handelResetButton()}>취소</Button>
+                    <Button variant="secondary" onClick={() => handelResetButton()}>초기화</Button>
+                    <Button variant="outline-secondary" onClick={() => navigate(-1)}>목록</Button>
                     </Stack>
                 </Form>
             </div>

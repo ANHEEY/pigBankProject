@@ -107,6 +107,7 @@ public class SooController {
 		throws ServletException, IOException {
 			logger.info("<<< url - loanStateList >>>");
 			
+			System.out.println("controller loanState:" + id);
 			List<LoanRequestDTO> list = service.loanStateList(id);
 			
 			return list;

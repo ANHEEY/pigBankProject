@@ -86,19 +86,19 @@ const LoanComponentDetail = () => {
                     </tr>
                     <tr>
                         <th>중도상환수수료율</th>
-                        <td>{product.lcxlRate}</td>
+                        <td>{product.lcxlRate}%</td>
                     </tr>
                     <tr>
                         <th>상품등록날짜</th>
-                        <td>{product.lregDate}</td>
+                        <td>{new Date(product.lregDate).toLocaleDateString().slice(0,-1)}</td>
                     </tr>
                 </tbody>
             </table>
         </div><br/><br/>
         <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto">
-        <Button variant="secondary" size="medium"><Link to="/admin/product/loan" style={{color:"white"}}>목록</Link></Button>
         <Button variant="success" size="medium" onClick={() => edit(product.lpdName)}>수정</Button>
         <Button variant="outline-secondary" size="medium" style={{color:"black"}} onClick={() => deleteProduct(product.lpdName)}>삭제</Button>
+        <Button variant="secondary" size="medium"><Link to="/admin/product/loan" style={{color:"white"}}>목록</Link></Button>
         </Stack><br/><br/><br/> 
     </div>  
     </>             

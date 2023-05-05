@@ -15,7 +15,7 @@ import lombok.Data;
 public class LoanAccountDTO {
 	
 	@Id
-	private long lReqNum;
+	private long lnum;
 	private long acNumber;
 	private String lPdName;
 	private String id;

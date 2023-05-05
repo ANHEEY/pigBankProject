@@ -64,7 +64,7 @@ const LoanComponent = () => {
                     </thead>
                     <tbody>
                         {listPdLoan.map(product =>
-                        <tr key={product.lpdname}>
+                        <tr key={product.lpdName}>
                             <td>
                             <Form>
                             {['checkbox'].map((type) => (
@@ -84,7 +84,7 @@ const LoanComponent = () => {
                             <td>{product.lmaxPeriod}년</td>
                             <td>{product.lmaxPrice.toLocaleString()}만원</td>
                             <td>{product.lcxlRate}%</td>
-                            <td>{product.lregDate}</td>
+                            <td>{new Date(product.lregDate).toLocaleDateString().slice(0,-1)}</td>
                             <td>
                                 <button className="customerinfoBtn" onClick={() => goDetail(product.lpdName)}>상세페이지</button>
                             </td>

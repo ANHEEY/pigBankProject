@@ -65,8 +65,8 @@ function PdLoanDetail() {
           </Row>
         <br/><br/>
         <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto">
-          <Button className="button" size="lg" onClick={() => goRegister(product.lpdName)}>대출신청</Button>
-          <Button variant="outline-dark" size="lg"> 상품목록</Button>
+          <Button variant="outline-success" size="lg" onClick={() => goRegister(product.lpdName)} style={{background:"green", color:"white"}}>대출신청</Button>
+          <Button variant="outline-dark" size="lg" onClick={() => navigate(-1)}> 상품목록</Button>
         </Stack>
         <br/>
         </Card.Body>

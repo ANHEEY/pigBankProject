@@ -75,10 +75,6 @@ public class SooServiceImpl implements SooService{
 	public void requestProduct(LoanRequestDTO loanRequestDTO) throws ServletException, IOException {
 		System.out.println("service - requestProduct");
 		
-		// 일단 하드코딩 (로그인 해결되면 그때 소스 정리)
-		String id = "hong1234";
-		loanRequestDTO.setId(id);
-		
 		dao.requestProduct(loanRequestDTO);
 		
 	}

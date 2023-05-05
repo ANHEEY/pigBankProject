@@ -94,7 +94,7 @@ const AppRouter = () => {
             {/* 대출조회 */}
             <Route path="/customer/account/LoanState" Component={LoanState} />
             <Route path="/customer/account/Loan" Component={Loan} />
-            <Route path="/customer/account/loan/LoanSchedule" Component={LoanSchedule} />
+            <Route path="/customer/account/loan/LoanSchedule/:lnum" Component={LoanSchedule} />
             
             {/* 이체 */}
             <Route path="/customer/transfer/trans_deposit" Component={TransDeposit} />

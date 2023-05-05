@@ -4,17 +4,17 @@ import { useNavigate } from "react-router-dom";
 import '../../../../resources/css/product/application-form.css'
 import PdLoanService from './PdLoanService.js';
 import AgreeAccordion from "../product-application/AgreeAccordion"
-import { getId } from '../../../helpers/axios_helper'
+//import { getId } from '../../../helpers/axios_helper'
 
 
 function PdLoanApplication() {
-    // 전화면에서 받아온 상품이름
+    // 전 화면에서 받아온 상품이름
     let lpdName = window.localStorage.getItem("lpdName");
  
     const navigate = useNavigate();
-    const [id, setId] = useState('');
+    // const [id, setId] = useState('');
+    let id = window.localStorage.getItem("id");
     const [selectedPurpose, setSelectedPurpose] = useState('');
-    // const [textOption, setTextOption] = useState(''); // 기타 text 입력값 설정
     const [selectedAccount, setSelectedAccount] = useState('');
     const [myAccounts, setMyAccounts] = useState([]); // 나의 계좌목록
     const [isAgreed, setIsAgreed] = useState({
@@ -35,7 +35,7 @@ function PdLoanApplication() {
 
     useEffect(() => {
         // 계좌 조회 
-        setId(getId());
+        // setId(getId());
         PdLoanService.fetchAccountList(id)
         .then(res => {
         console.log(res.data);
@@ -47,30 +47,22 @@ function PdLoanApplication() {
           
     }, []);
 
-    // 기타를 누르고 값을 입력할 때
-    // const handleInputChange = (event) => {
-    //     setTextOption(event.target.value); // 대출용도 기타사항 입력박스
-    // };
-
-    // radio 박스 설정
     const handleRadioChange = (event) => {
-        // if (event.target.value == '기타') {
-        //     handleInputChange(event);
-        //     console.log("handleRadioChange" + textOption)
-        //     setSelectedPurpose(textOption);
-        // }
         setSelectedPurpose(event.target.value); // 대출용도 선택 박스
-        // setTextOption('');
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         // 동의 약관 설정     
         if(isAgreed.isAgreed1 && isAgreed.isAgreed2) {
+            if (!selectedAccount) {
+                alert('입출금계좌를 먼저 개설해주세요.');
+                return;
+            }        
             // 가입 신청 정보를 서버로 보내는 코드
             let loanReq = {
                 lpdName: inputs.lpdName,
-                name: inputs.name,
+                id: inputs.id,
                 lpurpose: selectedPurpose,
                 lincome: inputs.lincome,
                 lprincipal: Number(inputs.lprincipal),
@@ -193,15 +185,6 @@ function PdLoanApplication() {
                         label="기타" 
                         onChange={handleRadioChange}
                          />
-                        {/* {selectedPurpose === '기타' && (
-                            <Form.Control 
-                            type="text" 
-                            name="purpose"
-                            placeholder="대출목적을 정확히 입력해주세요." 
-                            value={textOption} 
-                            onChange={handleInputChange}
-                            />
-                        )} */}
                     </Col>
                     </Form.Group>
                 </fieldset>
@@ -248,14 +231,14 @@ function PdLoanApplication() {
                     <Form.Label column sm="2">계좌선택</Form.Label>
                     <Col sm="10">
                         <Form.Select name="acNumber" value={selectedAccount} onChange={accountChange}>
-                            <option value="입출금계좌를 선택하세요">입출금계좌를 선택하세요</option>
+                            <option value="출금계좌를 선택하세요">입출금계좌를 선택하세요</option>
                                 {/* fetch를 통해 가져온 계좌들을 조회한다. */} 
                                 {myAccounts
                                     .filter((account) => account.acType === "입출금통장")
                                     .map(account => {
                                     return (
                                         <option key={account.acNumber} name="acNumber" value={account.acNumber}>
-                                            [{account.bankName}]{acNum(account.acNumber)}
+                                            [{account.bankName}]{acNum(account.acNumber)}||{account.acType}
                                         </option>
                                     );
                                 })}
@@ -266,7 +249,7 @@ function PdLoanApplication() {
                 <Form.Group as={Row}>
                     <Form.Label column sm="2">대출계좌 비밀번호</Form.Label>
                     <Col sm="10">
-                        <Form.Control type="password" name="acPwd" value={inputs.acPwd} size="4" placeholder="비밀번호 4자리를 입력하세요." onChange={handleInputValue} />
+                        <Form.Control type="password" name="acPwd" value={inputs.acPwd} maxLength={4} placeholder="비밀번호 4자리를 입력하세요." onChange={handleInputValue} />
                     </Col>
                 </Form.Group>
                 <br/>

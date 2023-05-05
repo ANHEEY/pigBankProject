@@ -3,20 +3,24 @@ import React, { useState, useEffect } from "react";
 import {Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import AllService from "../All/AllService";
 import {Link} from 'react-router-dom';
+// import { getId } from '../../../helpers/axios_helper'
 import "../../../../resources/css/product/saving.css";
 
 const LoanState = () => {
 
+  // const [id, setId] = useState('');
   const tableHeadStyle={
     fontWeight: "bold",
   }
 
-  // 고객아이디
-  const id = 'hong1234'
-
+  let id = window.localStorage.getItem('id');
+  console.log("window.localStorage : " + id);
+  
   const [loanStateList, setLoanStateList]= useState([])
 
   useEffect(() => {
+      // setId(getId());
+      console.log("useEffect : " + id);
       AllService.fetchLoanState(id)
           .then(res => {
             setLoanStateList(res.data);
@@ -54,17 +58,17 @@ const LoanState = () => {
               </select>    
               </p>   */}
                                   
-          <div class="card text-center" style={{backgroundColor:"#dbe2d872" }}>
-              <div class="card-header" >
-                  <ul class="nav nav-tabs card-header-tabs" >
-                  <li class="nav-item">
-                      <a class="nav-link active" href="/customer/account/Loan"><Link to="/customer/account/Loan">대출계좌조회</Link></a>
+          <div className="card text-center" style={{backgroundColor:"#dbe2d872" }}>
+              <div className="card-header" >
+                  <ul className="nav nav-tabs card-header-tabs" >
+                  <li className="nav-item">
+                      <a className="nav-link active" href="/customer/account/Loan"><Link to="/customer/account/Loan">대출계좌조회</Link></a>
                   </li>
                   </ul>
               </div>
           </div>
 
-          <div class="card-body" style={{textAlign:"center"}}>
+          <div className="card-body" style={{textAlign:"center"}}>
               <Table>
                 <TableHead style={{textAlign:"center"}}>
                   <TableRow >
@@ -84,7 +88,7 @@ const LoanState = () => {
                       <TableCell>{product.lpdName}</TableCell>
                       <TableCell>{comma(product.lprincipal)}만원</TableCell>
                       <TableCell>{product.lrate}%</TableCell>
-                      <TableCell>{product.lreqDate}</TableCell>
+                      <TableCell>{new Date(product.lreqDate).toLocaleDateString().slice(0,-1)}</TableCell>
                       <TableCell>{product.lstate}[{product.lreason}]</TableCell>
                     </TableRow>
                 </TableBody>

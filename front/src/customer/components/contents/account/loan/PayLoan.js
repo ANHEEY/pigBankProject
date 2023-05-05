@@ -1,12 +1,13 @@
 // 상환금 납부하기 실행
 import React, {useState , useEffect } from "react";
-import InputGroup from 'react-bootstrap/InputGroup';
-import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Container from 'react-bootstrap/Container';
+import {InputGroup, Table, Button, Form, Container} from 'react-bootstrap';
+import { getId } from '../../../helpers/axios_helper'
+import PdLoanService from "../../product/loan/PdLoanService";
+
 
 const PayLoan = () => {
+    const [id, setId] = useState('');
+
     const [data, setData] = useState([]);
     const [accounts, setAccounts] = useState([]);
     const [message, setMessage] = useState(null);
@@ -22,17 +23,19 @@ const PayLoan = () => {
     const [bankName, setBankName] = useState('');
   
     
-    // useEffect(() => {
-    //   reloadAccountList();
-    //   }, []);
-    
-    // const reloadAccountList = () => {
-    // TransferService.fetchAccountList()
-    // .then(res => {
-    //     console.log(res.data);
-    // setAccounts(res.data);
-    
-    // })
+    useEffect(() => {
+       // 계좌 조회 
+       setId(getId());
+       PdLoanService.fetchAccountList(id)
+       .then(res => {
+       console.log(res.data);
+       setAccounts(res.data);
+       })
+       .catch(err => {
+       console.log('fetchAccountList() Error!!', err);
+       });         
+    }, []);
+
     
     // .catch(err => {
     // console.log('fetchAccountList() Error!!', err);
@@ -91,6 +94,12 @@ const PayLoan = () => {
         // };
     // }   
 
+    // 계좌번호 => 문자열로 변환 후 slice
+    function acNum(acNumber) {
+        const acNum = acNumber.toString().slice(0, 3) + '-' + acNumber.toString().slice(3);
+        return acNum;
+    }
+
     return(
         <Container>
             <br />
@@ -113,12 +122,17 @@ const PayLoan = () => {
             </td>
             <td>
             <Form.Select aria-label="Default select example">
-                <option>계좌선택</option>
-                {/* {accounts.map((account) => (
-                
-                <option key={account.acNumber} value={account.acNumber}>
-                    [{account.bankName}]{account.acNumber}</option>
-                ))} */}
+                <option>출금계좌를 선택해주세요.</option>
+                 {/* fetch를 통해 가져온 계좌들을 조회한다. */} 
+                 {accounts
+                    .filter((account) => account.acType === "입출금통장")
+                    .map(account => {
+                    return (
+                        <option key={account.acNumber} name="acNumber" value={account.acNumber}>
+                            [{account.bankName}]{acNum(account.acNumber)}
+                        </option>
+                    );
+                })}
             </Form.Select>
             </td>
             <td>
