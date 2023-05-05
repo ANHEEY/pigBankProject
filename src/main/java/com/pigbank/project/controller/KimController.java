@@ -91,7 +91,7 @@ public class KimController {
 //		return null;
 //	}
 	
-	// 자유입출금계좌 생성
+	// 자유입출금계좌 개설
 	@PostMapping(value="/custAInsert")
 	public void custAccInsert(@RequestBody AccountDTO aPdDTO) throws ServletException, IOException {
 		logger.info("<< URL - custAccInsert >>");
@@ -118,7 +118,7 @@ public class KimController {
 		return service.selectPdSaving(spdname);
 	}
 	
-	// 적금계좌 생성(상품 가입페이지)
+	// 적금계좌 개설(상품 가입페이지)
 	@PostMapping(value="/custSAInsert")
 	public void custSavingInsert(@RequestBody SavingAccountDTO custSPdDTO) throws ServletException, IOException {
 		logger.info("<< URL - customer SavingAccount Insert >>");

@@ -28,10 +28,13 @@ public interface KimMapper {
 	public void sPdDelete(String spdname);
 	
 	// [Customer]
-	// Account 입출금 계좌 생성
+	// Account 입출금 계좌 개설
 	public void aPdInsert(AccountDTO aPdDTO);
 	
-	// SavingAccount 적금계좌생성
+	// SavingAccount 적금계좌생성1(account_tbl => pk acNumber)
+	public void custAPdInsert(SavingAccountDTO custSPdDTO);
+	
+	// SavingAccount 적금계좌생성2(s_account_tbl => pk sNum, fk acNumber)
 	public void custSPdInsert(SavingAccountDTO custSPdDTO);
 	
 }

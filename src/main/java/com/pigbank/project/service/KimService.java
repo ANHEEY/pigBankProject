@@ -33,11 +33,16 @@ public interface KimService {
 	// [account]
 	// 1건 고객정보 조회
 	
-	// 등록
+	
+	// 입출금계좌 개설
 	public void insertAPd(AccountDTO aPdDTO) throws ServletException, IOException;
 
 	// [Customer_SavingAccount]
-	// 적금계좌 생성
+	// 적금계좌 생성1(account_tbl)
+	public void insertCustApd(AccountDTO custApdDTO) throws ServletException, IOException;
+	
+	// 적금계좌 생성2(s_account_tbl)
 	public void insertCustSPd(SavingAccountDTO custSPdDTO) throws ServletException, IOException;
+	
 	
 }

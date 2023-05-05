@@ -54,7 +54,7 @@ function PdAccount () {
             <br />
 
             <Tabs
-            defaultActiveKey="profile"
+            defaultActiveKey="longer-tab"
             id="fill-tab-example"
             className="mb-3"
             fill 
@@ -64,7 +64,7 @@ function PdAccount () {
                 <PdAccountInfo /> 
             </Tab>
 
-            <Tab eventKey="profile" title="금리및이율">
+            {/* <Tab eventKey="profile" title="금리및이율">
                 <Container>
                     <hr />
                     <Row className="justify-content-md-center"> 
@@ -89,7 +89,7 @@ function PdAccount () {
                     </Col>
                     </Row>
                 </Container>
-            </Tab>
+            </Tab> */}
             <Tab eventKey="longer-tab" title="유의사항">
                 <Container>
                 <hr />

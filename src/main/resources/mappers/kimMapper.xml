@@ -30,11 +30,14 @@
 		 WHERE sPdName = #{spdname}
 	</update>
 	
-	<!-- cust-Account(자유일출금) -->
-	
+	<!-- cust-Account(자유일출금 개설) -->
+	<insert id="aPdInsert" parameterType="com.pigbank.project.dto.AccountDTO">
+	INSERT INTO account_tbl(acNumber, id, bankName, acState, acType, acPwd)
+	VALUES (
+	     '110' || LPAD(FLOOR(DBMS_RANDOM.VALUE(1, 10000000)), 7, '0'),
+    #{id}, '돼지은행', 'OPEN', '입출금통장', #{acPwd})
+	</insert>
 	
 	<!-- cust-SavingAccount(적금계좌 생성) -->
-<!-- 	<insert id="" parameterType="">
-	
-	</insert> -->
+	<!--  -->
 </mapper>

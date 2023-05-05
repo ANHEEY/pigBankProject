@@ -8,9 +8,8 @@ import axios from 'axios';  // npm install -f axios@^1.3.5
 // - npm install -f axios@^1.3.5
 
 const MEMBER_API_BASE_URL = "http://localhost:8081/members";
-
 const CUSTOMER_API_PRODUCT_SAVING_URL = "http://localhost:8081/";
-
+const ACCOUNT_API_BASE_URL = "http://localhost:8081";
 
 class PdSavingService {
 
@@ -38,12 +37,13 @@ class PdSavingService {
     return axios.get(CUSTOMER_API_PRODUCT_SAVING_URL + "" + spdname, spdname);
   }
 
-  // 계좌조회
+  // customer - 계좌조회(LeeController)
   custAccountList(id) {
-    return axios.got(CUSTOMER_API_PRODUCT_SAVING_URL +  "/account" + {params: {id:id}})
+    console.log(id)
+    return axios.get(ACCOUNT_API_BASE_URL +  "/Accounts" , {params: {id: id}});
   }
 
-  // customer - 적금계좌 생성
+  // customer - 적금계좌 개설
   addSavingAccount(saccount) {
     console.log('addSavingAccount!!')
     return axios.post(CUSTOMER_API_PRODUCT_SAVING_URL, saccount)

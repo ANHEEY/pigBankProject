@@ -59,25 +59,30 @@ public class KimServiceImpl implements KimService {
 	
 	// -----------------------------------------------------------------------------------------------------------------------------------------
 	
-	
-	
-	
-	@Override // customer - 자유입출금계좌 생성
+	@Override // customer - 자유입출금계좌 개설
 	public void insertAPd(AccountDTO aPdDTO) throws ServletException, IOException {
 		System.out.println("Service - InsertAPd");
 		
 		dao.aPdInsert(aPdDTO);
 	}
 
+
+
 	// -----------------------------------------------------------------------------------------------------------------------------------------
 	
 	// [custoemr_SavingProduct]
-	@Override // 적금계좌 생성
-	public void insertCustSPd(SavingAccountDTO custSPdDTO) throws ServletException, IOException {
-		System.out.println("Service - Customer InsertSPd");
+	@Override // 적금계좌생성1(account_tbl)
+	public void insertCustApd(AccountDTO custApdDTO) throws ServletException, IOException {
+		System.out.println("Service - insertCustApd");
 		
 	}
 
+	@Override // 적금계좌생성2(s_account_tbl)
+	public void insertCustSPd(SavingAccountDTO custSPdDTO) throws ServletException, IOException {
+		System.out.println("Service - insertCustSPd");
+		
+		
+	}
 	
 
 }
