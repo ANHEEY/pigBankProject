@@ -17,9 +17,7 @@ function Mypage(){
         name:"",
         email1:"",
         email2:"",
-        postcode:"",
-        address1:"",
-        address2:"",
+        address:"",
         hp:"",
         birthday:""
     });
@@ -34,7 +32,9 @@ function Mypage(){
         CustomerService.customerDetail(id)
             .then(res=>{
                 const fullEmail = res.data.email.split("@");
-                const fullAddress = res.data.address.split("/");
+                const fullBirth = new Date(res.data.birthday);
+                const realBirth = `${fullBirth.getFullYear()}-${(fullBirth.getMonth() + 1).toString().padStart(2, "0")}-${fullBirth.getDate().toString().padStart(2, "0")}`;
+
                 setCustomer({
                     ...res.data,
                     id:res.data.id,
@@ -43,13 +43,12 @@ function Mypage(){
                     name:res.data.name,
                     email1:fullEmail[0],
                     email2:fullEmail[1],
-                    postcode:fullAddress[0],
-                    address1:fullAddress[1],
-                    address2:fullAddress[2],
+                    address:res.data.address,
                     hp:res.data.hp,
-                    birthday:res.data.birthday
+                    birthday:realBirth
                 });
                 console.log(res.data);
+                console.log(customer);
             })
             .catch(err=>{
                 console.log('customerDetail 에러!!!',err);
@@ -95,7 +94,7 @@ function Mypage(){
             pwd:customer.pwd,
             name:customer.name,
             email:customer.email1+"@"+customer.email2,
-            address:customer.postcode+customer.address1+customer.address2,
+            address:customer.address,
             hp:customer.hp,
             birthday:customer.birthday
         }
@@ -158,7 +157,9 @@ function Mypage(){
 
         CustomerService.customerUpdate(customerInfo)
             .then(res=> {
+                alert('회원정보 수정이 완료되었습니다! 다시 로그인 해주세요:)')
                 console.log(customerInfo);
+                localStorage.clear();
                 navigate('/customer/*');
             })
             .catch(err => {
@@ -171,12 +172,17 @@ function Mypage(){
     const deleteCus = (id)=>{
         CustomerService.customerDelete(id)
             .then(res=>{
-                alert("회원 탈퇴 신청이 완료되었습니다!!!");
-                navigate('');
+                alert("탈퇴 신청이 완료되었습니다! 승인시 탈퇴 처리 됩니다");
+                localStorage.clear();
+                navigate('/customer/*');
             })
             .catch(err=>{
                 console.log('customerDelete() 에러!!',err);
             })
+    }
+
+    const cxl = ()=>{
+        navigate('/customer/*');
     }
 
     return( 
@@ -228,17 +234,8 @@ function Mypage(){
                 <br/>
                 <Form.Group as={Row} className="mb-3" controlId="formGroupAddress">
                     <Form.Label column sm={2}>주소</Form.Label>
-                    <Col sm={6}><Form.Control type="text" placeholder="우편번호" 
-                                name="postcode" value={customer.postcode} onChange={onChange}/></Col>
-                    <Col sm={4}><Button variant="success">우편번호찾기</Button></Col>
-                    <br/><br/>
-                    <Form.Label column sm={2}>기본주소</Form.Label>
-                    <Col sm={10}><Form.Control type="text" placeholder="기본주소"
-                    name="address1" value={customer.address1} onChange={onChange} /></Col>
-                    <br/><br/>
-                    <Form.Label column sm={2}>상세주소</Form.Label>
-                    <Col sm={10}><Form.Control type="text" placeholder="상세주소" 
-                    name="address2" value={customer.address2} onChange={onChange}/></Col>
+                    <Col sm={10}><Form.Control type="text" placeholder="주소를 입력하세요" 
+                                name="address" value={customer.address} onChange={onChange}/></Col>
                 </Form.Group>
                 <br/>
                 <Form.Group as={Row} className="mb-3" controlId="formGroupPhone">
@@ -255,9 +252,9 @@ function Mypage(){
             </Form>
             <br/>
             <Stack direction="horizontal" gap={2} className="col-md-4 mx-auto">
-                    <Button variant="success" size="lg" onClick={()=>update}>회원수정</Button>
+                    <Button variant="success" size="lg" onClick={update}>회원수정</Button>
                     <Button variant="dark" size="lg" onClick={()=>deleteCus(customer.id)}>회원탈퇴</Button>
-                    <Button variant="outline-success" size="lg">취소</Button>
+                    <Button variant="outline-success" size="lg" onClick={cxl}>취소</Button>
             </Stack> 
             <br/> <br/> <br/> <br/> <br/>
         </Container>

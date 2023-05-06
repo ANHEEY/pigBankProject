@@ -26,7 +26,7 @@ function Login() {
           [name]: value 
         });
     };
-
+    //여기서 부터 추가
     const login = (e)=> {
         localStorage.clear();
 
@@ -75,6 +75,13 @@ function Login() {
         
     }
 
+    const cxl = (e)=>{
+       e.preventDefault();
+       navigate('/customer/*');
+       
+    }
+    //여기까지 추가
+
 
         return(
             <Container style={{
@@ -117,7 +124,7 @@ function Login() {
                 <br/><br/>
                 <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto">
                     <Button variant="success" onClick={login}>로그인</Button>
-                    <Button variant="outline-success">취소</Button>
+                    <Button variant="outline-success" onClick={cxl}>취소</Button>
                 </Stack> 
             </Container>
         );

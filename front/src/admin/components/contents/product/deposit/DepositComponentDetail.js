@@ -51,7 +51,7 @@ function DepositComponentDetail(){
                     예금상품 상세페이지
                 </div>
                 <div className="sPd-detailTable"><br/><br/>
-                    <table clssName="sPd-detailTable-info" style={{width: 900}}>
+                    <table className="sPd-detailTable-info" style={{width: 900}}>
                         <thead className="sPd-detailTable-title">
                             <tr><th colSpan={2}>Product</th></tr>
                         </thead>

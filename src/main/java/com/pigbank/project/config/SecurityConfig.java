@@ -21,14 +21,6 @@ public class SecurityConfig{
 
 	private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
 	private final UserAuthProvider userAuthProvider;
-	    
-//	@Autowired
-//	private CustomerMapper customerMapper;
-	
-//	@Bean	//해당 메서드의 리턴되는 오브젝트를 IOC 컨테이너로 등록해준다.
-//	public BCryptPasswordEncoder passwordEncoder() {
-//		return new BCryptPasswordEncoder();
-//	}
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -44,12 +36,7 @@ public class SecurityConfig{
 			.and()
 			.authorizeHttpRequests((requests)->requests
 					.antMatchers(HttpMethod.POST,"/login","/customerJoin").permitAll()
-					.antMatchers(HttpMethod.GET,"/members","/deposit","/loan").permitAll()
-//					.antMatchers("api/p1/customer/**")
-//						.access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-//					.antMatchers("api/p1/admin/**")
-//						.access("hasRole('ROLE_ADMIN')")
-					//.anyRequest().permitAll()
+					.antMatchers(HttpMethod.GET,"/members","/deposit","/loan","/duplicateId/{id}").permitAll()
 					.anyRequest().authenticated()
 			);
 			

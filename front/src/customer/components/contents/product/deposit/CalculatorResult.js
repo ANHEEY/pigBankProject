@@ -11,7 +11,7 @@ function CalculatorResult({props}){
     let period=props.period;
     let rate=props.rate;
 
-    let expRate = (rate/100)*amount*(period/12);
+    let expRate = Math.round((rate/100)*amount*(period/12));
     let expAmount = (amount+expRate);
 
     // 콤마 찍기

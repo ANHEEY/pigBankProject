@@ -8,8 +8,6 @@ import axios from 'axios';  // npm install -f axios@^1.3.5
 // - npm install -f axios@^1.3.5
 
 const URL = "http://localhost:8081";
-//const CUSTOMER_URL = "http://localhost:8081/api/p1/";
-//const URL = "/api/p1";
 
 class CustomerService {
 
@@ -18,11 +16,10 @@ class CustomerService {
       return axios.post(URL+"/customerJoin",customer);
     }
 
-    // customerLogin(customerInfo){
-    //     console.log('로그인!!!!!');
-    //     console.log(customerInfo);
-    //     return axios.post(URL+"/login",customerInfo);
-    // }
+    duplicateId(id){
+      console.log('아이디 중복체크');
+      return axios.get(URL+"/duplicateId/"+id);
+    }
 
     customerCertification(cusInfo){
       console.log('본인인증!!!!!');
@@ -37,12 +34,12 @@ class CustomerService {
 
     customerUpdate(customerInfo){
       console.log('회원정보 업데이트!!');
-      return axios.put(URL+"/cusUpdate"+customerInfo.id,customerInfo);
+      return axios.put(URL+"/cusUpdate/"+customerInfo.id,customerInfo);
     }
 
     customerDelete(id){
       console.log("회원 탈퇴!!");
-      return axios.put(URL+"/cusDelete",id);
+      return axios.put(URL+"/cusDelete/"+id);
     }
     
 }

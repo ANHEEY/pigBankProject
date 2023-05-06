@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 css를 적용�
 import AdminDepositService from "./AdminDepositService";
 import { useNavigate,Link } from "react-router-dom";
 
+//예금 상품 등록 페이지
 function DepositComponentAdd(){
     const navigate = useNavigate();
 
@@ -24,6 +25,18 @@ function DepositComponentAdd(){
         setDepositProduct({
             ...depositProduct, 
           [name]: value 
+        });
+    }
+
+    const reset = ()=>{
+        setDepositProduct({
+            dpdName:'',
+            dcontent:'',
+            dperiod:'',
+            dmin:'',
+            dmax:'',
+            drate:'',
+            dcxlRate:''
         });
     }
 
@@ -111,7 +124,8 @@ function DepositComponentAdd(){
 
                     <Stack direction="horizontal" gap={2} className="col-md-4 mx-auto">
                     <Button variant="success" onClick={saveDepositPd}>상품등록</Button>
-                    <Button variant="outline-secondary"><Link to="/admin/product/deposit" style={{color:'gray'}}>취소</Link></Button>
+                    <Button variant="outline-secondary" style={{color:'gray'}} onClick={()=>reset()}>취소</Button>
+                    <Button variant="outline-secondary"><Link to="/admin/product/deposit" style={{color:'black'}}>상품목록</Link></Button>
                     </Stack>
                 </Form>
             </Container>   

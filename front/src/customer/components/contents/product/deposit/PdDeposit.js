@@ -4,9 +4,18 @@ import React,{useState,useEffect} from "react";
 import {Form, Col, Row, Button, InputGroup, ListGroup, Stack } from 'react-bootstrap';
 import { useNavigate,Link } from "react-router-dom";
 import PdDepositService from "./PdDepositService";
+import SearchItem from "./SearchItem";
 
 
 function PdDeposit () {
+    const [searchItem,setSearchItem]=useState('');
+    const [searchVisible,setSearchVisible]=useState(false);
+
+    const searchPd=()=>{
+        console.log("검색 누름!!!");
+        setSearchVisible(!searchVisible);
+    }
+
     const style = {
         color: "green",
     }
@@ -49,15 +58,17 @@ function PdDeposit () {
                     <Form.Control
                     placeholder="찾으시는 예금상품명을 입력하세요."
                     aria-label="Recipient's username"
-                    aria-describedby="basic-addon2"
+                    aria-describedby="basic-addon2" name="searchItem" value={searchItem}
+                    onChange={(e)=>setSearchItem(e.target.value)}
                     />
-                    <Button variant="outline-secondary" id="button-addon2">
+                    <Button variant="outline-secondary" onClick={searchPd}>
                     검색
                     </Button>
                 </InputGroup>
             </Col>
             </Form.Group>
         </Form>
+        {searchVisible && <SearchItem inputs={searchItem}/>}
         
         <br/>
         <br/>

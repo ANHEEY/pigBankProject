@@ -8,9 +8,7 @@ import axios from 'axios';  // npm install -f axios@^1.3.5
 // - npm install -f axios@^1.3.5
 
 const MEMBER_API_BASE_URL = "http://localhost:8081/deposit";
-const DEPOSIT_URL = "http://localhost:8081/";
-
-
+const DEPOSIT_URL = "http://localhost:8081";
 
 class PdDepositService {
     fetchMembers() {
@@ -21,13 +19,32 @@ class PdDepositService {
     //고객 예금 상품 리스트
     pdDepositList(){
       console.log('pdDepositList 호출!')
-      return axios.get(DEPOSIT_URL+"pdDepositList");
+      return axios.get(DEPOSIT_URL+"/pdDepositList");
+    }
+
+    //고객 예금 상품 검색 
+    depositSearch(dpdName){
+      console.log(dpdName);
+      console.log('depositSearch 호출!')
+      return axios.get(DEPOSIT_URL+"/depositSearch/"+dpdName);
     }
 
     //고객 예금 상품 상세페이지
     pdDepositDetailInfo(dpdName){
       console.log('pdDepositDetailInfo 호출!')
-      return axios.get(DEPOSIT_URL+"pdDepositDetailInfo/"+dpdName);
+      return axios.get(DEPOSIT_URL+"/pdDepositDetailInfo/"+dpdName);
+    }
+
+    //고객 예금 가입시 계좌번호 불러오기
+    cusAccountList(id){
+      console.log('cusAccountList() 호출!');
+      return axios.get(DEPOSIT_URL+"/cusAccountList/"+id);
+    }
+
+    //고객 예금 가입
+    cusDepositOpen(cusDepositOpenInfo){
+      console.log('cusDepositOpen() 호출!');
+      return axios.post(DEPOSIT_URL+"/cusDepositOpen",cusDepositOpenInfo);
     }
   }
 

@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.AssetManagementDTO;
 import com.pigbank.project.dto.CustomerDTO;
+import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
 
 @Mapper
@@ -13,6 +15,9 @@ public interface CustomerMapper {
 
 	//회원가입
    public void insertCustomer(CustomerDTO customerDTO);
+   
+   //아이디 중복 체크
+   public int duplicateId(String id);
    
    //
    public CustomerDTO loginCustomer(String id);
@@ -34,6 +39,8 @@ public interface CustomerMapper {
    //회원 탈퇴 신청
    public void cusDelete(String id);
    
+   //-----------------------------------------------------------------------
+   
    //관리자 예금 상품 등록
    public void depositPdSave(DepositProductDTO depositProductDTO);
    
@@ -54,8 +61,23 @@ public interface CustomerMapper {
    //고객 예금 상품 리스트
    public List<DepositProductDTO> pdDepositList();
    
+   //고객 예금 검색 리스트
+   public List<DepositProductDTO> depositSearch(String dpdName);
+   
    //고객 예금 상품 상세페이지
    public DepositProductDTO pdDepositDetailInfo(String dpdName);
+   
+   //고객 예금 상품 가입시 계좌번호 불러오기
+   public List<AccountDTO> cusAccountList(String id);
+   
+   //고객 예금 가입 - 전체 계좌 개설
+   public void cusDepositOpenAll(DepositAccountDTO depositAccountDTO);
+   
+   //고객 예금 가입 - 예금 계좌 개설
+   public void cusDepositOpen(DepositAccountDTO depositAccountDTO);
+   
+   //고객 예금 가입 - 입출금 통장에서 인출
+   public void cusDepositOpenWithdraw(DepositAccountDTO depositAccountDTO);
    
    //---------------------------------------------------------------------
 

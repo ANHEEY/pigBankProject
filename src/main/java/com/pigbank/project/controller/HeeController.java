@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,21 +25,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pigbank.project.config.UserAuthProvider;
+import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.AssetManagementDTO;
 import com.pigbank.project.dto.CredentialsDTO;
 import com.pigbank.project.dto.CustomerDTO;
+import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
 import com.pigbank.project.service.CustomerServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-//@CrossOrigin(origins="**", maxAge=3600)//, exposedHeaders = "Authorization"
+@CrossOrigin(origins="**", maxAge=3600)
 @RestController
-//@RequestMapping(value="/api/p1")
 public class HeeController {
 
    private static final Logger logger = LoggerFactory.getLogger(HeeController.class);
@@ -47,9 +50,6 @@ public class HeeController {
    private CustomerServiceImpl service;
    
    private final UserAuthProvider userAuthProvider;
-   
-   //@Autowired
-   //private JwtAuthenticationFilter jwtAuthenticationFilter;
    
    //고객 회원가입
    @PostMapping(value="/customerJoin")
@@ -81,20 +81,15 @@ public class HeeController {
       return new ResponseEntity<>(customerDTO, headers, HttpStatus.OK);
    }
    
-//   @RequestMapping(value="/admin/login")
-//   public String adminLogin() throws ServletException, IOException{
-//      logger.info("url - adminLogin");
-//      
-//      return "/admin/*";
-//   }
-//   
-//   @RequestMapping(value="/customer/login")
-//   public String customerLogin() throws ServletException, IOException{
-//      logger.info("url - customerLogin");
-//      
-//      return "/customer/*";
-//   }
-
+   //아이디 중복 체크
+   @GetMapping(value="/duplicateId/{id}")
+   public int duplicateId(@PathVariable String id) 
+		   throws ServletException, IOException {
+	   logger.info("url - duplicateId");
+	   
+	   return service.duplicateIdAction(id);
+   }
+   
    //고객 회원수정 및 탈퇴를 위한 본인 인증
    @PostMapping(value="/certification")
    public int cusCertification(@RequestBody CustomerDTO customerDTO) throws ServletException, IOException {
@@ -199,6 +194,15 @@ public class HeeController {
 	   return service.pdDepositListAction();
    }
    
+   //고객 예금 검색 리스트
+   @GetMapping(value="/depositSearch/{dpdName}")
+   public List<DepositProductDTO> depositSearch(@PathVariable String dpdName)
+	   	throws ServletException, IOException {
+	   logger.info("url - depositSearch");
+		   
+	   return service.depositSearchAction(dpdName);
+   }
+   
    //고객 예금 상품 상세페이지
    @GetMapping(value="/pdDepositDetailInfo/{dpdName}")
    public DepositProductDTO pdDepositDetailInfo(@PathVariable String dpdName)
@@ -210,9 +214,26 @@ public class HeeController {
 	   return service.pdDepositDetailInfoAction(dpdName);
    }
    
-   //고객 예금 가입페이지
+   //고객 예금 가입시 계좌번호 불러오기
+   @GetMapping(value="/cusAccountList/{id}")
+   public List<AccountDTO> cusAccountList(@PathVariable String id)
+   		throws ServletException, IOException {
+	   logger.info("url - cusAccountList");
+	   
+	   return service.cusAccountListAction(id);
+   }
    
    //고객 예금 가입
+   @PostMapping(value="/cusDepositOpen")
+   public void cusDepositOpen(@RequestBody DepositAccountDTO depositAccountDTO)
+   		throws ServletException, IOException {
+	   logger.info("url - cusDepositOpen");
+	   
+	   System.out.println("depositAccountDTO : "+depositAccountDTO);
+	   
+	   service.cusDepositOpenAllAction(depositAccountDTO);
+
+   }
    
    //--------------------------------------------------------------------
    

@@ -3,15 +3,20 @@ package com.pigbank.project.service;
 import java.util.List;
 import java.util.Map;
 
+import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.AssetManagementDTO;
 import com.pigbank.project.dto.CredentialsDTO;
 import com.pigbank.project.dto.CustomerDTO;
+import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
 
 public interface CustomerService {
 
 	//회원가입
 	public void insertCustomerAction(CustomerDTO customerDTO);
+	
+	//아이디 중복 체크
+	public int duplicateIdAction(String id);
    
 	//회원 로그인
 	public CustomerDTO loginCustomerAction(CustomerDTO customerDTO);
@@ -33,6 +38,8 @@ public interface CustomerService {
 	//회원 탈퇴 신청
   	public void cusDeleteAction(String id);
    
+  	//-----------------------------------------------------------------------------------------
+  	
   	//관리자 예금 상품 등록
   	public void depositPdSaveAction(DepositProductDTO depositProductDTO);
    
@@ -48,12 +55,26 @@ public interface CustomerService {
   	//관리자 예금 상품 삭제
   	public void depositPdDeleteAction(String dpdName);
    
+  	//-------------------------------------------------------------------------------------------
+  	
   	//고객 예금 상품 리스트
-  	public DepositProductDTO pdDepositDetailInfoAction(String dpdName);
+  	public List<DepositProductDTO> pdDepositListAction();
+  	
+  	//고객 예금 검색 리스트
+  	public List<DepositProductDTO> depositSearchAction(String dpdName);
    
   	//고객 예금 상품 상세페이지
-  	public List<DepositProductDTO> pdDepositListAction();
+  	public DepositProductDTO pdDepositDetailInfoAction(String dpdName);
    
+  	//고객 예금 상품 가입시 계좌번호 불러오기
+  	public List<AccountDTO> cusAccountListAction(String id);
+  	
+  	//고객 예금 가입
+  	public void cusDepositOpenAllAction(DepositAccountDTO depositAccountDTO);
+ 
+  	
+  	//---------------------------------------------------------------------------------------------
+  	
   	//고객 자산 관리 페이지
   	public List<AssetManagementDTO> assetsManagementAction(String id);
    

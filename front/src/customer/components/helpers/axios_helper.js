@@ -25,6 +25,7 @@ export const getId=()=>{
 
 export const request = (method, url, data) => {
 
+    // 주석처리하고 Login.js에서 구현
     //let headers = {};
 
     // if(getAuthToken() !== null && getAuthToken !=="null") {

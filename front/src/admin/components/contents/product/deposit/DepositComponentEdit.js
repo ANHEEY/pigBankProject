@@ -66,6 +66,11 @@ function DepositComponentEdit(){
 
         
     }
+
+    const cxl = ()=>{
+        navigate('/admin/product/deposit');
+    }
+
         return(
             <div className="component-div">
                 <div className="admin-title">
@@ -126,7 +131,7 @@ function DepositComponentEdit(){
 
                     <Stack direction="horizontal" gap={2} className="col-md-2 mx-auto">
                     <Button variant="success" onClick={updateDepositPd}>상품수정</Button>
-                    <Button variant="outline-secondary"><Link to="/admin/product/deposit">취소</Link></Button>
+                    <Button variant="outline-secondary" onClick={cxl}>취소</Button>
                     </Stack>
                 </Form>
             </Container>   

@@ -16,12 +16,17 @@ public class DepositAccountDTO {
 	@Id
 	private int dNum;
 	private long acNumber;
-	private String dPdName;
-	private int dAmount;
-	private int dExpAmount;
-	private Date dEndDate;
-	private Date dJoinDate;
-	private long dDeAccount;
+	private String dpdName;
+	private long damount;
+	private long dexpAmount;
+	private Date dendDate;
+	private Date djoinDate;
+	private long ddeAccount;
 	
-
+	//예금 계좌 개설을 위한 변수
+	private String id;
+	private String acPwd;
+	private int dperiod;
+	private long withdrawAcNumber;
+	
 }

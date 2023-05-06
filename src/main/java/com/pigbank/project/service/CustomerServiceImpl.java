@@ -1,8 +1,13 @@
 package com.pigbank.project.service;
 
 import java.nio.CharBuffer;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,9 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.pigbank.project.dao.CustomerMapper;
+import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.AssetManagementDTO;
 import com.pigbank.project.dto.CredentialsDTO;
 import com.pigbank.project.dto.CustomerDTO;
+import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
 import com.pigbank.project.exception.AppException;
 
@@ -39,6 +46,14 @@ public class CustomerServiceImpl implements CustomerService{
       
       dao.insertCustomer(customerDTO);
    }
+   
+   //아이디 중복 확인
+	@Override
+	public int duplicateIdAction(String id) {
+		System.out.println("service - duplicateIdAction");
+		
+		return dao.duplicateId(id);
+	}
 
    //회원 로그인
    @Override
@@ -96,6 +111,11 @@ public class CustomerServiceImpl implements CustomerService{
 	@Override
 	public void cusUpdateAction(CustomerDTO customerDTO) {
 		System.out.println("service - cusUpdateAction");
+		
+		System.out.println("customerDTO : "+customerDTO);
+	    String encryptPwd = passwordEncoder.encode(customerDTO.getPwd());
+	    System.out.println("encryptPwd : "+encryptPwd);
+	    customerDTO.setPwd(encryptPwd);
 		
 		dao.cusUpdate(customerDTO);
 	}
@@ -159,12 +179,51 @@ public class CustomerServiceImpl implements CustomerService{
 		return dao.pdDepositList();
 	}
 	
+	//고객 예금 검색 리스트
+	@Override
+	public List<DepositProductDTO> depositSearchAction(String dpdName) {
+		System.out.println("service - depositSearchAction");
+		
+		return dao.depositSearch(dpdName);
+	}
+	
 	//고객 예금 상품 상세페이지
 	@Override
 	public DepositProductDTO pdDepositDetailInfoAction(String dpdName) {
 		System.out.println("service - pdDepositDetailInfoAction");
 		
 		return dao.pdDepositDetailInfo(dpdName);
+	}
+	
+	//고객 예금 상품 가입시 계좌 번호 불러오기
+	@Override
+	public List<AccountDTO> cusAccountListAction(String id) {
+		System.out.println("service - cusAccountListAction");
+		
+		return dao.cusAccountList(id);
+	}
+	
+	//고객 예금 가입 - 전체 계좌 개설
+	@Override
+	public void cusDepositOpenAllAction(DepositAccountDTO depositAccountDTO) {
+		System.out.println("service - cusDepositOpenAllAction");
+		
+        Random rand = new Random();
+        int n = rand.nextInt(10000000);
+        String randNum = String.format("%07d", n);
+		String acNumber ="210"+randNum;
+		System.out.println("acNumber : "+Integer.parseInt(acNumber));
+		
+		depositAccountDTO.setAcNumber(Integer.parseInt(acNumber));
+		
+		LocalDate today = LocalDate.now();		
+		int dPeriod = depositAccountDTO.getDperiod();
+		LocalDate addedDate = today.plus(dPeriod, ChronoUnit.MONTHS);
+		depositAccountDTO.setDendDate(java.sql.Date.valueOf(addedDate));
+				
+		dao.cusDepositOpenAll(depositAccountDTO);
+		dao.cusDepositOpen(depositAccountDTO);
+		dao.cusDepositOpenWithdraw(depositAccountDTO);
 	}
 
 	//--------------------------------------------------------------------
@@ -179,9 +238,6 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		return null;
 	}
-
-
-
 
 
 }
