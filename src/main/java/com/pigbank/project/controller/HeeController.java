@@ -239,11 +239,20 @@ public class HeeController {
    
    //자산관리 페이지
    @GetMapping(value="/assetsManagement/{id}")
-   public List<AssetManagementDTO> assetsManagement(@PathVariable String id)
+   public String assetsManagement(@PathVariable String id)
 		   throws ServletException, IOException {
-	   logger.info("url - assetsManagement");
+	   logger.info("url - assetsManagement1");
 	   
-	   return service.assetsManagementAction(id);
+	   return service.assetsManagementAction1(id);
    }
+   
+//   @GetMapping(value="/assetsManagement/{id}")
+//   public List<AssetManagementDTO> assetsManagement(@PathVariable String id)
+//		   throws ServletException, IOException {
+//	   logger.info("url - assetsManagement1");
+//	   
+//	   return service.assetsManagementAction1(id);
+//   }
+   
    
 }

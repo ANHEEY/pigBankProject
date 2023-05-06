@@ -228,14 +228,40 @@ public class CustomerServiceImpl implements CustomerService{
 
 	//--------------------------------------------------------------------
 	
-	//고객 자산 관리 페이지
+	//고객 자산 관리 페이지1
 	@Override
-	public List<AssetManagementDTO> assetsManagementAction(String id) {
+	public String assetsManagementAction1(String id) {
 		System.out.println("service - assetsManagementAction");
 		
-		List<AssetManagementDTO> list1 = dao.assetsManagement1(id);
-		List<AssetManagementDTO> list2 = dao.assetsManagement2(id);
+		List<AssetManagementDTO> list = dao.assetsManagement1(id);
+
+		System.out.println("list: "+list);
 		
+		StringBuilder resultBuilder = new StringBuilder();
+		resultBuilder.append("[");
+		for (int i = 0; i < list.size(); i++) {
+		    String acType = list.get(i).getAcType();
+		    long acBalance = list.get(i).getAcBalance();
+		    resultBuilder.append("['").append(acType).append("',").append(acBalance).append("]");
+		    if (i < list.size() - 1) {
+		        resultBuilder.append(",");
+		    }
+		}
+		resultBuilder.append("]");
+
+		String result = resultBuilder.toString();
+	    
+		System.out.println("result : "+result);
+		
+		return result;
+	}
+
+	//고객 자산 관리 페이지2
+	@Override
+	public List<AssetManagementDTO> assetsManagementAction2(String id) {
+		System.out.println("service - assetsManagementAction");
+
+		List<AssetManagementDTO> list2 = dao.assetsManagement2(id);
 		return null;
 	}
 

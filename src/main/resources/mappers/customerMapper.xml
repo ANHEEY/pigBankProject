@@ -133,7 +133,7 @@
 	
 	<!-- 고객 자산 관리(예금, 적금, 입출금) -->
 	<select id="assetsManagement1" parameterType="String" resultType="com.pigbank.project.dto.AssetManagementDTO">
-		SELECT sum(ACBALANCE),actype FROM account_tbl WHERE id=#{id} GROUP BY actype
+		SELECT sum(ACBALANCE) as acBalance,acType FROM account_tbl WHERE id=#{id} GROUP BY actype
 	</select>
 	
 	<!-- 고객 자산 관리(대출) -->

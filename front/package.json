@@ -29,6 +29,7 @@
     "react-datepicker": "^4.11.0",
     "react-daum-postcode": "^3.1.1",
     "react-dom": "^18.2.0",
+    "react-google-charts": "^4.0.0",
     "react-icons": "^4.8.0",
     "react-input-checkbox": "^1.1.0",
     "react-light-accordion": "^0.1.4",

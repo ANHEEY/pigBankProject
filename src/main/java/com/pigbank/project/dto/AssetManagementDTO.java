@@ -9,6 +9,6 @@ public class AssetManagementDTO {
 
 	private String id;
 	private int lPrincipal;
-	private int acBalance;
+	private long acBalance;
 	private String acType;
 }

@@ -41,6 +41,11 @@ class CustomerService {
       console.log("회원 탈퇴!!");
       return axios.put(URL+"/cusDelete/"+id);
     }
+
+    assetsManagement(id){
+      console.log("회원 자산 관리!!");
+      return axios.get(URL+"/assetsManagement/"+id);
+    }
     
 }
 export default new CustomerService();

@@ -74,7 +74,7 @@ function PdDeposit () {
         <br/>
         <br/>
         <br/>
-        {depositProducts.map(product=>
+        {!searchVisible && depositProducts.map(product=>
             
             <ListGroup variant="flush" key={product.dpdName}>
                 <ListGroup.Item style={{borderTop:'1px solid gray'}}>

@@ -76,8 +76,9 @@ public interface CustomerService {
   	//---------------------------------------------------------------------------------------------
   	
   	//고객 자산 관리 페이지
-  	public List<AssetManagementDTO> assetsManagementAction(String id);
+  	public String assetsManagementAction1(String id);
    
-
+  	//고객 자산 관리 페이지2
+  	public List<AssetManagementDTO> assetsManagementAction2(String id);
    
 }

@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import React,{useState,useEffect} from "react";
-import {Form, Col, Row, Button, InputGroup, ListGroup, Stack } from 'react-bootstrap';
+import {Form, Col, Row, Button, InputGroup, ListGroup, Stack,Card,Container } from 'react-bootstrap';
 import { useNavigate,Link } from "react-router-dom";
 import PdDepositService from "./PdDepositService";
 
@@ -56,10 +56,25 @@ export default function SearchItem(props){
                     </div>
                     </Stack>
                 </Row>
-
                 </ListGroup.Item>
             </ListGroup>
             )}
+
+            
+            <Container style={{ display: 'flex' }}>            
+            {depositSearchLists.map(product=>
+                <Card style={{ width: '18rem', marginRight: '10px' }}>{/* flex: 1, */}
+                    <Card.Body  key={product.dpdName}>
+                        <Card.Title as="h1">{product.dpdName}</Card.Title>
+                        <Card.Subtitle className="mb-2 text-muted">금리 : {product.drate}%</Card.Subtitle>
+                        <Card.Text>
+                            {product.dcontent}
+                        </Card.Text>
+                        <Button variant="success" onClick={()=>dPdDetail(product.dpdName)}>신청하기</Button>
+                    </Card.Body>
+                </Card>
+            )}
+             </Container>
     </div>
     );
 }
