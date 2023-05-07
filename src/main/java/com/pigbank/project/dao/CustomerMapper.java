@@ -19,16 +19,18 @@ public interface CustomerMapper {
    //아이디 중복 체크
    public int duplicateId(String id);
    
-   //
-   public CustomerDTO loginCustomer(String id);
+   //이메일 인증
+   public int selectKey(String key);
    
+   //이메일 인증 시 등급 변경
+   public void updateGrade(String key);
+      
    //회원 인증
    public CustomerDTO cusById(String id);
    
    //회원 수정, 탈퇴인증
    public String passwordChk(String id);
    
-   //public int cusCertification(CustomerDTO customerDTO);
    
    //회원 정보 불러오기
    public CustomerDTO customerDetail(String id);
@@ -79,6 +81,20 @@ public interface CustomerMapper {
    //고객 예금 가입 - 입출금 통장에서 인출
    public void cusDepositOpenWithdraw(DepositAccountDTO depositAccountDTO);
    
+   //---------------------------------------------------------------------
+
+   //고객 예금 해지 예상 조회 
+   public DepositAccountDTO cusDepositCxlExpInfo(int dNum);
+   
+   //고객 예금 해지 예상 조회 - 중도 해지시 중도해지 금리 불러오기
+   public double depositMidCxlRate(int dNum);
+
+   //고객 예금 해지 신청
+   public void cusDepositCxlReg(DepositAccountDTO depositAccountDTO);
+   
+   //고객 예금 해지 신청 - 만기시 입금계좌로 입금
+   public void cusDepositCxlPut(DepositAccountDTO depositAccountDTO);
+ 	
    //---------------------------------------------------------------------
 
    //고객 자산 관리 페이지

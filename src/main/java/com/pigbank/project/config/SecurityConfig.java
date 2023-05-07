@@ -37,8 +37,9 @@ public class SecurityConfig{
 			.authorizeHttpRequests((requests)->requests
 					.antMatchers(HttpMethod.POST,"/login","/customerJoin").permitAll()
 					.antMatchers(HttpMethod.GET,"/members","/deposit","/loan","/duplicateId/{id}").permitAll()
+					.antMatchers("/emailChk").permitAll()
 					.anyRequest().authenticated()
-			);
+			);    
 			
 		return http.build();
 	}

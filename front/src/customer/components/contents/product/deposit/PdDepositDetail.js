@@ -77,7 +77,7 @@ function PdDepositDetail() {
           </Row>
         <br/><br/>
         <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto">
-          <Button className="button" size="lg" onClick={()=>pdJoin(depositProduct.dpdName)}>상품가입</Button>
+          <Button className="button" size="lg" onClick={()=>pdJoin(depositProduct.dpdName)} style={{background:"green", color:"white"}}>상품가입</Button>
           <Button variant="outline-dark" size="lg" onClick={move}>상품목록</Button>
         </Stack>
         <br/>

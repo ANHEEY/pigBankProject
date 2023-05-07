@@ -30,7 +30,4 @@ public class CustomerDTO {
 	private String enabled;
     private String token;
 
-	
-	
-
 }

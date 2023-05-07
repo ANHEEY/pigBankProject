@@ -9,18 +9,23 @@
 	<!-- 회원가입 -->
    <insert id="insertCustomer" parameterType="com.pigbank.project.dto.CustomerDTO">
       INSERT INTO customer(id, pwd, name, email, address, hp, birthday, key)
-      VALUES(#{id},#{pwd},#{name},#{email},#{address},#{hp},#{birthday},5555)
+      VALUES(#{id},#{pwd},#{name},#{email},#{address},#{hp},#{birthday},#{key})
    </insert>
    
    <!-- 아이디 중복 체크 -->
    <select id="duplicateId" parameterType="String" resultType="int">
    		SELECT COUNT(*) FROM customer WHERE id=#{id}
    </select>
-
-	<!--  -->
-   <select id="loginCustomer" parameterType="String" resultType="com.pigbank.project.dto.CustomerDTO">
-      SELECT * FROM customer WHERE id=#{id}
+   
+   <!-- 로그인 전 이메일 인증 -->
+   <select id="selectKey" parameterType="String" resultType="int">
+   		SELECT COUNT(*) FROM customer WHERE key=#{key}
    </select>
+   
+   <!-- 등급변경 -->
+   <update id="updateGrade" parameterType="String">
+   		UPDATE customer SET enabled=1 WHERE key=#{key}
+   </update>
    
    <!-- 회원 인증 -->
    <select id="cusById" parameterType="String" resultType="com.pigbank.project.dto.CustomerDTO">
@@ -31,10 +36,6 @@
    <select id="passwordChk" parameterType="String" resultType="String">
    		SELECT pwd FROM customer WHERE id=#{id}
    </select>
-   
-<!--    <select id="cusCertification" parameterType="com.pigbank.project.dto.CustomerDTO" resultType="int">
-   		SELECT COUNT(*) FROM customer WHERE id=#{id} AND pwd=#{pwd}
-   </select> -->
    
    <!-- 회원 정보 불러오기 -->
    <select id="customerDetail" parameterType="String" resultType="com.pigbank.project.dto.CustomerDTO">
@@ -129,6 +130,35 @@
 		 WHERE acNumber=#{withdrawAcNumber}
 	</update>
 	
+	<!-- /////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+	<!-- 고객 예금 해지 예상 조회 -->
+   	<select id="cusDepositCxlExpInfo" parameterType="int" resultType="com.pigbank.project.dto.DepositAccountDTO">
+   		SELECT * FROM d_account_tbl WHERE dNum=#{dNum}
+   	</select>
+   	
+   	<!-- 고객 예금 해지 예상 조회 - 중도 해지시 중도 해지 금리 받아오기 -->
+	<select id="depositMidCxlRate" parameterType="int" resultType="double">
+		SELECT dp.DCXLRATE 
+  		  FROM D_ACCOUNT_TBL d, DEPOSIT_PRODUCT dp 
+         WHERE d.DPDNAME = dp.DPDNAME 
+           AND d.dNum=#{dNum} 
+	</select>
+	
+   	<!-- 고객 예금 해지 신청 -->
+   	<update id="cusDepositCxlReg" parameterType="com.pigbank.project.dto.DepositAccountDTO">
+   		UPDATE account_tbl
+   		   SET acState='DELETE'
+   		 WHERE acNumber=#{acNumber}
+   	</update>
+   	
+   	<!-- 고객 예금 해지 신청 후 만기시 입금계좌로 입금 -->
+   	<update id="cusDepositCxlPut" parameterType="com.pigbank.project.dto.DepositAccountDTO">
+   		UPDATE account_tbl
+   		   SET acBalance=acBalance+#{dexpAmount}
+   		 WHERE acNumber=#{ddeAccount}
+   	</update>
+
 	<!-- /////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	
 	<!-- 고객 자산 관리(예금, 적금, 입출금) -->

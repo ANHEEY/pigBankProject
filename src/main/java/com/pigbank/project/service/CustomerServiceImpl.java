@@ -2,17 +2,22 @@ package com.pigbank.project.service;
 
 import java.nio.CharBuffer;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
+
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import com.pigbank.project.dao.CustomerMapper;
 import com.pigbank.project.dto.AccountDTO;
@@ -22,6 +27,7 @@ import com.pigbank.project.dto.CustomerDTO;
 import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
 import com.pigbank.project.exception.AppException;
+import com.pigbank.project.util.EmailChkHandler;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,16 +41,29 @@ public class CustomerServiceImpl implements CustomerService{
    @Autowired
    private CustomerMapper dao;
    
+   @Autowired
+   private JavaMailSender javaMailSender;
+   
    //회원가입
    @Override
-   public void insertCustomerAction(CustomerDTO customerDTO) {
+   public String insertCustomerAction(CustomerDTO customerDTO) {
       System.out.println("service - insertCustomer");
+      
       System.out.println("customerDTO : "+customerDTO);
+
+      //패스워드 암호화
       String encryptPwd = passwordEncoder.encode(customerDTO.getPwd());
-      System.out.println("encryptPwd : "+encryptPwd);
       customerDTO.setPwd(encryptPwd);
       
+      System.out.println("encryptPwd : "+encryptPwd);
+      
+      //이메일인증키 추가
+      String key = EmailChkHandler.getKey();
+      customerDTO.setKey(key);
+      
       dao.insertCustomer(customerDTO);
+      
+      return key;
    }
    
    //아이디 중복 확인
@@ -54,6 +73,43 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		return dao.duplicateId(id);
 	}
+	
+	//가입 성공시 이메일 인증을 위한 이메일 전송
+	@Override
+	public void sendEmail(String email, String key){
+		System.out.println("service - sendEmail");
+		
+		try {
+			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+			helper.setTo("ahnhyahnhy@naver.com");
+			helper.setFrom("ahnhyahnhy@naver.com");
+			helper.setSubject("회원가입 인증 메일");
+			helper.setText("회원가입을 축하드립니다. 링크를 눌러 인증을 완료하세요."
+			        + "<a href='http://localhost:8081/emailChk?key=" + key + "'>링크</a>", true);
+			
+			javaMailSender.send(mimeMessage);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}   
+		
+	}
+
+
+	//이메일 인증 후 권한(enabled) update
+	@Override
+	public void emailChkAction(HttpServletRequest req, Model model) {
+		 System.out.println("service - emailChkAction");
+		 
+		 String key = req.getParameter("key");
+		 System.out.println("key : "+key);
+		 int selectCnt = dao.selectKey(key);
+		 
+		 if(selectCnt == 1) {
+			 dao.updateGrade(key);
+		 }
+	}
+
 
    //회원 로그인
    @Override
@@ -203,7 +259,7 @@ public class CustomerServiceImpl implements CustomerService{
 		return dao.cusAccountList(id);
 	}
 	
-	//고객 예금 가입 - 전체 계좌 개설
+	//고객 예금 가입 계좌 개설
 	@Override
 	public void cusDepositOpenAllAction(DepositAccountDTO depositAccountDTO) {
 		System.out.println("service - cusDepositOpenAllAction");
@@ -226,6 +282,50 @@ public class CustomerServiceImpl implements CustomerService{
 		dao.cusDepositOpenWithdraw(depositAccountDTO);
 	}
 
+	//--------------------------------------------------------------------
+	
+	//고객 예금 해지 예상 조회
+	@Override
+	public DepositAccountDTO cusDepositCxlExpInfoAction(int dNum) {
+		System.out.println("service - cusDepositCxlExpInfoAction");
+
+		//예금이 중도 해지인지 만기 해지인지 파악
+		DepositAccountDTO depositAccountDTO =  dao.cusDepositCxlExpInfo(dNum);
+		
+		System.out.println("depositAccountDTO.getDendDate() : "+depositAccountDTO.getDendDate());
+		
+		LocalDate currentDate = LocalDate.now();
+		LocalDate joinDate = depositAccountDTO.getDjoinDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		
+		// 만기 해지인 경우
+		if(depositAccountDTO.getDendDate().before
+				(Date.from(currentDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()))) {
+			
+			return depositAccountDTO;
+		}
+		else {	// 중도 해지인 경우
+			// 중도 해지 금리 받아오기
+			double midCxlRate = dao.depositMidCxlRate(dNum);
+			double cxlRate = 
+					(midCxlRate/100)*depositAccountDTO.getDamount()*
+					ChronoUnit.MONTHS.between(joinDate, currentDate)/12;
+			long cxlAmount = depositAccountDTO.getDamount()+(long)cxlRate;	
+			depositAccountDTO.setDexpAmount(cxlAmount);
+			
+			return depositAccountDTO;
+		}
+	}
+
+	//고객 예금 해지 신청
+	@Override
+	public void cusDepositCxlRegAction(DepositAccountDTO depositAccountDTO) {
+		System.out.println("service - cusDepositCxlRegAction");
+
+		dao.cusDepositCxlReg(depositAccountDTO);
+		dao.cusDepositCxlPut(depositAccountDTO);
+		
+	}
+	
 	//--------------------------------------------------------------------
 	
 	//고객 자산 관리 페이지1
@@ -264,6 +364,5 @@ public class CustomerServiceImpl implements CustomerService{
 		List<AssetManagementDTO> list2 = dao.assetsManagement2(id);
 		return null;
 	}
-
 
 }

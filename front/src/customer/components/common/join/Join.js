@@ -23,6 +23,8 @@ function Join(){
         birthday:""
     });
 
+    const [duplication,setDuplication] = useState(false);
+
     const setDomain = (e)=>{
         setCustomer({ ...customer, email2: e.target.value });
     }
@@ -70,6 +72,7 @@ function Join(){
                     setId("");
                 }else{
                     alert('사용가능한 아이디입니다!');
+                    setDuplication(true);
                 }
             })
             .catch(err => {
@@ -89,7 +92,11 @@ function Join(){
             hp:customer.hp,
             birthday:customer.birthday
         }
-
+        console.log(duplication);
+        if(!duplication){
+            alert('아이디 중복확인 해주세요!');
+            return false;
+        }
 
         if(!customerInfo.id){
             alert("아이디를 입력하세요!")
@@ -159,6 +166,7 @@ function Join(){
         CustomerService.customerJoin(customerInfo)
             .then(res=> {
                 console.log(customerInfo);
+                alert('회원가입이 완료되었습니다! 이메일 인증 후 이용가능합니다.');
                 navigate('/customer/*');
             })
         .catch(err => {

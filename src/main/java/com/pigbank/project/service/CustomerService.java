@@ -3,6 +3,10 @@ package com.pigbank.project.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.ui.Model;
+
 import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.AssetManagementDTO;
 import com.pigbank.project.dto.CredentialsDTO;
@@ -13,11 +17,17 @@ import com.pigbank.project.dto.DepositProductDTO;
 public interface CustomerService {
 
 	//회원가입
-	public void insertCustomerAction(CustomerDTO customerDTO);
+	public String insertCustomerAction(CustomerDTO customerDTO);
 	
 	//아이디 중복 체크
 	public int duplicateIdAction(String id);
-   
+	
+	//가입 성공시 이메일 인증을 위한 이메일 전송
+	public void sendEmail(String email, String key);
+	
+	//이메일 인증 후 권한(enabled) update   
+	public void emailChkAction(HttpServletRequest req, Model model);
+	
 	//회원 로그인
 	public CustomerDTO loginCustomerAction(CustomerDTO customerDTO);
 	
@@ -72,6 +82,14 @@ public interface CustomerService {
   	//고객 예금 가입
   	public void cusDepositOpenAllAction(DepositAccountDTO depositAccountDTO);
  
+  	//---------------------------------------------------------------------------------------------
+
+  	//고객 예금 해지 예상 조회
+  	public DepositAccountDTO cusDepositCxlExpInfoAction(int dNum);
+  	
+  	//고객 예금 해지 신청
+  	public void cusDepositCxlRegAction(DepositAccountDTO depositAccountDTO);
+  	
   	
   	//---------------------------------------------------------------------------------------------
   	

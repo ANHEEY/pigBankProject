@@ -40,7 +40,7 @@ import com.pigbank.project.service.CustomerServiceImpl;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@CrossOrigin(origins="**", maxAge=3600)
+//@CrossOrigin(origins="**", maxAge=3600)
 @RestController
 public class HeeController {
 
@@ -56,9 +56,23 @@ public class HeeController {
    public void customerJoin (@RequestBody CustomerDTO customerDTO)
          throws ServletException,IOException{
       logger.info("url - customerJoin");
+      
       System.out.println("customerDTO : "+customerDTO);
-      service.insertCustomerAction(customerDTO);
+      
+      //회원가입
+      String key = service.insertCustomerAction(customerDTO);
       System.out.println("customerJoin 성공");
+      
+      //회원가입 성공시 이메일 전송
+      service.sendEmail(customerDTO.getEmail(), key);
+   }
+   
+   //가입성공시 이메일인증을 위해 이메일 인증 후 enabled 권한을 1로 update
+   @RequestMapping(value="/emailChk")
+   public void emailChk(HttpServletRequest req,  Model model) {
+	   logger.info("url - login");
+	   
+	   service.emailChkAction(req, model);
    }
    
    //로그인
@@ -237,6 +251,29 @@ public class HeeController {
    
    //--------------------------------------------------------------------
    
+   //예금 해지 예상 조회
+   public DepositAccountDTO cusDepositCxlExpInfo(int dNum)
+   		throws ServletException, IOException {
+	   logger.info("url - cusDepositCxlExpInfo");
+
+	   System.out.println("dNum : "+dNum);
+	   
+	   return service.cusDepositCxlExpInfoAction(dNum);
+   }
+   
+   //예금 해지 신청
+   public void cusDepositCxlReg(@RequestBody DepositAccountDTO depositAccountDTO)
+   		throws ServletException, IOException {
+	   logger.info("url - cusDepositCxlReg");
+	   
+	   System.out.println("depositAccountDTO : "+depositAccountDTO);
+	   
+	   service.cusDepositCxlRegAction(depositAccountDTO);
+	   
+   }
+   
+   //--------------------------------------------------------------------
+   
    //자산관리 페이지
    @GetMapping(value="/assetsManagement/{id}")
    public String assetsManagement(@PathVariable String id)
@@ -245,14 +282,5 @@ public class HeeController {
 	   
 	   return service.assetsManagementAction1(id);
    }
-   
-//   @GetMapping(value="/assetsManagement/{id}")
-//   public List<AssetManagementDTO> assetsManagement(@PathVariable String id)
-//		   throws ServletException, IOException {
-//	   logger.info("url - assetsManagement1");
-//	   
-//	   return service.assetsManagementAction1(id);
-//   }
-   
-   
+      
 }

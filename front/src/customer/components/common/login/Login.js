@@ -53,15 +53,24 @@ function Login() {
                 console.log(res.data.id);
                 console.log(getId());
                 console.log(res.data.authority);
+                console.log(res.data.enabled);
             
                 axios.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`;
 
-                if(res.data.authority === 'ROLE_USER'){
+                if(res.data.enabled === '1'){
+                    if(res.data.authority === 'ROLE_USER'){
+                        navigate('/customer/*');
+                        alert(getId()+'님 환영합니다!');
+                    }else{
+                        navigate('/admin');
+                        alert(getId()+'관리자님 환영합니다:)');
+                    }
+                }
+                else{
+                    alert('이메일 인증 후 로그인 가능합니다!!');
+                    localStorage.clear();
+                    axios.defaults.headers.common['Authorization'] = ``;
                     navigate('/customer/*');
-                    alert(getId()+'님 환영합니다!');
-                }else{
-                    navigate('/admin');
-                    alert(getId()+'관리자님 환영합니다:)');
                 }
 
                 

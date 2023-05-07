@@ -43,45 +43,46 @@ function CertificationPage() {
                 }
    
             })
-        .catch(err => {
-        console.log('customerCertification() 에러!!', err);
-        });
-
-        
+            .catch(err => {
+            console.log('customerCertification() 에러!!', err);
+            });        
     }
 
+    const cxl = ()=>{
+        navigate('/customer/*');
+    }
 
-        return(
-            <Container style={{
-                fontSize : 25,
-                fontWieght : 'bold',
-                padding : 16,
-                width : 800,
-                align:"center",
-            }}><br/><br/>
-                <Typography variant="h2" textAlign="center" color="green">본인인증</Typography><br/><br/>
-                <br/>
-                <Form.Group as={Row} className="mb-3">
-                <Form.Label column sm={3}>비밀번호</Form.Label>
-                <Col sm={8}>
-                <Form.Control
-                    size="lg"
-                    type="password"
-                    name="pwd" 
-                    value={cusInfo.pwd}
-                    onChange={onChange}
-                    placeholder="비밀번호를 입력하세요"
-                />
-                </Col>
-                </Form.Group>
-                <br/><br/>
-                <Stack direction="horizontal" gap={2} className="col-md-5 mx-auto">
-                    <Button variant="success" size="lg" onClick={certification}>회원인증</Button>
-                    <Button variant="outline-success" size="lg">취소</Button>
-                </Stack> 
-            </Container>
+    return(
+        <Container style={{
+            fontSize : 25,
+            fontWieght : 'bold',
+            padding : 16,
+            width : 800,
+            align:"center",
+        }}><br/><br/>
+            <Typography variant="h2" textAlign="center" color="green">본인인증</Typography><br/><br/>
+            <br/>
+            <Form.Group as={Row} className="mb-3">
+            <Form.Label column sm={3}>비밀번호</Form.Label>
+            <Col sm={8}>
+            <Form.Control
+                size="lg"
+                type="password"
+                name="pwd" 
+                value={cusInfo.pwd}
+                onChange={onChange}
+                placeholder="비밀번호를 입력하세요"
+            />
+            </Col>
+            </Form.Group>
+            <br/><br/>
+            <Stack direction="horizontal" gap={2} className="col-md-5 mx-auto">
+                <Button variant="success" size="lg" onClick={certification}>회원인증</Button>
+                <Button variant="outline-success" size="lg" onClick={cxl}>취소</Button>
+            </Stack> 
+        </Container>
 
-        );
+    );
 
 }
 
