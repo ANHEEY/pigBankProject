@@ -20,6 +20,7 @@ function AccountComponent() {
     AllService.fetchAccount()
       .then(res => {
         setMembers1(res.data);
+        console.log(res.data);
       })
       .catch(err => {
         console.log('reloadMemberList() Error!!', err);
@@ -28,6 +29,7 @@ function AccountComponent() {
     AllService.fetchSaving()
       .then(res => {
         setMembers2(res.data);
+        console.log(res.data);
       })
       .catch(err => {
         console.log('reloadMemberList() Error!!', err);
@@ -36,6 +38,7 @@ function AccountComponent() {
     AllService.fetchDeposit()
       .then(res => {
         setMembers3(res.data);
+        console.log(res.data);
       })
       .catch(err => {
         console.log('reloadMemberList() Error!!', err);
@@ -44,6 +47,7 @@ function AccountComponent() {
     AllService.fetchLoan()
       .then(res => {
         setMembers4(res.data);
+        console.log(res.data);
       })
       .catch(err => {
         console.log('reloadMemberList() Error!!', err);

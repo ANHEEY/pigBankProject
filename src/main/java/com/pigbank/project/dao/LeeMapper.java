@@ -48,6 +48,9 @@ public interface LeeMapper {
 	// 자동 이체 해지
 	public void autoTransferCancel(Map<String,Object> map);
 	
+	// 이체내역 조회(id)
+	public List<TransferDTO> transferList(String id);
+	
 	// 자동이체 수정창 한건 조회
 	public AutoTransferDTO selectOne(int aNum);
 	
@@ -60,6 +63,14 @@ public interface LeeMapper {
 	public List<NoticeDTO> noticeList();
 	// 공지사항 상세페이지
 	public NoticeDTO checkonenotice(int nNum);
-	
+	// 공지사항 수정
 	public void changenotice(NoticeDTO dto);
+	// 공지사항 삭제
+	public void deletenotice(int nNum);
+	// 공지사항 추가
+	public void addnotice(NoticeDTO dto);
+	// 공지사항 조회수
+	public void updatecount(int nNum);
+	// 공지사항 고객 상세페이지
+	public NoticeDTO csboardDetail(int nNum);
 }

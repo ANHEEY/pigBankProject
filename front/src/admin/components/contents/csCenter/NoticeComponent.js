@@ -1,19 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { Container, Table, Button } from "react-bootstrap";
+import {Table, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeadset} from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
 import NoticeApiService from "./NoticeApiService";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
+import ReactPaginate from "react-paginate";
+import SearchBar from "../../../../customer/components/contents/cscenter/SearchBar";
+
+// npm install react-paginate  => 페이징 처리
 
 function NoticeComponent () {
-    let number = 1;
     const [List, setList] = useState([]);
     const navigate = useNavigate();
+    const [pageNumber, setPageNumber] = useState(0);
+    const listcount = List.length;
+
+    const [Search, setSearch] = useState('');
 
     useEffect(() => {
         fetchnoticeList();
     },[])
+
+    const handleSearchChange = (newSearch) => {
+        setSearch(newSearch);
+    };
+
+    const handlePageClick = (data) => {
+        const { selected } = data;
+        setPageNumber(selected);
+      };
 
     const fetchnoticeList = () => {
         NoticeApiService.noticeList()
@@ -24,7 +39,6 @@ function NoticeComponent () {
     }
 
     function move (nnum) {
-        console.log(nnum);
         navigate(`detail/${nnum}`);
     }
 
@@ -34,14 +48,10 @@ function NoticeComponent () {
         return(
             <div className="component-div">
                 <h1><FontAwesomeIcon icon={faHeadset}/> 공지사항 목록</h1>
-                <Link to = "detail">이곳을 클릭하면 공지사항 상세페이지로 이동합니다.</Link>
-                <Link to = "add">이곳을 클릭하면 공지사항 등록페이지로 이동합니다.</Link>
-                <ul>
-                    <li>1. 공지사항 목록 출력</li>
-                    <li>2. 등록 버튼 틀릭시 등록 페이지 이동 </li>
-                    <li>3. 제목 클릭 시 상세페이지로 이동</li>
-                    <li>4. 목록 클릭 시 상세페이지 이동</li>
-                </ul>
+                <hr></hr>
+                <SearchBar value={Search} onSearchChange={handleSearchChange} />
+                <br/>
+                <br/>
                 <div >
                  <Button variant="primary" onClick={add} style={{ textAlign: 'left' }}>
                     공지사항 등록</Button>
@@ -56,14 +66,27 @@ function NoticeComponent () {
                         </tr>
                     </thead>
                     <tbody>
-                        {List.map((notice) => (
+                        {List.filter(item => 
+                            item.ncontent.toLowerCase().includes(Search.toLowerCase().replace(/\s/g, '')) || 
+                            item.ntitle.toLowerCase().includes(Search.toLowerCase().replace(/\s/g, ''))
+                        ).slice(pageNumber * 10, (pageNumber + 1) * 10).map((notice) => (
                         <tr key={notice.nnum}>
-                            <td>{notice.nnum}</td>
-                            <td><a onClick={() => move(notice.nnum)} key={notice.nnum}>{notice.ntitle}</a></td>
-                            <td>{notice.ncontent.slice(0,10) + '...'}</td>
-                            <td>{new Date(notice.nregDate).toISOString().slice(0,10)}</td>
+                            <td><a onClick={() => move(notice.nnum)} key={notice.nnum}>상태:{notice.nshow} {notice.nnum} </a></td>
+                            <td><a onClick={() => move(notice.nnum)} key={notice.nnum}>{notice.ntitle.slice(0,15) + '...'}</a></td>
+                            <td><a onClick={() => move(notice.nnum)} key={notice.nnum}>{notice.ncontent.slice(0,15) + '...'}</a></td>
+                            <td><a onClick={() => move(notice.nnum)} key={notice.nnum}>{new Date(notice.nregDate).toISOString().slice(0,10)}</a></td>
                         </tr>
                         ))}
+                            <ReactPaginate
+                                previousLabel={"이전"}
+                                nextLabel={"다음"}
+                                pageCount={listcount / 10}  // 전체 페이지 수
+                                marginPagesDisplayed={2}
+                                pageRangeDisplayed={10}
+                                onPageChange={handlePageClick}
+                                containerClassName={"pagination"}
+                                activeClassName={"active"}
+                            />
                     </tbody>
                 </Table>
             </div> 

@@ -3,6 +3,7 @@ import {List, ListItem, Box,ListSubheader, ListItemButton} from '@mui/joy';
 import PdSavingService from "../../contents/product/saving/PdSavingService";
 import PdDepositService from "../../contents/product/deposit/PdDepositService";
 import PdLoanService from "../../contents/product/loan/PdLoanService";
+import NoticeApiService from "../../../../admin/components/contents/csCenter/NoticeApiService";
 
 class MainBoard extends Component{
     constructor(props){
@@ -12,6 +13,7 @@ class MainBoard extends Component{
             members1:[],
             members2:[],
             members3:[],
+            csboard:[],
             message: null,
             
         }
@@ -57,11 +59,18 @@ class MainBoard extends Component{
         .catch(err=>{
             console.log('reloadMemberList() Error!!',err);
         });
+        NoticeApiService.noticeList()
+            .then(res => {
+                this.setState({
+                    csboard:res.data,
+                })
+                console.log(res.data);
+            })
+            .catch(err=>{
+                console.log('noticeList() Error!!',err);
+            })
     }
 
-   
-      
-     
     render() {    
         return (
             <div className='container' >
@@ -119,29 +128,13 @@ class MainBoard extends Component{
                             <List variant="outlined" sx={{ width: 300, bgcolor: 'background.body', borderRadius: 'sm', boxShadow: 'sm'}}>
                                 <ListItem nested>
                                     <ListSubheader>공지사항</ListSubheader>
-                                    <List>
+                                    {this.state.csboard.filter((board) => board.nshow !== 'N').slice(0, 10).map((board) => (
+                                    <List key={board.nnum}>
                                         <ListItem>
-                                            <ListItemButton>공지사항 1</ListItemButton>
-                                        </ListItem>
-                                        <ListItem>
-                                            <ListItemButton>공지사항 2</ListItemButton>
-                                        </ListItem>
-                                        <ListItem>
-                                            <ListItemButton>공지사항 3</ListItemButton>
-                                        </ListItem>
-                                        <ListItem>
-                                            <ListItemButton>공지사항 4</ListItemButton>
-                                        </ListItem>
-                                        <ListItem>
-                                            <ListItemButton>공지사항 5</ListItemButton>
-                                        </ListItem>
-                                        <ListItem>
-                                            <ListItemButton>공지사항 6</ListItemButton>
-                                        </ListItem>
-                                        <ListItem>
-                                            <ListItemButton>공지사항 7</ListItemButton>
+                                            <ListItemButton>{board.ntitle}</ListItemButton>
                                         </ListItem>
                                     </List>
+                                        ))}
                                 </ListItem>
                             </List>
                         </Box>

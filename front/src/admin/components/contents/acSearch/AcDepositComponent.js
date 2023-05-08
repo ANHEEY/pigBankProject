@@ -3,9 +3,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import AllService from "../../../../customer/components/contents/account/All/AllService";
+import SearchBar from "../../../../customer/components/contents/cscenter/SearchBar";
+import ReactPaginate from "react-paginate";
 
 function AcDepositComponent() {
     const [members1, setMembers1] = useState([]);
+
+    const [pageNumber, setPageNumber] = useState(0);
+    const [Search, setSearch] = useState('');
+
+    const countlist = members1.length;
     
     useEffect(() => {
         reloadMemberList();
@@ -15,11 +22,21 @@ function AcDepositComponent() {
         AllService.fetchTransfer()
         .then((res) => {
             setMembers1(res.data);
+            console.log(res.data)
         })
         .catch((err) => {
             console.log("reloadMemberList() Error!!", err);
         });
     };
+
+    const handleSearchChange = (newSearch) => {
+        setSearch(newSearch);
+    };
+
+    const handlePageClick = (data) => {
+        const { selected } = data;
+        setPageNumber(selected);
+      };
 
     const formatCurrency = (value) => {
         const formatter = new Intl.NumberFormat("ko-KR", {
@@ -52,7 +69,7 @@ function AcDepositComponent() {
                 <FontAwesomeIcon icon={faSearch} /> 이체내역
                 </h1>
                 <ul>
-                <li>1. 이체내역 출력 (당일날짜기준) </li>
+                <li><SearchBar value={Search} onSearchChange={handleSearchChange}  /> </li>
                 </ul>
                 <Table>
                 <TableHead style={{ backgroundColor: "#dbe2d872" }}>
@@ -68,8 +85,15 @@ function AcDepositComponent() {
                 </TableHead>
 
                 <TableBody>
-                    {members1.map((member) => (
-                    <TableRow key={member.tnum}>
+                {members1
+                    .filter(item => {
+                        const acNumber = item.acNumber && item.acNumber.toString();
+                        return acNumber.includes(Search.toLowerCase()) || 
+                        item.tdepositBank.toLowerCase().includes(Search.toLowerCase()) 
+                    })
+                    .slice(pageNumber * 10, (pageNumber + 1) * 10)
+                    .map((member) => (
+                        <TableRow key={member.tnum}>
                         <TableCell style={{ color: "navy" }}>{member.tdepositBank}</TableCell>
                         <TableCell>{acNum(member.acNumber)}</TableCell>
                         <TableCell>{member.ttype}</TableCell>
@@ -77,10 +101,23 @@ function AcDepositComponent() {
                         <TableCell>{member.myMemo}</TableCell>
                         <TableCell>{member.yourMemo}</TableCell>
                         <TableCell>{formatDate(member.tdate)}</TableCell>
-                    </TableRow>
+                        </TableRow>
                     ))}
                 </TableBody>
                 </Table>
+                <div>
+                <ReactPaginate
+                    previousLabel={"이전"}
+                    nextLabel={"다음"}
+                    pageCount={countlist / 10}  // 전체 페이지 수
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={10}
+                    onPageChange={handlePageClick}
+                    containerClassName={"pagination"}
+                    activeClassName={"active"}
+                />
+                </div>
+                
                 SELECT * FROM transfer_tbl ORDER BY t_num DESC;
             </div>
     );

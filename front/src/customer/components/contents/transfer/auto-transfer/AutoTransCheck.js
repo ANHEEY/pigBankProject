@@ -3,6 +3,7 @@ import moment from 'moment';
 import { Button, Container, Table } from "react-bootstrap";
 import TransferService from "../transfer-service/TransferService";
 import { useNavigate } from "react-router-dom";
+import { getId } from '../../../helpers/axios_helper'
 
 // npm install moment 날짜 차이 계산
 function AutoTransCheck (props) {
@@ -13,6 +14,7 @@ function AutoTransCheck (props) {
     const acNumber = props.data[0];
     const aState = props.data[1];
 
+    const [id, setId] = useState(getId());
 
     const navigate = useNavigate();
 
@@ -20,7 +22,7 @@ function AutoTransCheck (props) {
         console.log(props.data);
         reloadReConfirmList(props.data);
         console.log(anum);
-      }, [props.data],[anum]);
+      }, [props.data],[anum],[id]);
 
       const reloadReConfirmList = (data) => {
 
@@ -68,12 +70,24 @@ function AutoTransCheck (props) {
                 alert('선택이 안되어 있습니다 선택해주세요.')
             })
     }
+    const openCalendar = () => {
+        const popup = document.getElementById("popup");
+        popup.classList.add("show");
+    }
+
+    const closeCalendar = () => {
+        const popup = document.getElementById("popup");
+        popup.classList.remove("show");
+    }
 
     return (
         <Container>
             <a href="/customer/transfer/auto_trans"><Button variant="secondary" size="lg" >
                 초기화
-                </Button></a>
+                </Button></a>{' '}
+                <div align="right">
+                <Button variant="success" onclick={openCalendar} size="lg">캘린더</Button>
+                </div>
             <hr />
             <div align='left'>
                 <h4>조회결과 | </h4>
@@ -149,6 +163,14 @@ function AutoTransCheck (props) {
                     ))}
                     
                 </tbody>
+
+                <div id="popup" class="popup">
+                    <div class="popup-content">
+                        <h2></h2>
+                            <p></p>
+                        
+                    </div>
+                </div>
                 
             </Table>
             <div align='center'>

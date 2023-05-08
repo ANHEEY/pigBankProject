@@ -52,10 +52,22 @@ function NoticeDetailComponent () {
         NoticeApiService.changeshow(changeval)
             .then(res => {
                 alert('성공');
-                console.log('성공');
                 navigate('/admin/csCenter/notice')
             })
     }
+
+    const noticedelete = () => {
+        if (window.confirm("정말로 삭제하시겠습니까?")) {
+            NoticeApiService.noticedelete(nnum)
+              .then(res => {
+                alert("공지사항이 삭제되었습니다.");
+                navigate("/admin/csCenter/notice");
+              });
+          } else {
+            alert("취소되었습니다.");
+          }
+    }
+
     return( 
         <div className="component-div" >
             <div style={{ width: "1200px" }}>
@@ -82,7 +94,7 @@ function NoticeDetailComponent () {
                     </Table>
                     <div align="right">
                     <Button variant="success" onClick={change}>변경</Button>{' '}
-                    <Button variant="danger" >게시글삭제</Button>
+                    <Button variant="danger" onClick={noticedelete}>게시글삭제</Button>
                     </div>
                 </Container>
                 </div>

@@ -8,13 +8,13 @@ import AllAccount from "./AllAccount";
 import Form from 'react-bootstrap/Form';
 
 
-
 function All() {
 
   const [depositChecked, setDepositChecked] = useState(false);
   const [savingChecked, setSavingChecked] = useState(false);
   const [loanChecked, setLoanChecked] = useState(false);
   const [accountChecked, setAccountChecked] = useState(false);
+
 
   const handleDepositCheckboxChange = (event) => {
     setDepositChecked(event.target.checked);
@@ -36,7 +36,7 @@ function All() {
     <div className="container">
       <h2>전체계좌 조회</h2>
         <main className="main">
-
+        <br />
         <section>
         
         <Form>

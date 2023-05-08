@@ -19,4 +19,5 @@ public class NoticeDTO {
 	private String nContent;
 	private Date nRegDate;
 	private String nShow;
+	private int nCount;
 }

@@ -33,6 +33,9 @@ public interface LeeService {
 	public void autoTransferCancel(int aNum)
 			throws ServletException,IOException;
 	
+	public List<TransferDTO> transferList(String id)
+			throws ServletException,IOException;
+	
 	public AutoTransferDTO selectOne(int aNum)
 			throws ServletException,IOException;
 	
@@ -53,5 +56,14 @@ public interface LeeService {
 			throws ServletException,IOException;
 	
 	public void changenotice(NoticeDTO dto)
+			throws ServletException,IOException;
+	
+	public void deletenotice(int nNum)
+			throws ServletException,IOException;
+	
+	public void addnotice(NoticeDTO dto)
+			throws ServletException,IOException;
+	// 고객 공지사항
+	public NoticeDTO csboardDetail(int nNum)
 			throws ServletException,IOException;
 }

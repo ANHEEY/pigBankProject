@@ -74,12 +74,19 @@ function AutoTrans () {
                     </tr>
                 </tbody>
             </Table>
+            
+            <hr/>
             <br/>
             {showComponent && (
           <AutoTransCheck  data={data} 
             />
         )}
+
+        
         </div>
     )
+    
 }
+
 export default AutoTrans;
+

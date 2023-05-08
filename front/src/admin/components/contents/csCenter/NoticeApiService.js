@@ -8,6 +8,9 @@ import axios from 'axios'; // npm install -f axios@^1.3.5
 const noticeList = "http://localhost:8081/noticeList";
 const checkonenotice = "http://localhost:8081/checkonenotice";
 const changenotice = "http://localhost:8081/changenotice";
+const deletenotice = "http://localhost:8081/deletenotice";
+const addnotice = "http://localhost:8081/addnotice";
+const csboardDetail = "http://localhost:8081/csboardDetail";
 
 class NoticeApiService {
 
@@ -23,6 +26,19 @@ class NoticeApiService {
     // 공지사항 변경
     changeshow(changeval) {
         return axios.post(changenotice, changeval);
+    }
+    // 공지사항 삭제
+    noticedelete(nnum) {
+        return axios.post(deletenotice, nnum);
+    }
+    // 공지사항 추가
+    noticeadd(notice) {
+        return axios.post(addnotice, notice);
+    }
+    // 공지사항 고객 상세 + 조회수
+    csboardDetail(nnum) {
+        console.log(nnum)
+        return axios.get(csboardDetail, {params: {nNum: nnum}});
     }
     
 }

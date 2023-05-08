@@ -79,6 +79,10 @@
 		where aNum = #{aNum} 
 	</update>
 	
+	<select id="transferList" parameterType="String" resultType="com.pigbank.project.dto.TransferDTO">
+		select * from transfer_tbl where id = #{id}
+	</select>
+	
 	<select id="selectOne" parameterType="int" resultType="com.pigbank.project.dto.AutoTransferDTO">
 		select att.acNumber, att.acancelDate, att.adepositAmount, att.adepositBank, 
 			   att.adepositnum, att.aendDate, att.aregDate, att.anum, 
@@ -104,17 +108,36 @@
 	
 	<!-- 공지사항 -->
 	<select id="noticeList" resultType="com.pigbank.project.dto.NoticeDTO">
-		select * from notice_tbl
+		select * from notice_tbl order by nNum desc
 	</select>
 	
 	<select id="checkonenotice" parameterType="int" resultType="com.pigbank.project.dto.NoticeDTO">
-		select * from notice_tbl where nNum = #{nNum}
+		select * from notice_tbl where nNum = #{nNum} 
 	</select>
 	
 	<update id="changenotice" parameterType="com.pigbank.project.dto.NoticeDTO">
 		update notice_tbl
-		set nTitle = #{nTitle}, nContent = #{nContent}
+		set nTitle = #{nTitle}, nContent = #{nContent}, nShow = #{nShow}
 		where nNum = #{nNum}
 	</update>
 	
+	<delete id="deletenotice" parameterType="int">
+		delete from notice_tbl
+		where nNum = #{nNUM}
+	</delete>
+	
+	<insert id="addnotice" parameterType="com.pigbank.project.dto.NoticeDTO">
+		INSERT INTO notice_tbl(nNum, nTitle, nContent, nShow)
+		VALUES ((SELECT NVL(MAX(nNum) + 1, 1) FROM notice_tbl),#{nTitle},#{nContent},#{nShow})
+	</insert>
+	
+	<select id="csboardDetail" parameterType="int" resultType="com.pigbank.project.dto.NoticeDTO">
+		select * from notice_tbl where nNum = #{nNum}
+	</select>
+	
+	<update id="updatecount" parameterType="int">
+		update notice_tbl
+		set ncount = ncount + 1
+		where nNum = #{nNum}
+	</update>
 </mapper>

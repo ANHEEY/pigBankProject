@@ -106,7 +106,14 @@ public class LeeController {
 	        service.autoTransferCancel(anum);
 	    }
 	}
-
+	
+	// http://localhost:8081/trsfList
+	@GetMapping(value="/trsfList")
+	public List<TransferDTO> transferList(@RequestParam String id)
+			throws ServletException, IOException {
+		
+			return service.transferList(id);
+	}
 	
 	@GetMapping(value="/selectOne")
 	public AutoTransferDTO selectOne(@RequestParam int anum)
@@ -154,5 +161,32 @@ public class LeeController {
 			throws ServletException,IOException {
 		System.out.println("dto : " + dto);
 		service.changenotice(dto);
+	}
+	
+	// 공지사항 삭제
+	@PostMapping(value="deletenotice")
+	public void deletenotice(@RequestBody int nNum)
+			throws ServletException,IOException {
+		System.out.println("nNum : " + nNum);
+		
+		service.deletenotice(nNum);
+	}
+	
+	// 공지사항 추가
+	@PostMapping(value="addnotice")
+	public void addnotice(@RequestBody NoticeDTO dto)
+			throws ServletException,IOException {
+		System.out.println("noticedtoadd : " + dto);
+		service.addnotice(dto);
+	}
+	
+	// 고객 공지사항 상세 페이지
+	@GetMapping(value="/csboardDetail")
+	public NoticeDTO csboardDetail(@RequestParam String nNum)
+			throws ServletException,IOException {
+		System.out.println(nNum);
+		int nnum = Integer.parseInt(nNum);
+		
+		return service.csboardDetail(nnum);
 	}
 }

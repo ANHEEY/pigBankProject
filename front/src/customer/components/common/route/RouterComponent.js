@@ -150,7 +150,7 @@ const AppRouter = () => {
 
             {/* 고객센터 */}
             <Route path="/customer/cscenter/cs_board" Component={CsBoard} />
-            <Route path="/customer/cscenter/cs_board_detail" Component={CsBoardDetail}/>
+            <Route path="/customer/cscenter/cs_board_detail/:nnum" Component={CsBoardDetail}/>
             <Route path="/customer/cscenter/chatting" Component={Chatting} />
 
             {/* 마이페이지 */}

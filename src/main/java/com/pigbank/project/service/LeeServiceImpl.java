@@ -256,6 +256,13 @@ public class LeeServiceImpl implements LeeService{
 		map.put("aState", "unusing");
 		dao.autoTransferCancel(map);
 	}
+	
+	@Override
+	public List<TransferDTO> transferList(String id)
+			throws ServletException, IOException {
+		id = "test";
+		return dao.transferList(id);
+	}
 
 	@Override
 	public AutoTransferDTO selectOne(int aNum) 
@@ -295,6 +302,31 @@ public class LeeServiceImpl implements LeeService{
 			throws ServletException, IOException {
 		dao.changenotice(dto);
 	}
+
+	@Override
+	public void deletenotice(int nNum) 
+			throws ServletException, IOException {
+		
+		dao.deletenotice(nNum);
+	}
+
+	@Override
+	public void addnotice(NoticeDTO dto) 
+			throws ServletException, IOException {
+		String nShow = "N";
+		dto.setNShow(nShow);
+		dao.addnotice(dto);
+	}
+
+	// 고객 상세페이지
+	@Override
+	public NoticeDTO csboardDetail(int nNum) 
+			throws ServletException, IOException {
+		dao.updatecount(nNum);
+		return dao.csboardDetail(nNum);
+	}
+
+	
 
 	
 	
