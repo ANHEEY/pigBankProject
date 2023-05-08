@@ -58,7 +58,7 @@ function DepositComponent(){
                                   <td>{product.dmin}만원</td>
                                   <td>{product.dmax}만원</td>
                                   <td>{product.dcxlRate}%</td>
-                                  <td>{product.dregDate}</td>
+                                  <td>{new Date(product.dregDate).toLocaleDateString().slice(0,-1)}</td>
                                   <td>
                                       <button className="customerinfoBtn" onClick={()=>detailProduct(product.dpdName)}>상세페이지</button>
                                   </td>

@@ -5,6 +5,7 @@ import {Route, Routes} from 'react-router-dom'; // BrowserRouter
 import All from "../../contents/account/All/All";
 import Account from "../../contents/account/Account/Account";
 import Deposit from "../../contents/account/Deposit/Deposit";
+import DepositClose from "../../contents/account/Deposit/DepositClose";
 import Saving from "../../contents/account/Saving/Saving";
 import Sleep from "../../contents/account/Sleep";
 
@@ -76,6 +77,7 @@ import Join from "../../common/join/Join";
 
 import Layout from "../Layout";
 import MainLayout from "../main/MainLayout";
+
 const AppRouter = () => {
     return(
 
@@ -88,6 +90,7 @@ const AppRouter = () => {
             <Route path="/customer/account/all" Component={All} />
             <Route path="/customer/account/account" Component={Account} />
             <Route path="/customer/account/deposit" Component={Deposit} />
+            <Route path="/customer/account/deposit/depositClose" Component={DepositClose}/>
             <Route path="/customer/account/saving" Component={Saving} />
             <Route path="/customer/account/sleep" Component={Sleep} />
 
