@@ -27,7 +27,7 @@ const LoanComponentDetail = () => {
           .catch(err => {
             console.log('fetchProdcutList Error!', err);
           });
-    }, []);
+    }, [window.localStorage.getItem("lpdName")]);
     
     // select 박스 값 설정
     const [lGradeSelected, setLGradeSelected ] = useState('')
@@ -77,7 +77,7 @@ const LoanComponentDetail = () => {
         setInputs(prevState => {
             return{
                 ...prevState,
-                [e.target.name] : e.target.value
+                [e.target.name] : value
             }
         })
     }
@@ -190,7 +190,7 @@ const LoanComponentDetail = () => {
 
                 <Stack direction="horizontal" gap={2} className="col-md-2 mx-auto">
                 <Button variant="success" type="submit">수정</Button>
-                <Button variant="outline-secondary" onClick={() => handelResetButton()}>취소</Button>
+                <Button variant="outline-secondary" onClick={() => handelResetButton()}>초기화</Button>
                 </Stack>
             </Form>
         </div>

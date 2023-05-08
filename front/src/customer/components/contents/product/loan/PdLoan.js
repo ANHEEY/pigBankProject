@@ -77,7 +77,7 @@ function PdLoan() {
                         <div>
                             <pre>{product.lsubTitle}</pre>
                         </div>
-                        <p>최고 <span style={style}>{product.lmaxPrice.toLocaleString()}만원</span></p>
+                        <p>최고 <span style={style}>{product.lmaxPrice ? (product.lmaxPrice).toLocaleString() : ''}만원</span></p>
                     </div>
                     <div className="ms-auto">
                     <Button variant="success" onClick={() => goDetail(product.lpdName)}>신청하기</Button>

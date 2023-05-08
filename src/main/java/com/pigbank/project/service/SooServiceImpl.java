@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.pigbank.project.dao.SooMapper;
+import com.pigbank.project.dto.LoanAccountDetailDTO;
 import com.pigbank.project.dto.LoanProductDTO;
 import com.pigbank.project.dto.LoanRequestDTO;
 import com.pigbank.project.dto.LoanWillPayDTO;
@@ -133,7 +134,7 @@ public class SooServiceImpl implements SooService{
 		LoanRequestDTO dto = dao.getPayInfo(lreqNum);
 		
 		String ltype = dto.getLtype(); // 대출상환종류
-		int lprincipal = dto.getLprincipal() * 10000; // 대출금액 (원 -> 만원)
+		int lprincipal = dto.getLprincipal(); // 대출금액
 		double lrate = dto.getLrate(); // 대출금리
 		int lperiod = dto.getLperiod() * 12; // 대출기간(년 -> 월)
 		
@@ -263,11 +264,45 @@ public class SooServiceImpl implements SooService{
 		
 	}
 
+	// 대출 상환 스케쥴표 생성
 	@Override
-	public List<LoanWillPayDTO> LoanScheduleList(int lnum) throws ServletException, IOException {
-		System.out.println("service - LoanScheduleList");
+	public List<LoanWillPayDTO> loanScheduleList(int lnum) throws ServletException, IOException {
+		System.out.println("service - loanScheduleList");
 		
 		return dao.showLoanSchedule(lnum);
+	}
+
+	// 대출 납부 정보 
+	@Override
+	public LoanWillPayDTO loanPayInfo(int lwillPayNum) throws ServletException, IOException {
+		System.out.println("service - loanPayInfo");
+		
+		return dao.getLoanPayInfo(lwillPayNum);
+	}
+
+	@Override
+	public void doLoanPay(LoanAccountDetailDTO loanAccountDetailDTO) throws ServletException, IOException {
+		System.out.println("service - doLoanPay");
+		
+		System.out.println(loanAccountDetailDTO.getLmonTotal());
+		System.out.println(loanAccountDetailDTO.getAcNumber());
+		System.out.println(loanAccountDetailDTO.getLwillPayNum());
+		
+		// 대출 상환 스케쥴 업데이트
+		System.out.println("service - doLoanPay - 대출상환 스케쥴 업데이트");
+		dao.updateLoanPaySchedule(loanAccountDetailDTO);
+	
+		// 대출 거래 내역 생성
+		System.out.println("service - doLoanPay - 대출 거래 내역 생성");
+		dao.insertLoanDetail(loanAccountDetailDTO);
+		
+		// 대출계좌 잔금 계산
+		System.out.println("service - doLoanPay - 대출계좌 잔금 계산");
+		dao.calcLoanBalance(loanAccountDetailDTO);
+		
+		// 입출금계좌 잔금 계산
+		System.out.println("service - doLoanPay - 입출금계좌 잔금 계산");
+		dao.calcDepositBalance(loanAccountDetailDTO);		
 	}
 	
 }

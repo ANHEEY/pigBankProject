@@ -39,7 +39,7 @@
 	<!-- 대출상품 신청 -->
 	<insert id="requestProduct" parameterType="com.pigbank.project.dto.LoanRequestDTO">
 		INSERT INTO loan_req_tbl(lReqNum, lPdName, id, lPrincipal, lPeriod, lPurpose, lIncome, lState, lReqDate, acPwd, lReason)
-		VALUES((SELECT NVL(MAX(lReqNum)+1, 1) FROM loan_req_tbl), #{lpdName}, #{id}, #{lprincipal}, #{lperiod}, #{lpurpose}, #{lincome}, '승인전', sysdate, #{acPwd}, '승인전')
+		VALUES((SELECT NVL(MAX(lReqNum)+1, 1) FROM loan_req_tbl), #{lpdName}, #{id}, #{lprincipal}*10000, #{lperiod}, #{lpurpose}, #{lincome}, '승인전', sysdate, #{acPwd}, '승인전')
 	</insert>
 		
 	<!-- 대출 심사 결좌 조회 -->
@@ -76,7 +76,7 @@
 	<insert id="createAccount" parameterType="int">
 		INSERT INTO account_tbl(acNumber, id, bankName, acState, acBalance, acType, acPwd, newDate, trsfLimit)
 		SELECT 
-			FLOOR(DBMS_RANDOM.VALUE(3100000000, 3109999999)),
+			FLOOR(DBMS_RANDOM.VALUE(5100000000, 5109999999)),
 			(SELECT id FROM loan_req_tbl WHERE lReqNum=#{lreqNum}),
 			'돼지은행',
 			'OPEN',
@@ -126,6 +126,49 @@
 	
 	<!-- 대출 스케쥴 조회  -->
 	<select id="showLoanSchedule" parameterType="int" resultType="com.pigbank.project.dto.LoanWillPayDTO">
-		SELECT * FROM l_accountPay_tbl WHERE lnum=#{lnum} ORDER BY lPayTurn
+		SELECT * FROM l_accountPay_tbl WHERE lnum=#{lnum} AND lPayStatus='상환예정' ORDER BY lPayTurn
+	</select>
+	
+	<!-- 대출 상환 계좌 정보 조회  -->
+	<select id="getLoanPayInfo" parameterType="com.pigbank.project.dto.LoanWillPayDTO" resultType="com.pigbank.project.dto.LoanWillPayDTO">
+		SELECT p.*, l.acNumber 
+		  FROM l_accountPay_tbl p, l_account_tbl l
+		 WHERE p.lnum = l.lnum
+		  AND p.lWillPayNum=#{lwillPayNum}
 	</select>	
+	
+	<!-- 대출 스케쥴 업데이트  -->
+	<update id="updateLoanPaySchedule" parameterType="com.pigbank.project.dto.LoanAccountDetailDTO">
+		UPDATE l_accountPay_tbl
+		   SET lPaystatus='납부완료'
+		 WHERE lWillPayNum=#{lwillPayNum}
+	</update>
+	
+	<!-- 대출 납부 거래내역 추가  -->
+	<insert id="insertLoanDetail" parameterType="com.pigbank.project.dto.LoanAccountDetailDTO">
+		INSERT INTO l_detail_tbl(lPaidNum, lWillPayNum, lPayDate)
+		VALUES((SELECT NVL(MAX(lPaidNum)+1, 1) FROM l_detail_tbl),
+				#{lwillPayNum},
+				sysdate)
+	</insert>
+	
+	<!-- 대출 계좌 잔금 업데이트  -->
+	<update id="calcLoanBalance" parameterType="com.pigbank.project.dto.LoanAccountDetailDTO">
+		UPDATE account_tbl
+		   SET acBalance = (acBalance - #{lmonTotal})
+		 WHERE acNumber = (
+		        SELECT l.acNumber 
+		        FROM account_tbl a, l_account_tbl l, l_accountPay_tbl p 
+		        WHERE a.acNumber = l.acNumber
+		        AND p.lNum = l.lNum
+		        AND p.lWillPayNum = #{lwillPayNum}
+		    )
+	</update>
+	
+	<!-- 입출금 계좌 잔금 업데이트  -->
+	<update id="calcDepositBalance" parameterType="com.pigbank.project.dto.LoanAccountDetailDTO">
+		UPDATE account_tbl
+		   SET acBalance = (acBalance - #{lmonTotal})
+		 WHERE acNumber = #{acNumber}
+	</update>
 </mapper>

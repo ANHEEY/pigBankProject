@@ -57,7 +57,7 @@ function AllLoan (){
                 <TableCell style={tableHeadStyle}>계좌번호</TableCell>
                 <TableCell style={tableHeadStyle}>가입날짜</TableCell>
                 <TableCell style={tableHeadStyle}>이체한도</TableCell>
-                <TableCell style={tableHeadStyle}>잔액</TableCell>
+                <TableCell style={tableHeadStyle}>잔액</TableCell>              
               </TableRow>
             </TableHead>
 

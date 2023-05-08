@@ -17,7 +17,7 @@ const LoanSchedule = () => {
         textAlign: "center",
     }
     
-    // url에서 id값을 받아오는  useParams
+    // url에서 lnum값을 받아오는 useParams
     const { lnum } = useParams();
     // 대출 상환스케쥴
     const[LoanScheduleList, setLoanScheduleList] = useState([])
@@ -75,7 +75,7 @@ const LoanSchedule = () => {
                       </TableHead>
 
                       <TableBody>
-                          {formattedLoanScheduleList.map((schedule, index) => 
+                          {formattedLoanScheduleList.filter(schedule => schedule.lwillPayNum !== 0).map((schedule, index) => 
                           <TableRow key={schedule.lwillPayNum}>
                             <TableCell style={tableCellStyle}>{schedule.lpayTurn}회차</TableCell>
                             <TableCell style={tableCellStyle}>{comma(schedule.lmonPrice)}원</TableCell>
@@ -93,9 +93,9 @@ const LoanSchedule = () => {
                     <br />
                     <div style={{ position: "relative" }}>
                         <Button variant="success" style={{ position: "absolute", right: 0 }} onClick={handlePayButton}>
-                            납부하기
+                            바로납부
                         </Button>
-                        { isChildVisible && < PayLoan />}
+                        {isChildVisible && <PayLoan lwillPayNum={formattedLoanScheduleList[0].lwillPayNum}/>}
                     </div>
                 </div>
             </div> 

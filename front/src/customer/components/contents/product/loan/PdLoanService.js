@@ -28,7 +28,6 @@ class PdLoanService {
 
     // 계좌조회
     fetchAccountList(id)  {
-        console.log(id);
         return axios.get(ACCOUNT_API_BASE_URL + '/Accounts', {params: {id: id}});
     }
 
@@ -37,10 +36,16 @@ class PdLoanService {
         return axios.post(LOAN_API_BASE_URL + '/customer/addReq', loanReq)    
     }
 
-    // // edit
-    // editProduct(pdLoan) {
-    //     return axios.put(LOAN_API_BASE_URL + '/admin/edit/' + pdLoan.lpdName, pdLoan);
-    // }
+    // 대출 계좌 출금 정보 조회
+    fetchMyPayinfo(lwillPayNum)  {
+        return axios.get(LOAN_API_BASE_URL + '/customer/getPayInfo', {params: {lwillPayNum: lwillPayNum}} );
+    }
+
+    // 대출금 납부 처리
+    updatePayStatus(paidInfo) {
+        console.log("pdLoanSerivce");
+        return axios.post(LOAN_API_BASE_URL + '/customer/updatePayStatus', paidInfo);
+    }
 
     // // delete
     // deleteProduct(lpdName) {

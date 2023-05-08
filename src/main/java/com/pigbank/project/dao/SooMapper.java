@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.pigbank.project.dto.LoanAccountDetailDTO;
 import com.pigbank.project.dto.LoanProductDTO;
 import com.pigbank.project.dto.LoanRequestDTO;
 import com.pigbank.project.dto.LoanWillPayDTO;
@@ -57,6 +58,22 @@ public interface SooMapper {
 	
 	// 대출 상환 스케쥴 조회
 	public List<LoanWillPayDTO> showLoanSchedule(int lnum);
+	
+	// 대출 납부 계좌 정보 조회
+	public LoanWillPayDTO getLoanPayInfo(int lwillPayNum);
+	
+	// 대출 상환 스케쥴 업데이트
+	public void updateLoanPaySchedule(LoanAccountDetailDTO loanAccountDetailDTO);
+	
+	// 대출 납부 거래내역 추가
+	public void insertLoanDetail(LoanAccountDetailDTO loanAccountDetailDTO);
+	
+	// 대출 계좌 잔금 업데이트
+	public void calcLoanBalance(LoanAccountDetailDTO loanAccountDetailDTO);
+	
+	// 입출금 계좌 잔금 업데이트
+	public void calcDepositBalance(LoanAccountDetailDTO loanAccountDetailDTO);
+	
 	
 	
 }

@@ -25,12 +25,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pigbank.project.dto.AccountDTO;
+import com.pigbank.project.dto.LoanAccountDetailDTO;
 import com.pigbank.project.dto.LoanProductDTO;
 import com.pigbank.project.dto.LoanRequestDTO;
 import com.pigbank.project.dto.LoanWillPayDTO;
 import com.pigbank.project.service.SooServiceImpl;
 
-@CrossOrigin(origins="**", maxAge=3600)
 @RestController
 public class SooController {
 
@@ -88,7 +88,6 @@ public class SooController {
 		logger.info("<<< url - deletePdLoan() >>>");
 		
 		service.deleteProduct(lpdName);
-		System.out.println("[ Delete 성공~~ ]");
 	}
 	
 	// 대출상품 신청
@@ -98,7 +97,6 @@ public class SooController {
 		logger.info("<<< url - requestPdLoan() >>>");
 		
 		service.requestProduct(loanRequestDTO);
-		System.out.println("[ Delete 성공~~ ]");
 	}
 	
 	// 대출 심사 결과 조회 (고객용)
@@ -107,7 +105,6 @@ public class SooController {
 		throws ServletException, IOException {
 			logger.info("<<< url - loanStateList >>>");
 			
-			System.out.println("controller loanState:" + id);
 			List<LoanRequestDTO> list = service.loanStateList(id);
 			
 			return list;
@@ -135,13 +132,10 @@ public class SooController {
 		
 		// 상환 스케쥴 계산
 		ArrayList<Map<String, Object>> list = service.calcLoanPaySchedule(lreqNum);
-		logger.info("<<< url - calcLoanPaySchedule >>>");
-		System.out.println("controller list : " + list);
 		
 		// 상환 스케쥴표 생성
 		// list 길이 만큼 for문을 돌린다.
 		for(int i = 0; i<list.size(); i++) {
-			logger.info("<<< url - createLoanPaySchedule >>>");
 			// 맵에 담는다.
 			HashMap<String, Object> map = (HashMap<String, Object>)list.get(i);
 			service.createLoanPaySchedule(map);
@@ -155,8 +149,6 @@ public class SooController {
 		throws ServletException, IOException {
 		logger.info("<<< url - refusePdLoan >>>");
 		
-		System.out.println(lreason);
-		
 		service.refuseLoan(lreqNum, lreason);
 	}
 	
@@ -166,10 +158,30 @@ public class SooController {
 		throws ServletException, IOException {
 			logger.info("<<< url - loanScheduleList >>>");
 			
-			List<LoanWillPayDTO> list = service.LoanScheduleList(lnum);
+			List<LoanWillPayDTO> list = service.loanScheduleList(lnum);
 			
 			return list;
 	}
 	
+	// 대출금 납부 정보 조회 
+	@GetMapping(value="/loan/customer/getPayInfo")
+	public LoanWillPayDTO getLoanPayInfo(@RequestParam int lwillPayNum)
+		throws ServletException, IOException {
+			logger.info("<<< url - loanScheduleList >>>");
+			
+		LoanWillPayDTO loanWillPayDTO = service.loanPayInfo(lwillPayNum);
+		
+		return loanWillPayDTO;
+	}
+	
+	// 대출금 납부 처리
+	@PostMapping(value="/loan/customer/updatePayStatus")
+	public void updateLoanPayInfo(@RequestBody LoanAccountDetailDTO loanAccountDetailDTO)
+		throws ServletException, IOException {
+			logger.info("<<< url - updateLoanPayInfo >>>");
+		
+			service.doLoanPay(loanAccountDetailDTO);
+	}
+
 	
 }

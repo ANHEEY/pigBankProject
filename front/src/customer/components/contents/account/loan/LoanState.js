@@ -86,7 +86,7 @@ const LoanState = () => {
                     <TableRow key={product.lreqNum}>
                       <TableCell style={{color:"navy"}}>{product.lreqNum}</TableCell>
                       <TableCell>{product.lpdName}</TableCell>
-                      <TableCell>{comma(product.lprincipal)}만원</TableCell>
+                      <TableCell>{comma(product.lprincipal/10000)}만원</TableCell>
                       <TableCell>{product.lrate}%</TableCell>
                       <TableCell>{new Date(product.lreqDate).toLocaleDateString().slice(0,-1)}</TableCell>
                       <TableCell>{product.lstate}[{product.lreason}]</TableCell>

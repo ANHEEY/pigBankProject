@@ -20,5 +20,8 @@ public class LoanWillPayDTO {
 	private int lmonPrice;
 	private String lpayStatus;
 	
+	private long acNumber;
+	private String id;
+	
 
 }

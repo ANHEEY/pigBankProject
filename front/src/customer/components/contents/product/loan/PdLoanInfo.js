@@ -42,9 +42,9 @@ function PdLoanInfo({props}) {
             </Col>
             <Col>
                 <p>
-                - 최대 
+                - 최대{' '}
                   {props.lmaxPrice && (
-                    <span>{props.lmaxPrice.toLocaleString()}</span>
+                    <span>{(props.lmaxPrice).toLocaleString()}</span>
                   )}만원 이내
                 </p>
             </Col>

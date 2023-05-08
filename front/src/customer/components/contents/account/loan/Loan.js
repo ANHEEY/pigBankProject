@@ -132,9 +132,6 @@ function Loan() {
                                 <Button variant="outline-secondary" onClick={() => {goPaySchedule(member.lnum)}}>상환스케쥴</Button>
                             </Link>
                             <Link to={`/customer/account/loan/LoanSchedule/${member.lnum}`}>
-                                <Button variant="outline-secondary" type="button">상환내역</Button>
-                            </Link> 
-                            <Link to={`/customer/account/loan/LoanSchedule/${member.lnum}`}>
                                 <Button variant="outline-secondary" type="button">중도해지</Button>
                             </Link>                           
                             </Stack>

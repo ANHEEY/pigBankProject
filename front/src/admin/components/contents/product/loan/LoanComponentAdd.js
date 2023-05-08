@@ -1,7 +1,6 @@
 import { React } from "react";
 import { Button, Form, Stack } from 'react-bootstrap'; // npm install react-bootstrap bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 css를 적용하기 위함
-import { Typography } from "@mui/material";
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import LoanApiService from './LoanApiService.js';
@@ -55,7 +54,7 @@ const LoanComponentAdd = () =>{
         setInputs(prevState => {
             return{
                 ...prevState,
-                [e.target.name] : e.target.value
+                [e.target.name] : value
             }
         })
     }
@@ -164,7 +163,7 @@ const LoanComponentAdd = () =>{
                     
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>* 중도상환 수수료율</Form.Label>
-                    <Form.Control type="number" name="lcxlRate" value={inputs.lCxlRate} min={0.01} step={0.01} placeholder="%" onChange={handleInputValue} required/>
+                    <Form.Control type="number" name="lcxlRate" value={inputs.lcxlRate} min={0.01} step={0.01} placeholder="%" onChange={handleInputValue} required/>
                     <Form.Text className="text-muted">
                         소수점 둘째자리까지만 입력해주세요.
                     </Form.Text>
