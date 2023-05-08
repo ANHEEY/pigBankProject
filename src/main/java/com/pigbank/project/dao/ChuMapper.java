@@ -29,13 +29,17 @@ public interface ChuMapper {
 	
 	public List<LoanProductDTO>loanList();
 	
-	public List<AccountDTO> accountList();
+	public List<AccountDTO> accountList(String id);
 	
-	public List<DepositAccountDTO> depositAccountList();
+	public List<TransferDTO> accountDetail(Long acNumber);
 	
-	public List<SavingAccountDTO> savingAccountList();
+	public List<DepositAccountDTO> depositAccountList(String id);
 	
-	public List<LoanAccountDTO> loanAccountList();
+	public List<TransferDTO> depositDetail(long acNumber);
+	
+	public List<SavingAccountDTO> savingAccountList(String id);
+	
+	public List<LoanAccountDTO> loanAccountList(String id);
 	
 	public List<LoanAccountDTO> loanState();
 	

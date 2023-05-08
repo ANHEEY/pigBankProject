@@ -10,11 +10,11 @@ function Saving() {
   const [selectedOption, setSelectedOption] = useState("");
 
   useEffect(() => {
-    reloadMemberList();
+    reloadMemberList(window.localStorage.getItem("id"));
   }, []);
 
-  const reloadMemberList = () => {
-    AllService.fetchSaving()
+  const reloadMemberList = (id) => {
+    AllService.fetchSaving(id)
       .then(res => {
         setMembers(res.data);
       })
@@ -38,6 +38,14 @@ function Saving() {
   const acNum = (acNumber) => {
     const acNum = acNumber.toString().slice(0, 3) + '-' + acNumber.toString().slice(3);
     return acNum;
+  }
+
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   const filteredMembers = members.filter(
@@ -67,27 +75,28 @@ function Saving() {
                   </select>    
                   </p>  
                                       
-              <div class="card text-center">
+              <div className="card text-center">
                   
-                  <div class="card-header" style={{backgroundColor:"#dbe2d872" }}>
-                      <ul class="nav nav-tabs card-header-tabs">
-                      <li class="nav-item">
-                          <a class="nav-link disabled" href="/customer/account/Saving">적금계좌</a>
+                  <div className="card-header" style={{backgroundColor:"#dbe2d872" }}>
+                      <ul className="nav nav-tabs card-header-tabs">
+                      <li className="nav-item">
+                          <a className="nav-link active" href="/customer/account/Account"><Link to="/customer/account/Account">입출금계좌</Link></a>
                       </li>
-                      <li class="nav-item">
-                          <a class="nav-link active" href="/customer/account/Loan"><Link to="/customer/account/Account">입출금</Link></a>
+
+                      <li className="nav-item">
+                          <a className="nav-link active" href="/customer/account/Deposit"><Link to="/customer/account/Deposit">예금계좌</Link></a>
                       </li>
-                      <li class="nav-item">
-                          <a class="nav-link active" href="/customer/account/Loan"><Link to="/customer/account/Loan">대출계좌</Link></a>
+                      <li className="nav-item">
+                          <a className="nav-link disabled" href="/customer/account/Loan">적금계좌</a>
                       </li>
-                      <li class="nav-item">
-                          <a class="nav-link active" href="/customer/account/Deposit" ><Link to="/customer/account/Deposit">예금계좌</Link></a>
+                      <li className="nav-item">
+                          <a className="nav-link active" href="/customer/account/Loan" ><Link to="/customer/account/Loan">대출계좌</Link></a>
                       </li>
                       </ul>
                   </div>
               </div>
 
-              <div class="card-body">
+              <div className="card-body">
                   <Table>
                     <TableHead >
                       <TableRow >
@@ -101,11 +110,11 @@ function Saving() {
                     </TableHead>
                     <TableBody>
                       {filteredMembers.map((member) => (
-                        <TableRow key={member.spdName}>
-                          <TableCell style={{color:"green"}}>{member.spdName}</TableCell>
+                        <TableRow key={member.acNumber}>
+                          <TableCell >{member.spdName}</TableCell>
                           <TableCell>{acNum(member.acNumber)}</TableCell>
-                          <TableCell>{member.sjoinDate}</TableCell>
-                          <TableCell>{member.sendDate}</TableCell>
+                          <TableCell>{formatDate(member.sjoinDate)}</TableCell>
+                          <TableCell>{formatDate(member.sendDate)}</TableCell>
                           <TableCell>{formatCurrency(member.sexpAmount)}</TableCell>
                           <TableCell>{formatCurrency(member.samount)}</TableCell>
                           </TableRow>

@@ -10,13 +10,13 @@ function AllLoan (){
   
 
   useEffect(() => {
-      reloadMemberList();
+      reloadMemberList(window.localStorage.getItem("id"));
   }, []);
 
   // 라이프 사이클 중 컴포넌트가 생성된 후 사용자에게 보여지기까지의 전체 과정을 랜더링
 
-  const reloadMemberList = () => {
-      AllService.fetchLoan()
+  const reloadMemberList = (id) => {
+      AllService.fetchLoan(id)
         .then(res => {
           setMembers(res.data);
         })
@@ -36,6 +36,14 @@ function AllLoan (){
   const acNum = (acNumber) => {
     const acNum = acNumber.toString().slice(0, 3) + '-' + acNumber.toString().slice(3);
     return acNum;
+  }
+
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
        
   const tableHeadStyle={
@@ -66,7 +74,7 @@ function AllLoan (){
               <TableRow key={member.lreqNum}>
                 <TableCell style={{color:"navy"}}>{member.lpdName}</TableCell>
                 <TableCell>{acNum(member.acNumber)}</TableCell>
-                <TableCell>{member.lreqDate}</TableCell>
+                <TableCell>{formatDate(member.lreqDate)}</TableCell>
                 <TableCell>{member.lincome}</TableCell>
                 <TableCell>{formatCurrency(member.lprincipal)}</TableCell>
               </TableRow>

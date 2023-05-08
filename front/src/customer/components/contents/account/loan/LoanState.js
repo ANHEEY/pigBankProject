@@ -104,5 +104,9 @@ const LoanState = () => {
       <br />
     </main>
   );
+<<<<<<< Updated upstream
+=======
+    
+>>>>>>> Stashed changes
 }
 export default LoanState;

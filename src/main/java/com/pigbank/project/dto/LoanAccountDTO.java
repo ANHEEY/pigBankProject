@@ -28,6 +28,7 @@ public class LoanAccountDTO {
 	private Date lEndDate;
 	private int acPwd;
 	private long trsfLimit;
+	private String lReason;
 	
 	
 

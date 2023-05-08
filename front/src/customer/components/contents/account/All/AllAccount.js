@@ -13,11 +13,11 @@
     // 라이프 사이클 중 컴포넌트가 생성된 후 사용자에게 보여지기까지의 전체 과정을 랜더링
 
     useEffect(() => {
-      reloadMemberList();
+      reloadMemberList(window.localStorage.getItem("id"));
     }, []);
   
-    const reloadMemberList = () => {
-      AllService.fetchAccount()
+    const reloadMemberList = (id) => {
+      AllService.fetchAccount(id)
         .then(res => {
           setMembers(res.data);
         })
@@ -75,7 +75,7 @@
 
                 <TableBody>
                   {members.map((member) => (
-                    <TableRow key={member.acType}>
+                    <TableRow key={member.acNumber}>
                       <TableCell style={{color:"navy"}}>{member.acType}</TableCell>
                       <TableCell>{acNum(member.acNumber)}</TableCell>
                       <TableCell>{formatDate(member.newDate)}</TableCell> 

@@ -32,16 +32,22 @@ public interface ChuService {
 	public List<LoanProductDTO> loanList(HttpServletRequest req, Model model) 
 			throws ServletException, IOException ;
 		
-	public List<AccountDTO> accountList(HttpServletRequest req, Model model)
+	public List<AccountDTO> accountList(String id)
 			throws ServletException,IOException;
 	
-	public List<DepositAccountDTO>depositAccountList(HttpServletRequest req, Model model)
+	public List<TransferDTO> accountDetail(Long acNumber)
 			throws ServletException,IOException;
 	
-	public List<SavingAccountDTO>savingAccountList(HttpServletRequest req, Model model)
+	public List<DepositAccountDTO>depositAccountList(String id)
 			throws ServletException,IOException;
 	
-	public List<LoanAccountDTO> loanAccountList(HttpServletRequest req, Model model)
+	public List<TransferDTO> depositDetail(long acNumber) 
+			throws ServletException, IOException;
+	
+	public List<SavingAccountDTO>savingAccountList(String id)
+			throws ServletException,IOException;
+	
+	public List<LoanAccountDTO> loanAccountList(String id)
 			throws ServletException,IOException;
 	
 	public List<LoanAccountDTO> loanState(HttpServletRequest req, Model model)

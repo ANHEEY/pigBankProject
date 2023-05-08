@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.pigbank.project.dao.ChuMapper;
 import com.pigbank.project.dao.Exchange;
@@ -66,30 +66,40 @@ public class ChuServiceImpl implements ChuService{
 	}
 	
 	@Override
-	public List<DepositAccountDTO> depositAccountList(HttpServletRequest req, Model model) 
+	public List<DepositAccountDTO> depositAccountList(String id) 
 			throws ServletException, IOException {
 		System.out.println("서비스 - 예금계좌리스트");
 		List<DepositAccountDTO> list;
-		list = dao.depositAccountList();
+		list = dao.depositAccountList(id);
 		System.out.println("list : " + list);
 		return list;
 	}
 	
 	@Override
-	public List<SavingAccountDTO> savingAccountList(HttpServletRequest req, Model model) 
+	public List<TransferDTO> depositDetail(long acNumber) 
+			throws ServletException, IOException {
+		System.out.println("서비스 - 예금상세");
+		List<TransferDTO> list;
+		list = dao.depositDetail(acNumber);
+		
+		return list;
+	}
+	
+	@Override
+	public List<SavingAccountDTO> savingAccountList(String id) 
 			throws ServletException, IOException {
 		System.out.println("서비스 - 적금계좌리스트");
 		List<SavingAccountDTO> list;
-		list = dao.savingAccountList();
+		list = dao.savingAccountList(id);
 		System.out.println("list : " + list);
 		return list;
 	}
 	@Override
-	public List<LoanAccountDTO> loanAccountList(HttpServletRequest req, Model model) 
+	public List<LoanAccountDTO> loanAccountList(String id) 
 			throws ServletException, IOException {
 		System.out.println("서비스 - 대출계좌목록");
 		List<LoanAccountDTO> list;
-		list = dao.loanAccountList();
+		list = dao.loanAccountList(id);
 		System.out.println("list : " + list);
 		return list;
 	}
@@ -104,10 +114,19 @@ public class ChuServiceImpl implements ChuService{
 	}
 
 	@Override
-	public List<AccountDTO> accountList(HttpServletRequest req, Model model) throws ServletException, IOException {
+	public List<AccountDTO> accountList(String id) throws ServletException, IOException {
 		System.out.println("서비스 - 입출금통장조회");
 		List<AccountDTO> list;
-		list = dao.accountList();
+		list = dao.accountList(id);
+		System.out.println("list : " + list);
+		return list;
+	}
+	
+	@Override
+	public List<TransferDTO> accountDetail(Long acNumber) throws ServletException, IOException {
+		System.out.println("서비스 - 입출금통장상세");
+		List<TransferDTO> list;
+		list = dao.accountDetail(acNumber);
 		System.out.println("list : " + list);
 		return list;
 	}

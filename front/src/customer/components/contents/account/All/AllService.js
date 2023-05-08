@@ -6,14 +6,17 @@ import axios from 'axios';  // npm install -f axios@^1.3.5
 // - 리액트에서 이를 구현하기 위해선 Axios를 사용한다. 기존 HTML이나 JSP에서 사용한 Ajax 역할을 한다고 생각하면 된다.
 // - npm install -f axios@^1.3.5
 
-const savingAccount = "http://localhost:8081/savingAccount";
-const loanAccount = "http://localhost:8081/loanAccount";
-const depositAccount = "http://localhost:8081/depositAccount";
-const Account = "http://localhost:8081/account";
+const savingAccount = "http://localhost:8081/savingAccount/";
+const loanAccount = "http://localhost:8081/loanAccount/";
+const depositAccount = "http://localhost:8081/depositAccount/";
+const depositDetail = "http://localhost:8081/depositDetail/";
+const Account = "http://localhost:8081/account/";
+const AccountDetail = "http://localhost:8081/accountDetail/";
 const transferList = "http://localhost:8081/transferList";
 const exchangeUpdate = "http://localhost:8081/exchangeUpdate";
 const exchangeList = "http://localhost:8081/exchangeList";
 
+<<<<<<< Updated upstream
 class AllService {
     fetchAccount() {
       console.log('입출금계좌호출!!')
@@ -52,7 +55,79 @@ class AllService {
       console.log('환율정보호출!!')
       return axios.get(exchangeList);
     }
+=======
+
+function AllService() {
+  function fetchAccount(id) {
+    console.log('입출금계좌호출!!');
+    console.log(id);
+    return axios.get(Account+id);
+>>>>>>> Stashed changes
   }
 
+  function fetchAccountDetail(acNumber) {
+    console.log('입출금계좌상세!!');
+    console.log(acNumber);
+    return axios.get(AccountDetail+acNumber);
+  }
 
-export default new AllService();
+  function fetchDeposit(id) {
+    console.log('예금계좌호출!!');
+    console.log(id);
+    return axios.get(depositAccount+id);
+  }
+
+  function fetchDepositDetail(acNumber) {
+    console.log('예금계좌상세!!');
+    console.log(acNumber);
+    return axios.get(depositDetail+acNumber);
+  }
+
+  function fetchSaving(id) {
+    console.log('적금계좌호출!!');
+    console.log(id);
+    return axios.get(savingAccount+id);
+  }
+
+  function fetchLoan(id) {
+    console.log('대출계좌호출!!');
+    console.log(id)
+    return axios.get(loanAccount+id);
+  }
+
+  function fetchLoanState(id) {
+    console.log('대출상태호출!!');
+    console.log(id);
+    return axios.get(loanAccount + '/listLoanSate/' + id);    
+  }
+
+  function fetchTransfer() {
+    console.log('이체내역호출!!');
+    return axios.get(transferList);
+  }
+
+  function fetchExchangeUpdate() {
+    console.log('환율업데이트!!');
+    return axios.get(exchangeUpdate);
+  }
+
+  function fetchExchangeList() {
+    console.log('환율정보호출!!');
+    return axios.get(exchangeList);
+  }
+
+  return {
+    fetchAccount,
+    fetchDeposit,
+    fetchSaving,
+    fetchLoan,
+    fetchLoanState,
+    fetchTransfer,
+    fetchExchangeUpdate,
+    fetchExchangeList,
+    fetchDepositDetail,
+    fetchAccountDetail,
+  };
+}
+
+export default AllService();

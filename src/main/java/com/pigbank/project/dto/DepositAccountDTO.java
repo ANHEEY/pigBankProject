@@ -14,6 +14,7 @@ import lombok.Data;
 public class DepositAccountDTO {
 	
 	@Id
+	private String id;
 	private int dNum;
 	private long acNumber;
 	private String dpdName;
