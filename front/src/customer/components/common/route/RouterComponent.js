@@ -6,11 +6,8 @@ import All from "../../contents/account/All/All";
 import Account from "../../contents/account/Account/Account";
 import AccountDetail from "../../contents/account/Account/AccountDetail";
 import Deposit from "../../contents/account/Deposit/Deposit";
-<<<<<<< Updated upstream
 import DepositClose from "../../contents/account/Deposit/DepositClose";
-=======
 import DepositDetail from "../../contents/account/Deposit/DepositDetail";
->>>>>>> Stashed changes
 import Saving from "../../contents/account/Saving/Saving";
 import Sleep from "../../contents/account/Sleep";
 
@@ -83,10 +80,7 @@ import Join from "../../common/join/Join";
 import Layout from "../Layout";
 import MainLayout from "../main/MainLayout";
 
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 const AppRouter = () => {
     return(
 
@@ -99,12 +93,11 @@ const AppRouter = () => {
             <Route path="/customer/account/all" Component={All} />
             <Route path="/customer/account/account" Component={Account} />
             <Route path="/customer/account/account/accountdetail/:acNumber/:id" Component={AccountDetail} />
+
             <Route path="/customer/account/deposit" Component={Deposit} />
-<<<<<<< Updated upstream
             <Route path="/customer/account/deposit/depositClose" Component={DepositClose}/>
-=======
             <Route path="/customer/account/deposit/depositdetail/:acNumber/:id" Component={DepositDetail} />
->>>>>>> Stashed changes
+
             <Route path="/customer/account/saving" Component={Saving} />
             <Route path="/customer/account/sleep" Component={Sleep} />
 

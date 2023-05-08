@@ -1,6 +1,13 @@
 import axios from "axios";
+import { getAuthToken } from "../../../helpers/axios_helper";
 
 const Product_Account_API_URL = "http://localhost:8081/";
+
+if(getAuthToken() !== null){
+    axios.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`;
+  } else{
+    axios.defaults.headers.common['Authorization'] = ``;
+  }
 
 class PdAccApiService {
 

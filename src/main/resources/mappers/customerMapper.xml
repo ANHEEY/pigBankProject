@@ -134,7 +134,10 @@
 
 	<!-- 고객 예금 해지 예상 조회 -->
    	<select id="cusDepositCxlExpInfo" parameterType="int" resultType="com.pigbank.project.dto.DepositAccountDTO">
-   		SELECT * FROM d_account_tbl WHERE dNum=#{dNum}
+   		SELECT d.dnum, d.ACNUMBER, d.DPDNAME, d.DAMOUNT, d.DEXPAMOUNT, d.DENDDATE, d.DJOINDATE, d.DDEACCOUNT, a.ACPWD
+  		  FROM d_account_tbl d, ACCOUNT_TBL a
+ 		 WHERE d.ACNUMBER = a.ACNUMBER 
+   		   AND d.dnum=#{dNum}
    	</select>
    	
    	<!-- 고객 예금 해지 예상 조회 - 중도 해지시 중도 해지 금리 받아오기 -->
@@ -145,11 +148,18 @@
            AND d.dNum=#{dNum} 
 	</select>
 	
-   	<!-- 고객 예금 해지 신청 -->
+   	<!-- 고객 예금 해지 신청 - 전체 계좌 내용 번경 -->
    	<update id="cusDepositCxlReg" parameterType="com.pigbank.project.dto.DepositAccountDTO">
    		UPDATE account_tbl
-   		   SET acState='DELETE'
+   		   SET acState='DELETE', acBalance=0
    		 WHERE acNumber=#{acNumber}
+   	</update>
+   	
+   	<!-- 고객 예금 해지 신청 - 예금 계좌 내용 번경 -->
+   	<update id="cusDepositCxlRegD" parameterType="com.pigbank.project.dto.DepositAccountDTO">
+   		UPDATE D_ACCOUNT_TBL
+   		   SET DAMOUNT=0, DEXPAMOUNT=0
+   		 WHERE ACNUMBER=#{acNumber}
    	</update>
    	
    	<!-- 고객 예금 해지 신청 후 만기시 입금계좌로 입금 -->

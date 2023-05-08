@@ -252,7 +252,8 @@ public class HeeController {
    //--------------------------------------------------------------------
    
    //예금 해지 예상 조회
-   public DepositAccountDTO cusDepositCxlExpInfo(int dNum)
+   @GetMapping(value="/cusDepositCxlExpInfo/{dNum}")
+   public DepositAccountDTO cusDepositCxlExpInfo(@PathVariable int dNum)
    		throws ServletException, IOException {
 	   logger.info("url - cusDepositCxlExpInfo");
 
@@ -262,6 +263,7 @@ public class HeeController {
    }
    
    //예금 해지 신청
+   @PostMapping(value="/cusDepositCxlReg")  
    public void cusDepositCxlReg(@RequestBody DepositAccountDTO depositAccountDTO)
    		throws ServletException, IOException {
 	   logger.info("url - cusDepositCxlReg");

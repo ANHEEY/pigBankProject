@@ -1,4 +1,5 @@
 import axios from 'axios';  // npm install -f axios@^1.3.5
+import { getAuthToken } from '../../../helpers/axios_helper';
 
 // - ApiService는 스프링 부트 서버(보통 'http://localhost:8081/' 으로 열린다.)와 연결해주는 역할을 한다.
 // - 리액트에서 무언가 요청을 하면 이를 스프링부트에서 받아 Oracle에서 데이터를 가져오거나 연결해주는 역할을 한다.
@@ -16,53 +17,18 @@ const transferList = "http://localhost:8081/transferList";
 const exchangeUpdate = "http://localhost:8081/exchangeUpdate";
 const exchangeList = "http://localhost:8081/exchangeList";
 
-<<<<<<< Updated upstream
-class AllService {
-    fetchAccount() {
-      console.log('입출금계좌호출!!')
-      return axios.get(Account);
-    }
-    fetchDeposit() {
-      console.log('예금계좌호출!!')
-      return axios.get(depositAccount);
-    }
-    fetchSaving() {
-      console.log('적금계좌호출!!')
-      return axios.get(savingAccount);
-    }
-    fetchLoan() {
-      console.log('대출계좌호출!!')
-      return axios.get(loanAccount);
-    }
-    fetchLoanState(id) {
-      console.log('대출상태호출!!')
-      console.log("apiService:" + id)
-      return axios.get(loanAccount + '/listLoanSate/' + id);    
-    }
-    fetchLoanSchedule(lnum) {
-      console.log('대출스케쥴호출!!')
-      return axios.get(loanAccount + '/listLoanSchedule/' + lnum);    
-    }
-    fetchTransfer() {
-      console.log('이체내역호출!!')
-      return axios.get(transferList);
-    }
-    fetchExchangeUpdate() {
-      console.log('환율업데이트!!')
-      return axios.get(exchangeUpdate);
-    }
-    fetchExchangeList() {
-      console.log('환율정보호출!!')
-      return axios.get(exchangeList);
-    }
-=======
+if(getAuthToken() !== null){
+  axios.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`;
+} else{
+  axios.defaults.headers.common['Authorization'] = ``;
+}
+
 
 function AllService() {
   function fetchAccount(id) {
     console.log('입출금계좌호출!!');
     console.log(id);
     return axios.get(Account+id);
->>>>>>> Stashed changes
   }
 
   function fetchAccountDetail(acNumber) {
@@ -98,7 +64,11 @@ function AllService() {
   function fetchLoanState(id) {
     console.log('대출상태호출!!');
     console.log(id);
-    return axios.get(loanAccount + '/listLoanSate/' + id);    
+    return axios.get(loanAccount + 'listLoanSate/' + id);    
+  }
+  function fetchLoanSchedule(lnum) {
+    console.log('대출스케쥴호출!!')
+    return axios.get(loanAccount + 'listLoanSchedule/' + lnum);    
   }
 
   function fetchTransfer() {
@@ -122,6 +92,7 @@ function AllService() {
     fetchSaving,
     fetchLoan,
     fetchLoanState,
+    fetchLoanSchedule,
     fetchTransfer,
     fetchExchangeUpdate,
     fetchExchangeList,

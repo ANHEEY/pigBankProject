@@ -25,14 +25,10 @@ function Loan() {
     }, []);
   
     // 라이프 사이클 중 컴포넌트가 생성된 후 사용자에게 보여지기까지의 전체 과정을 랜더링
-<<<<<<< Updated upstream
-    const reloadMemberList = () => {
-        AllService.fetchLoan()
-=======
+
 
     const reloadMemberList = (id) => {
         AllService.fetchLoan(id)
->>>>>>> Stashed changes
           .then(res => {
             setMembers(res.data);
           })
@@ -95,7 +91,6 @@ function Loan() {
                 <div className="card-header" style={{backgroundColor:"#dbe2d872" }}>
                     <ul className="nav nav-tabs card-header-tabs">
                     <li className="nav-item">
-<<<<<<< Updated upstream
                         <a className="nav-link disabled" href="/customer/account/Loan">대출계좌</a>
                     </li>
                     <li className="nav-item">
@@ -106,18 +101,6 @@ function Loan() {
                     </li>
                     <li className="nav-item">
                         <a className="nav-link active" href="/customer/account/LoanState"><Link to="/customer/account/LoanState">대출심사결과조회</Link></a>
-=======
-                        <a className="nav-link active" href="/customer/account/Account"><Link to="/customer/account/Account">입출금계좌</Link></a>
-                    </li>
-                    <li claclassNamess="nav-item">
-                        <a className="nav-link active" href="/customer/account/Deposit" ><Link to="/customer/account/Deposit">예금계좌</Link></a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link active" href="/customer/account/Saving"><Link to="/customer/account/Saving">적금계좌</Link></a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link disabled" href="/customer/account/Loan">대출계좌</a>
->>>>>>> Stashed changes
                     </li>
                     </ul>
                 </div>
@@ -137,11 +120,7 @@ function Loan() {
                     </TableRow>
                     </TableHead>
                     {filteredMembers.map((member) => (
-<<<<<<< Updated upstream
                     <TableBody key={member.lnum}>
-=======
-                    <TableBody key={member.lpdName}>
->>>>>>> Stashed changes
                         <TableRow >
                         <TableCell>{member.lpdName}</TableCell>
                         <TableCell>{acNum(member.acNumber)}</TableCell>
@@ -171,10 +150,6 @@ function Loan() {
         <br />
         </main>
     );
-<<<<<<< Updated upstream
-   
-=======
-    
->>>>>>> Stashed changes
 }
+
 export default Loan;

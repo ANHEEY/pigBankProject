@@ -135,6 +135,7 @@ function Login() {
                     <Button variant="success" onClick={login}>로그인</Button>
                     <Button variant="outline-success" onClick={cxl}>취소</Button>
                 </Stack> 
+                <br/><br/><br/><br/><br/>
             </Container>
         );
 

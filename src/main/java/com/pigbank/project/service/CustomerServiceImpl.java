@@ -294,24 +294,38 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		System.out.println("depositAccountDTO.getDendDate() : "+depositAccountDTO.getDendDate());
 		
+		LocalDate joinDate = new java.util.Date(depositAccountDTO.getDjoinDate().getTime())
+			    .toInstant()
+			    .atZone(ZoneId.systemDefault())
+			    .toLocalDate();
+		
 		LocalDate currentDate = LocalDate.now();
-		LocalDate joinDate = depositAccountDTO.getDjoinDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		//LocalDate joinDate = depositAccountDTO.getDjoinDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		
 		// 만기 해지인 경우
 		if(depositAccountDTO.getDendDate().before
 				(Date.from(currentDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()))) {
+			
+			System.out.println("depositAccountDTO : "+depositAccountDTO);
 			
 			return depositAccountDTO;
 		}
 		else {	// 중도 해지인 경우
 			// 중도 해지 금리 받아오기
 			double midCxlRate = dao.depositMidCxlRate(dNum);
+			System.out.println("midCxlRate : "+midCxlRate);
+			System.out.println("depositAccountDTO.getDamount() : "+depositAccountDTO.getDamount());
+			System.out.println("ChronoUnit.MONTHS.between(joinDate, currentDate) : "+ChronoUnit.MONTHS.between(joinDate, currentDate));
 			double cxlRate = 
 					(midCxlRate/100)*depositAccountDTO.getDamount()*
 					ChronoUnit.MONTHS.between(joinDate, currentDate)/12;
+			System.out.println("cxlRate : "+cxlRate);
 			long cxlAmount = depositAccountDTO.getDamount()+(long)cxlRate;	
 			depositAccountDTO.setDexpAmount(cxlAmount);
 			
+			System.out.println("cxlAmount : "+cxlAmount);
+			System.out.println("depositAccountDTO : "+depositAccountDTO);
+
 			return depositAccountDTO;
 		}
 	}
@@ -322,6 +336,7 @@ public class CustomerServiceImpl implements CustomerService{
 		System.out.println("service - cusDepositCxlRegAction");
 
 		dao.cusDepositCxlReg(depositAccountDTO);
+		dao.cusDepositCxlRegD(depositAccountDTO);
 		dao.cusDepositCxlPut(depositAccountDTO);
 		
 	}

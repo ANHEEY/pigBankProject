@@ -1,6 +1,14 @@
 import axios from "axios";
+import { getAuthToken } from "../../../../../customer/components/helpers/axios_helper";
 
 const CONTROLLER_API = "http://localhost:8081/admin/";
+
+if(getAuthToken() !== null){
+    axios.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`;
+  } else{
+    axios.defaults.headers.common['Authorization'] = ``;
+  }
+
 class CustomerApiService{
     // 고객 정보 목록
     listCustomer(){

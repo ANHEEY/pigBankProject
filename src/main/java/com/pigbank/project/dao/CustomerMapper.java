@@ -89,8 +89,11 @@ public interface CustomerMapper {
    //고객 예금 해지 예상 조회 - 중도 해지시 중도해지 금리 불러오기
    public double depositMidCxlRate(int dNum);
 
-   //고객 예금 해지 신청
+   //고객 예금 해지 신청 - 전체 계좌 내용 변경
    public void cusDepositCxlReg(DepositAccountDTO depositAccountDTO);
+   
+   //고객 예금 해지 신청 - 예금 계좌 내용 번경
+   public void cusDepositCxlRegD(DepositAccountDTO depositAccountDTO);
    
    //고객 예금 해지 신청 - 만기시 입금계좌로 입금
    public void cusDepositCxlPut(DepositAccountDTO depositAccountDTO);

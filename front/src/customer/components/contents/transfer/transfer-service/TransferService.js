@@ -1,4 +1,5 @@
 import axios from 'axios';  // npm install -f axios@^1.3.5
+import { getAuthToken } from '../../../helpers/axios_helper';
 
 const allaccountList = "http://localhost:8081/allAccounts"
 const accountList = "http://localhost:8081/Accounts";
@@ -9,6 +10,12 @@ const AutoCancel = "http://localhost:8081/cancelauto";
 const selectOne = "http://localhost:8081/selectOne";
 const updateOne = "http://localhost:8081/updateOne";
 const updatetrsfLimit = "http://localhost:8081/updatetrsfLimit";
+
+if(getAuthToken() !== null){
+    axios.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`;
+  } else{
+    axios.defaults.headers.common['Authorization'] = ``;
+  }
 
 class ApiService {
     allAccountList() {
