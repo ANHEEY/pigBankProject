@@ -3,7 +3,6 @@ import AgreeAccordion from "../product-application/AgreeAccordion"
 import { Form, Button, InputGroup, Table } from 'react-bootstrap'
 import '../../../../resources/css/product/application-form.css'
 import PdSavingService from "./PdSavingService";
-import { getId} from "../../../helpers/axios_helper";
 import { useNavigate } from "react-router-dom";
 
 function SavingApplication(){
@@ -52,9 +51,11 @@ function SavingApplication(){
 
     const [accounts, setAccounts] = useState([]);
 
-    // 자동이체일, 만기일
-    const [strsfCycle, setStrsfCycle] = useState('');
+    // 자동이체 시작일, 만기일
+    const [sstartDate, setSstartDate] = useState(new Date().toISOString().slice(0, 10));
     const [sendDate, setSendDate] = useState(new Date().toISOString().slice(0, 10));
+
+    
 
     useEffect(() => {
         savingDetail();
@@ -142,9 +143,9 @@ function SavingApplication(){
             acPwd:sacPwd,
             speriod:savingProduct.speriod,
             samount:Number(sAmount),
-            sexpAmount:Math.round(Number(savingProduct.srate/100)*Number(sAmount)*Number(savingProduct.speriod/12)+Number(sAmount)),
-            sdeAccount:sdeAccount,
-            strsfCycle:strsfCycle,
+            sexpAmount:Math.round(Number(savingProduct.srate/100)*Number(sAmount)*Number(savingProduct.speriod/12)+(Number(sAmount)*Number(savingProduct.speriod))), // 이자+(가입금액*가입기간(m))
+            sdeAccount:sdeAccount, // 만기시 입금계좌
+            sstartDate:sstartDate,
             sendDate:sendDate,
             withdrawAcNumber:selectAccount
         }
@@ -157,9 +158,9 @@ function SavingApplication(){
             if(isAgreed.isAgreed1&&isAgreed.isAgreed2){
                 PdSavingService.addSavingAccount(custSavigAccInfo)
                     .then(res => {
-                        alert("적금상품 가입이 완료되었습니다.");
-                        navigate('/customer/product/pdSaving');
-                })
+                                alert("적금상품 가입이 완료되었습니다.");
+                                navigate('/customer/product/pdSaving');
+                    })
                 .catch(err => {
                     console.log('addSavingAccount() Error!', err);
                 });
@@ -210,8 +211,8 @@ function SavingApplication(){
                                     ))} 
                                     </Form.Select>
                                 </td>
-                                <th style={{width:"100px"}}>비밀번호</th>
-                                <td style={{width:"250px"}}>
+                                <th style={{width:"150px"}}>비밀번호</th>
+                                <td style={{width:"280px"}}>
                                     <Form.Control 
                                         placeholder="비밀번호 4자리 입력"
                                         type="password"
@@ -250,8 +251,8 @@ function SavingApplication(){
                                 <td>
                                     <Form.Control readOnly value={savingProduct.spdname}  /> {/* defaultValue에 이전페이지에서 상품명 받아와 연결하기 */}
                                 </td>
-                                <th style={{width:"100px"}}>금리</th>
-                                <td style={{width:"250px"}}>
+                                <th style={{width:"150px"}}>금리</th>
+                                <td style={{width:"280px"}}>
                                     <InputGroup className="mb-3">
                                         <Form.Control readOnly value={savingProduct.srate}  /> 
                                         <InputGroup.Text>%</InputGroup.Text>
@@ -266,7 +267,7 @@ function SavingApplication(){
                                         <InputGroup.Text>개월</InputGroup.Text>
                                     </InputGroup>
                                 </td>
-                                <th style={{width:"100px"}}>적금<br/>비밀번호</th>
+                                <th style={{width:"150px"}}>적금 비밀번호</th>
                                 <td style={{width:"250px"}}>
                                     <Form.Control 
                                         placeholder="비밀번호 4자리 입력"
@@ -288,9 +289,9 @@ function SavingApplication(){
                                 </td>
                             </tr>
                             <tr>
-                                <th>자동이체일 지정</th>
+                                <th>자동이체 시작일</th>
                                 <td> 
-                                <Form.Control name="strsfCycle"  value={strsfCycle} onChange={(e) => setStrsfCycle(e.target.value)}/>
+                                <Form.Control type="date" name="strsfCycle"  value={sstartDate} onChange={(e) => setSstartDate(e.target.value)}/>
                                     {/* <DatePicker
                                         selected={strsfCycle}
                                         name="strsfCycle"
@@ -301,7 +302,7 @@ function SavingApplication(){
                                         dateFormat="yyyy-MM-dd"
                                     /> */}
                                 </td>
-                                <th>예상만기일</th>
+                                <th>예상 만기일</th>
                                 <td> 
                                 <Form.Control type="date" name="sendDate"  value={sendDate} onChange={(e) => setSendDate(e.target.value)}/>
                                     {/* <DatePicker

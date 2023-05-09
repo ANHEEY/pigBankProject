@@ -50,7 +50,7 @@
 	</insert>
 	<!-- 2) 적금계좌 개설(acNumber => FK) -->
 	<insert id="custSPdInsert" parameterType="com.pigbank.project.dto.SavingAccountDTO">
-	  INSERT INTO s_account_tbl(sNum, acNumber, sPdName, sAmount, sExpAmount, sEndDate, sJoinDate, sDeAccount, sTrsfCycle)
+	  INSERT INTO s_account_tbl(sNum, acNumber, sPdName, sAmount, sExpAmount, sEndDate, sJoinDate, sDeAccount, sstartDate)
 	  VALUES (
 	    (SELECT NVL(MAX(sNum)+1,1) FROM s_account_tbl),
 	    #{acNumber},
@@ -60,7 +60,7 @@
 	    #{sendDate},
 	    sysdate,
 	    #{sdeAccount},
-	    #{strsfCycle}
+	    #{sstartDate}
 	  )
 	</insert>
 	<!-- 적금 가입 후 입출금 통장에서 가입금액 빼기 -->
@@ -70,5 +70,15 @@
 		 WHERE acNumber=#{withdrawAcNumber}
 	</update>
 	
+	<!-- 적금 중도해지 상세페이지 -->
+	<select id="findByCloseDetail" parameterType="long" resultType="com.pigbank.project.dto.SavingAccountDTO">
+		SELECT * FROM s_account_tbl
+		 WHERE acNumber = #{acNumber}
+	</select>
 	
+	<!-- 적금 중도해지 -->
+	<update id="sAccClose" parameterType="long">
+		
+	</update>
+
 </mapper>

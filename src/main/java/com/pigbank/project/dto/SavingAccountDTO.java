@@ -23,11 +23,26 @@ public class SavingAccountDTO {
 	private Date sendDate;
 	private Date sjoinDate;
 	private long sdeAccount;
-	private int strsfCycle;
+	private Date sstartDate;
 	
 	//계좌 개설을 위한 변수
 	private String id;
 	private String acPwd;
 	private int speriod;
 	private long withdrawAcNumber;
+	
+	// 자동이체를 위한 변수 (적금기준으로 주석작성)
+	private long aDepositnum;	
+	private String aDepositBank;
+	private int aDepositAmount;  
+	private int aTransferCycle; 
+	private Date aStartDate; 	
+	private Date aEndDate;		
+	private Date aRegDate; 	
+	private Date aCancelDate;	 
+	private String aState; 		
+	private String myMemo;		 
+	private String yourMemo;	
+	private int aUpdate; 
+	
 }

@@ -2,12 +2,18 @@
 import React, { useState, useEffect } from "react";
 import {Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import AllService from "../All/AllService";
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import "../../../../resources/css/product/saving.css";
 
 function Saving() {    
   const [members, setMembers] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
+
+  const navigator = useNavigate();
+  const goRegister = (acNumber) => {
+      window.localStorage.setItem("acNumber", acNumber);
+      navigator('/customer/account/saving/savingClose');
+  }
 
   useEffect(() => {
     reloadMemberList(window.localStorage.getItem("id"));
@@ -106,6 +112,7 @@ function Saving() {
                         <TableCell style={tableHeadStyle}>만기날짜</TableCell>
                         <TableCell style={tableHeadStyle}>예상금리금액</TableCell>
                         <TableCell style={tableHeadStyle}>잔액</TableCell>
+                        <TableCell style={tableHeadStyle}>버튼</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -117,6 +124,9 @@ function Saving() {
                           <TableCell>{formatDate(member.sendDate)}</TableCell>
                           <TableCell>{formatCurrency(member.sexpAmount)}</TableCell>
                           <TableCell>{formatCurrency(member.samount)}</TableCell>
+                          <TableCell>
+                            <button className="customerinfoBtn" onClick={() => goRegister(member.acNumber)}>계좌해지</button>
+                          </TableCell>
                           </TableRow>
                       ))}
                     </TableBody>

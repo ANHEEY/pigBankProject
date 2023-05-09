@@ -12,7 +12,7 @@ function SPdResultCalculator({props}){
     let rate=props.rate;     // 금리
 
     let expRate = (rate/100)*amount*(period/12);
-    let expAmount = (amount+expRate);
+    let expAmount = ((amount*period)+expRate);
 
     // 콤마 찍기
     const comma = (number) => {

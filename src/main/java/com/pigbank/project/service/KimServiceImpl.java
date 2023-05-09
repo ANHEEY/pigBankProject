@@ -78,7 +78,7 @@ public class KimServiceImpl implements KimService {
 
 	// [custoemr_SavingProduct]
 	@Override // 적금계좌생성
-	public void insertCustAcc(SavingAccountDTO savingDTO) throws ServletException, IOException {
+	public SavingAccountDTO insertCustAcc(SavingAccountDTO savingDTO) throws ServletException, IOException {
 		System.out.println("Service - insertCustAcc");
 		
 		Random rand = new Random();
@@ -90,15 +90,31 @@ public class KimServiceImpl implements KimService {
 				
 		savingDTO.setAcNumber(acNum);
 		
-
 		// Account_tbl → SavingAccount_tbl
-		dao.custAPdInsert(savingDTO);
-		dao.custSPdInsert(savingDTO);
-		dao.custSavingOpenWithdraw(savingDTO);
-		
+		dao.custAPdInsert(savingDTO); // 전체계좌 
+		dao.custSPdInsert(savingDTO); // 적금계좌 개설
 
+		// 적금계좌 생성 후 DTO를 리턴해서 컨트롤러로 전달 → 정재 서비스를 받아서 자동이체 등록
+		return savingDTO; 
 	}
 
+	@Override // 적금 중도해지 상세페이지
+	public SavingAccountDTO selectByClose(long acNumber) throws ServletException, IOException {
+		System.out.println("Service - selectByClose(적금 중도해지 상세)");
+		
+		return dao.findByCloseDetail(acNumber);
+	}
+
+	@Override // 적금 중도해지
+	public void deleteCustSaving(long acNumber) throws ServletException, IOException {
+		System.out.println("Service - deleteCustSaving(적금 중도해지)");
+		
+		dao.sAccClose(acNumber);
+		
+	}
+
+
+	
 
 
 

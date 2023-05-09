@@ -40,10 +40,12 @@ public interface KimService {
 
 	// [Customer_SavingAccount]
 	// 적금계좌 생성
-	public void insertCustAcc(SavingAccountDTO savingDTO) throws ServletException, IOException;
+	public SavingAccountDTO insertCustAcc(SavingAccountDTO savingDTO) throws ServletException, IOException;
 	
+	// 적금 중도해지 조회
+	public SavingAccountDTO selectByClose(long acNumber) throws ServletException, IOException; 
 	
-	
-
+	// 중도해지
+	public void deleteCustSaving(long acNumber) throws ServletException, IOException;
 	
 }

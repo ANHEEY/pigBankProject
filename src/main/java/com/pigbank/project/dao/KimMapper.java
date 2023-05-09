@@ -40,6 +40,11 @@ public interface KimMapper {
 	// SavingAccount 적금계좌생성2(s_account_tbl => pk sNum, fk acNumber)
 	public void custSPdInsert(SavingAccountDTO savingDTO);
 	
-	// 입출금계좌에서 인출해서 적금계좌로
-	public void custSavingOpenWithdraw(SavingAccountDTO savingDTO);
+	// SavingAccount 적금 중도해지 조회
+	public SavingAccountDTO findByCloseDetail(long acNumber);
+	
+	// SavingAccount 적금 중도해지
+	public void sAccClose(long acNumber);
+	
 }
+

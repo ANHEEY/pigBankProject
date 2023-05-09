@@ -11,21 +11,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pigbank.project.dto.AccountDTO;
-import com.pigbank.project.dto.CustomerDTO;
+import com.pigbank.project.dto.AutoTransferDTO;
+
 import com.pigbank.project.dto.SavingAccountDTO;
 import com.pigbank.project.dto.SavingProductDTO;
 import com.pigbank.project.service.KimServiceImpl;
+import com.pigbank.project.service.LeeServiceImpl;
 
-import lombok.Data;
 
 @CrossOrigin(origins="**", maxAge=3600)
 @RestController
@@ -35,6 +34,9 @@ public class KimController {
 	
 	@Autowired
 	private KimServiceImpl service;
+	
+	@Autowired
+	private LeeServiceImpl service2;
 	
 	// [관리자]
 	// 적금상품 목록
@@ -126,17 +128,46 @@ public class KimController {
 	public void custSavingInsert(@PathVariable String spdname, @RequestBody SavingAccountDTO savingDTO) throws ServletException, IOException {
 		logger.info("<< URL - customer SavingAccount Insert >>");
 		System.out.println("savingDTO" + savingDTO);
-		service.insertCustAcc(savingDTO);
+		SavingAccountDTO saDTO = service.insertCustAcc(savingDTO);
+		
+		// insertCustAcc로부터 리턴받은 DTO
+		System.out.println("saDTO: " + saDTO);
+		
+		AutoTransferDTO autoDTO = new AutoTransferDTO();
+		
+		autoDTO.setAcNumber(saDTO.getWithdrawAcNumber());
+		autoDTO.setADepositnum(saDTO.getAcNumber());
+		autoDTO.setADepositBank("돼지은행");
+		autoDTO.setADepositAmount(savingDTO.getSamount());
+		autoDTO.setAStartDate(savingDTO.getSstartDate());
+		autoDTO.setAEndDate(savingDTO.getSendDate());
+		autoDTO.setATransferCycle(1);
+		autoDTO.setMyMemo("적금 자동이체");
+		autoDTO.setYourMemo("적금 자동이체");
+		
+		System.out.println("autoDTO: " + autoDTO);
+		service2.AutoInsertTransfer(autoDTO);
+		
 		
 		System.out.println("적금계좌 개설완료!");
 	}
 	
 	// -----------------------------------------------------------------------------------------------------------------------------------------
 	
-	// 적금중도해지 조회(적금 1건에 대한 Detail)
+	// 적금 중도해지 상세조회(적금 1건에 대한 Detail)
+	@GetMapping(value="/savingCloseDetail/{acNumber}")
+	public SavingAccountDTO sByCloseDetail(@PathVariable long acNumber) throws ServletException, IOException{
+		logger.info("<< URL - customer sByCloseDetail(중도해지 상세페이지) >>");
+		
+		return service.selectByClose(acNumber);
+	}
 	
-	
-	// 적금금중도해지 페이지(중도해지 신청)
-	
+	// 적금 중도해지(중도해지 신청)
+	@PostMapping(value="/closeSaving/{sNum}")
+	public void closeSaving(@PathVariable int sNum) throws ServletException, IOException{
+		logger.info("<< URL - customer closeSaving(적금 중도해지) >>");
+		
+		service.deleteCustSaving(sNum);
+	}
 	
 }
