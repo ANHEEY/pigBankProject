@@ -8,8 +8,8 @@ function SPdResultCalculator({props}){
     }
 
     let amount=props.amount*10000;
-    let period=props.period;
-    let rate=props.rate;
+    let period=props.period; // 기간
+    let rate=props.rate;     // 금리
 
     let expRate = (rate/100)*amount*(period/12);
     let expAmount = (amount+expRate);
@@ -26,11 +26,11 @@ function SPdResultCalculator({props}){
                 이자 <span style={style}>{comma(expRate)}</span>원을 더해 총 <span style={style}>{comma(expAmount)}</span>원을 모으실 수 있습니다. 
             </p>
             <Table striped bordered hover>
-                <thead>
+                <thead style={{textAlign:"center"}}>
                     <tr>
                     <th>예치금액</th>
                     <th>만기금액</th>
-                    <th>이자</th>
+                    <th>금리</th>
                     </tr>
                 </thead>
                 <tbody>

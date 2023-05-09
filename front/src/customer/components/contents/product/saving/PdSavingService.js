@@ -1,5 +1,5 @@
 import axios from 'axios';  // npm install -f axios@^1.3.5
-import { getAuthToken } from '../../../helpers/axios_helper';
+import {getAuthToken} from '../../../helpers/axios_helper.js';
 
 // - ApiService는 스프링 부트 서버(보통 'http://localhost:8081/' 으로 열린다.)와 연결해주는 역할을 한다.
 // - 리액트에서 무언가 요청을 하면 이를 스프링부트에서 받아 Oracle에서 데이터를 가져오거나 연결해주는 역할을 한다.
@@ -25,6 +25,13 @@ class PdSavingService {
     return axios.get(MEMBER_API_BASE_URL);
   }
 
+  // customer - search
+  savingSearch(spdname) {
+    console.log(spdname);
+    console.log('savingSearch')
+    return axios.get(CUSTOMER_API_PRODUCT_SAVING_URL + "savingSearch/" + spdname);
+  }
+
   // customer - 상품목록
   custSavingList() {
     console.log('custSavingList')
@@ -37,12 +44,6 @@ class PdSavingService {
     return axios.get(CUSTOMER_API_PRODUCT_SAVING_URL + "custProduct/" + spdname);
   }
 
-  // customer - 상품가입
-  custSavingApp(spdname) {
-    console.log('custSavingApp!!')
-    return axios.get(CUSTOMER_API_PRODUCT_SAVING_URL + "" + spdname, spdname);
-  }
-
   // customer - 계좌조회(LeeController)
   custAccountList(id) {
     console.log(id)
@@ -50,9 +51,9 @@ class PdSavingService {
   }
 
   // customer - 적금계좌 개설
-  addSavingAccount(saccount) {
+  addSavingAccount(savingProduct) {
     console.log('addSavingAccount!!')
-    return axios.post(CUSTOMER_API_PRODUCT_SAVING_URL, saccount)
+    return axios.post(CUSTOMER_API_PRODUCT_SAVING_URL + "custSInsert/" + savingProduct.spdname, savingProduct)
   }
   
 

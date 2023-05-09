@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FormControl, Table} from '@mui/joy';
+import { Form, Button } from 'react-bootstrap';
 import '../../../../resources/css/account/closeDetail.css';
 
 class SavingCloseDetail extends Component {
@@ -10,7 +10,7 @@ class SavingCloseDetail extends Component {
                 <div className='saving-title fw-bold'>
                     해지계좌 조회
                 </div>
-                <div className='border'>
+                <div className='border' style={{width:"82%"}}>
                     <p>
                         * 조회시점의 잔액을 기준으로 한 해지예상조회 결과입니다.<br/>
                         * 계좌잔액에는 미결제된 자기앞수표, 당좌수표, 약속어음 등 타점권이 포함되어 있을 수 있습니다.<br/>
@@ -23,27 +23,63 @@ class SavingCloseDetail extends Component {
                     <table className="CDTable">
                         <thead className='CDTable-title'>
                             <tr>
-                                <th colSpan={4}>해지계좌 정보</th>
+                                <th colSpan={4}>Account Info</th>
                             </tr>
                         </thead>
                         <tbody className='CDTable-info'>
                             <tr>
-                                <th style={{width:'230px'}}>해지계좌종류</th>
-                                <td>적금명</td>
-                                <th style={{width:'230px'}}>해지구분</th>
-                                <td>일반해지</td>
+                                <th style={{width:'220px'}}>상품명</th>
+                                <td colSpan={3}>하나의 여행적금(해당상품명)</td>
                             </tr>
                             <tr>
-                                <th>해지계좌번호</th>
-                                <td>계좌번호</td>
-                                <th>해지계좌원금</th>
-                                <td>1000원</td>
+                                <th style={{width:'220px'}}>상품 계좌번호</th>
+                                <td >3100000000</td>
+                                <th style={{width:'220px'}}>상품 비밀번호</th>
+                                <td>
+                                    <Form.Control type="password" name="acPwd" placeholder="비밀번호 4자리 입력" />
+                                </td>
                             </tr>
                             <tr>
-                                <th>해지예상일</th>
-                                <td>2023.04.27</td>
+                                <th>신규일</th>
+                                <td >2023.04.27</td>
                                 <th>만기일</th>
                                 <td>2023.04.28</td>
+                            </tr>
+                            <tr>
+                                <th style={{width:'220px'}}>해지구분</th>
+                                <td colSpan={3}>
+                                <Form.Select aria-label="closeDetail">
+                                    <option>선택하세요.</option>
+                                    <option value="일반해지">일반해지</option>
+                                    <option value="중도해지">중도해지</option>
+                                    <option value="만기해지">만기해지</option>
+                                </Form.Select>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <th>해지예상일</th>
+                                <td colSpan={3}>2023.04.27</td>
+                            </tr>
+                            <tr>
+                                <th>해지시 입금계좌</th>
+                                <td colSpan={3}>계좌번호!</td>
+                            </tr>
+                            <tr>
+                                <th style={{width:'220px'}}>해지이자</th>
+                                <td >1,000원</td>
+                                <th style={{width:'220px'}}>기지급이자</th>
+                                <td >1,000원</td>
+                            </tr>
+                            <tr>
+                               <th style={{width:'220px'}}>원금</th>
+                               <td >0원</td>
+                               <th style={{width:'220px'}}>이자</th>
+                               <td >0원</td>
+                            </tr>
+                            <tr>
+                                <th style={{width:'220px'}}>원리금합계</th>
+                                <td colSpan={3}>0원</td>
                             </tr>
                         </tbody>
                     </table>
@@ -53,18 +89,34 @@ class SavingCloseDetail extends Component {
                     <table className="CDTable">
                         <thead className='CDTable-title'>
                             <tr>
-                                <th></th>
+                                <tr>
+                                    <th colSpan={4}>Customer Info</th>
+                                </tr>
                             </tr>
                         </thead>
                         <tbody className='CDTable-info'>
                             <tr>
-                                <th style={{width:'230px'}}>해지이자</th>
-                                <td>1,000원</td>
-                                <th style={{width:'230px'}}>기지급이자</th>
-                                <td>1,000원</td>
+                                <th style={{width:'220px'}}>고객명</th>
+                                <td colSpan={3}>이름/id</td>
+                            </tr>
+                            <tr>
+                               <th style={{width:'220px'}}>원금</th>
+                               <td colSpan={3}>0원</td>
+                            </tr>
+                            <tr>
+                            <th style={{width:'220px'}}>이자</th>
+                               <td colSpan={3}>0원</td>
+                            </tr>
+                            <tr>
+                                <th style={{width:'220px'}}>원리금합계</th>
+                                <td colSpan={3}>0원</td>
                             </tr>
                         </tbody>
                     </table>
+                    <div className="col-md-2 mx-auto">
+                        <Button variant="success" size='lg'>해지</Button>
+                        <Button variant="outline-secondary" size='lg'>목록</Button>
+                    </div>
                 </div>
             </div>
         )

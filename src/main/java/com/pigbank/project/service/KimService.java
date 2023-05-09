@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
 
+
 import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.SavingAccountDTO;
 import com.pigbank.project.dto.SavingProductDTO;
@@ -29,20 +30,20 @@ public interface KimService {
 	
 	// 삭제
 	public void deleteSpd(String spdname) throws ServletException, IOException;
-	
+
+	// 상품검색
+	public List<SavingProductDTO> savingSearchAction(String spdname) throws ServletException, IOException;
+
 	// [account]
-	// 1건 고객정보 조회
-	
-	
 	// 입출금계좌 개설
 	public void insertAPd(AccountDTO aPdDTO) throws ServletException, IOException;
 
 	// [Customer_SavingAccount]
-	// 적금계좌 생성1(account_tbl)
-	public void insertCustApd(AccountDTO custApdDTO) throws ServletException, IOException;
+	// 적금계좌 생성
+	public void insertCustAcc(SavingAccountDTO savingDTO) throws ServletException, IOException;
 	
-	// 적금계좌 생성2(s_account_tbl)
-	public void insertCustSPd(SavingAccountDTO custSPdDTO) throws ServletException, IOException;
 	
+	
+
 	
 }

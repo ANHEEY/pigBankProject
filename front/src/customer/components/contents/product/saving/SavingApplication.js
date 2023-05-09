@@ -1,14 +1,18 @@
 import React , { useState, useEffect }  from "react"
 import AgreeAccordion from "../product-application/AgreeAccordion" 
-import { Form, Button, Row, Col, InputGroup, Table } from 'react-bootstrap'
-import {Container, Input, Select, Option } from "@mui/joy";
-import DatePicker from "react-datepicker";
-
+import { Form, Button, InputGroup, Table } from 'react-bootstrap'
 import '../../../../resources/css/product/application-form.css'
 import PdSavingService from "./PdSavingService";
 import { getId} from "../../../helpers/axios_helper";
+import { useNavigate } from "react-router-dom";
 
 function SavingApplication(){
+
+    const navigate = useNavigate();
+
+    const comma = (number) => {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    }
 
     // 약관 동의
     const [isAgreed, setIsAgreed] = useState({
@@ -16,21 +20,13 @@ function SavingApplication(){
         isAgreed2: ""
     })
 
-    const [isAutoTransfer, setIsAutoTransfer] = useState(false);
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if(isAgreed.isAgreed1&&isAgreed.isAgreed2) {
-            if(isAutoTransfer) {
-                alert('적금 신청이 완료되었습니다. 자동이체등록 페이지로 이동합니다.') // 정액
-                window.location.href = '/customer/transfer/add_auto_trans';
-            } else {
-                alert('적금 신청이 완료되었습니다.'); // 자유식
-                window.location.href = '/customer/product/pdSaving';
-            }
-        } else {
-            alert('이용약관에 동의 후 가입 가능합니다.');
-        }
-    }
+    const [acPwd, setAcPwd] = useState('');       // 출금계좌 비밀번호
+    const [inputAcPwd, setInputAcPwd] = useState(''); // 비밀번호 입력 값
+    const [acBalance,setAcBalance] = useState(''); // 계좌 잔액
+    const [sacPwd, setSAcPwd] = useState('');     // 적금계좌 비밀번호
+    const [sAmount, setSAmount] = useState('');   // 정기납입 금액
+    const [selectAccount, setSelectAccount] = useState(''); // 출금계좌
+    const [sdeAccount, setSDeAccount] = useState(''); // 만기시 입금계좌
     
     const handleCheckedAgreement = (e) => {
         setIsAgreed(prevState => {
@@ -41,53 +37,143 @@ function SavingApplication(){
             }
         });
     }
-    
-    // 적금상품명 불러오기
-    const [detailInfo, setDetailInfo] = useState([]);
+
+    // 상품
+    const [savingProduct, setSavingProduct] = useState({
+        spdname: "",
+        scontent: "",
+        speriod:  "",
+        smin: "",
+        smax: "",
+        srate: "",
+        scxlrate: "",
+        sregdate: ""
+    });
+
+    const [accounts, setAccounts] = useState([]);
+
+    // 자동이체일, 만기일
+    const [strsfCycle, setStrsfCycle] = useState('');
+    const [sendDate, setSendDate] = useState(new Date().toISOString().slice(0, 10));
 
     useEffect(() => {
-        console.log(window.localStorage.getItem("spdname"));
-        PdSavingService.custSPdDetail(window.localStorage.getItem("spdname"))
-        .then((res) => {
-            setDetailInfo(res.data)
-        })
-        .catch((err) => {
-            console.log(' PdSavingService.custSPdDetail Error!!', err);
-        })
+        savingDetail();
+        custAccList(window.localStorage.getItem("id"));
+
+    
     }, []);
 
-    // 고객정보 불러오기
-    const [id, setId] = useState(getId());
+    const savingDetail = () => {
+        PdSavingService.custSPdDetail(window.localStorage.getItem("spdname"))
+            .then(res => {
+                setSavingProduct(res.data);
+                console.log('custSPdDetail');
+                console.log(res.data);
+            })
+            .catch(err => {
+                console.log('custSPdDetail() Error!', err);
+            }) 
+    }
 
-    useEffect(() => {
-        setId(getId());
+    const accountChange = (e) => {
+        const selectAccountInt = parseInt(e.target.value);
+        const account = accounts.find(account => account.acNumber === selectAccountInt);
+        setSelectAccount(selectAccountInt);
+        if(account) {
+            setAcPwd(account.acPwd);
+            setAcBalance(account.acBalance);
+        } else {
+            setAcPwd('');
+            setAcBalance('');
+        }
+    }
+
+    const sAccountChange = (e) => {
+        const sSelectAccountInt = parseInt(e.target.value);
+        const account = accounts.find(account => account.acNumber === sSelectAccountInt);
+        setSDeAccount(sSelectAccountInt);
+    }
+
+    const custAccList = (id) => {
         PdSavingService.custAccountList(id)
             .then(res => {
                 console.log(res.data);
+                setAccounts(res.data);
             })
             .catch(err => {
                 console.log('custAccountList() Error!', err);
             })
-    })
-
-    // 계좌정보 가져오기(출금/만기 계좌 선택 클릭시)
-    const [selectAcc, setSelectAcc] = useState('');
-    const selectAccClick = (evnt) => {
-        setSelectAcc(evnt.target.value);
     }
+    
+    const handleSubmit=() => {
+        if(sAmount === "") {
+            alert('적금 가입금액을 입력하세요!');
+            return false;
+        }
+        if(sacPwd === "") {
+            alert('적금 비밀번호를 입력하세요!');
+            return false;
+        }
+        if(selectAccount === "") {
+            alert('출금계좌를 선택하세요!');
+            return false;
+        }
+        if(inputAcPwd === "") {
+            alert('선택하신 계좌의 비밀번호를 입력하세요!');
+            return false;
+        }
+        if(sdeAccount === "") {
+            alert('만기시 입금계좌를 선택하세요!');
+            return false;
+        }
+        if(savingProduct.smin*10000 > sAmount) {
+            alert('적금 최소 금액 ' + comma(savingProduct.smin) + '만원보다 큰 금액을 입력해주세요!');
+            setSAmount('');
+            return false;
+        }
+        if(acBalance < sAmount) {
+            alert("계좌 잔액이 부족합니다. 확인 후 다시 가입해주세요!");
+            return false;
+        }
+        
+        const custSavigAccInfo = {
+            id: window.localStorage.getItem("id"),
+            spdname:savingProduct.spdname,
+            acPwd:sacPwd,
+            speriod:savingProduct.speriod,
+            samount:Number(sAmount),
+            sexpAmount:Math.round(Number(savingProduct.srate/100)*Number(sAmount)*Number(savingProduct.speriod/12)+Number(sAmount)),
+            sdeAccount:sdeAccount,
+            strsfCycle:strsfCycle,
+            sendDate:sendDate,
+            withdrawAcNumber:selectAccount
+        }
 
-    // 자동이체일 선택 후 가입기간에 따른 만기일
-    const [selectedDate, setSelectedDate] = useState(new Date());
+        console.log(acPwd);
+        console.log(inputAcPwd);
+        console.log(custSavigAccInfo);
 
-    const twoYearsFromNow = new Date(
-        selectedDate.getFullYear() + 2, // 가입기간에 맞게 다시 값 주기
-        selectedDate.getMonth(),
-        selectedDate.getDate()
-    );
+        if(Number(acPwd) === Number(inputAcPwd)) {
+            if(isAgreed.isAgreed1&&isAgreed.isAgreed2){
+                PdSavingService.addSavingAccount(custSavigAccInfo)
+                    .then(res => {
+                        alert("적금상품 가입이 완료되었습니다.");
+                        navigate('/customer/product/pdSaving');
+                })
+                .catch(err => {
+                    console.log('addSavingAccount() Error!', err);
+                });
+            } else {
+                alert('이용약관에 동의 후 가입이 가능합니다.');
+                
+            } 
+        } else {
+            alert('선택하신 출금계좌 비밀번호가 틀립니다. 다시 입력하세요!')
+            setInputAcPwd('');
+           
+        }
 
-    // input
-
-
+    }
 
     return(
         <div className="applicaiton container">
@@ -106,28 +192,32 @@ function SavingApplication(){
                         </thead>
                         <tbody>
                             <tr>
-                                <th  style={{width:"160px"}}>신청자</th>
+                                <th  style={{width:"160px"}}>가입자명</th>
                                 <td colSpan={4}>
                                     {/* <Input variant="outlined" color="neutral" size="md" readOnly defaultValue={getId} />  defaultValue에 고객아이디(이름)와 연결하기 */}
-                                    <Form.Control placeholder="신청자" readOnly defaultValue={id}  />
+                                    <Form.Control readOnly name="id" value={window.localStorage.getItem("id")}  />
                                 </td>
                             </tr>
                             <tr>
                                 <th tyle={{width:"200px"}}>출금계좌</th>
                                 <td>
-                                    <Select placeholder="계좌를 선택하세요." value={selectAcc}>
-                                            <Option value="null">계좌를 선택하세요</Option> {/* value에 고객 입출금계좌와 연결하기 */}
-                                            <Option value="">710402-00-243513</Option>
-                                    </Select>
+                                    <Form.Select aria-label="Default select example" onChange={accountChange}>                                
+                                    <option value="">출금계좌를 선택하세요</option>
+                                    {accounts.filter((account) => account.acType === "입출금통장").map((account)=>(
+                                        <option key={account.acNumber} value={account.acNumber}>
+                                        [{account.bankName}]{account.acNumber}||{account.acType}
+                                        </option>
+                                    ))} 
+                                    </Form.Select>
                                 </td>
                                 <th style={{width:"100px"}}>비밀번호</th>
                                 <td style={{width:"250px"}}>
                                     <Form.Control 
                                         placeholder="비밀번호 4자리 입력"
                                         type="password"
-                                        name="acPwd"
-                                        value="{acPwd}  onChange={(e) => onChange(e)}"
-                                       
+                                        name="inputAcPwd"
+                                        value={inputAcPwd}
+                                        onChange={(e) => setInputAcPwd(e.target.value)}
                                         variant="outlined"
                                         color="neutral"
                                         size="md"  />
@@ -136,10 +226,13 @@ function SavingApplication(){
                             <tr>
                                 <th>만기시 입금계좌</th>
                                 <td colSpan={4}> 
-                                    <Select placeholder="계좌를 선택하세요." value="">
-                                            <Option value="0">계좌를 선택하세요</Option> {/* value에 고객 입출금계좌와 연결하기 */}
-                                            <Option value="">710402-00-243513</Option>
-                                    </Select>
+                                <Form.Select aria-label="Default select example" onChange={sAccountChange}>                                
+                                <option value="">만기 시 입금계좌를 선택하세요</option>
+                                {accounts.filter((account) => account.acType === "입출금통장").map((account)=>(
+                                        <option key={account.acNumber} value={account.acNumber}>
+                                            [{account.bankName}]{account.acNumber}||{account.acType}
+                                        </option>))}
+                                </Form.Select>
                                 </td>
                             </tr>
                         </tbody>
@@ -155,12 +248,12 @@ function SavingApplication(){
                             <tr>
                                 <th style={{width:"160px"}}>상품명</th>
                                 <td>
-                                    <Form.Control readOnly defaultValue={detailInfo.spdname}  /> {/* defaultValue에 이전페이지에서 상품명 받아와 연결하기 */}
+                                    <Form.Control readOnly value={savingProduct.spdname}  /> {/* defaultValue에 이전페이지에서 상품명 받아와 연결하기 */}
                                 </td>
                                 <th style={{width:"100px"}}>금리</th>
                                 <td style={{width:"250px"}}>
                                     <InputGroup className="mb-3">
-                                        <Form.Control readOnly defaultValue={detailInfo.srate}  /> 
+                                        <Form.Control readOnly value={savingProduct.srate}  /> 
                                         <InputGroup.Text>%</InputGroup.Text>
                                     </InputGroup>
                                 </td>
@@ -168,63 +261,67 @@ function SavingApplication(){
                             <tr>
                                 <th tyle={{width:"200px"}}>가입기간</th>
                                 <td>
-                                    <Select placeholder="가입기간을 선택하세요.">
-                                            <Option value="0">가입기간을 선택하세요</Option>
-                                            <Option value="12">12개월</Option>
-                                            <Option value="24">24개월</Option>
-                                            <Option value="36">36개월</Option>
-                                    </Select>
+                                <InputGroup className="mb-3">
+                                <Form.Control readOnly value={savingProduct.speriod}  />
+                                        <InputGroup.Text>개월</InputGroup.Text>
+                                    </InputGroup>
                                 </td>
-                                <th style={{width:"100px"}}>비밀번호</th>
+                                <th style={{width:"100px"}}>적금<br/>비밀번호</th>
                                 <td style={{width:"250px"}}>
-                                    <Input placeholder="비밀번호 4자리 입력" type="password" variant="outlined" color="neutral" size="md" />
+                                    <Form.Control 
+                                        placeholder="비밀번호 4자리 입력"
+                                        type="password"
+                                        name="sacPwd"
+                                        onChange={(e) => setSAcPwd(e.target.value)}
+                                        variant="outlined"
+                                        color="neutral"
+                                        size="md"  />    
                                 </td>
                             </tr>
                             <tr>
                                 <th>가입금액</th>
-                                <td colSpan={4}> 
+                                <td colSpan={3}> 
                                     <InputGroup className="mb-3">
                                         <InputGroup.Text>₩</InputGroup.Text>
-                                        <Form.Control placeholder="가입금액을 입력하세요."  /> 
+                                        <Form.Control placeholder="가입금액을 입력하세요." name="sAmount" value={sAmount} onChange={(e)=>setSAmount(e.target.value)} /> 
                                     </InputGroup>
                                 </td>
                             </tr>
                             <tr>
                                 <th>자동이체일 지정</th>
                                 <td> 
-                                    <DatePicker
-                                        selected={selectedDate}
-                                        onChange={(date) => setSelectedDate(date)}
+                                <Form.Control name="strsfCycle"  value={strsfCycle} onChange={(e) => setStrsfCycle(e.target.value)}/>
+                                    {/* <DatePicker
+                                        selected={strsfCycle}
+                                        name="strsfCycle"
+                                        value={strsfCycle}
+                                        onChange={(e) => onChange(e)}
                                         minDate={new Date()}
-                                        maxDate={twoYearsFromNow}
+                                        maxDate={sendDate}
                                         dateFormat="yyyy-MM-dd"
-                                    />
-                                   
+                                    /> */}
                                 </td>
                                 <th>예상만기일</th>
                                 <td> 
-                                    <DatePicker
-                                        selected={twoYearsFromNow}
-                                        onChange={(date) => setSelectedDate(date)}
+                                <Form.Control type="date" name="sendDate"  value={sendDate} onChange={(e) => setSendDate(e.target.value)}/>
+                                    {/* <DatePicker
+                                        selected={sendDate}
+                                        name="sendDate"
+                                        value={sendDate}
+                                        onChange={(e) => onChange(e)}
                                         minDate={new Date()}
-                                        maxDate={twoYearsFromNow}
+                                        maxDate={sendDate}
                                         dateFormat="yyyy-MM-dd"
-                                    />
-                                   {/* <Form.Control type="date" name="sEndDate"  dateFormat="yyyy-MM-dd" value={twoYearsFromNow} onChange={(e) => onChange(e)}/> */} 
+                                    /> */}
                                 </td>
                             </tr>
                         </tbody>
                     </Table>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="2">자동이체</Form.Label>
-                        <Col sm="10">
-                            <Form.Check id={`autoTransfer`} checked={isAutoTransfer} onChange={(e) => setIsAutoTransfer(e.target.checked)} />
-                        </Col>
-                    </Form.Group>
                     <div className="d-grid gap-2">
-                        <Button style={{ background: '#9dc888' ,border:'#9dc888'}} size="lg" type="submit" onClick={handleSubmit}> 가입하기 </Button>
+                        <Button style={{ background: '#9dc888' ,border:'#9dc888'}} size="lg" onClick={handleSubmit}> 가입하기 </Button>
                     </div>
             </Form>
+            <br/>
         </div>
     )
 }

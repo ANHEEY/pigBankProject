@@ -41,20 +41,20 @@ function SPdCalculator(){
     }
 
     return(
-        <div>
+        <div >
             <br/>
-                <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
+                <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail" >
                 <Col sm={2}>
                 <Form.Control onChange={onChange}
                     size="sm"
                     type="number"
                     name="amount"
                     value={inputs.amount}
-                    placeholder="금액"
+                    placeholder="월 저축금액"
                     min={0}
                 />
                 </Col>
-                만원을
+                만원씩
                 <Col sm={2}>
                 <Form.Control onChange={onChange}
                     size="sm"
@@ -72,11 +72,11 @@ function SPdCalculator(){
                     type="number"
                     name="rate"
                     value={inputs.rate}
-                    placeholder="이자"
+                    placeholder="금리"
                     min={0}
                 />
                 </Col>
-                %의 예금 상품에 저축하면?   
+                %의 적금상품에 저축하면? 
                 <Col sm={3}>
                 <Stack direction="horizontal" gap={3} >
                     <Button variant="success" size="sm" onClick={()=>calculator(inputs)}>계산하기</Button>
