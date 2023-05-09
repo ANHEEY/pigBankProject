@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
 
+import com.pigbank.project.dto.LoanAccountDTO;
 import com.pigbank.project.dto.LoanAccountDetailDTO;
 import com.pigbank.project.dto.LoanProductDTO;
 import com.pigbank.project.dto.LoanRequestDTO;
@@ -39,6 +40,10 @@ public interface SooService {
 			throws ServletException,IOException;
 	
 	// 고객 대출 업무
+	// 대출 납부 처리
+	public List<LoanProductDTO> searchLoan(String lpdName)
+			throws ServletException, IOException;
+		
 	// 대출 상품 신청
 	public void requestProduct(LoanRequestDTO loanRequestDTO)
 			throws ServletException,IOException;
@@ -77,6 +82,14 @@ public interface SooService {
 	
 	// 대출 납부 처리
 	public void doLoanPay(LoanAccountDetailDTO loanAccountDetailDTO)
+			throws ServletException, IOException;
+	
+	// 대출 중도상환 해지 정보 조회
+	public LoanAccountDTO loanCancelInfo(int lnum)
+			throws ServletException, IOException;
+	
+	// 대출 중도 해지
+	public void loanCancel(LoanAccountDTO loanAccountDTO)
 			throws ServletException, IOException;
 	
 }

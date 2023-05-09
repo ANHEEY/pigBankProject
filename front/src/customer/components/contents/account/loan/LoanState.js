@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import {Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import AllService from "../All/AllService";
 import {Link} from 'react-router-dom';
-// import { getId } from '../../../helpers/axios_helper'
 import "../../../../resources/css/product/saving.css";
 
 const LoanState = () => {
@@ -49,14 +48,14 @@ const LoanState = () => {
           <br />
           <br />            
 
-              {/* <p className="thead1">
-              <select value={this.state.selectedOption} onChange={this.handleChange}>
-              <option value="">계좌선택</option>
-                  {this.state.members.map((member) => (
-              <option key={member.lpdName} value={member.lpdName}>{member.lpdName}</option>
-              ))}
-              </select>    
-              </p>   */}
+          {/* <p className="thead1">
+            <select value={selectedOption} onChange={handleChange}>
+                <option value="">전체선택</option>
+                {members.map((member) => (
+                <option key={member.lnum} value={member.lpdName}>{member.lpdName}</option>
+                ))}
+            </select>    
+          </p>   */}
                                   
           <div className="card text-center" style={{backgroundColor:"#dbe2d872" }}>
               <div className="card-header" >
@@ -80,8 +79,7 @@ const LoanState = () => {
                       <TableCell style={tableHeadStyle}>심사결과</TableCell>
                   </TableRow>
                 </TableHead>
-
-               
+                
                 <TableBody style={{textAlign:"center"}}>
                 {loanStateList.map((product) => (
                     <TableRow key={product.lreqNum}>
@@ -94,7 +92,6 @@ const LoanState = () => {
                     </TableRow>
                 ))}
                 </TableBody>
-
               </Table>
           </div>
           <br />

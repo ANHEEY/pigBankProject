@@ -24,8 +24,6 @@ const PayLoan = (props) => {
     const [name, setName] = useState('');
     // 이체한도
     const [trsfLimit, setTrsfLimit] = useState('');
-    // 상환금액
-    const [payAmount, setPayAmount] = useState('');
     // 납부 계좌 정보
     const [payLoanInfo, setPayLoanInfo] = useState({
         lwillPayNum: lwillPayNum,
@@ -110,15 +108,14 @@ const PayLoan = (props) => {
             alert("이체한도가 초과되었습니다.");
             return;
         }
-      
-        // 대출 상환금(원금+이자)
-        setPayAmount(payLoanInfo.lmonTotal);
 
+        console.log(payLoanInfo.lmonTotal);
+        
         const paidInfo = {
           lwillPayNum: lwillPayNum,
           id: id,
           acNumber: selectedAccount,
-          lmonTotal: payAmount,
+          lmonTotal: payLoanInfo.lmonTotal,
           name: name,
         };
       

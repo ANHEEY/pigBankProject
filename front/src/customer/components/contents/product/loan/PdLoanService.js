@@ -31,9 +31,16 @@ class PdLoanService {
         return axios.get(LOAN_API_BASE_URL + '/admin/' + lpdName);
     }
 
-    // 계좌조회
+    // 계좌조회 (Lee Controller)
     fetchAccountList(id)  {
         return axios.get(ACCOUNT_API_BASE_URL + '/Accounts', {params: {id: id}});
+    }
+
+    // 대출 상품 검색
+    searchLoanProduct(lpdName){
+        console.log(lpdName);
+        console.log('searchLoanProduct 호출!')
+        return axios.get(LOAN_API_BASE_URL +"/loanSearch/"+ lpdName);
     }
 
     // 대출 상품 신청
@@ -52,10 +59,11 @@ class PdLoanService {
         return axios.post(LOAN_API_BASE_URL + '/customer/updatePayStatus', paidInfo);
     }
 
-    // // delete
-    // deleteProduct(lpdName) {
-    //     return axios.delete(LOAN_API_BASE_URL + '/admin/delete/' + lpdName);
-    // }
+    // 대출 중도 해지 처리
+    updateLoanClose(loanCancelPay) {
+        console.log("pdLoanSerivce");
+        return axios.post(LOAN_API_BASE_URL + '/customer/updatLoanCancel', loanCancelPay);
+  }
 
 }
 export default new PdLoanService();

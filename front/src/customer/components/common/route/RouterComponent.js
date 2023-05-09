@@ -15,6 +15,8 @@ import Sleep from "../../contents/account/Sleep";
 import Loan from "../../contents/account/loan/Loan";
 import LoanState from "../../contents/account/loan/LoanState";
 import LoanSchedule from "../../contents/account/loan/LoanSchedule";
+import LoanCancel from "../../contents/account/loan/LoanCancel";
+
 
 // 이체
 import TransDeposit from "../../contents/transfer/account-transfer/TransDeposit";
@@ -105,7 +107,8 @@ const AppRouter = () => {
             <Route path="/customer/account/LoanState" Component={LoanState} />
             <Route path="/customer/account/Loan" Component={Loan} />
             <Route path="/customer/account/loan/LoanSchedule/:lnum" Component={LoanSchedule} />
-            
+            <Route path="/customer/account/loan/LoanCancel/:lnum" Component={LoanCancel} />
+
             {/* 이체 */}
             <Route path="/customer/transfer/trans_deposit" Component={TransDeposit} />
             <Route path="/customer/transfer/trans_reConfirm" Component={TransReConfirm} />

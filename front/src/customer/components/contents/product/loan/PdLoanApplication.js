@@ -1,5 +1,5 @@
 import React, { useState, useEffect}from "react"
-import {Form,Button, Row, Col,InputGroup, Container} from 'react-bootstrap'
+import {Form,Button, Row, Col, InputGroup, Container} from 'react-bootstrap'
 import { useNavigate } from "react-router-dom";
 import '../../../../resources/css/product/application-form.css'
 import PdLoanService from './PdLoanService.js';
@@ -9,11 +9,12 @@ import AgreeAccordion from "../product-application/AgreeAccordion"
 
 function PdLoanApplication() {
     // 전 화면에서 받아온 상품이름
-    let lpdName = window.localStorage.getItem("lpdName");
+    const lpdName = window.localStorage.getItem("lpdName");
+    const lmaxPrice = window.localStorage.getItem("lmaxPrice");
  
     const navigate = useNavigate();
     // const [id, setId] = useState('');
-    let id = window.localStorage.getItem("id");
+    const id = window.localStorage.getItem("id");
     const [selectedPurpose, setSelectedPurpose] = useState('');
     const [selectedAccount, setSelectedAccount] = useState('');
     const [myAccounts, setMyAccounts] = useState([]); // 나의 계좌목록
@@ -53,40 +54,63 @@ function PdLoanApplication() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // 동의 약관 설정     
-        if(isAgreed.isAgreed1 && isAgreed.isAgreed2) {
-            if (!selectedAccount) {
-                alert('입출금계좌를 먼저 개설해주세요.');
-                return;
-            }        
-            // 가입 신청 정보를 서버로 보내는 코드
-            let loanReq = {
-                lpdName: inputs.lpdName,
-                id: inputs.id,
-                lpurpose: selectedPurpose,
-                lincome: inputs.lincome,
-                lprincipal: Number(inputs.lprincipal),
-                lperiod: Number(inputs.lperiod),
-                acNumber: Number(selectedAccount),
-                acPwd: Number(inputs.acPwd)
-            };
-        
-            console.log(loanReq);
-
-            PdLoanService.addPdReqList(loanReq) 
-                .then(res => {
-                    alert("대출 신청이 완료되었습니다. 심사결과를 기다려주세요.")
-                    console.log("대출신청성공");
-                    navigate('/customer/product/loan/pdLoan');
-                })
-                .catch(err => {
-                    console.log('addPdReqList() 에러', err)
-                })
+     
+        if(!selectedAccount) {
+            alert('입출금계좌를 선택해주세요.');
+            return;
         }
-        else {
+        if(!selectedPurpose) {
+            alert('대출용도를 선택해주세요.')
+            return;
+        }        
+        if(inputs.lincome === "") {
+            alert('연간소득을 선택해주세요.')
+            return;
+        }
+        if(inputs.lprincipal === "") {
+            alert('대출금액을 입력해주세요.')
+            return;
+        }
+        if(Number(inputs.lprincipal) > lmaxPrice) {
+            alert('대출가능한 최대 대출금액을 초과했습니다. 대출가능한 최대 금액은' + comma(lmaxPrice) + '만원입니다.')
+            return;
+        }
+        if(inputs.lperiod === "") {
+            alert(' 대출기간을 선택해주세요.')
+            return;
+        }
+        if(inputs.acPwd === "") {
+            alert(' 대출 비밀번호를 입력해주세요.')
+            return;
+        }
+        // 약관동의 설정
+        if(isAgreed.isAgreed1 || isAgreed.isAgreed2) {
             alert('이용약관에 동의해주세요!');
+            return;
         }
+        // 가입 신청 정보를 서버로 보내는 코드
+        const loanReq = {
+            lpdName: inputs.lpdName,
+            id: inputs.id,
+            lpurpose: selectedPurpose,
+            lincome: inputs.lincome,
+            lprincipal: Number(inputs.lprincipal),
+            lperiod: Number(inputs.lperiod),
+            acNumber: Number(selectedAccount),
+            acPwd: Number(inputs.acPwd)
+        };
+    
+        PdLoanService.addPdReqList(loanReq) 
+        .then(res => {
+            alert("대출 신청이 완료되었습니다. 심사결과를 기다려주세요.")
+            console.log("대출신청성공");
+            navigate('/customer/product/loan/pdLoan');
+        })
+        .catch(err => {
+            console.log('addPdReqList() 에러', err)
+        })
     }
+    
 
     // 자식 컴포넌트가 render 될때 실행되면서 자식으로부터 입력받은 값을 전달받음
     const handleCheckedAgreement = (e) => {
@@ -108,6 +132,10 @@ function PdLoanApplication() {
     function acNum(acNumber) {
         const acNum = acNumber.toString().slice(0, 3) + '-' + acNumber.toString().slice(3);
         return acNum;
+    }
+
+    const comma = (number) => {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     }
 
     // 값을 입력할 때
@@ -193,7 +221,7 @@ function PdLoanApplication() {
                     <Form.Label column sm="2">연간소득</Form.Label>
                     <Col sm="10">
                         <Form.Select name="lincome" value={inputs.lincome} onChange={handleInputValue}>
-                            <option value="0">연간소득을 선택해주세요.</option>
+                            <option value="">연간소득을 선택해주세요.</option>
                             <option value="1억원미만">1억원미만</option>
                             <option value="1억원이상 3억원미만">1억원이상 3억원미만</option>
                             <option value="3억원이상 5억원미만">3억원이상 5억원미만</option>
@@ -215,7 +243,7 @@ function PdLoanApplication() {
                     <Form.Label column sm="2">대출 기간</Form.Label>
                     <Col sm="10">
                         <Form.Select name="lperiod" value={inputs.lperiod} onChange={handleInputValue}>
-                            <option value="0">대출기간을 선택해주세요.</option>
+                            <option value="">대출기간을 선택해주세요.</option>
                             <option value="1">1년(12개월)</option>
                             <option value="2">2년(24개월)</option>
                             <option value="3">3년(36개월)</option>
@@ -231,7 +259,7 @@ function PdLoanApplication() {
                     <Form.Label column sm="2">계좌선택</Form.Label>
                     <Col sm="10">
                         <Form.Select name="acNumber" value={selectedAccount} onChange={accountChange}>
-                            <option value="출금계좌를 선택하세요">입출금계좌를 선택하세요</option>
+                            <option value="">입출금계좌를 선택하세요</option>
                                 {/* fetch를 통해 가져온 계좌들을 조회한다. */} 
                                 {myAccounts
                                     .filter((account) => account.acType === "입출금통장")

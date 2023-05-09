@@ -269,7 +269,7 @@ function DepositApplication(){
                     <br/>
                 </div>
                 <div className="d-grid gap-2">
-                    <Button style = {{background:'#9dc888' ,border:'#9dc888'}} size="lg" onClick={()=>productJoin()}> 가입하기 </Button>
+                    <Button style = {{background:'#9dc888', border:'#9dc888'}} size="lg" onClick={()=>productJoin()}> 가입하기 </Button>
                 </div>
             </Form>
             <br/><br/><br/><br/>

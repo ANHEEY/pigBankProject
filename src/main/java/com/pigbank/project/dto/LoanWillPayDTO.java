@@ -14,7 +14,7 @@ public class LoanWillPayDTO {
 	@Id
 	private int lwillPayNum;
 	private int lpayTurn;
-	private int lnum;
+	private long lnum;
 	private int lmonTotal;
 	private int lmonRate;
 	private int lmonPrice;

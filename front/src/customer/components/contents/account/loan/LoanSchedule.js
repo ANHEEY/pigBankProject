@@ -2,7 +2,7 @@
 import { React, useState, useEffect } from "react";
 import {Table, TableHead, TableRow, TableCell,  TableBody } from "@mui/material";
 import { Button } from 'react-bootstrap'; // npm install react-bootstrap bootstrap
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import PayLoan from './PayLoan.js';
 import AllService from "../All/AllService";
 
@@ -62,7 +62,7 @@ const LoanSchedule = () => {
                 <h2>대출상환스케쥴</h2> 
                 <br />    
                 <br />          
-                <div class="card-body">
+                <div className="card-body">
                     <Table>
                       <TableHead>
                         <TableRow>

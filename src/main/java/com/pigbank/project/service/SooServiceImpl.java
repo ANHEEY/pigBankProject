@@ -1,10 +1,16 @@
 package com.pigbank.project.service;
 
 import java.io.IOException;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.pigbank.project.dao.SooMapper;
+import com.pigbank.project.dto.LoanAccountDTO;
 import com.pigbank.project.dto.LoanAccountDetailDTO;
 import com.pigbank.project.dto.LoanProductDTO;
 import com.pigbank.project.dto.LoanRequestDTO;
@@ -71,6 +78,16 @@ public class SooServiceImpl implements SooService{
 	}
 
 	// 고객
+	// 대출 상품 검색
+	@Override
+	public List<LoanProductDTO> searchLoan(String lpdName) 
+			throws ServletException, IOException {
+		System.out.println("service - searchLoan");
+		
+		return dao.searchProduct(lpdName);
+			
+	}
+	
 	// 대출 상품 신청
 	@Override
 	public void requestProduct(LoanRequestDTO loanRequestDTO) throws ServletException, IOException {
@@ -109,7 +126,19 @@ public class SooServiceImpl implements SooService{
 		dao.updateLoanAccept(lreqNum);
 		
 		// 대출계좌 생성
-		dao.createAccount(lreqNum);
+		// acNumber 생성하기
+		Random rand = new Random();
+		int n = rand.nextInt(10000000); // 1~ 9999999 사이의 숫자
+		String randNum = String.format("%07d", n); // %(문자열형식) 10진수를  7자리로 
+		String preAcNumber = "510" + randNum;
+		long acNumber = Long.parseLong(preAcNumber);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("lreqNum", lreqNum);
+		map.put("acNumber", acNumber);
+		
+		// 대출계좌 생성
+		dao.createAccount(map);
 		dao.createLaccount(lreqNum);
 		
 	}
@@ -141,7 +170,7 @@ public class SooServiceImpl implements SooService{
 		// list 생성
 		ArrayList<Map<String, Object>> list = null;
 	    
-		// 원리금균등분할상환 계산
+		// 원리금균등분할상환 계산 : 대출 원금과 이자의 합계를 매월 균등하게 나누어서 상환하는 방식
 		if(ltype.equals("원리금균등분할상환")) {
 		    double m = lrate * 0.01 / 12;  // 월이자율 
 		    double rm = Math.pow(1+m, lperiod); // (1+m)의 개월수 거듭제곱
@@ -177,7 +206,7 @@ public class SooServiceImpl implements SooService{
 		    }
 		} 
 		
-		// 원금균등분할상환 계산
+		// 원금균등분할상환 계산 : 대출받은 돈(대출원금)을 대출기간 동안 균등한 금액으로 매월 갚는 방식
 		else if(ltype.equals("원금균등분할상환")) {
 		    int lmonPrice = Math.round(lprincipal / lperiod);  // 월 상환 원금 
 		    double m = lrate * 0.01 / 12; // 월이자율
@@ -280,6 +309,7 @@ public class SooServiceImpl implements SooService{
 		return dao.getLoanPayInfo(lwillPayNum);
 	}
 
+	// 대출 상환금 납부
 	@Override
 	public void doLoanPay(LoanAccountDetailDTO loanAccountDetailDTO) throws ServletException, IOException {
 		System.out.println("service - doLoanPay");
@@ -287,6 +317,14 @@ public class SooServiceImpl implements SooService{
 		System.out.println(loanAccountDetailDTO.getLmonTotal());
 		System.out.println(loanAccountDetailDTO.getAcNumber());
 		System.out.println(loanAccountDetailDTO.getLwillPayNum());
+		
+		// 입출금계좌 잔금 계산
+		System.out.println("service - doLoanPay - 입출금계좌 잔금 계산");
+		dao.calcDepositBalance(loanAccountDetailDTO);	
+		
+		// 대출계좌 잔금 계산
+		System.out.println("service - doLoanPay - 대출계좌 잔금 계산");
+		dao.calcLoanBalance(loanAccountDetailDTO);
 		
 		// 대출 상환 스케쥴 업데이트
 		System.out.println("service - doLoanPay - 대출상환 스케쥴 업데이트");
@@ -296,13 +334,76 @@ public class SooServiceImpl implements SooService{
 		System.out.println("service - doLoanPay - 대출 거래 내역 생성");
 		dao.insertLoanDetail(loanAccountDetailDTO);
 		
-		// 대출계좌 잔금 계산
-		System.out.println("service - doLoanPay - 대출계좌 잔금 계산");
-		dao.calcLoanBalance(loanAccountDetailDTO);
+		// 거래 이체 내역 생성
+		System.out.println("service - doLoanPay - 거래 이체 내역 생성");
+		dao.insertTransfer1(loanAccountDetailDTO);
 		
-		// 입출금계좌 잔금 계산
-		System.out.println("service - doLoanPay - 입출금계좌 잔금 계산");
-		dao.calcDepositBalance(loanAccountDetailDTO);		
+	
 	}
+
+	// 중도 상환 해지 정보 조회
+	// 1. 날짜 사이의 일수를 구하는 메서드
+	public static int calculateDaysBetween(Date startDate, Date endDate) {
+	    LocalDate localStartDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	    LocalDate localEndDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	    return (int) ChronoUnit.DAYS.between(localStartDate, localEndDate);
+	}
+	
+	// 대출 중도 상환 
+	@Override
+	public LoanAccountDTO loanCancelInfo(int lnum) throws ServletException, IOException {
+		System.out.println("service - loanCancelInfo");
+		
+		// 대출 중도 상환 해지시 필요한 정보들을 물러온다.
+		LoanAccountDTO loanAccountDTO = dao.getLoanCancelInfo(lnum);
+		
+		double lcxlRate = loanAccountDTO.getLcxlRate(); // 중도상환수수료율
+		System.out.println("서비스 중도해지 : " + lcxlRate);
+		int acBalance = loanAccountDTO.getAcBalance(); // 대출잔액
+		System.out.println("서비스 중도해지 : " + acBalance);
+		Date lstartDate = loanAccountDTO.getLstartDate(); // 신규일
+		System.out.println("서비스 중도해지 : " + lstartDate);
+		Date lendDate =  loanAccountDTO.getLendDate(); // 만기 예상일
+		System.out.println("서비스 중도해지 : " + lendDate);
+		
+		// 중도 상환 수수료 : 상환액 × 중도상환 수수료율 × (대출 기간 일수 – 상환 시점까지 일 수) ⁄ 대출 기간 일 수
+		// 1. 오늘 날짜를 구한다. (상환시점)
+		LocalDate localDate = LocalDate.now();
+		// Date 형태로 형변환
+		Date lcancelDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());		
+
+		int daysToEnd = calculateDaysBetween(lstartDate, lendDate); // 대출 만기일까지의 일수 계산
+		int daysFromClose = calculateDaysBetween(lstartDate, lcancelDate); // 대출 신규일부터 상환일까지의 일수 계산
+		double penalty = acBalance * (lcxlRate/100) * (daysToEnd - daysFromClose)/ daysToEnd;
+		
+		System.out.println("penalty : " + penalty);
+		
+		// 중도상환수수료
+		int cancelFee = (int) Math.round(penalty);
+		
+		// dto에 담는다.
+		loanAccountDTO.setCancelFee(cancelFee);
+		
+		return loanAccountDTO;
+	}
+
+	@Override
+	public void loanCancel(LoanAccountDTO loanAccountDTO) throws ServletException, IOException {
+		System.out.println("service - loanCancel");
+		
+		// 입출금 계좌에서 출금 처리
+		dao.updateAccountBalance(loanAccountDTO);
+		
+		// 입출금 계좌거래 내역 추가
+		dao.insertTransfer2(loanAccountDTO);
+		
+		// 대출계좌 잔액 및 상태 업데이트
+		dao.updateLoanBalance(loanAccountDTO);
+	
+		// 대출 상환 스케쥴 업데이트
+		dao.updateLoanPayAll(loanAccountDTO);
+	}
+
+	
 	
 }

@@ -5,7 +5,6 @@
      
 <mapper namespace="com.pigbank.project.dao.SooMapper">
 
-
 	<!-- 대출상품 목록 -->
 	<select id="showPdLoantList" resultType="com.pigbank.project.dto.LoanProductDTO">
 		SELECT * FROM loan_product WHERE show='y'
@@ -36,6 +35,11 @@
 		WHERE lpdName=#{lpdName}
 	</update>
 	
+	<!-- 대출상품 검색 -->
+	<select id="searchProduct" parameterType="String" resultType="com.pigbank.project.dto.LoanProductDTO">
+		SELECT * FROM loan_product WHERE lPdName LIKE '%'||#{lpdName}||'%' AND show='y'
+	</select>
+	
 	<!-- 대출상품 신청 -->
 	<insert id="requestProduct" parameterType="com.pigbank.project.dto.LoanRequestDTO">
 		INSERT INTO loan_req_tbl(lReqNum, lPdName, id, lPrincipal, lPeriod, lPurpose, lIncome, lState, lReqDate, acPwd, lReason)
@@ -48,6 +52,7 @@
 		  FROM loan_req_tbl r, loan_product l
 		 WHERE r.lPdName = l.lPdName
 		   AND r.id = #{id}
+	  ORDER BY r.lReqDate DESC
 	</select>
 	
 	<!-- 대출 심사 결좌 조회 -->
@@ -56,16 +61,17 @@
 		  FROM loan_req_tbl r, loan_product l, customer c
 		 WHERE r.lPdName = l.lPdName
 		   AND c.id = r.id
+      ORDER BY r.lReqDate DESC
 	</select>
 	
 	<!-- 대출 신청 승인 상태 업데이트 -->
 	<update id="updateLoanAccept" parameterType="int">
 		UPDATE loan_req_tbl
-		SET lState='승인완료', lReason='승인완료'
-		WHERE lReqNum=#{lreqNum}
+		   SET lState='승인완료', lReason='승인완료'
+		 WHERE lReqNum=#{lreqNum}
 	</update>
 	
-	<!-- 대출 신청 승인 상태 업데이트 -->
+	<!-- 대출 신청 거절 상태 업데이트 -->
 	<update id="updateLoanRefuse" parameterType="java.util.Map">
 		UPDATE loan_req_tbl
 		SET lState='승인거절', lReason=#{lreason}
@@ -73,10 +79,10 @@
 	</update>
 	
 	<!-- 대출계좌 생성 1 -->
-	<insert id="createAccount" parameterType="int">
+	<insert id="createAccount" parameterType="java.util.Map">
 		INSERT INTO account_tbl(acNumber, id, bankName, acState, acBalance, acType, acPwd, newDate, trsfLimit)
-		SELECT 
-			FLOOR(DBMS_RANDOM.VALUE(5100000000, 5109999999)),
+		VALUES( 
+			#{acNumber},
 			(SELECT id FROM loan_req_tbl WHERE lReqNum=#{lreqNum}),
 			'돼지은행',
 			'OPEN',
@@ -84,8 +90,7 @@
 			'대출계좌',
 			(SELECT acPwd FROM loan_req_tbl WHERE lReqNum=#{lreqNum}),
 			SYSDATE,
-			10000000
-			FROM DUAL
+			10000000)
 	</insert>
 	
 	<!-- 대출계좌 생성 2 -->
@@ -144,13 +149,30 @@
 		 WHERE lWillPayNum=#{lwillPayNum}
 	</update>
 	
-	<!-- 대출 납부 거래내역 추가  -->
+	<!-- 대출 납부 거래내역 추가 (대출거래내역) -->
 	<insert id="insertLoanDetail" parameterType="com.pigbank.project.dto.LoanAccountDetailDTO">
 		INSERT INTO l_detail_tbl(lPaidNum, lWillPayNum, lPayDate)
 		VALUES((SELECT NVL(MAX(lPaidNum)+1, 1) FROM l_detail_tbl),
 				#{lwillPayNum},
 				sysdate)
 	</insert>
+	
+	<!-- 대출 납부 거래내역 추가 (입출금통장 거래내역) -->
+	<update id="insertTransfer1" parameterType="com.pigbank.project.dto.LoanAccountDetailDTO">
+	INSERT INTO TRANSFER_TBL(tNum, acNumber, tDepositnum, tDepositBank, tType, tAmount, myMemo, yourMemo, tDate)
+		VALUES((SELECT NVL(MAX(tNum) + 1, 1) FROM TRANSFER_TBL), 
+				#{acNumber},
+		        (SELECT l.acNumber 
+		          FROM l_account_tbl l, l_accountPay_tbl p 
+		         WHERE l.lnum = p.lnum 
+		           AND p.lWillPayNum = #{lwillPayNum})
+		        '돼지은행', 
+		        '출금', 
+		        #{cancelFee} + #{acBalance}, 
+		        '대출금상환금납부',
+		        '대출상환금납부', 
+		        sysdate)
+	</update>
 	
 	<!-- 대출 계좌 잔금 업데이트  -->
 	<update id="calcLoanBalance" parameterType="com.pigbank.project.dto.LoanAccountDetailDTO">
@@ -171,4 +193,51 @@
 		   SET acBalance = (acBalance - #{lmonTotal})
 		 WHERE acNumber = #{acNumber}
 	</update>
+	
+	<!-- 대출 중도상환 정보 조회  -->
+	<select id="getLoanCancelInfo" parameterType="int" resultType="com.pigbank.project.dto.LoanAccountDTO">
+		SELECT p.lPdName, r.lPrincipal, r.lPeriod, p.lRate, p.lCxlRate, a.acNumber, a.acBalance, l.lStartDate, l.lEndDate
+		  FROM loan_product p, account_tbl a, l_account_tbl l, loan_req_tbl r
+		 WHERE l.lReqNum = r.lReqNum
+		   AND r.lPdName = p.lPdName
+		   AND l.acNumber = a.acNumber
+		   AND l.lNum = #{lnum}
+	</select>
+	
+	<!-- 대출 중도 상환 처리  -->
+	<!-- 1.1 입출금 계좌에서 출금 처리  -->
+	<update id="updateAccountBalance" parameterType="com.pigbank.project.dto.LoanAccountDTO">
+		UPDATE account_tbl
+		   SET acBalance = acBalance - (#{cancelFee}+#{acBalance})
+		 WHERE acNumber = #{acNumber}
+	</update>
+	
+	<!-- 1.2 입출금 계좌 거래내역 추가  -->
+	<update id="insertTransfer2" parameterType="com.pigbank.project.dto.LoanAccountDTO">
+		INSERT INTO TRANSFER_TBL(tNum, acNumber, tDepositnum, tDepositBank, tType, tAmount, myMemo, yourMemo, tDate)
+			VALUES((SELECT NVL(MAX(tNum) + 1, 1) FROM TRANSFER_TBL), 
+					#{acNumber},
+			        (SELECT acNumber FROM l_account_tbl WHERE lnum = #{lnum}), 
+			        '돼지은행', 
+			        '출금', 
+			        #{cancelFee} + #{acBalance}, 
+			        '대출중도상환',
+			        '대출중도상환', 
+			        sysdate)
+	</update>
+	
+	<!-- 1.3 대출계좌 잔액 업데이트  -->
+	<update id="updateLoanBalance" parameterType="com.pigbank.project.dto.LoanAccountDTO">
+		UPDATE account_tbl
+		   SET acBalance = 0, acState = 'DELETE'
+		 WHERE acNumber = (SELECT acNumber FROM l_account_tbl WHERE lnum = #{lnum})
+	</update>
+	
+	<!-- 1.4 대출 스케쥴 업데이트  -->
+	<update id="updateLoanPayAll" parameterType="com.pigbank.project.dto.LoanAccountDTO">
+		UPDATE l_accountPay_tbl
+		   SET lPayStatus = '납부완료'
+		 WHERE lNum = #{lnum}
+	</update>
+	
 </mapper>

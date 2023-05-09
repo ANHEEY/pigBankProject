@@ -13,8 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pigbank.project.dto.AccountDTO;
+import com.pigbank.project.dto.LoanAccountDTO;
 import com.pigbank.project.dto.LoanAccountDetailDTO;
 import com.pigbank.project.dto.LoanProductDTO;
 import com.pigbank.project.dto.LoanRequestDTO;
@@ -90,6 +89,15 @@ public class SooController {
 		service.deleteProduct(lpdName);
 	}
 	
+	// 대출상품 검색
+	@GetMapping(value="/loan/loanSearch/{lpdName}")
+	public List<LoanProductDTO> searchPdLoan(@PathVariable String lpdName)
+		throws ServletException, IOException {
+		logger.info("<<< url -searchPdLoan() >>>");
+		
+		return service.searchLoan(lpdName);
+	}
+		
 	// 대출상품 신청
 	@PostMapping(value="/loan/customer/addReq")
 	public void requestPdLoan(@RequestBody LoanRequestDTO loanRequestDTO)
@@ -178,10 +186,36 @@ public class SooController {
 	@PostMapping(value="/loan/customer/updatePayStatus")
 	public void updateLoanPayInfo(@RequestBody LoanAccountDetailDTO loanAccountDetailDTO)
 		throws ServletException, IOException {
-			logger.info("<<< url - updateLoanPayInfo >>>");
+		logger.info("<<< url - updateLoanPayInfo >>>");
 		
-			service.doLoanPay(loanAccountDetailDTO);
+		service.doLoanPay(loanAccountDetailDTO);
 	}
+	
+	
+    // 대출 중도상환 정보 조회
+    @GetMapping(value="/loanAccount/loanCancelInfo/{lnum}")
+    public LoanAccountDTO getloanCancelInfo(@PathVariable int lnum) 
+    	throws ServletException, IOException {
+    	logger.info("<<< url - getloanCancelInfo >>>");
+  
+    	LoanAccountDTO loanAccountDTO = service.loanCancelInfo(lnum);
+  
+    	return loanAccountDTO; 
+    
+    }
+    
+    // 대출 중도상환 처리
+    @PostMapping(value="/loan/customer/updatLoanCancel")
+    public void updateLoanCancel(@RequestBody LoanAccountDTO loanAccountDTO) 
+    	throws ServletException, IOException {
+    	logger.info("<<< url - updateLoanCancel >>>");
+  
+    	service.loanCancel(loanAccountDTO);
+    
+    }
+ 
+ 
+	
 
 	
 }

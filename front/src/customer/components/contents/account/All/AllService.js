@@ -66,9 +66,15 @@ function AllService() {
     console.log(id);
     return axios.get(loanAccount + 'listLoanSate/' + id);    
   }
+
   function fetchLoanSchedule(lnum) {
     console.log('대출스케쥴호출!!')
     return axios.get(loanAccount + 'listLoanSchedule/' + lnum);    
+  }
+
+  function fetchLoanCancelInfo(lnum) {
+    console.log('대출중도해지정보호출!!')
+    return axios.get(loanAccount + 'loanCancelInfo/' + lnum);    
   }
 
   function fetchTransfer() {
@@ -93,6 +99,7 @@ function AllService() {
     fetchLoan,
     fetchLoanState,
     fetchLoanSchedule,
+    fetchLoanCancelInfo,
     fetchTransfer,
     fetchExchangeUpdate,
     fetchExchangeList,

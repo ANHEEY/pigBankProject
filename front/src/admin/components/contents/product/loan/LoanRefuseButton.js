@@ -2,14 +2,21 @@ import  React, {useState} from "react";
 import  LoanApiService from "./LoanApiService";
 import { Button, Modal, Form, Col } from 'react-bootstrap';
 
-const LoanRefuseButton = ({ lreqNum, onUpdate  }) => {
+const LoanRefuseButton = ({ lreqNum, onUpdate, isDisabled }) => {
 
     // 모달 
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
+    const handleShow = () =>  {
+        if (isDisabled) {
+            // 이미 처리된 대출신청은 중복처리 되지 않게 방지
+            alert("이미 처리된 대출 신청입니다.");
+            return;
+        }
+        setShow(true);
+        
+    }    
     // 거절 사유
     const [lreason, setLreason] = useState("");
             
