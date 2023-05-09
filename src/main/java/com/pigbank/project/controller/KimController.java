@@ -85,14 +85,6 @@ public class KimController {
 	}
 	
 	// [고객] ------------------------------------------------------------------------------------------------------------------------------------
-	// 1건 고객정보 조회
-//	@GetMapping(value="/custInfoById/{id}")
-//	public List<CustomerDTO> custInfoById(HttpServletRequest req, Model model) throws ServletException, IOException {
-//		logger.info("<< URL - custInfoById(입출금계좌 생성시 고객정보 조회) >>");
-//		
-//		return null;
-//	}
-	
 	// 자유입출금계좌 개설
 	@PostMapping(value="/custAInsert")
 	public void custAccInsert(@RequestBody AccountDTO aPdDTO) throws ServletException, IOException {
@@ -139,11 +131,10 @@ public class KimController {
 		System.out.println("적금계좌 개설완료!");
 	}
 	
-	// 자동이체
-	
 	// -----------------------------------------------------------------------------------------------------------------------------------------
 	
 	// 적금중도해지 조회(적금 1건에 대한 Detail)
+	
 	
 	// 적금금중도해지 페이지(중도해지 신청)
 	

@@ -49,7 +49,7 @@ function Saving() {
   }
 
   const filteredMembers = members.filter(
-    (member) => member.spdName.indexOf(selectedOption) !== -1
+    (member) => member.spdname.indexOf(selectedOption) !== -1
   );
 
   const tableHeadStyle={
@@ -70,7 +70,7 @@ function Saving() {
                   <select value={selectedOption} onChange={handleChange}>
                   <option value="">전체선택</option>
                       {members.map((member) => (
-                  <option key={member.spdName} value={member.spdName}>{member.spdName}</option>
+                  <option key={member.spdname} value={member.spdname}>{member.spdname}</option>
                   ))}
                   </select>    
                   </p>  
@@ -111,7 +111,7 @@ function Saving() {
                     <TableBody>
                       {filteredMembers.map((member) => (
                         <TableRow key={member.acNumber}>
-                          <TableCell >{member.spdName}</TableCell>
+                          <TableCell >{member.spdname}</TableCell>
                           <TableCell>{acNum(member.acNumber)}</TableCell>
                           <TableCell>{formatDate(member.sjoinDate)}</TableCell>
                           <TableCell>{formatDate(member.sendDate)}</TableCell>

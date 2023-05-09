@@ -74,10 +74,10 @@ function AllSaving() {
               <TableBody>
                 {members.map((member) => (
                   <TableRow key={member.snum}>
-                    <TableCell style={{color:"navy"}}>{member.spdName}</TableCell>
+                    <TableCell style={{color:"navy"}}>{member.spdname}</TableCell>
                     <TableCell>{acNum(member.acNumber)}</TableCell>
-                    <TableCell>{formatDate(member.sendDate)}</TableCell>
                     <TableCell>{formatDate(member.sjoinDate)}</TableCell>
+                    <TableCell>{formatDate(member.sendDate)}</TableCell>
                     <TableCell>{formatCurrency(member.samount)}</TableCell>
                     </TableRow>
                 ))}
