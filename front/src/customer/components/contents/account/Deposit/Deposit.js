@@ -91,16 +91,16 @@ function Deposit() {
             <div className="card-header" style={{backgroundColor:"#dbe2d872" }}>
               <ul className="nav nav-tabs card-header-tabs">
                 <li className="nav-item">
-                  <a className="nav-link active" href="/customer/account/Account"><Link to="/customer/account/Account">입출금계좌</Link></a>
+                  <a className="nav-link active" href="/customer/account/Account">입출금계좌</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link disabled" href="/customer/account/Deposit/">예금계좌</a>
+                  <a className="nav-link disabled" href="/customer/account/Deposit">예금계좌</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link active" href="/customer/account/Saving" ><Link to="/customer/account/Saving">적금계좌</Link></a>
+                  <a className="nav-link active" href="/customer/account/Saving" >적금계좌</a>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link active" href="/customer/account/Loan"><Link to="/customer/account/Loan">대출계좌</Link></a>
+                    <a className="nav-link active" href="/customer/account/Loan">대출계좌</a>
                 </li>
                 </ul>
                     </div>
@@ -144,6 +144,7 @@ function Deposit() {
             </div>
               
             </section>
+            <br/><br/><br/>
           </main>
         );
       }

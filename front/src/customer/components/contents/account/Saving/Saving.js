@@ -70,7 +70,7 @@ function Saving() {
                   <select value={selectedOption} onChange={handleChange}>
                   <option value="">전체선택</option>
                       {members.map((member) => (
-                  <option key={member.spdname} value={member.spdname}>{member.spdname}</option>
+                  <option key={member.snum} value={member.spdname}>{member.spdname}</option>
                   ))}
                   </select>    
                   </p>  
@@ -80,17 +80,17 @@ function Saving() {
                   <div className="card-header" style={{backgroundColor:"#dbe2d872" }}>
                       <ul className="nav nav-tabs card-header-tabs">
                       <li className="nav-item">
-                          <a className="nav-link active" href="/customer/account/Account"><Link to="/customer/account/Account">입출금계좌</Link></a>
+                          <a className="nav-link active" href="/customer/account/Account">입출금계좌</a>
                       </li>
 
                       <li className="nav-item">
-                          <a className="nav-link active" href="/customer/account/Deposit"><Link to="/customer/account/Deposit">예금계좌</Link></a>
+                          <a className="nav-link active" href="/customer/account/Deposit">예금계좌</a>
                       </li>
                       <li className="nav-item">
                           <a className="nav-link disabled" href="/customer/account/Loan">적금계좌</a>
                       </li>
                       <li className="nav-item">
-                          <a className="nav-link active" href="/customer/account/Loan" ><Link to="/customer/account/Loan">대출계좌</Link></a>
+                          <a className="nav-link active" href="/customer/account/Loan" >대출계좌</a>
                       </li>
                       </ul>
                   </div>
@@ -110,7 +110,7 @@ function Saving() {
                     </TableHead>
                     <TableBody>
                       {filteredMembers.map((member) => (
-                        <TableRow key={member.acNumber}>
+                        <TableRow key={member.snum}>
                           <TableCell >{member.spdname}</TableCell>
                           <TableCell>{acNum(member.acNumber)}</TableCell>
                           <TableCell>{formatDate(member.sjoinDate)}</TableCell>
@@ -126,6 +126,7 @@ function Saving() {
           </div>
             
           </section>
+          <br/><br/><br/>
         </main>
         );
       

@@ -62,7 +62,7 @@ const LoanState = () => {
               <div className="card-header" >
                   <ul className="nav nav-tabs card-header-tabs" >
                   <li className="nav-item">
-                      <a className="nav-link active" href="/customer/account/Loan"><Link to="/customer/account/Loan">대출계좌조회</Link></a>
+                      <a className="nav-link active" href="/customer/account/Loan">대출계좌조회</a>
                   </li>
                   </ul>
               </div>
@@ -81,8 +81,9 @@ const LoanState = () => {
                   </TableRow>
                 </TableHead>
 
-                {loanStateList.map((product) => (
+               
                 <TableBody style={{textAlign:"center"}}>
+                {loanStateList.map((product) => (
                     <TableRow key={product.lreqNum}>
                       <TableCell style={{color:"navy"}}>{product.lreqNum}</TableCell>
                       <TableCell>{product.lpdName}</TableCell>
@@ -91,8 +92,9 @@ const LoanState = () => {
                       <TableCell>{new Date(product.lreqDate).toLocaleDateString().slice(0,-1)}</TableCell>
                       <TableCell>{product.lstate}[{product.lreason}]</TableCell>
                     </TableRow>
-                </TableBody>
                 ))}
+                </TableBody>
+
               </Table>
           </div>
           <br />

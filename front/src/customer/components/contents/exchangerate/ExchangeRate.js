@@ -70,7 +70,7 @@ function ExchangeRate (){
 
                     <TableBody>
                         {members2.map((member) => (
-                            <TableRow key={member.exno}>
+                            <TableRow key={member.exNo}>
                                 <TableCell style={tableCellStyle}>{member.exNo}</TableCell>
                                 <TableCell style={tableCellStyle}>{member.name}</TableCell>
                                 <TableCell style={tableCellStyle}>{member.price}</TableCell>

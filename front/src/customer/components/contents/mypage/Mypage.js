@@ -216,12 +216,12 @@ function Mypage(){
                                 name="name" value={customer.name}  onChange={onChange}/></Col>
                 </Form.Group>
                 <br/>
-                <Form.Group as={Row} className="mb-3" controlId="formGroupEmail">
+                <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>이메일</Form.Label>
                     <Col sm={3}><Form.Control type="text" placeholder="이메일을 입력하세요" 
-                                name="email1" value={customer.email1} onChange={onChange}/></Col>
+                                name="email1" id="email1" value={customer.email1} onChange={onChange}/></Col>
                     @
-                    <Col sm={3}><Form.Control type="text" name="email2" value={customer.email2} onChange={onChange} /></Col>
+                    <Col sm={3}><Form.Control type="text" id="email2" name="email2" value={customer.email2} onChange={onChange} /></Col>
                     <Col sm={3}>
                     <Form.Select aria-label="Default select example" onChange={setDomain}>
                         <option value="">직접입력</option>

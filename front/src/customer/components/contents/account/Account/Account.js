@@ -80,7 +80,7 @@ function Account() {
                   <select value={selectedOption} onChange={handleChange}>
                   <option value="">전체선택</option>
                       {members.map((member) => (
-                  <option key={member.bankName} value={member.bankName}>{member.bankName}</option>
+                  <option key={member.acNumber} value={member.bankName}>{member.bankName}</option>
                   ))}
                   </select>    
                   </p>  
@@ -93,19 +93,19 @@ function Account() {
                           <a className="nav-link disabled" href="/customer/account/Account">입출금계좌</a>
                       </li>
                       <li className="nav-item">
-                          <a className="nav-link active" href="/customer/account/Deposit"><Link to="/customer/account/Deposit">예금계좌</Link></a>
+                          <a className="nav-link active" href="/customer/account/Deposit">예금계좌</a>
                       </li>
                       <li className="nav-item">
-                          <a className="nav-link active" href="/customer/account/Saving"><Link to="/customer/account/Saving">적금계좌</Link></a>
+                          <a className="nav-link active" href="/customer/account/Saving">적금계좌</a>
                       </li>
                       <li className="nav-item">
-                          <a className="nav-link active" href="/customer/account/Loan" ><Link to="/customer/account/Loan">대출계좌</Link></a>
+                          <a className="nav-link active" href="/customer/account/Loan" >대출계좌</a>
                       </li>
                       </ul>
                   </div>
               </div>
 
-              <div class="card-body">
+              <div className="card-body">
                   <Table>
                     <TableHead >
                       <TableRow >
@@ -139,6 +139,7 @@ function Account() {
           </div>
             
           </section>
+          <br/><br/><br/>
         </main>
       );
     

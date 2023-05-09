@@ -81,7 +81,7 @@ function Loan() {
                 <select value={selectedOption} onChange={handleChange}>
                     <option value="">전체선택</option>
                     {members.map((member) => (
-                    <option key={member.lpdName} value={member.lpdName}>{member.lpdName}</option>
+                    <option key={member.lnum} value={member.lpdName}>{member.lpdName}</option>
                     ))}
                 </select>    
                 </p>  
@@ -91,16 +91,19 @@ function Loan() {
                 <div className="card-header" style={{backgroundColor:"#dbe2d872" }}>
                     <ul className="nav nav-tabs card-header-tabs">
                     <li className="nav-item">
+                        <a className="nav-link active" href="/customer/account/Account">입출금계좌</a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link active" href="/customer/account/Deposit">예금계좌</a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link active" href="/customer/account/Saving">적금계좌</a>
+                    </li>
+                    <li className="nav-item">
                         <a className="nav-link disabled" href="/customer/account/Loan">대출계좌</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link active" href="/customer/account/Saving" ><Link to="/customer/account/Saving">적금계좌</Link></a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link active" href="/customer/account/Deposit"><Link to="/customer/account/Deposit">예금계좌</Link></a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link active" href="/customer/account/LoanState"><Link to="/customer/account/LoanState">대출심사결과조회</Link></a>
+                        <a className="nav-link active" href="/customer/account/LoanState">대출심사결과조회</a>
                     </li>
                     </ul>
                 </div>
