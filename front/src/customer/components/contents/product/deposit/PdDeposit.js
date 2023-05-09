@@ -1,4 +1,4 @@
-// 예금 상품
+// 고객 예금 상품 리스트
 import { Typography } from "@mui/material";
 import React,{useState,useEffect} from "react";
 import {Form, Col, Row, Button, InputGroup, ListGroup, Stack } from 'react-bootstrap';
@@ -40,7 +40,6 @@ function PdDeposit () {
     },[]);
     
     const dPdDetail=(dpdName)=> { 
-        /* window.localStorage.setItem(); */
         window.localStorage.setItem("dpdName", dpdName);
         navigate('/customer/product/deposit/pdDepositDetail');
     }

@@ -74,13 +74,13 @@ class MainBoard extends Component{
     render() {    
         return (
             <div className='container' >
-                <div style={{display: 'flex'}}>
+                <div style={{display: 'flex', justifyContent:'space-between'}}>
                     <div >
                         <Box ml={6}>
-                            <List variant="outlined" sx={{ width: 300, bgcolor: 'background.body', borderRadius: 'sm',boxShadow: 'sm'}} >
+                            <List variant="outlined" sx={{ width: 250, bgcolor: 'background.body', borderRadius: 'sm',boxShadow: 'sm'}} >
                                 <ListItem nested>
                                     <ListSubheader>예금상품추천</ListSubheader>
-                                    {this.state.members1.map((member1) => (
+                                    {this.state.members1.slice(0, 5).map((member1) => (
                                     <List key={member1.dpdName}>
                                         <ListItem>
                                             <ListItemButton>{member1.dpdName}</ListItemButton>
@@ -93,10 +93,10 @@ class MainBoard extends Component{
                     </div>
                     <div >
                         <Box ml={6}>
-                            <List variant="outlined" sx={{ width: 300, bgcolor: 'background.body', borderRadius: 'sm',boxShadow: 'sm'}} >
+                            <List variant="outlined" sx={{ width: 250, bgcolor: 'background.body', borderRadius: 'sm',boxShadow: 'sm'}} >
                                 <ListItem nested>
                                     <ListSubheader>적금상품추천</ListSubheader>
-                                    {this.state.members2.map((member2) => (
+                                    {this.state.members2.slice(0, 5).map((member2) => (
                                     <List key={member2.spdname}>
                                         <ListItem>
                                             <ListItemButton>{member2.spdname}</ListItemButton>
@@ -109,10 +109,10 @@ class MainBoard extends Component{
                     </div>
                     <div>    
                         <Box  ml={6}>
-                            <List variant="outlined" sx={{ width: 300, bgcolor: 'background.body', borderRadius: 'sm', boxShadow: 'sm'}} >
+                            <List variant="outlined" sx={{ width: 250, bgcolor: 'background.body', borderRadius: 'sm', boxShadow: 'sm'}} >
                                 <ListItem nested>
                                     <ListSubheader>대출상품추천</ListSubheader>
-                                    {this.state.members3.map((member3) => (
+                                    {this.state.members3.slice(0, 5).map((member3) => (
                                     <List key={member3.lpdName}>
                                         <ListItem>
                                             <ListItemButton>{member3.lpdName}</ListItemButton>
@@ -125,10 +125,10 @@ class MainBoard extends Component{
                     </div>
                     <div>              
                         <Box  ml={6}>
-                            <List variant="outlined" sx={{ width: 300, bgcolor: 'background.body', borderRadius: 'sm', boxShadow: 'sm'}}>
+                            <List variant="outlined" sx={{ width: 350, bgcolor: 'background.body', borderRadius: 'sm', boxShadow: 'sm'}}>
                                 <ListItem nested>
                                     <ListSubheader>공지사항</ListSubheader>
-                                    {this.state.csboard.filter((board) => board.nshow !== 'N').slice(0, 10).map((board) => (
+                                    {this.state.csboard.filter((board) => board.nshow !== 'N').slice(0, 5).map((board) => (
                                     <List key={board.nnum}>
                                         <ListItem>
                                             <ListItemButton>{board.ntitle}</ListItemButton>

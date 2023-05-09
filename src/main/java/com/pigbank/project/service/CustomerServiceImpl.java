@@ -183,6 +183,10 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		dao.cusDelete(id);
 	}   
+	
+	//-------------------------------------------------------------------
+	
+	
    //관리자 예금 상품 등록
    @Override
    public void depositPdSaveAction(DepositProductDTO depositProductDTO) {
@@ -272,14 +276,17 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		depositAccountDTO.setAcNumber(Integer.parseInt(acNumber));
 		
-		LocalDate today = LocalDate.now();		
-		int dPeriod = depositAccountDTO.getDperiod();
-		LocalDate addedDate = today.plus(dPeriod, ChronoUnit.MONTHS);
-		depositAccountDTO.setDendDate(java.sql.Date.valueOf(addedDate));
+		LocalDate today = LocalDate.now();//가입 날짜 = 당일		
+		int dPeriod = depositAccountDTO.getDperiod();//예금 가입기간 구하기
+		LocalDate addedDate = today.plus(dPeriod, ChronoUnit.MONTHS);//가입 날짜에 예금 가입기간 더하기
+		depositAccountDTO.setDendDate(java.sql.Date.valueOf(addedDate));//더해진 날짜를 만기 날짜로 설정
 				
-		dao.cusDepositOpenAll(depositAccountDTO);
-		dao.cusDepositOpen(depositAccountDTO);
-		dao.cusDepositOpenWithdraw(depositAccountDTO);
+		dao.cusDepositOpenAll(depositAccountDTO);//전체 계좌 개설
+		dao.cusDepositOpen(depositAccountDTO);//예금 계좌 개설
+		dao.cusDepositOpenWithdraw(depositAccountDTO);//입출금 통장에서 출금
+		dao.normalToDepositTranfer(depositAccountDTO);//입출금 통장에 계좌이체 내역 추가
+		dao.depositFromNormalTransfer(depositAccountDTO);//예금계좌에 계좌이체 내역 추가
+		
 	}
 
 	//--------------------------------------------------------------------
@@ -335,9 +342,11 @@ public class CustomerServiceImpl implements CustomerService{
 	public void cusDepositCxlRegAction(DepositAccountDTO depositAccountDTO) {
 		System.out.println("service - cusDepositCxlRegAction");
 
-		dao.cusDepositCxlReg(depositAccountDTO);
-		dao.cusDepositCxlRegD(depositAccountDTO);
-		dao.cusDepositCxlPut(depositAccountDTO);
+		dao.cusDepositCxlReg(depositAccountDTO);//예금의 전체 계좌 내용 변경 - 'DELETE',acBalance=0 
+		dao.cusDepositCxlRegD(depositAccountDTO);//예금 계좌 내용 변경 - damount, dexpamount = 0
+		dao.cusDepositCxlPut(depositAccountDTO);//만기시 입금계좌로 해지 금액 입금
+		dao.cxlNormalFromDepositTransfer(depositAccountDTO);//입출금 통장에 계좌이체 내역 추가
+		dao.cxlDepositToNormalTransfer(depositAccountDTO);//예금계좌에 계좌이체 내역 추가
 		
 	}
 	

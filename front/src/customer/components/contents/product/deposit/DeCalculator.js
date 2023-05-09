@@ -1,3 +1,4 @@
+//예금 계산기 입력
 import { Row, Col, Button, Stack, Form } from 'react-bootstrap';
 import React,{useState} from "react";
 import CalculatorResult from './CalculatorResult';

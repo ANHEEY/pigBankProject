@@ -1,3 +1,4 @@
+//회원가입 페이지
 import React,{useState} from 'react';
 import {Form,Row,Col,Container,Stack,Button} from 'react-bootstrap';
 import { Typography} from "@mui/material";

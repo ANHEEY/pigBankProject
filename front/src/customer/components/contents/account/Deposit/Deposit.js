@@ -4,6 +4,7 @@ import {Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import AllService from "../All/AllService";
 import {Link, useNavigate } from 'react-router-dom';
 import "../../../../resources/css/product/saving.css";
+import {Button} from 'react-bootstrap';
 
 
 function Deposit() {
@@ -26,6 +27,7 @@ function Deposit() {
     AllService.fetchDeposit(id)
       .then(res => {
         setMembers(res.data);
+        console.log(res.data);
       })
       .catch(err => {
         console.log('reloadMemberList() Error!!',err);
@@ -65,6 +67,11 @@ function Deposit() {
     fontWeight: "bold",
   }
 
+  const depositCxlExp=(dnum)=>{
+    window.localStorage.setItem("dNum",dnum);
+    navigate('/customer/account/deposit/depositClose');
+  }
+
   return (
     <main className="main">
       <section className="section">
@@ -76,7 +83,7 @@ function Deposit() {
             <select value={selectedOption} onChange={handleChange}>
               <option value="">전체선택</option>
               {members.map((member) => (
-                <option key={member.dpdName} value={member.dpdName}>{member.dpdName}</option>
+                <option key={member.dnum} value={member.dpdName}>{member.dpdName}</option>
               ))}
             </select>
           </p>
@@ -109,21 +116,25 @@ function Deposit() {
                           <TableCell style={tableHeadStyle}>만기날짜</TableCell>
                           <TableCell style={tableHeadStyle}>예상금리금액</TableCell>
                           <TableCell style={tableHeadStyle}>잔액</TableCell>
+                          <TableCell style={tableHeadStyle}>해지</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
                         {filteredMembers.map((member) => (
-                          <TableRow key={member.dpdName} >
+                          <TableRow key={member.dnum} >
                             <TableCell onClick={() => handleDpdNameClick(member.acNumber)}>
                               <Link to={`/customer/account/deposit/depositdetail/${member.acNumber}/${member.id}`}>
                                 {member.dpdName}
                               </Link>
                             </TableCell>
-                              <TableCell>{acNum(member.acNumber)}</TableCell>
+                            <TableCell>{acNum(member.acNumber)}</TableCell>
                             <TableCell>{formatDate(member.djoinDate)}</TableCell>
                             <TableCell>{formatDate(member.dendDate)}</TableCell>
                             <TableCell>{formatCurrency(member.dexpAmount)}</TableCell>
                             <TableCell>{formatCurrency(member.damount)}</TableCell>
+                            <TableCell>
+                              <Button variant="success" size='sm' style={{background:"green", color:"white"}} onClick={()=>depositCxlExp(member.dnum)}>해지신청</Button>
+                            </TableCell>
                            </TableRow>
                         ))}
                       </TableBody>

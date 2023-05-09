@@ -1,3 +1,4 @@
+//예금 계산기 계산하는곳
 import { Table } from 'react-bootstrap';
 
 function CalculatorResult({props}){

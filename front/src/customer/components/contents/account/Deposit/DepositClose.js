@@ -1,3 +1,4 @@
+//고객 예금 해지 예상 금액 페이지, 해지 가능
 import React, {useEffect,useState} from 'react';
 import { Form, Button,Container,Stack } from 'react-bootstrap';
 import '../../../../resources/css/account/closeDetail.css';
@@ -13,12 +14,12 @@ export default function DepositClose() {
     const [dacPwd,setDacPwd] = useState('');
 
     useEffect(()=>{
-        //axios.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`;
 
-        DepositService.cusDepositCxlExpInfo(4444)//window.localStorage.getItem("dNum")
+        DepositService.cusDepositCxlExpInfo(window.localStorage.getItem("dNum"))
             .then(res=>{
                 setCusDepositExpInfo(res.data);
                 console.log(res.data);
+                localStorage.removeItem("dNum");
             })
             .catch(err=>{
                 console.log("cusDepositCxlExpInfo() error!!!!",err);

@@ -93,7 +93,7 @@
 
 	<!-- 고객 예금 상품 리스트 -->
 	<select id="pdDepositList" resultType="com.pigbank.project.dto.DepositProductDTO">
-		SELECT * FROM DEPOSIT_PRODUCT WHERE show='y'
+		SELECT * FROM DEPOSIT_PRODUCT WHERE show='y' ORDER BY dRegDate DESC
 	</select>
 	
 	<!-- 고객 예금 검색 리스트 -->
@@ -130,6 +130,20 @@
 		 WHERE acNumber=#{withdrawAcNumber}
 	</update>
 	
+	<!-- 고객 예금 가입 - 입출금 통장에 계좌이체 내역 추가 -->
+	<insert id="normalToDepositTranfer" parameterType="com.pigbank.project.dto.DepositAccountDTO">
+		INSERT INTO transfer_tbl(tNum,acNumber,tDepositNum,tDepositBank,tType,tAmount,myMemo,yourMemo)
+		VALUES ((SELECT NVL(MAX(tNum)+1,1) FROM transfer_tbl),#{withdrawAcNumber},
+				#{acNumber},'돼지은행','출금',#{damount},'예금가입출금','예금가입금액')
+	</insert>
+   
+   	<!-- 고객 예금 가입 - 예금계좌에 계좌이체 내역 추가 -->
+   	<insert id="depositFromNormalTransfer" parameterType="com.pigbank.project.dto.DepositAccountDTO">
+		INSERT INTO transfer_tbl(tNum,acNumber,tDepositNum,tDepositBank,tType,tAmount,myMemo,yourMemo)
+		VALUES ((SELECT NVL(MAX(tNum)+1,1) FROM transfer_tbl),#{acNumber},
+				#{withdrawAcNumber},'돼지은행','입금',#{damount},'예금가입금액','예금가입출금')
+	</insert> 
+	
 	<!-- /////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
 	<!-- 고객 예금 해지 예상 조회 -->
@@ -148,7 +162,7 @@
            AND d.dNum=#{dNum} 
 	</select>
 	
-   	<!-- 고객 예금 해지 신청 - 전체 계좌 내용 번경 -->
+   	<!-- 고객 예금 해지 신청 - 전체 계좌 내용 변경 -->
    	<update id="cusDepositCxlReg" parameterType="com.pigbank.project.dto.DepositAccountDTO">
    		UPDATE account_tbl
    		   SET acState='DELETE', acBalance=0
@@ -168,6 +182,20 @@
    		   SET acBalance=acBalance+#{dexpAmount}
    		 WHERE acNumber=#{ddeAccount}
    	</update>
+   	
+   	<!-- 고객 예금 해지 신청 - 입출금 통장에 계좌이체 내역 추가 -->
+   	<insert id="cxlNormalFromDepositTransfer" parameterType="com.pigbank.project.dto.DepositAccountDTO">
+		INSERT INTO transfer_tbl(tNum,acNumber,tDepositNum,tDepositBank,tType,tAmount,myMemo,yourMemo)
+		VALUES ((SELECT NVL(MAX(tNum)+1,1) FROM transfer_tbl),#{ddeAccount}
+				,#{acNumber},'돼지은행','입금',#{dexpAmount},'예금해지입금','예금해지출금')
+	</insert>
+   
+   	<!-- 고객 예금 해지 신청 - 예금계좌에 계좌이체 내역 추가 -->
+   	<insert id="cxlDepositToNormalTransfer" parameterType="com.pigbank.project.dto.DepositAccountDTO">
+		INSERT INTO transfer_tbl(tNum,acNumber,tDepositNum,tDepositBank,tType,tAmount,myMemo,yourMemo)
+		VALUES ((SELECT NVL(MAX(tNum)+1,1) FROM transfer_tbl),#{acNumber}
+				,#{ddeAccount},'돼지은행','출금',#{dexpAmount},'예금해지출금','예금해지입금')
+	</insert>
 
 	<!-- /////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	

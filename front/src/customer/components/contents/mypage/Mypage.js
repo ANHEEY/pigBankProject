@@ -1,4 +1,4 @@
-// 내정보
+// 회원 정보 수정페이지(탈퇴도 가능) 비밀번호 인증하고 들어올 수 있음 
 import React,{useState,useEffect} from 'react';
 import {Form,Row,Col,Container,Stack,Button} from 'react-bootstrap';
 import { Typography} from "@mui/material";
