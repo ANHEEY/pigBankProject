@@ -35,6 +35,7 @@ import com.pigbank.project.dto.CredentialsDTO;
 import com.pigbank.project.dto.CustomerDTO;
 import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
+import com.pigbank.project.dto.SavingAccountDTO;
 import com.pigbank.project.service.CustomerServiceImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -283,6 +284,35 @@ public class HeeController {
 	   logger.info("url - assetsManagement1");
 	   
 	   return service.assetsManagementAction1(id);
+   }
+   
+   //---------------------------------------------------------------------
+   
+   //입출금 계좌 상세페이지 정보 불러오기
+   @GetMapping(value="/acDetailInfo/{acNumber}")
+   public AccountDTO acDetailInfo(@PathVariable long acNumber)
+   		throws ServletException, IOException {
+	   logger.info("url - acDetailInfo");
+
+	   return service.acDetailInfoAction(acNumber);
+   }
+   
+   //예금 계좌 상세페이지 정보 불러오기
+   @GetMapping(value="/deDetailInfo/{acNumber}")
+   public DepositAccountDTO deDetailInfo(@PathVariable long acNumber)
+		   throws ServletException, IOException {
+	   logger.info("url - deDetailInfo");
+	   
+	   return service.deDetailInfoAction(acNumber);
+   }
+   
+   //적금 계좌 상세페이지 정보 불러오기
+   @GetMapping(value="/saDetailInfo/{acNumber}")
+   public SavingAccountDTO saDetailInfo(@PathVariable long acNumber)
+		   throws ServletException, IOException {
+	   logger.info("url - saDetailInfo");
+	   
+	   return service.saDetailInfoAction(acNumber);
    }
       
 }

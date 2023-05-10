@@ -216,6 +216,26 @@
 	
 	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	
+	<!-- 입출금 계좌 상세페이지 정보 불러오기 -->
+	<select id="acDetailInfo" parameterType="long" resultType="com.pigbank.project.dto.AccountDTO">
+		SELECT * FROM account_tbl WHERE acNumber=#{acNumber}
+	</select>
 	
+	<!-- 예금 계좌 상세페이지 정보 불러오기 -->
+	<select id="deDetailInfo" parameterType="long" resultType="com.pigbank.project.dto.DepositAccountDTO">
+		SELECT d.ACNUMBER,d.DPDNAME,d.DAMOUNT,d.DJOINDATE,d.DENDDATE,d.DDEACCOUNT,d.DEXPAMOUNT 
+		  FROM D_ACCOUNT_TBL d, ACCOUNT_TBL a  
+		 WHERE a.ACNUMBER =d.ACNUMBER 
+		   AND d.ACNUMBER =#{acNumber}
+	</select>
+	
+	<!-- 적금 계좌 상세페이지 정보 불러오기 -->
+	<select id="saDetailInfo" parameterType="long" resultType="com.pigbank.project.dto.SavingAccountDTO">
+		SELECT s.ACNUMBER, s.SPDNAME, s.SAMOUNT, s.SEXPAMOUNT, s.SJOINDATE,s.SENDDATE,a.ACBALANCE, atr.ACNUMBER AS withdrawAcNumber
+  		  FROM S_ACCOUNT_TBL s, ACCOUNT_TBL a, auto_transferReg_tbl atr
+ 		 WHERE a.ACNUMBER =s.ACNUMBER
+   		   AND a.ACNUMBER = atr.ADEPOSITNUM 
+   		   AND s.ACNUMBER = #{acNumber}
+	</select>
 	
 </mapper>

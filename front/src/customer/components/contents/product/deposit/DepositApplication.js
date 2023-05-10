@@ -60,6 +60,7 @@ function DepositApplication(){
             .then(res=>{
                 setDepositProduct(res.data);
                 console.log(res.data);
+                localStorage.removeItem("dpdName");
             })
             .catch(err => {
                 console.log('depositPdDetail() Error!!!', err);

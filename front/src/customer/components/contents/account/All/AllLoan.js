@@ -19,6 +19,7 @@ function AllLoan (){
       AllService.fetchLoan(id)
         .then(res => {
           setMembers(res.data);
+          console.log(res.data);
         })
         .catch(err => {
           console.log('reloadMemberList() Error!!',err);
@@ -71,7 +72,7 @@ function AllLoan (){
 
             <TableBody>
             {members.map((member) => (
-              <TableRow key={member.lreqNum}>
+              <TableRow key={member.lnum}>
                 <TableCell style={{color:"navy"}}>{member.lpdName}</TableCell>
                 <TableCell>{acNum(member.acNumber)}</TableCell>
                 <TableCell>{formatDate(member.lreqDate)}</TableCell>

@@ -43,6 +43,9 @@ public class SavingAccountDTO {
 	private String aState; 		
 	private String myMemo;		 
 	private String yourMemo;	
-	private int aUpdate; 
+	private int aUpdate;
+	
+	//적금 계좌 상세 정보 페이지를 위한 변수
+	private long acBalance;
 	
 }

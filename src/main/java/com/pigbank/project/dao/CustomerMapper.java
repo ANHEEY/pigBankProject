@@ -9,6 +9,7 @@ import com.pigbank.project.dto.AssetManagementDTO;
 import com.pigbank.project.dto.CustomerDTO;
 import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
+import com.pigbank.project.dto.SavingAccountDTO;
 
 @Mapper
 public interface CustomerMapper {
@@ -115,4 +116,15 @@ public interface CustomerMapper {
    public List<AssetManagementDTO> assetsManagement1(String id);
    
    public List<AssetManagementDTO> assetsManagement2(String id);
+   
+   //----------------------------------------------------------------------
+   
+   //입출금 계좌 상세페이지 정보 불러오기
+   public AccountDTO acDetailInfo(long acNumber);
+   
+   //예금 계좌 상세페이지 정보 불러오기
+   public DepositAccountDTO deDetailInfo(long acNumber);
+   
+   //적금 계좌 상세페이지 정보 불러오기
+   public SavingAccountDTO saDetailInfo(long acNumber);
 }

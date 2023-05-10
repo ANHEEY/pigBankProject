@@ -30,7 +30,6 @@ export default function SearchItem(props){
     }
 
     const dPdDetail=(dpdName)=> { 
-        /* window.localStorage.setItem(); */
         window.localStorage.setItem("dpdName", dpdName);
         navigate('/customer/product/deposit/pdDepositDetail');
     }

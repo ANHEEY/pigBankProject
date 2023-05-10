@@ -133,7 +133,7 @@ function Deposit() {
                             <TableCell>{formatCurrency(member.dexpAmount)}</TableCell>
                             <TableCell>{formatCurrency(member.damount)}</TableCell>
                             <TableCell>
-                              <Button variant="success" size='sm' style={{background:"green", color:"white"}} onClick={()=>depositCxlExp(member.dnum)}>해지신청</Button>
+                              <Button variant="success" size='sm' style={{background:"green", color:"white"}} onClick={()=>depositCxlExp(member.dnum)} disabled={member.damount === 0}>해지신청</Button>
                             </TableCell>
                            </TableRow>
                         ))}

@@ -33,12 +33,9 @@ function CertificationPage() {
                 if(res.data === 1){
                     console.log(cusInfo.pwd);
                     console.log(res);
-                    //아이디를 불러와야함
-                    //window.localStorage.setItem("id",id);
                     navigate('/customer/mypage/mypage');
                 }else{
                     alert('본인인증실패!!');
-                    //setCusInfo.pwd("");
                     setCusInfo(prevCusInfo => ({...prevCusInfo, pwd: ""}));
                 }
    
@@ -80,8 +77,9 @@ function CertificationPage() {
                 <Button variant="success" size="lg" onClick={certification}>회원인증</Button>
                 <Button variant="outline-success" size="lg" onClick={cxl}>취소</Button>
             </Stack> 
+            <br/><br/><br/><br/><br/><br/><br/>
         </Container>
-
+    
     );
 
 }

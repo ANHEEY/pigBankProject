@@ -160,7 +160,7 @@ function Header() {
                                 </li>
                                 <li className="dropdown"><Link to="/customer/mypage/certificationPage"><span>마이페이지</span> <i className="bi bi-chevron-down"></i></Link>
                                     <ul>
-                                        <li><Link to="/customer/mypage/mypage">내 정보</Link></li>
+                                        <li><Link to="/customer/mypage/certificationPage">내 정보</Link></li>
                                         <li><Link to="/customer/mypage/money">자산관리</Link></li>
                                     </ul>
                                 </li>

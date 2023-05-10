@@ -2,8 +2,8 @@ import React from 'react';
 import { Carousel } from 'react-bootstrap';
 
 import MainBoard from "../main/MainBoard";
-import piggy_bank from "../../../resources/img/piggy_bank.jpg"
-import bank_img from '../../../resources/img/bank_img.png';
+import piggy_bank from "../../../resources/img/main1.jpg"
+import bank_img from '../../../resources/img/main3.jpg';
 
 import '../../../resources/css/style.css'
 
