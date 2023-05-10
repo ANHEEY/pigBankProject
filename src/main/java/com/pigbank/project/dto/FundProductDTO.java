@@ -29,10 +29,12 @@ public class FundProductDTO {
 
     // f_having_tbl (매수한 펀드 보유 리스트) column
     private int fHavingNum;    // PK
-    private int fNowPrice;
+    private long fNowPrice;
     private int fNowProfit;
     private String fProfit;
-    private int fNowTotal;
+    private long fNowTotal;
+    private int fHavingCnt;
+    private long fPrincipal;
 
     // 펀드계좌 생성할때 필요하여 account 정보 추가
     private long acNumber;

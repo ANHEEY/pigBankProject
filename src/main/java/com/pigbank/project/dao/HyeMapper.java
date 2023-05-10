@@ -40,4 +40,7 @@ public interface HyeMapper {
 	public List<FundAccountDTO> listFundAccountById(String id);
 	// 계좌 상세내역 보기
 	public List<FundProductDTO> detailAccountByFNum(int fNum);
+
+	// 펀드 보유내역 조회
+	public List<FundProductDTO> havingFundById(String id);
 }

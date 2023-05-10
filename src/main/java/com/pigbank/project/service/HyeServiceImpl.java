@@ -107,13 +107,18 @@ public class HyeServiceImpl implements HyeService{
 		System.out.println("========== 서비스 | listFundAccountById | ==========");
 		return dao.listFundAccountById(id);
 	};
-
-	// 계좌 상세내역 보기
+	// 계좌 상세 거래내역 보기
 	public List<FundProductDTO> detailAccountByFNum(int fNum)
 			throws  ServletException, IOException{
 		System.out.println("========== 서비스 | detailAccountByFNum | ==========");
-
-		return null;
+		return dao.detailAccountByFNum(fNum);
+	};
+	/**				보유한 펀드 조회 				**/
+	// 고객별 펀드 보유내역 목록
+	public List<FundProductDTO> havingFundById(String id)
+			throws ServletException, IOException{
+		System.out.println("========== 서비스 | havingFundById | ==========");
+		return  dao.havingFundById(id);
 	};
 
 

@@ -20,15 +20,20 @@ class FundAPIService {
   /*                      펀드 거래 내역                        */
   // 펀드 계좌목록 가져오기 
   listFundAccount(id) {
-    console.log(' 펀드 계좌 조회 ', id)
+    console.log(' 펀드 계좌 조회 , id : ', id)
     return axios.get(CONTROLLER_API + 'listFundAccount/' + id)
   }
   // 펀드 계좌의 거래 내역 가져오기 
-  fundAccountDetail(fNum) {
-    console.log('펀드 계좌의 거래내역 조회', fNum)
-    return axios.get(CONTROLLER_API + 'fundAccountDetail/' + fNum)
+  fundAccountDetail(fnum) {
+    console.log('펀드 계좌의 거래내역 조회', fnum)
+    return axios.get(CONTROLLER_API + 'fundAccountDetail/' + fnum)
   }
-
+  /*                      펀드 보유 내역                        */
+  // 펀드 보유내역 가져오기
+  fundHavingList(id) {
+    console.log('펀드 보유내역 조회 , id : ', id)
+    return axios.get(CONTROLLER_API + 'fundHavingList/' + id);
+  }
   /*************      DJANGO_API_SERVICE        *************/
   // 펀드 상품 목록
 

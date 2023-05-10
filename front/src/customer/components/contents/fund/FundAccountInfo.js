@@ -52,11 +52,8 @@ function FundAccountInfo() {
     //     }
     // };
 
-
     const viewDetail = (fnum, pwd) => {
         if (Number(pwd) === Number(faccount.find(f => f.fnum === fnum).facPwd)) {
-            console.log("pwd : " + pwd)
-            console.log("facPwd : " + faccount.find(f => f.fnum === fnum).facPwd)
             const url = `/customer/fund/info/detail/${fnum}`;
             const newWindow = window.open(url, "_blank", "width=800,height=600");
             if (!newWindow) {
@@ -68,7 +65,6 @@ function FundAccountInfo() {
             alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요.')
         }
     }
-
     return (
         // fNum, fAcNumber ,fBalance ,fNewDate ,fLastDate , fAcPwd ,fTrsfLimit :계좌 + 계좌 펀드 거래 내역 리스트
         <div className="fund-div">

@@ -51,7 +51,12 @@ public interface HyeService {
 	public List<FundAccountDTO> listFundAccountById(String id)
 		throws  ServletException, IOException;
 
-	// 계좌 상세내역 보기
+	// 계좌별 상세내역 보기
 	public List<FundProductDTO> detailAccountByFNum(int fNum)
 		throws  ServletException, IOException;
+
+	// 고객별 펀드 보유내역 목록
+	public List<FundProductDTO> havingFundById(String id)
+		throws ServletException, IOException;
+
 }

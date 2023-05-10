@@ -91,5 +91,18 @@ public class HyeController {
 
 		return service.listFundAccountById(id);
 	}
-
+	// 펀드계좌 상세거래내역 목록 가져오기
+	@GetMapping(value = "/customer/fundAccountDetail/{fNum}")
+	public List<FundProductDTO> detailAccountByFNum(@PathVariable int fNum)
+		throws  ServletException, IOException{
+		logger.info("=== url | detailAccountByFNum ===");
+		return  service.detailAccountByFNum(fNum);
+	}
+	/*************				펀드 보유 내역 			******************/
+	@GetMapping(value = "/customer/fundHavingList/{id}")
+	public List<FundProductDTO> havingFundById(@PathVariable String id)
+		throws  ServletException, IOException{
+		logger.info("=== url | havingFundById ===");
+		return  service.havingFundById(id);
+	}
 }
