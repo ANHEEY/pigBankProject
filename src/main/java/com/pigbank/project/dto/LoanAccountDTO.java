@@ -1,6 +1,8 @@
 package com.pigbank.project.dto;
 
-import java.sql.Date;
+
+
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,18 +19,24 @@ public class LoanAccountDTO {
 	@Id
 	private long lnum;
 	private long acNumber;
-	private String lPdName;
+	private String lpdName;
 	private String id;
-	private int lPrincipal;
-	private int lPeriod; 
-	private String lPurpose;
-	private String lIncome;
-	private String lState;
-	private Date lReqDate;
-	private Date lEndDate;
+	private int lprincipal;
+	private String lpurpose;
+	private String lincome;
+	private String lstate;
+	private Date lreqDate;
 	private int acPwd;
 	private long trsfLimit;
+	private String lReason;
 	
+	// 중도해지시 필요한 정보를 불러오기 위한 추가 변수
+	private double lrate;
+	private double lcxlRate;
+	private int acBalance;
+	private Date lstartDate;
+	private Date lendDate;
+	private int lperiod; 
+	private int cancelFee; // 중도상환수수료 
 	
-
 }

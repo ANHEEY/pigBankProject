@@ -19,11 +19,12 @@ public class LoanProductDTO {
 	private String lcontent;
 	private String lgrade;
 	private int lmaxPeriod;
-	private int lmaxPrice; // 컬럼명 바꿈
+	private int lmaxPrice; 
 	private double lrate;
 	private String ltype;
 	private double lcxlRate;
 	private Date lregDate;
+	
 	
 
 }

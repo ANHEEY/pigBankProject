@@ -28,13 +28,23 @@ public interface KimMapper {
 	public void sPdDelete(String spdname);
 	
 	// [Customer]
+	// SavingProduct Search
+	public List<SavingProductDTO> spdSearch(String spdname);
+	
 	// Account 입출금 계좌 개설
 	public void aPdInsert(AccountDTO aPdDTO);
 	
 	// SavingAccount 적금계좌생성1(account_tbl => pk acNumber)
-	public void custAPdInsert(SavingAccountDTO custSPdDTO);
+	public void custAPdInsert(SavingAccountDTO savingDTO);
 	
 	// SavingAccount 적금계좌생성2(s_account_tbl => pk sNum, fk acNumber)
-	public void custSPdInsert(SavingAccountDTO custSPdDTO);
+	public void custSPdInsert(SavingAccountDTO savingDTO);
+	
+	// SavingAccount 적금 중도해지 조회
+	public SavingAccountDTO findByCloseDetail(long acNumber);
+	
+	// SavingAccount 적금 중도해지
+	public void sAccClose(long acNumber);
 	
 }
+

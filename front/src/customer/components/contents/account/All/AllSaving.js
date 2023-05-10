@@ -9,19 +9,26 @@ function AllSaving() {
         
     const [members, setMembers] = useState([]);
     
-
     useEffect(() => {
-      reloadMemberList();
+      reloadMemberList(window.localStorage.getItem("id"));
     }, []);
 
-    const reloadMemberList = () => {
-      AllService.fetchSaving()
+    const reloadMemberList = (id) => {
+      AllService.fetchSaving(id)
         .then(res => {
           setMembers(res.data);
         })
         .catch(err => {
           console.log('reloadMemberList() Error!!',err);
         });
+    }
+
+    const formatDate = (dateStr) => {
+      const date = new Date(dateStr);
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
+      return `${year}-${month}-${day}`;
     }
 
     const formatCurrency = (value) => {
@@ -67,10 +74,10 @@ function AllSaving() {
               <TableBody>
                 {members.map((member) => (
                   <TableRow key={member.snum}>
-                    <TableCell style={{color:"navy"}}>{member.spdName}</TableCell>
+                    <TableCell style={{color:"navy"}}>{member.spdname}</TableCell>
                     <TableCell>{acNum(member.acNumber)}</TableCell>
-                    <TableCell>{member.sendDate}</TableCell>
-                    <TableCell>{member.sjoinDate}</TableCell>
+                    <TableCell>{formatDate(member.sjoinDate)}</TableCell>
+                    <TableCell>{formatDate(member.sendDate)}</TableCell>
                     <TableCell>{formatCurrency(member.samount)}</TableCell>
                     </TableRow>
                 ))}

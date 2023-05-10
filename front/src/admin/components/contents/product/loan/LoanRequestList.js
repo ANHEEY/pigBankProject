@@ -12,6 +12,9 @@ const LoanRequestList = () => {
     // 대출 신청 리스트
     const [listLoanRequest, setListLoanRequest]= useState([]);
 
+    // 승인 버튼 비활성화 설정
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
     // class 컴포넌트에서의 라이프사이클 역할과 같음
     useEffect(() => {
         LoanApiService.fetchLoanRequest()
@@ -32,8 +35,9 @@ const LoanRequestList = () => {
             }
             return product;
           });
-        
+
           setListLoanRequest(newListLoanRequest);
+          setIsButtonDisabled(true);
     }
 
     // 승인거절 업데이트
@@ -46,6 +50,7 @@ const LoanRequestList = () => {
           });
         
           setListLoanRequest(newListLoanRequest);
+          setIsButtonDisabled(true);
     }
     return(
         <div className="component-div2">
@@ -76,21 +81,25 @@ const LoanRequestList = () => {
                             <td>{product.lrate}%</td>
                             <td>{product.lperiod}년</td>
                             <td>{product.lprincipal.toLocaleString()}만원</td>
-                            <td>{new Date(product.lreqDate).toLocaleDateString().slice(0,-1)}</td>
-                            <td>{product.lstate} </td>
-                            <td >
+                            <td>{new Date(product.lreqDate).toLocaleDateString().slice(0,-1)}</td>                            
+                            <td>{product.lstate}</td>
+                            <td>
+                            {product.lstate === '승인전' ? (
                                 <div style={{display: "flex", flexDirection: "row"}}>
-                                    <LoanAcceptButton lreqNum={product.lreqNum} onUpdate={handleLoanState}/>
-                                    <LoanRefuseButton lreqNum={product.lreqNum} onUpdate={handleLoanState2}/>
+                                <LoanAcceptButton lreqNum={product.lreqNum} onUpdate={handleLoanState} isDisabled={isButtonDisabled}/>
+                                <LoanRefuseButton lreqNum={product.lreqNum} onUpdate={handleLoanState2} isDisabled={isButtonDisabled}/>
                                 </div>
+                            ) : (
+                                <div style={{display: "flex", flexDirection: "row"}}>
+                                <LoanAcceptButton lreqNum={product.lreqNum} onUpdate={handleLoanState} isDisabled={true}/>
+                                <LoanRefuseButton lreqNum={product.lreqNum} onUpdate={handleLoanState2} isDisabled={true}/>
+                                </div>
+                            )}
                             </td>
                         </tr>
                         )}
                     </tbody>
                     </Table>
-                    {/* <div className="d-flex justify-content-end">
-                    <Button variant="dark"><Link to="add" style={{color:"white"}}>상품등록</Link></Button>
-                    </div> */}
                 </div>
             </div>
             <br />

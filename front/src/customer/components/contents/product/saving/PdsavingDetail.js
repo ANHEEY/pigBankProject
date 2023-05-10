@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Tab, Tabs, Row, Col, Container, Button, Card, Stack } from 'react-bootstrap';
 import {MdOutlineDateRange, MdOutlineMoney, MdAutoGraph} from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PdSavingService from './PdSavingService';
-// import SPdResultCalculator from './SPdResultCalculator';
+import SPdCalculator from './SPdCalculator';
 
 function PdsavingDetail () {
     
@@ -25,9 +25,11 @@ function PdsavingDetail () {
     const navigate = useNavigate();
 
     const goRegister = () => { 
-
         /* window.localStorage.setItem(); */
         navigate('/customer/product/saving/application');
+    }
+    const savingList = () => {
+        navigate('/customer/product/pdSaving');
     }
 
     return (
@@ -64,15 +66,14 @@ function PdsavingDetail () {
                     <br/><br/>
                     <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto">
                         <Button className="button" variant="success" size="lg" onClick={goRegister}>상품신청</Button>
-                        <Button variant="outline-secondary" size="lg"> 상품목록</Button>
+                        <Button variant="outline-secondary" size="lg" onClick={savingList}>상품목록</Button>
                     </Stack>
                     <br/>
                     </Card.Body>
                     <Card.Footer>
                         <Card.Title className="mt-3" as="h4">적금 계산기</Card.Title>
                         <br/>
-                        { /*원리(금), 만기상환 tabs 시작 */}
- {/* <SPdResultCalculator/> */}
+                        <SPdCalculator/>
                     </Card.Footer>
                 </Card>
                 <br />

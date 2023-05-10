@@ -27,7 +27,7 @@ import com.pigbank.project.dto.ExchangeRateDTO2;
 
 
 
-@CrossOrigin(origins="**", maxAge=3600)
+
 @RestController
 public class WebCrawlController {
 	

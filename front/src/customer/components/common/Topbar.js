@@ -23,8 +23,7 @@ function Topbar () {
     return (
         <section id="topbar" className="d-flex align-items-center">
             <div className="container d-flex justify-content-center justify-content-md-between">
-                <div className="contact-info d-flex align-items-center">
-                    <Link to="/admin" className="link">admin</Link>
+                <div className="contact-info d-flex align-items-center">            
                 </div>
                 {window.localStorage.getItem("id") === null &&
                 <div className="social-links d-none d-md-block">

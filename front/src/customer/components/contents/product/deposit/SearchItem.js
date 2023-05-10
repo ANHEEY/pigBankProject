@@ -1,7 +1,8 @@
+//예금 상품 검색
 import { Typography } from "@mui/material";
 import React,{useState,useEffect} from "react";
-import {Form, Col, Row, Button, InputGroup, ListGroup, Stack,Card,Container } from 'react-bootstrap';
-import { useNavigate,Link } from "react-router-dom";
+import { Row, Button, ListGroup, Stack } from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
 import PdDepositService from "./PdDepositService";
 
 export default function SearchItem(props){
@@ -26,10 +27,6 @@ export default function SearchItem(props){
 
     const style = {
         color: "green",
-    }
-
-    const label = {
-        textAlign: "center",
     }
 
     const dPdDetail=(dpdName)=> { 

@@ -30,14 +30,55 @@
 		 WHERE sPdName = #{spdname}
 	</update>
 	
+	<select id="spdSearch" parameterType="String" resultType="com.pigbank.project.dto.SavingProductDTO">
+		SELECT * FROM savings_product WHERE sPdName LIKE '%'||#{spdname}||'%' AND show='y'
+	</select>
+	
 	<!-- cust-Account(자유일출금 개설) -->
 	<insert id="aPdInsert" parameterType="com.pigbank.project.dto.AccountDTO">
-	INSERT INTO account_tbl(acNumber, id, bankName, acState, acType, acPwd)
-	VALUES (
-	     '110' || LPAD(FLOOR(DBMS_RANDOM.VALUE(1, 10000000)), 7, '0'),
-    #{id}, '돼지은행', 'OPEN', '입출금통장', #{acPwd})
+		INSERT INTO account_tbl(acNumber, id, bankName, acState, acType, acPwd)
+		VALUES (
+		     '110' || LPAD(FLOOR(DBMS_RANDOM.VALUE(1, 10000000)), 7, '0'),
+	    #{id}, '돼지은행', 'OPEN', '입출금통장', #{acPwd})
 	</insert>
-	
 	<!-- cust-SavingAccount(적금계좌 생성) -->
-	<!--  -->
+	<!-- 1) 계좌 개설 -->
+	<insert id="custAPdInsert" parameterType="com.pigbank.project.dto.SavingAccountDTO">
+	  INSERT INTO account_tbl(acNumber, id, acBalance, bankName, acState, acType, acPwd)
+	  VALUES (
+	    #{acNumber}, #{id}, #{samount},'돼지은행', 'OPEN', '적금계좌', #{acPwd})
+	</insert>
+	<!-- 2) 적금계좌 개설(acNumber => FK) -->
+	<insert id="custSPdInsert" parameterType="com.pigbank.project.dto.SavingAccountDTO">
+	  INSERT INTO s_account_tbl(sNum, acNumber, sPdName, sAmount, sExpAmount, sEndDate, sJoinDate, sDeAccount, sstartDate)
+	  VALUES (
+	    (SELECT NVL(MAX(sNum)+1,1) FROM s_account_tbl),
+	    #{acNumber},
+	    #{spdname},
+	    #{samount},
+	    #{sexpAmount},
+	    #{sendDate},
+	    sysdate,
+	    #{sdeAccount},
+	    #{sstartDate}
+	  )
+	</insert>
+	<!-- 적금 가입 후 입출금 통장에서 가입금액 빼기 -->
+	<update id="custSavingOpenWithdraw" parameterType="com.pigbank.project.dto.SavingAccountDTO">
+		UPDATE account_tbl
+		   SET acBalance=acBalance-#{samount}
+		 WHERE acNumber=#{withdrawAcNumber}
+	</update>
+	
+	<!-- 적금 중도해지 상세페이지 -->
+	<select id="findByCloseDetail" parameterType="long" resultType="com.pigbank.project.dto.SavingAccountDTO">
+		SELECT * FROM s_account_tbl
+		 WHERE acNumber = #{acNumber}
+	</select>
+	
+	<!-- 적금 중도해지 -->
+	<update id="sAccClose" parameterType="long">
+		
+	</update>
+
 </mapper>

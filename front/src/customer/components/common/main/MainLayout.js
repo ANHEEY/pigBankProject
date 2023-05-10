@@ -11,7 +11,8 @@ import '../../../resources/css/style.css'
 function MainLayout() {
     return (
         <div className='carousel' >
-            <Carousel style={{ width: '100%', height: '600px'}}>
+            <br/><br/>
+            <Carousel style={{ width: '75%', height: '600px'}}>
                 <Carousel.Item>
                     <img className="d-block w-100 h-280" 
                         src={bank_img} alt="First slide" 

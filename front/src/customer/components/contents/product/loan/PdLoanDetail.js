@@ -58,7 +58,7 @@ function PdLoanDetail() {
               <Card.Title className="mt-3">대출 금액</Card.Title>
               <Card.Text>
               {product.lmaxPrice && (
-                <span>최대 {product.lmaxPrice.toLocaleString()}만원</span>
+                <span>최대 {product.lmaxPrice ? (product.lmaxPrice).toLocaleString(): ''}만원</span>
               )}
               </Card.Text>
             </Col>

@@ -1,4 +1,4 @@
-//예금 상세 페이지
+//고객 예금 상품 상세 페이지
 import { Table, Tab, Tabs, Row, Col, Container, Button, Card, Stack } from 'react-bootstrap';
 import { SlCalender, SlGraph } from "react-icons/sl";
 import { BsCash } from "react-icons/bs";
@@ -57,7 +57,7 @@ function PdDepositDetail() {
               <SlCalender size="30" color="#009000"/>
               <Card.Title className="mt-3">가입기간</Card.Title>
               <Card.Text>
-                {depositProduct.dperiod}개월
+                최소 1개월부터 최대 {depositProduct.dperiod}개월까지
               </Card.Text>
             </Col>
             <Col>

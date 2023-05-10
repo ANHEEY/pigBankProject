@@ -19,26 +19,42 @@
 		SELECT * FROM loan_product
 	</select>
 	
-	<select id="depositAccountList" resultType="com.pigbank.project.dto.DepositAccountDTO">
-		SELECT da.dNum, a.id, da.acNumber, da.dPdName, da.dAmount, da.dExpAmount, da.dJoinDate, da.dEndDate, da.dDeAccount
+	<select id="depositAccountList" parameterType="String" resultType="com.pigbank.project.dto.DepositAccountDTO">
+		SELECT  DISTINCT da.dNum, a.id,  da.acNumber, da.dPdName, da.dAmount, da.dExpAmount, da.dJoinDate, da.dEndDate, da.dDeAccount
                 FROM d_account_tbl da, deposit_product d, account_tbl a
                 WHERE da.dPdName = d.dPdName
                 AND da.acNumber = a.acNumber
-                AND a.id='hong1234'
+                AND a.id=#{id}
 	</select>
 	
-	<select id="savingAccountList" resultType="com.pigbank.project.dto.SavingAccountDTO">
+	<select id="depositDetail" parameterType="long" resultType="com.pigbank.project.dto.TransferDTO">
+		SELECT DISTINCT t.tNum
+			, t.acNumber
+			, t.tDepositNum
+			, t.tDepositBank
+			, t.tType
+			, t.tAmount
+			, t.myMemo
+			, t.yourMemo
+			, t.tDate
+		FROM d_account_tbl da, transfer_tbl t
+		WHERE da.acNumber = t.acNumber 
+		AND t.acNumber = #{acNumber}
+		ORDER BY t.tDate DESC 
+	</select>
+	
+	<select id="savingAccountList" parameterType="String" resultType="com.pigbank.project.dto.SavingAccountDTO">
 		SELECT *  
 		FROM s_account_tbl s, ACCOUNT_TBL a  
 		WHERE s.ACNUMBER = a.ACNUMBER  
-		AND id='hong1234'
+		AND a.id=#{id}
 	</select>
 	
-	<select id="loanAccountList" resultType="com.pigbank.project.dto.LoanAccountDTO">
+	<select id="loanAccountList" parameterType="String" resultType="com.pigbank.project.dto.LoanAccountDTO">
 		SELECT *
           FROM  l_account_tbl l, loan_req_tbl r
           WHERE l.LREQNUM  = r.LREQNUM 
-          AND id = 'hong1234'
+          AND id =#{id} 
 	</select>
 	
 	<select id="loanState" resultType="com.pigbank.project.dto.LoanAccountDTO">
@@ -50,10 +66,27 @@
 	    WHERE id = 'hong1234'
 	</select>
 	
-	<select id="accountList" resultType="com.pigbank.project.dto.AccountDTO">
+	<select id="accountList" parameterType="String" resultType="com.pigbank.project.dto.AccountDTO">
 		SELECT *
 		FROM account_tbl
-		WHERE acNumber=11022456542
+		WHERE acType='입출금통장'
+	  	AND id=#{id}
+	</select>
+	
+	<select id="accountDetail" parameterType="long" resultType="com.pigbank.project.dto.TransferDTO">
+		SELECT DISTINCT t.tNum
+			, t.acNumber
+			, t.tDepositNum
+			, t.tDepositBank
+			, t.tType
+			, t.tAmount
+			, t.myMemo
+			, t.yourMemo
+			, t.tDate
+		FROM account_tbl a, transfer_tbl t
+		WHERE a.ACNUMBER = t.ACNUMBER 
+		AND a.ACNUMBER = #{acNumber}
+		ORDER BY t.tDate DESC
 	</select>
 	
 	<select id="transferList" resultType="com.pigbank.project.dto.TransferDTO">

@@ -40,7 +40,7 @@ function All() {
         <section>
         
         <Form>
-        <div classname="container1" style={{
+        <div className="container1" style={{
         display: "flex",
         alignItems: "center",
         
@@ -167,7 +167,7 @@ function All() {
           !accountChecked &&
           !loanChecked) ||
           loanChecked ? (
-            <div class="account_card" >
+            <div className="account_card" >
                 <div>
                     <h4>대출계좌</h4>
                     <AllLoan />

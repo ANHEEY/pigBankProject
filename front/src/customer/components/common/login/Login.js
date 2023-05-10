@@ -1,3 +1,4 @@
+//로그인 페이지
 import React,{useState} from "react";
 import {Typography} from "@mui/material";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -5,8 +6,6 @@ import {Form, Row, Col, Container, Stack, Button} from 'react-bootstrap';//npm i
 import { useNavigate } from "react-router-dom";
 import { getAuthToken, request, setAuthToken,setId,getId } from '../../helpers/axios_helper';
 import axios from 'axios';   // npm install axios
-
-
 
 function Login() {
     const navigate = useNavigate();
@@ -89,8 +88,6 @@ function Login() {
        navigate('/customer/*');
        
     }
-    //여기까지 추가
-
 
         return(
             <Container style={{
@@ -135,6 +132,7 @@ function Login() {
                     <Button variant="success" onClick={login}>로그인</Button>
                     <Button variant="outline-success" onClick={cxl}>취소</Button>
                 </Stack> 
+                <br/><br/><br/><br/><br/>
             </Container>
         );
 

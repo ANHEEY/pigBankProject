@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pigbank.project.dto.AccountDTO;
@@ -74,47 +76,77 @@ public class ChuController {
 	}
 	
 	//입출금통장계좌조회
-	@GetMapping(value="/account")
-	public List<AccountDTO> accountList(HttpServletRequest req, Model model)
+	@GetMapping(value="/account/{id}")
+	public List<AccountDTO> accountList(@PathVariable String id)
 			throws ServletException, IOException {
 		logger.info("<<< url - accountList >>>");
 		
-		List<AccountDTO> list = service.accountList(req, model);
+		List<AccountDTO> list = service.accountList(id);
+		
+		System.out.println(list);
+		return list;
+	}
+	
+	//입출금통장상세
+	@GetMapping(value="/accountDetail/{acNumber}")
+	public List<TransferDTO> accountDetail(@PathVariable("acNumber") Long acNumber)
+			throws ServletException, IOException {
+		logger.info("<<< url - accountList >>>");
+		
+		List<TransferDTO> list = service.accountDetail(acNumber);
+		
 		System.out.println(list);
 		return list;
 	}
 	
 	//예금계좌조회
-	@GetMapping(value="/depositAccount")
-	public List<DepositAccountDTO> depositAccountList(HttpServletRequest req, Model model)
+
+	// http://localhost:8081/depositAccount/{id}
+	@GetMapping(value="/depositAccount/{id}")
+	public List<DepositAccountDTO> depositAccountList(@PathVariable String id)
 			throws ServletException, IOException {
 		logger.info("<<< url - depositAccountList() >>>");
 		
-		List<DepositAccountDTO> list = service.depositAccountList(req, model);
+		List<DepositAccountDTO> list = service.depositAccountList(id);
+		System.out.println(list);
+		System.out.println(id);
+		return list;
+	}
+	
+	// http://localhost:8081/depositDetail/{dPdName}/{id}
+	// 예금계좌상세
+	@GetMapping(value="/depositDetail/{acNumber}")
+	public List<TransferDTO> depositDetail(@PathVariable("acNumber") Long acNumber)
+			throws ServletException, IOException {
+		logger.info("<<< url - depositDetail() >>>");
+		System.out.println("acNumber:"+ acNumber);
+		List<TransferDTO> list = service.depositDetail(acNumber);
 		System.out.println(list);
 		
 		return list;
 	}
 	
 	//적금계좌조회
-	@GetMapping(value="/savingAccount")
-	public List<SavingAccountDTO> savingAccountList(HttpServletRequest req, Model model)
+	@GetMapping(value="/savingAccount/{id}")
+	public List<SavingAccountDTO> savingAccountList(@PathVariable String id)
 			throws ServletException, IOException {
 		logger.info("<<< url - savingAccountList() >>>");
 		
-		List<SavingAccountDTO> list = service.savingAccountList(req, model);
+		List<SavingAccountDTO> list = service.savingAccountList(id);
+		
+		System.out.println(id);
 		System.out.println(list);
 		
 		return list;
 	}
 	
 	//대출계좌조회
-	@GetMapping(value="/loanAccount")
-	public List<LoanAccountDTO> loanAccountList(HttpServletRequest req, Model model)
+	@GetMapping(value="/loanAccount/{id}")
+	public List<LoanAccountDTO> loanAccountList(@PathVariable String id)
 			throws ServletException, IOException {
 		logger.info("<<< url - loanAccount() >>>");
 		
-		List<LoanAccountDTO> list = service.loanAccountList(req, model);
+		List<LoanAccountDTO> list = service.loanAccountList(id);
 		System.out.println(list);
 		
 		return list;

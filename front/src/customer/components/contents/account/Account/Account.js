@@ -2,19 +2,27 @@
 import React, { useState, useEffect } from "react";
 import {Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import AllService from "../All/AllService";
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import "../../../../resources/css/product/saving.css";
 
 function Account() {
+
+  const navigate = useNavigate();
+
+  const handleDpdNameClick = (acNumber) => {
+    const id = window.localStorage.getItem("id");
+    navigate(`/customer/account/account/accountdetail/${acNumber}/${id}`);
+  };
+
   const [members, setMembers] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
 
   useEffect(() => {
-    reloadMemberList();
+    reloadMemberList(window.localStorage.getItem("id"));
   }, []);
 
-  const reloadMemberList = () => {
-    AllService.fetchAccount()
+  const reloadMemberList = (id) => {
+    AllService.fetchAccount(id)
       .then(res => {
         setMembers(res.data);
       })
@@ -72,32 +80,32 @@ function Account() {
                   <select value={selectedOption} onChange={handleChange}>
                   <option value="">전체선택</option>
                       {members.map((member) => (
-                  <option key={member.acType} value={member.acType}>{member.acType}</option>
+                  <option key={member.acNumber} value={member.bankName}>{member.bankName}</option>
                   ))}
                   </select>    
                   </p>  
                                       
-              <div class="card text-center">
+              <div className="card text-center">
                   
-                  <div class="card-header" style={{backgroundColor:"#dbe2d872" }}>
-                      <ul class="nav nav-tabs card-header-tabs">
-                      <li class="nav-item">
-                          <a class="nav-link disabled" href="/customer/account/Saving">입출금</a>
+                  <div className="card-header" style={{backgroundColor:"#dbe2d872" }}>
+                      <ul className="nav nav-tabs card-header-tabs">
+                      <li className="nav-item">
+                          <a className="nav-link disabled" href="/customer/account/Account">입출금계좌</a>
                       </li>
-                      <li class="nav-item">
-                          <a class="nav-link active" href="/customer/account/Loan"><Link to="/customer/account/Saving">적금계좌</Link></a>
+                      <li className="nav-item">
+                          <a className="nav-link active" href="/customer/account/Deposit">예금계좌</a>
                       </li>
-                      <li class="nav-item">
-                          <a class="nav-link active" href="/customer/account/Loan"><Link to="/customer/account/Loan">대출계좌</Link></a>
+                      <li className="nav-item">
+                          <a className="nav-link active" href="/customer/account/Saving">적금계좌</a>
                       </li>
-                      <li class="nav-item">
-                          <a class="nav-link active" href="/customer/account/Deposit" ><Link to="/customer/account/Deposit">예금계좌</Link></a>
+                      <li className="nav-item">
+                          <a className="nav-link active" href="/customer/account/Loan" >대출계좌</a>
                       </li>
                       </ul>
                   </div>
               </div>
 
-              <div class="card-body">
+              <div className="card-body">
                   <Table>
                     <TableHead >
                       <TableRow >
@@ -111,8 +119,12 @@ function Account() {
                     </TableHead>
                     <TableBody>
                       {filteredMembers.map((member) => (
-                        <TableRow key={member.acType}>
-                          <TableCell >{member.bankName}</TableCell>
+                        <TableRow key={member.acNumber} >
+                          <TableCell onClick={() => handleDpdNameClick(member.acNumber)} >
+                            <Link to={`/customer/account/account/accountdetail/${member.acNumber}/${member.id}`}>
+                              {member.bankName}
+                            </Link>
+                          </TableCell>
                           <TableCell>{member.acType}</TableCell>
                           <TableCell>{acNum(member.acNumber)}</TableCell>
                           <TableCell>{formatDate(member.newDate)}</TableCell>
@@ -127,6 +139,7 @@ function Account() {
           </div>
             
           </section>
+          <br/><br/><br/>
         </main>
       );
     

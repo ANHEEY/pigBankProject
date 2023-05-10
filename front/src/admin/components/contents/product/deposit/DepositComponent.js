@@ -1,4 +1,5 @@
-import { Form,Button,Table } from 'react-bootstrap';
+//관리자 예금 상품 리스트
+import { Button,Table } from 'react-bootstrap';
 import React, { useState,useEffect } from "react";
 import {Link} from 'react-router-dom';
 import AdminDepositService from "./AdminDepositService";
@@ -41,7 +42,7 @@ function DepositComponent(){
                           <tr>
                               <th>예금상품명</th>
                               <th>예금상품금리</th>
-                              <th>가입기간</th>
+                              <th>최대가입기간</th>
                               <th>예금최소금액</th>
                               <th>예금최대금액</th>
                               <th>중도해지시금리</th>
@@ -58,7 +59,7 @@ function DepositComponent(){
                                   <td>{product.dmin}만원</td>
                                   <td>{product.dmax}만원</td>
                                   <td>{product.dcxlRate}%</td>
-                                  <td>{product.dregDate}</td>
+                                  <td>{new Date(product.dregDate).toLocaleDateString().slice(0,-1)}</td>
                                   <td>
                                       <button className="customerinfoBtn" onClick={()=>detailProduct(product.dpdName)}>상세페이지</button>
                                   </td>

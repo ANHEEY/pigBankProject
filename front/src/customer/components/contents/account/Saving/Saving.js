@@ -2,19 +2,25 @@
 import React, { useState, useEffect } from "react";
 import {Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import AllService from "../All/AllService";
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import "../../../../resources/css/product/saving.css";
 
 function Saving() {    
   const [members, setMembers] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
 
+  const navigator = useNavigate();
+  const goRegister = (acNumber) => {
+      window.localStorage.setItem("acNumber", acNumber);
+      navigator('/customer/account/saving/savingClose');
+  }
+
   useEffect(() => {
-    reloadMemberList();
+    reloadMemberList(window.localStorage.getItem("id"));
   }, []);
 
-  const reloadMemberList = () => {
-    AllService.fetchSaving()
+  const reloadMemberList = (id) => {
+    AllService.fetchSaving(id)
       .then(res => {
         setMembers(res.data);
       })
@@ -40,8 +46,16 @@ function Saving() {
     return acNum;
   }
 
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   const filteredMembers = members.filter(
-    (member) => member.spdName.indexOf(selectedOption) !== -1
+    (member) => member.spdname.indexOf(selectedOption) !== -1
   );
 
   const tableHeadStyle={
@@ -62,32 +76,33 @@ function Saving() {
                   <select value={selectedOption} onChange={handleChange}>
                   <option value="">전체선택</option>
                       {members.map((member) => (
-                  <option key={member.spdName} value={member.spdName}>{member.spdName}</option>
+                  <option key={member.snum} value={member.spdname}>{member.spdname}</option>
                   ))}
                   </select>    
                   </p>  
                                       
-              <div class="card text-center">
+              <div className="card text-center">
                   
-                  <div class="card-header" style={{backgroundColor:"#dbe2d872" }}>
-                      <ul class="nav nav-tabs card-header-tabs">
-                      <li class="nav-item">
-                          <a class="nav-link disabled" href="/customer/account/Saving">적금계좌</a>
+                  <div className="card-header" style={{backgroundColor:"#dbe2d872" }}>
+                      <ul className="nav nav-tabs card-header-tabs">
+                      <li className="nav-item">
+                          <a className="nav-link active" href="/customer/account/Account">입출금계좌</a>
                       </li>
-                      <li class="nav-item">
-                          <a class="nav-link active" href="/customer/account/Loan"><Link to="/customer/account/Account">입출금</Link></a>
+
+                      <li className="nav-item">
+                          <a className="nav-link active" href="/customer/account/Deposit">예금계좌</a>
                       </li>
-                      <li class="nav-item">
-                          <a class="nav-link active" href="/customer/account/Loan"><Link to="/customer/account/Loan">대출계좌</Link></a>
+                      <li className="nav-item">
+                          <a className="nav-link disabled" href="/customer/account/Loan">적금계좌</a>
                       </li>
-                      <li class="nav-item">
-                          <a class="nav-link active" href="/customer/account/Deposit" ><Link to="/customer/account/Deposit">예금계좌</Link></a>
+                      <li className="nav-item">
+                          <a className="nav-link active" href="/customer/account/Loan" >대출계좌</a>
                       </li>
                       </ul>
                   </div>
               </div>
 
-              <div class="card-body">
+              <div className="card-body">
                   <Table>
                     <TableHead >
                       <TableRow >
@@ -97,17 +112,21 @@ function Saving() {
                         <TableCell style={tableHeadStyle}>만기날짜</TableCell>
                         <TableCell style={tableHeadStyle}>예상금리금액</TableCell>
                         <TableCell style={tableHeadStyle}>잔액</TableCell>
+                        <TableCell style={tableHeadStyle}>버튼</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {filteredMembers.map((member) => (
-                        <TableRow key={member.spdName}>
-                          <TableCell style={{color:"green"}}>{member.spdName}</TableCell>
+                        <TableRow key={member.snum}>
+                          <TableCell >{member.spdname}</TableCell>
                           <TableCell>{acNum(member.acNumber)}</TableCell>
-                          <TableCell>{member.sjoinDate}</TableCell>
-                          <TableCell>{member.sendDate}</TableCell>
+                          <TableCell>{formatDate(member.sjoinDate)}</TableCell>
+                          <TableCell>{formatDate(member.sendDate)}</TableCell>
                           <TableCell>{formatCurrency(member.sexpAmount)}</TableCell>
                           <TableCell>{formatCurrency(member.samount)}</TableCell>
+                          <TableCell>
+                            <button className="customerinfoBtn" onClick={() => goRegister(member.acNumber)}>계좌해지</button>
+                          </TableCell>
                           </TableRow>
                       ))}
                     </TableBody>
@@ -117,6 +136,7 @@ function Saving() {
           </div>
             
           </section>
+          <br/><br/><br/>
         </main>
         );
       

@@ -10,6 +10,10 @@
     const [amount, setAmount] = useState(0);
     const [result, setResult] = useState(null);
   
+    const handleExchangeList = (result) =>{
+      console.log(result)
+    }
+
     useEffect(() => {
       AllService.fetchExchangeList()
         .then(res => {
@@ -112,6 +116,7 @@
                     <span>
                       결과: {(result.toFixed(2))}{" "}
                       {selectedExchangeRate?.name}
+                      <button onClick={() => handleExchangeList(result)}>환전신청</button>
                     </span>
                   )}
               </TableCell> 

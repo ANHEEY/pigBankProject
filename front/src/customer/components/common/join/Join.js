@@ -1,11 +1,10 @@
+//회원가입 페이지
 import React,{useState} from 'react';
 import {Form,Row,Col,Container,Stack,Button} from 'react-bootstrap';
 import { Typography} from "@mui/material";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CustomerService from '../CustomerService';
 import { useNavigate } from "react-router-dom";
-
-
 
 function Join(){
     

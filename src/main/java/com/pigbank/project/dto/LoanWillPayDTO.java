@@ -14,11 +14,14 @@ public class LoanWillPayDTO {
 	@Id
 	private int lwillPayNum;
 	private int lpayTurn;
-	private int lnum;
+	private long lnum;
 	private int lmonTotal;
 	private int lmonRate;
 	private int lmonPrice;
 	private String lpayStatus;
+	
+	private long acNumber;
+	private String id;
 	
 
 }

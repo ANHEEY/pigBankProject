@@ -1,3 +1,4 @@
+//회원 수정, 탈퇴 전 인증페이지
 import React,{useState} from "react";
 import {Typography} from "@mui/material";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -5,7 +6,6 @@ import {Form, Row, Col, Container, Stack, Button} from 'react-bootstrap';//npm i
 import { useNavigate } from "react-router-dom";
 import CustomerService from "../../common/CustomerService";
 
-//회원 수정, 탈퇴 전 인증페이지
 function CertificationPage() {
     const navigate = useNavigate();
 

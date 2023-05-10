@@ -2,21 +2,32 @@
 import React, { useState, useEffect } from "react";
 import {Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import AllService from "../All/AllService";
-import {Link} from 'react-router-dom';
+import {Link, useNavigate } from 'react-router-dom';
 import "../../../../resources/css/product/saving.css";
+import {Button} from 'react-bootstrap';
+
 
 function Deposit() {
+
+  const navigate = useNavigate();
+
+  const handleDpdNameClick = (acNumber) => {
+    const id = window.localStorage.getItem("id");
+    navigate(`/customer/account/deposit/depositdetail/${acNumber}/${id}`);
+  };
+  
   const [members, setMembers] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
 
   useEffect(() => {
-    reloadMemberList();
+    reloadMemberList(window.localStorage.getItem("id"));
   }, []);
 
-  const reloadMemberList = () => {
-    AllService.fetchDeposit()
+  const reloadMemberList = (id) => {
+    AllService.fetchDeposit(id)
       .then(res => {
         setMembers(res.data);
+        console.log(res.data);
       })
       .catch(err => {
         console.log('reloadMemberList() Error!!',err);
@@ -40,12 +51,25 @@ function Deposit() {
     return acNum;
   }
 
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   const filteredMembers = members.filter(
     (member) => member.dpdName.indexOf(selectedOption) !== -1
   );
 
   const tableHeadStyle={
     fontWeight: "bold",
+  }
+
+  const depositCxlExp=(dnum)=>{
+    window.localStorage.setItem("dNum",dnum);
+    navigate('/customer/account/deposit/depositClose');
   }
 
   return (
@@ -59,7 +83,7 @@ function Deposit() {
             <select value={selectedOption} onChange={handleChange}>
               <option value="">전체선택</option>
               {members.map((member) => (
-                <option key={member.dpdName} value={member.dpdName}>{member.dpdName}</option>
+                <option key={member.dnum} value={member.dpdName}>{member.dpdName}</option>
               ))}
             </select>
           </p>
@@ -67,19 +91,22 @@ function Deposit() {
             <div className="card-header" style={{backgroundColor:"#dbe2d872" }}>
               <ul className="nav nav-tabs card-header-tabs">
                 <li className="nav-item">
+                  <a className="nav-link active" href="/customer/account/Account">입출금계좌</a>
+                </li>
+                <li className="nav-item">
                   <a className="nav-link disabled" href="/customer/account/Deposit">예금계좌</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link active" href="/customer/account/Saving" ><Link to="/customer/account/Account">입출금</Link></a>
+                  <a className="nav-link active" href="/customer/account/Saving" >적금계좌</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="/customer/account/Deposit"><Link to="/customer/account/Deposit">예금계좌</Link></a>
+                <li className="nav-item">
+                    <a className="nav-link active" href="/customer/account/Loan">대출계좌</a>
                 </li>
                 </ul>
                     </div>
                 </div>
 
-                <div class="card-body">
+                <div className="card-body">
                     <Table>
                       <TableHead >
                         <TableRow >
@@ -89,17 +116,25 @@ function Deposit() {
                           <TableCell style={tableHeadStyle}>만기날짜</TableCell>
                           <TableCell style={tableHeadStyle}>예상금리금액</TableCell>
                           <TableCell style={tableHeadStyle}>잔액</TableCell>
+                          <TableCell style={tableHeadStyle}>해지</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
                         {filteredMembers.map((member) => (
-                          <TableRow key={member.dpdName}>
-                            <TableCell style={{color:"navy"}}>{member.dpdName}</TableCell>
+                          <TableRow key={member.dnum} >
+                            <TableCell onClick={() => handleDpdNameClick(member.acNumber)}>
+                              <Link to={`/customer/account/deposit/depositdetail/${member.acNumber}/${member.id}`}>
+                                {member.dpdName}
+                              </Link>
+                            </TableCell>
                             <TableCell>{acNum(member.acNumber)}</TableCell>
-                            <TableCell>{member.djoinDate}</TableCell>
-                            <TableCell>{member.dendDate}</TableCell>
+                            <TableCell>{formatDate(member.djoinDate)}</TableCell>
+                            <TableCell>{formatDate(member.dendDate)}</TableCell>
                             <TableCell>{formatCurrency(member.dexpAmount)}</TableCell>
                             <TableCell>{formatCurrency(member.damount)}</TableCell>
+                            <TableCell>
+                              <Button variant="success" size='sm' style={{background:"green", color:"white"}} onClick={()=>depositCxlExp(member.dnum)}>해지신청</Button>
+                            </TableCell>
                            </TableRow>
                         ))}
                       </TableBody>
@@ -109,6 +144,7 @@ function Deposit() {
             </div>
               
             </section>
+            <br/><br/><br/>
           </main>
         );
       }

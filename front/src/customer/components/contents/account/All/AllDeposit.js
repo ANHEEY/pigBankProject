@@ -9,12 +9,12 @@
   const [members, setMembers] = useState([]);
 
   useEffect(() => {
-    fetchDepositList();
+    fetchDepositList(window.localStorage.getItem("id"));
   }, []);
 
-  const fetchDepositList = async () => {
+  const fetchDepositList = async (id) => {
     try {
-      const res = await AllService.fetchDeposit();
+      const res = await AllService.fetchDeposit(id);
       setMembers(res.data);
     } catch (err) {
       console.log('fetchDepositList() Error!!',err);
@@ -27,6 +27,14 @@
       currency: "KRW",
     });
     return formatter.format(value);
+  }
+
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   const acNum = (acNumber) => {
@@ -62,8 +70,8 @@
                 <TableRow key={member.dnum}>
                   <TableCell style={{color:"navy"}}>{member.dpdName}</TableCell>
                   <TableCell>{acNum(member.acNumber)}</TableCell>
-                  <TableCell>{member.djoinDate}</TableCell>
-                  <TableCell>{member.dendDate}</TableCell>
+                  <TableCell>{formatDate(member.djoinDate)}</TableCell>
+                  <TableCell>{formatDate(member.dendDate)}</TableCell>
                   <TableCell>{formatCurrency(member.damount)}</TableCell>
 
                 </TableRow>

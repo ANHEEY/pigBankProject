@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
 
+import com.pigbank.project.dto.LoanAccountDTO;
+import com.pigbank.project.dto.LoanAccountDetailDTO;
 import com.pigbank.project.dto.LoanProductDTO;
 import com.pigbank.project.dto.LoanRequestDTO;
 import com.pigbank.project.dto.LoanWillPayDTO;
@@ -38,6 +40,10 @@ public interface SooService {
 			throws ServletException,IOException;
 	
 	// 고객 대출 업무
+	// 대출 납부 처리
+	public List<LoanProductDTO> searchLoan(String lpdName)
+			throws ServletException, IOException;
+		
 	// 대출 상품 신청
 	public void requestProduct(LoanRequestDTO loanRequestDTO)
 			throws ServletException,IOException;
@@ -66,8 +72,24 @@ public interface SooService {
 	public void createLoanPaySchedule(Map<String, Object> map)
 			throws ServletException, IOException;
 	
-	// 대출 상환 스케쥴표 생성
-	public List<LoanWillPayDTO> LoanScheduleList(int lnum)
-			throws ServletException, IOException;;
+	// 대출 납부 정보 
+	public List<LoanWillPayDTO> loanScheduleList(int lnum)
+			throws ServletException, IOException;
+	
+	// 대출 납부 계좌 정보
+	public LoanWillPayDTO loanPayInfo(int lwillPayNum)
+			throws ServletException, IOException;
+	
+	// 대출 납부 처리
+	public void doLoanPay(LoanAccountDetailDTO loanAccountDetailDTO)
+			throws ServletException, IOException;
+	
+	// 대출 중도상환 해지 정보 조회
+	public LoanAccountDTO loanCancelInfo(int lnum)
+			throws ServletException, IOException;
+	
+	// 대출 중도 해지
+	public void loanCancel(LoanAccountDTO loanAccountDTO)
+			throws ServletException, IOException;
 	
 }

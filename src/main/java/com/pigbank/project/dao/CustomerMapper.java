@@ -31,7 +31,6 @@ public interface CustomerMapper {
    //회원 수정, 탈퇴인증
    public String passwordChk(String id);
    
-   
    //회원 정보 불러오기
    public CustomerDTO customerDetail(String id);
    
@@ -81,6 +80,12 @@ public interface CustomerMapper {
    //고객 예금 가입 - 입출금 통장에서 인출
    public void cusDepositOpenWithdraw(DepositAccountDTO depositAccountDTO);
    
+   //고객 예금 가입 - 입출금 통장에 계좌이체 내역 추가
+   public void normalToDepositTranfer(DepositAccountDTO depositAccountDTO);
+   
+   //고객 예금 가입 - 예금계좌에 계좌이체 내역 추가
+   public void depositFromNormalTransfer(DepositAccountDTO depositAccountDTO);
+   
    //---------------------------------------------------------------------
 
    //고객 예금 해지 예상 조회 
@@ -89,12 +94,21 @@ public interface CustomerMapper {
    //고객 예금 해지 예상 조회 - 중도 해지시 중도해지 금리 불러오기
    public double depositMidCxlRate(int dNum);
 
-   //고객 예금 해지 신청
+   //고객 예금 해지 신청 - 전체 계좌 내용 변경
    public void cusDepositCxlReg(DepositAccountDTO depositAccountDTO);
+   
+   //고객 예금 해지 신청 - 예금 계좌 내용 번경
+   public void cusDepositCxlRegD(DepositAccountDTO depositAccountDTO);
    
    //고객 예금 해지 신청 - 만기시 입금계좌로 입금
    public void cusDepositCxlPut(DepositAccountDTO depositAccountDTO);
- 	
+ 
+   //고객 예금 해지 신청 - 입출금 통장에 계좌이체 내역 추가
+   public void cxlNormalFromDepositTransfer(DepositAccountDTO depositAccountDTO);
+   
+   //고객 예금 해지 신청 - 예금계좌에 계좌이체 내역 추가
+   public void cxlDepositToNormalTransfer(DepositAccountDTO depositAccountDTO);
+   
    //---------------------------------------------------------------------
 
    //고객 자산 관리 페이지

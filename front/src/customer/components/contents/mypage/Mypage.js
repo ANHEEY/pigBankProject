@@ -1,4 +1,4 @@
-// 내정보
+// 회원 정보 수정페이지(탈퇴도 가능) 비밀번호 인증하고 들어올 수 있음 
 import React,{useState,useEffect} from 'react';
 import {Form,Row,Col,Container,Stack,Button} from 'react-bootstrap';
 import { Typography} from "@mui/material";
@@ -216,12 +216,12 @@ function Mypage(){
                                 name="name" value={customer.name}  onChange={onChange}/></Col>
                 </Form.Group>
                 <br/>
-                <Form.Group as={Row} className="mb-3" controlId="formGroupEmail">
+                <Form.Group as={Row} className="mb-3">
                     <Form.Label column sm={2}>이메일</Form.Label>
                     <Col sm={3}><Form.Control type="text" placeholder="이메일을 입력하세요" 
-                                name="email1" value={customer.email1} onChange={onChange}/></Col>
+                                name="email1" id="email1" value={customer.email1} onChange={onChange}/></Col>
                     @
-                    <Col sm={3}><Form.Control type="text" name="email2" value={customer.email2} onChange={onChange} /></Col>
+                    <Col sm={3}><Form.Control type="text" id="email2" name="email2" value={customer.email2} onChange={onChange} /></Col>
                     <Col sm={3}>
                     <Form.Select aria-label="Default select example" onChange={setDomain}>
                         <option value="">직접입력</option>

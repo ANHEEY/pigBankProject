@@ -1,3 +1,4 @@
+//관리자 예금 상품 상세페이지
 import React, { useState,useEffect } from "react";
 import {Link} from 'react-router-dom';
 import {Button, Stack } from 'react-bootstrap';
@@ -23,6 +24,7 @@ function DepositComponentDetail(){
             .then(res=>{
                 setDepositProduct(res.data);
                 console.log(res.data);
+                localStorage.removeItem("dpdName");
             })
             .catch(err => {
                 console.log('depositPdDetail() Error!!!', err);
@@ -65,16 +67,16 @@ function DepositComponentDetail(){
                                 <td value={depositProduct.dcontent}>{depositProduct.dcontent}</td>
                             </tr>
                             <tr>
-                                <th>예금 가입기간</th>
-                                <td value={depositProduct.dperiod}>{depositProduct.dperiod}</td>
+                                <th>예금 최대 가입기간</th>
+                                <td value={depositProduct.dperiod}>{depositProduct.dperiod}개월</td>
                             </tr>
                             <tr>
                                 <th>예금가입 최소금액</th>
-                                <td value={depositProduct.dmin}>{depositProduct.dmin}</td>
+                                <td value={depositProduct.dmin}>{depositProduct.dmin}만원</td>
                             </tr>
                             <tr>
                                 <th>예금가입 최대금액</th>
-                                <td value={depositProduct.dmax}>{depositProduct.dmax}</td>
+                                <td value={depositProduct.dmax}>{depositProduct.dmax}만원</td>
                             </tr>
                             <tr>
                                 <th>적용금리</th>

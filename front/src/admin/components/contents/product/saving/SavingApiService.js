@@ -1,6 +1,13 @@
 import axios from "axios";
+import { getAuthToken } from "../../../../../customer/components/helpers/axios_helper";
 
 const ADMIN_API_PRODUCT_SAVING_URL = "http://localhost:8081/";
+
+if(getAuthToken() !== null){
+    axios.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`;
+  } else{
+    axios.defaults.headers.common['Authorization'] = ``;
+  }
 
 class SavingApiService {
 

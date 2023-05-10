@@ -21,7 +21,7 @@ public class AccountDTO {
 	private long acBalance;
 	private String acType;
 	private int acPwd;
-	private Date newDate;
+	private Date newDate; 
 	private Date lastDate;
 	private long trsfLimit;
 	

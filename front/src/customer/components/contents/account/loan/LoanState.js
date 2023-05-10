@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import {Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import AllService from "../All/AllService";
 import {Link} from 'react-router-dom';
-// import { getId } from '../../../helpers/axios_helper'
 import "../../../../resources/css/product/saving.css";
 
 const LoanState = () => {
@@ -49,20 +48,20 @@ const LoanState = () => {
           <br />
           <br />            
 
-              {/* <p className="thead1">
-              <select value={this.state.selectedOption} onChange={this.handleChange}>
-              <option value="">계좌선택</option>
-                  {this.state.members.map((member) => (
-              <option key={member.lpdName} value={member.lpdName}>{member.lpdName}</option>
-              ))}
-              </select>    
-              </p>   */}
+          {/* <p className="thead1">
+            <select value={selectedOption} onChange={handleChange}>
+                <option value="">전체선택</option>
+                {members.map((member) => (
+                <option key={member.lnum} value={member.lpdName}>{member.lpdName}</option>
+                ))}
+            </select>    
+          </p>   */}
                                   
           <div className="card text-center" style={{backgroundColor:"#dbe2d872" }}>
               <div className="card-header" >
                   <ul className="nav nav-tabs card-header-tabs" >
                   <li className="nav-item">
-                      <a className="nav-link active" href="/customer/account/Loan"><Link to="/customer/account/Loan">대출계좌조회</Link></a>
+                      <a className="nav-link active" href="/customer/account/Loan">대출계좌조회</a>
                   </li>
                   </ul>
               </div>
@@ -80,19 +79,19 @@ const LoanState = () => {
                       <TableCell style={tableHeadStyle}>심사결과</TableCell>
                   </TableRow>
                 </TableHead>
-
-                {loanStateList.map((product) => (
+                
                 <TableBody style={{textAlign:"center"}}>
+                {loanStateList.map((product) => (
                     <TableRow key={product.lreqNum}>
                       <TableCell style={{color:"navy"}}>{product.lreqNum}</TableCell>
                       <TableCell>{product.lpdName}</TableCell>
-                      <TableCell>{comma(product.lprincipal)}만원</TableCell>
+                      <TableCell>{comma(product.lprincipal/10000)}만원</TableCell>
                       <TableCell>{product.lrate}%</TableCell>
                       <TableCell>{new Date(product.lreqDate).toLocaleDateString().slice(0,-1)}</TableCell>
                       <TableCell>{product.lstate}[{product.lreason}]</TableCell>
                     </TableRow>
-                </TableBody>
                 ))}
+                </TableBody>
               </Table>
           </div>
           <br />

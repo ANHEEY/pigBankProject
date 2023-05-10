@@ -1,4 +1,4 @@
-// 자산관리
+// 자산관리 페이지(차트)
 import React, { useEffect,useState } from "react";
 import {Chart} from 'react-google-charts';
 import CustomerService from "../../common/CustomerService";

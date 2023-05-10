@@ -1,3 +1,4 @@
+//고객 예금 상품 가입페이지
 import React, { useState,useEffect } from "react"
 import AgreeAccordion from "../product-application/AgreeAccordion"
 import {Form,Button, Row, Col,InputGroup,Container} from 'react-bootstrap'
@@ -47,6 +48,7 @@ function DepositApplication(){
     });
 
     const [accounts, setAccounts] = useState([]);
+    const [period,setPeriod] = useState([]);
 
     useEffect(()=>{
         depositDetail();
@@ -94,6 +96,21 @@ function DepositApplication(){
     }
 
     const productJoin=()=>{
+        if(period === ""){
+            alert("예금 가입 기간을 입력하세요!");
+            return false;
+        }
+        else if(period<1){
+            alert("예금 가입 기간은 1개월 이상입니다!");
+            setPeriod("");
+            return false;
+        }
+        else if(period>depositProduct.dperiod){
+            alert("최대 예금 가입 기간은 "+depositProduct.dperiod+"개월입니다!");
+            setPeriod("");
+            return false;
+        }
+
         if(dAmount === ""){
             alert("예금 가입 금액을 입력하세요!");
             return false;
@@ -133,9 +150,9 @@ function DepositApplication(){
             dpdName:depositProduct.dpdName,
             acPwd:dacPwd,
             damount:dAmount,
-            dexpAmount:Math.round(Number(depositProduct.drate/100)*Number(dAmount)*Number(depositProduct.dperiod/12)+Number(dAmount)),
+            dexpAmount:Math.round(Number(depositProduct.drate/100)*Number(dAmount)*Number(period/12)+Number(dAmount)),
             ddeAccount:dSelectedAccount,
-            dperiod:depositProduct.dperiod,
+            dperiod:period,
             withdrawAcNumber:selectedAccount,
         }
         console.log(acPwd);
@@ -176,7 +193,7 @@ function DepositApplication(){
             <Form className="formArea">
                 <div>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="2">상품명</Form.Label>
+                        <Form.Label column sm="2">예금 상품명</Form.Label>
                         <Col sm="10">
                             <Form.Control readOnly value={depositProduct.dpdName}/>
                         </Col>
@@ -190,18 +207,20 @@ function DepositApplication(){
                     </Form.Group>
                     <br/>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="2">가입기간</Form.Label>
+                        <Form.Label column sm="2">가입 기간</Form.Label>
                         <Col sm="10">
-                            {depositProduct.dperiod}개월
+                            <InputGroup className="mb-3">
+                                <Form.Control type="number" min={1} max={depositProduct.dperiod} name="period" value={period} placeholder="가입 기간을 입력하세요." onChange={(e)=>setPeriod(e.target.value)} /> 
+                            </InputGroup>
                         </Col>
                     </Form.Group>
                     <br/>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="2">가입금액</Form.Label>
+                        <Form.Label column sm="2">가입 금액</Form.Label>
                         <Col sm="10">
                             <InputGroup className="mb-3">
                                 <InputGroup.Text>₩</InputGroup.Text>
-                                <Form.Control type="number" min={0} name="dAmount" value={dAmount} placeholder="가입금액을 입력하세요." onChange={(e)=>setDAmount(e.target.value)} /> 
+                                <Form.Control type="number" min={depositProduct.dmin*10000} max={depositProduct.dmax*10000} name="dAmount" value={dAmount} placeholder="가입금액을 입력하세요." onChange={(e)=>setDAmount(e.target.value)} /> 
                             </InputGroup>
                         </Col>
                     </Form.Group>
@@ -250,7 +269,7 @@ function DepositApplication(){
                     <br/>
                 </div>
                 <div className="d-grid gap-2">
-                    <Button style = {{background:'#9dc888' ,border:'#9dc888'}} size="lg" onClick={()=>productJoin()}> 가입하기 </Button>
+                    <Button style = {{background:'#9dc888', border:'#9dc888'}} size="lg" onClick={()=>productJoin()}> 가입하기 </Button>
                 </div>
             </Form>
             <br/><br/><br/><br/>

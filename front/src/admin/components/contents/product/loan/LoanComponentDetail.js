@@ -74,7 +74,7 @@ const LoanComponentDetail = () => {
                     </tr>
                     <tr>
                         <th>대출가능 최고금액</th>
-                        <td>{product.lmaxPrice ? product.lmaxPrice.toLocaleString() + '만원' : ''}</td>
+                        <td>{product && product.lmaxPrice ? (product.lmaxPrice).toLocaleString(): ''}만원</td>
                     </tr>
                     <tr>
                         <th>대출이자</th>

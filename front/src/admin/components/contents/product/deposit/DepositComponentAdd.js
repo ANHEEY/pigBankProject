@@ -1,10 +1,10 @@
+//관리자 예금 상품 등록 페이지
 import React, { useState } from "react";
 import { Container, Button, Form, Stack } from 'react-bootstrap'; // npm install react-bootstrap bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 css를 적용하기 위함
 import AdminDepositService from "./AdminDepositService";
 import { useNavigate,Link } from "react-router-dom";
 
-//예금 상품 등록 페이지
 function DepositComponentAdd(){
     const navigate = useNavigate();
 
@@ -84,8 +84,8 @@ function DepositComponentAdd(){
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formGroupDperiod">
-                    <Form.Label>* 예금 가입 기간</Form.Label>
-                    <Form.Control required type="number" name="dperiod"
+                    <Form.Label>* 예금 최대 가입기간</Form.Label>
+                    <Form.Control required type="number"min={1} name="dperiod"
                         value={depositProduct.dperiod} placeholder="월" onChange={onChange} />
                     <Form.Text className="text-muted">
                         월 단위로 입력해주세요.
@@ -93,13 +93,13 @@ function DepositComponentAdd(){
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formGroupDmin">
-                    <Form.Label>* 예금가능 최소금액</Form.Label>
-                    <Form.Control required type="number" name="dmin"
+                    <Form.Label>* 예금가능 최소금액(만원 단위)</Form.Label>
+                    <Form.Control required type="number" min={1} name="dmin"
                         value={depositProduct.dmin} placeholder="만원" onChange={onChange} />
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formGroupDmax">
-                    <Form.Label>* 예금가능 최고금액</Form.Label>
+                    <Form.Label>* 예금가능 최고금액(만원 단위)</Form.Label>
                     <Form.Control required type="number" name="dmax"
                         value={depositProduct.dmax} placeholder="만원" onChange={onChange} />
                     </Form.Group>
@@ -109,7 +109,7 @@ function DepositComponentAdd(){
                     <Form.Control required type="number" name="drate"
                         value={depositProduct.drate} placeholder="%" onChange={onChange} />
                     <Form.Text className="text-muted">
-                        소수점 둘째자리까지만 입력해주세요.
+                        소수점 첫째자리까지만 입력해주세요.
                     </Form.Text>
                     </Form.Group>
                     
@@ -118,7 +118,7 @@ function DepositComponentAdd(){
                     <Form.Control type="number" name="dcxlRate"
                         value={depositProduct.dcxlRate} placeholder="%" onChange={onChange} />
                     <Form.Text className="text-muted">
-                        소수점 둘째자리까지만 입력해주세요.
+                        소수점 첫째자리까지만 입력해주세요.
                     </Form.Text>
                     </Form.Group> 
 
