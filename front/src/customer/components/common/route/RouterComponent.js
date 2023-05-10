@@ -1,5 +1,5 @@
 import React from "react";
-import {Route, Routes} from 'react-router-dom'; // BrowserRouter
+import { Route, Routes } from 'react-router-dom'; // BrowserRouter
 
 // 조회
 import All from "../../contents/account/All/All";
@@ -56,10 +56,6 @@ import PdLoan from "../../contents/product/loan/PdLoan";
 import PdLoanDetail from '../../contents/product/loan/PdLoanDetail';
 import PdLoanApplication from '../../contents/product/loan/PdLoanApplication';
 
-// 상품|펀드상품
-import FundApplication from "../../contents/product/fund/FundApplication";
-import FundProductList from "../../contents/product/fund/FundProductList";
-import FundProductDetail from "../../contents/product/fund/FundProductDetail";
 
 // 환율
 import ExchangeRate from "../../contents/exchangerate/ExchangeRate";
@@ -68,6 +64,11 @@ import ExchangeRateCal from "../../contents/exchangerate/ExchangeRateCal";
 // 펀드
 import FundAccountInfo from "../../contents/fund/FundAccountInfo";
 import FundHavingList from "../../contents/fund/FundHavingList";
+import FundProductAccount from '../../contents/fund/FundProductAccount';
+// 상품|펀드상품
+import FundApplication from "../../contents/fund/FundApplication";
+import FundProductList from "../../contents/fund/FundProductList";
+import FundProductDetail from "../../contents/fund/FundProductDetail";
 
 // 고객센터
 import CsBoard from "../../contents/cscenter/CsBoard";
@@ -86,13 +87,12 @@ import Join from "../../common/join/Join";
 
 import Layout from "../Layout";
 import MainLayout from "../main/MainLayout";
+import FundAccountDetail from "../../contents/fund/FundAccountDetail";
 
 
 const AppRouter = () => {
-    return(
-
-        <Routes  path="/*" Component={Layout} >
-
+    return (
+        <Routes path="/*" Component={Layout} >
             {/* 고객 메인페이지 */}
             <Route path="/*" Component={MainLayout} />
 
@@ -102,9 +102,7 @@ const AppRouter = () => {
             <Route path="/customer/account/account/accountdetail/:acNumber/:id" Component={AccountDetail} />
 
             <Route path="/customer/account/deposit" Component={Deposit} />
-            <Route path="/customer/account/deposit/depositClose" Component={DepositClose}/>
-            <Route path="/customer/account/deposit/depositdetail/:acNumber/:id" Component={DepositDetail} />
-
+            <Route path="/customer/account/deposit/depositClose" Component={DepositClose} />
             <Route path="/customer/account/saving" Component={Saving} />
             <Route path="/customer/account/saving/savingClose" Component={SavingClose} />
             <Route path="/customer/account/saving/savingDetail" Component={SavingDetail} />
@@ -114,8 +112,7 @@ const AppRouter = () => {
             {/* 대출조회 */}
             <Route path="/customer/account/LoanState" Component={LoanState} />
             <Route path="/customer/account/Loan" Component={Loan} />
-            <Route path="/customer/account/loan/LoanSchedule/:lnum" Component={LoanSchedule} />
-            <Route path="/customer/account/loan/LoanCancel/:lnum" Component={LoanCancel} />
+            <Route path="/customer/account/loan/LoanSchedule" Component={LoanSchedule} />
 
             {/* 이체 */}
             <Route path="/customer/transfer/trans_deposit" Component={TransDeposit} />
@@ -150,16 +147,11 @@ const AppRouter = () => {
             <Route path="/customer/product/pdSaving" Component={PdSaving} />
             <Route path="/customer/product/saving/application" Component={SavingApplication} />
             <Route path="/customer/product/saving/pdSavingDetail" Component={PdSavingDetail} />
-          
+
             {/* 상품(대출) */}
             <Route path="/customer/product/loan/pdLoan" Component={PdLoan} />
             <Route path="/customer/product/loan/pdLoanDetail" Component={PdLoanDetail} />
             <Route path="/customer/product/loan/pdLoanApplication" Component={PdLoanApplication} />
-            
-            {/* 상품(펀드) */}
-            <Route path="/customer/product/fund/application" Component={FundApplication} />
-            <Route path="/customer/product/fund/list" Component={FundProductList} />
-            <Route path="/customer/product/fund/detail" Component={FundProductDetail} />
 
             {/* 환율 */}
             <Route path="/customer/exchangerate/exchange" Component={ExchangeRate} />
@@ -167,11 +159,18 @@ const AppRouter = () => {
 
             {/* 펀드 */}
             <Route path="/customer/fund/info" Component={FundAccountInfo} />
+            <Route path='/customer/fund/info/detail/:fNum' Component={FundAccountDetail} />
+
             <Route path="/customer/fund/having" Component={FundHavingList} />
+            <Route path='/customer/fund/account' Component={FundProductAccount} />
+            <Route path="/customer/fund/application" Component={FundApplication} />
+            <Route path="/customer/fund/list" Component={FundProductList} />
+            <Route path="/customer/fund/detail" Component={FundProductDetail} />
+
 
             {/* 고객센터 */}
             <Route path="/customer/cscenter/cs_board" Component={CsBoard} />
-            <Route path="/customer/cscenter/cs_board_detail/:nnum" Component={CsBoardDetail}/>
+            <Route path="/customer/cscenter/cs_board_detail" Component={CsBoardDetail} />
             <Route path="/customer/cscenter/chatting" Component={Chatting} />
 
             {/* 마이페이지 */}

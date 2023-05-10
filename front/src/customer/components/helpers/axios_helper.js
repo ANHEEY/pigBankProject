@@ -11,14 +11,14 @@ export const getAuthToken = () => {
 }
 
 export const setAuthToken = (token) => {
-   window.localStorage.setItem("token", token);
+    window.localStorage.setItem("token", token);
 }
 
-export const setId=(id) =>{
-    window.localStorage.setItem("id",id);
+export const setId = (id) => {
+    window.localStorage.setItem("id", id);
 }
 
-export const getId=()=>{
+export const getId = () => {
     return window.localStorage.getItem("id");
 }
 
@@ -36,13 +36,13 @@ export const request = (method, url, data) => {
     // if (getAuthToken() !== null && getAuthToken() !== "null") {
     //     headers = { Authorization: 'Bearer ${getAuthToken()}' };
     // }
-    
+
     console.log('axios~~~');
     //console.log('headers : ', headers);
-    console.log('method : ', method );
-    console.log('url : ', url );
-    console.log('data : ', data );
-    
+    console.log('method : ', method);
+    console.log('url : ', url);
+    console.log('data : ', data);
+
 
 
     return axios({

@@ -40,4 +40,36 @@
 		WHERE id = #{id}
 	</update>
 
+	<!--	+++++++ 펀드 계좌 만들기 +++++++		-->
+	<!-- 고객 입출금 계좌 조회 -->
+	<select id="selectAccountById" parameterType="String" resultType="com.pigbank.project.dto.AccountDTO">
+		SELECT ACNUMBER , ACBALANCE , BANKNAME , ACTYPE ,ACPWD
+		FROM ACCOUNT_TBL
+		 WHERE ACTYPE ='입출금통장'
+		   AND ID =#{id}
+	</select>
+	<!-- 펀드 계좌 생성 -->
+	<insert id="insertFundAccount" parameterType="com.pigbank.project.dto.FundProductDTO">
+		INSERT INTO F_ACCOUNT_TBL(fNum,fAcNumber ,id, fBalance ,fNewDate , fAcPwd)
+		VALUES((SELECT NVL(MAX(fNum)+1, 1) FROM F_ACCOUNT_TBL),#{fAcNumber},#{id},#{fBalance},sysdate,#{fAcPwd})
+	</insert>
+	<!-- 입출금 금액 차감-->
+	<update id="deductAccountAmount" parameterType="com.pigbank.project.dto.FundProductDTO">
+		UPDATE ACCOUNT_TBL
+		SET ACBALANCE = ACBALANCE - #{fBalance}
+		WHERE ACNUMBER = #{acNumber}
+	</update>
+	<!-- 입출금통장 차감금액 이체내역에 추가 -->
+	<insert id="insertDepositFund" parameterType="com.pigbank.project.dto.TransferDTO">
+		INSERT INTO TRANSFER_TBL(tNum, acNumber, tDepositnum, tDepositBank, tType, tAmount, myMemo, yourMemo, tDate)
+		VALUES((SELECT NVL(MAX(tNum) + 1, 1) FROM TRANSFER_TBL), #{acNumber}, #{tDepositnum}, '돼지은행', '출금', #{tAmount}, '펀드계좌개설', '펀드계좌개설', sysdate)
+	</insert>
+	<!--	+++++++  펀드 거래내역 조회  +++++++		-->
+	<!-- 고객 펀드계좌 조회 -->
+	<select id="listFundAccountById" parameterType="String" resultType="com.pigbank.project.dto.FundAccountDTO">
+		SELECT fNum, fAcNumber ,fBalance ,fNewDate ,fLastDate , fAcPwd ,fTrsfLimit
+		FROM f_account_tbl
+		WHERE id = #{id}
+		ORDER BY fNewDate DESC
+	</select>
 </mapper>

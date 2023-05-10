@@ -2,17 +2,17 @@ package com.pigbank.project.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import com.pigbank.project.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.pigbank.project.dao.HyeMapper;
-import com.pigbank.project.dto.AccountDTO;
-import com.pigbank.project.dto.CustomerDTO;
 
 @Service
 public class HyeServiceImpl implements HyeService{
@@ -68,6 +68,52 @@ public class HyeServiceImpl implements HyeService{
 		System.out.println("========== 서비스 | updateStateApproval | ==========");
 		dao.updateStateReject(id);
 
+	};
+	/**				펀드계좌 개설				**/
+	// 고객 입출금 조회
+	public List<AccountDTO> selectAccountById(String id)
+			throws  ServletException, IOException{
+		System.out.println("========== 서비스 | selectAccountById | ==========");
+
+		List<AccountDTO> list = dao.selectAccountById(id);
+		return list;
+	};
+	// 펀드 계좌 개설 & 입출금 계좌에 펀드 계좌 가입 금액 차감 & 이체내역 추가
+	public void insertFundAccount(FundProductDTO dto)
+			throws  ServletException,IOException{
+		System.out.println("========== 서비스 | insertFundAccount | ==========");
+		Random random = new Random();
+
+		long num = random.nextInt(10000000);
+		String randomN = String.format("%07d",num);
+		String fAcNumber = "810"+randomN;
+		System.out.println("정수변환 확인하기 : " + Long.parseLong(fAcNumber));
+		// 펀드계좌번호
+		dto.setFAcNumber(Long.parseLong(fAcNumber));
+
+		TransferDTO transfer = new TransferDTO();
+		transfer.setAcNumber(dto.getAcNumber());
+		transfer.setTDepositnum(dto.getFAcNumber());
+		transfer.setTAmount(dto.getFBalance());
+		System.out.println("acNumber : "+transfer.getAcNumber() + "depositnum : "+transfer.getTDepositnum()+"tAmount : "+transfer.getTAmount());
+		dao.insertFundAccount(dto);
+		dao.deductAccountAmount(dto);
+		dao.insertDepositFund(transfer);
+	};
+	/**				펀드계좌 조회 				**/
+	// 고객 펀드계좌 목록
+	public List<FundAccountDTO> listFundAccountById(String id)
+			throws  ServletException, IOException{
+		System.out.println("========== 서비스 | listFundAccountById | ==========");
+		return dao.listFundAccountById(id);
+	};
+
+	// 계좌 상세내역 보기
+	public List<FundProductDTO> detailAccountByFNum(int fNum)
+			throws  ServletException, IOException{
+		System.out.println("========== 서비스 | detailAccountByFNum | ==========");
+
+		return null;
 	};
 
 

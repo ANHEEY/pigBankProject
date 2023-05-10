@@ -1,0 +1,188 @@
+.fund-div {
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    margin-bottom: 100px;
+}
+
+.fund-product {
+    display: grid;
+    justify-items: center;
+}
+
+.f_product_card {
+    margin: 20px;
+    max-width: 1000px;
+    border-radius: 5px;
+    box-shadow: 20px 20px 6px 5px #6ab64e7a;
+}
+
+.f_card_body {
+    text-align: center;
+    margin: 50px;
+}
+
+.f_card_body button {
+    background-color: #6ab64e;
+    color: #fff5f5;
+    border-radius: 13px;
+    padding: 20px;
+    border: none;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 50px;
+}
+
+.f_tabs {
+    margin: 100px 0 100px 0;
+    max-width: 1000px;
+}
+
+.f_tabs .justify-content-md-center {
+    margin-top: 50px;
+}
+
+.fund-product hr {
+    height: 8px;
+    border: 0;
+    box-shadow: inset 0px 8px 8px -5px #848b7a80;
+
+}
+
+.fund-div hr {
+    height: 1px;
+    border: 0;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(147, 147, 147, 0.75), rgba(0, 0, 0, 0));
+}
+
+.fund-contents ul {
+    list-style: none;
+}
+
+.fund-title {
+    display: inline-block;
+    width: 600px;
+    text-align: center;
+    margin: 20px;
+    padding: 10px 50px 10px 50px;
+    font-size: 30px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 2px 0px #6ab64e;
+    background-color: #cbcbcb22;
+    color: #6ab64e;
+    font-weight: bold;
+}
+
+.facCard {
+    width: 1000px;
+    flex-basis: 100%;
+    margin: 18px;
+    color: #666666;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    padding: 30px;
+    text-align: center;
+}
+
+.facCard table {
+    width: 1000px;
+    align-items: center;
+    text-align: centers;
+}
+
+.facCard thead {
+    height: 80px;
+    font-size: 20px;
+}
+
+.facCard button {
+    box-shadow: inset 0px 2px 2px 0px #6ab64e;
+    background: linear-gradient(to bottom, #6ab64e 5%);
+    background-color: #6ab64e;
+    color: #fff;
+    border-radius: 10px;
+    padding: 13px;
+    border: 2px solid #8cc1786b;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    text-shadow: 0px 3px 2px #8ca481c6;
+    margin-left: 40px;
+}
+
+/*  */
+.id-span {
+    font-size: 25px;
+    font-weight: bold;
+    color: #7db582;
+    padding: 10px;
+    text-shadow: 0px 1px 1px #99a095c6;
+}
+
+.input-field {
+    width: 200px;
+    z-index: 1;
+    background-color: #ededed;
+    font: inherit;
+    font-size: 14px;
+    line-height: 30px;
+    border: none;
+    border-radius: .25rem;
+    padding: .75rem 1rem;
+}
+
+.no-contents thead {
+    color: #666666;
+}
+
+.no-contents tbody {
+    color: #799d87;
+    font-size: 20px;
+}
+
+.no-contents table {
+    border-collapse: separate;
+    border-spacing: 20px;
+}
+
+.no-contents button {
+    margin: 5px 0 0 0;
+    box-shadow: inset 0px 3px 3px 0px #9fb49863;
+    background: linear-gradient(to bottom, #6f936370 5%);
+    background-color: #6ab64e;
+    color: #fff;
+    border-radius: 7px;
+    padding: 10px 20px 10px 20px;
+    border: 1px solid #586e5075;
+    font-size: 18PX;
+    font-weight: bold;
+    text-shadow: 0px 1px 0px #7c987355;
+}
+
+/*  */
+.fundProduct-list {
+    display: grid;
+    justify-content: center;
+}
+
+.fundProduct-list table {
+    width: 1000px;
+    height: 800px;
+    align-items: center;
+    text-align: center;
+}
+
+.fundProduct-list button {
+    box-shadow: inset 0px 2px 2px 0px #73a178;
+    background: linear-gradient(to bottom, #73a178 5%);
+    background-color: #6ab64e;
+    color: #fff;
+    border-radius: 10px;
+    padding: 5px 10px 7px 10px;
+    border: 1px solid #d6f7b1ca;
+    font-size: 15PX;
+    cursor: pointer;
+    font-weight: bold;
+    text-shadow: 0px 1px 0px #698a647e;
+
+}
