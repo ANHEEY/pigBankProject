@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.AutoTransferDTO;
+import com.pigbank.project.dto.AutoTransferListDTO;
 import com.pigbank.project.dto.NoticeDTO;
 import com.pigbank.project.dto.TransferDTO;
 import com.pigbank.project.service.LeeServiceImpl;
@@ -38,89 +39,82 @@ public class LeeController {
 	@Autowired
 	private LeeServiceImpl service;
 	
-
-	// http://localhost:8081/allAccounts
+	// 전체계좌조회
 	@GetMapping(value="/allAccounts")
 	public List<AccountDTO> allAccountList(HttpServletRequest req, Model model)
 			throws ServletException, IOException {
-		logger.info("<<< url - accountList >>>");
-		
 		List<AccountDTO> list = service.allAccountList(req, model);
-		
-		System.out.println(list);
 		return list;
 	}
 	// http://localhost:8081/Accounts
 	
-	// 계좌조회
+	// 계좌조회(id)
 	@GetMapping(value="/Accounts")
 	public List<AccountDTO> accountList(@RequestParam String id)
 			throws ServletException, IOException {
-		logger.info("<<< url - accountList >>>");
-		System.out.println("id : " + id);
 		List<AccountDTO> list = service.accountList(id);
-		
-		System.out.println(list);
 		return list;
 	}
 	
+	// 계좌이체 insert
 	@PostMapping(value="/Transfer")
 	public void insertTransfer(@RequestBody TransferDTO dto)
 			throws ServletException, IOException {
-				logger.info("<<< url - InsertTransfer");
-		
-				System.out.println("dto : " + dto);
-				service.InsertTransfer(dto);
+		service.InsertTransfer(dto);
 	}
 	
+	// 자동이체 insert
 	@PostMapping(value="/autoTransfer")
 	public void autoInsertTransfer(@RequestBody AutoTransferDTO dto)
 			throws ServletException, IOException {
-		logger.info("<<< url - InsertTransfer");
-		System.out.println("dto : " + dto);
 		service.AutoInsertTransfer(dto);
 	}
 	
+	// 자동이체 조회 목록(계좌번호, 상태)
 	@GetMapping(value="/autoCheck")
 	public List<AutoTransferDTO> autoTransferCheck(@RequestParam String acNumber, @RequestParam String aState)
 			throws ServletException, IOException {
-		logger.info("<<< url - autoTransferCheck");
-		
-		System.out.println("acNumber : " + acNumber);
-		System.out.println("aState : " + aState);
 		List<AutoTransferDTO> list = service.AutoTransferCheck(acNumber,aState);
-		System.out.println("list : " + list);
 		return list;
 	}
 	
+	// 자동이체내역 목록
+	// http://localhost:8081/trsferList
+	@GetMapping(value="/trsferList")
+	public List<AutoTransferListDTO> transferList(@RequestParam String id)
+			throws ServletException, IOException {
+		return service.transferList(id);
+	}
+	
+	// 자동이체 목록(아이디)
+	@GetMapping(value="/autotransferList")
+	public List<AutoTransferDTO> autoTransferList(@RequestParam String id)
+			throws ServletException, IOException {
+		System.out.println("id : " + id);
+		return service.autoTransferList(id);
+	}
+
+	// 자동이체 해지
 	@PostMapping(value="/cancelauto")
 	public void cancelAuto(@RequestBody String aNum)
 			throws ServletException, IOException {
-	    logger.info("<<< url - cancelAuto");
 	    // String aNum 값이 들어올때 '"3,1"'이들어와서 "" <= 를 제거하는 방법
 	    String arum = aNum.replace("\"","");
 	    String[] aNumArr = arum.split(",");
 	    for (int i = 0; i < aNumArr.length; i++) {
 	        int anum = Integer.parseInt(aNumArr[i].trim());
-	        System.out.println("anum : " + anum);
 	        service.autoTransferCancel(anum);
 	    }
 	}
 	
-	// http://localhost:8081/trsfList
-	@GetMapping(value="/trsfList")
-	public List<TransferDTO> transferList(@RequestParam String id)
-			throws ServletException, IOException {
-		
-			return service.transferList(id);
-	}
-	
+	// 자동이체 상세(한개선택)
 	@GetMapping(value="/selectOne")
 	public AutoTransferDTO selectOne(@RequestParam int anum)
 			throws ServletException, IOException {
 			return service.selectOne(anum);
 	}
 	
+	// 자동이체 수정
 	@PostMapping(value="/updateOne")
 	public void updateOne(@RequestBody AutoTransferDTO dto)
 			throws ServletException, IOException {
@@ -128,6 +122,7 @@ public class LeeController {
 		service.updatedirectlyAutoTransfer(dto);
 	}
 	
+	// 이체한도 수정
 	@PostMapping(value="/updatetrsfLimit")
 	public void updateTrsfLimit(@RequestBody AccountDTO dto)
 			throws ServletException, IOException {

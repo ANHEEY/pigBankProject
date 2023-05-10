@@ -9,6 +9,8 @@ const AutoCancel = "http://localhost:8081/cancelauto";
 const selectOne = "http://localhost:8081/selectOne";
 const updateOne = "http://localhost:8081/updateOne";
 const updatetrsfLimit = "http://localhost:8081/updatetrsfLimit";
+const autoList = "http://localhost:8081/autotransferList";
+const trsfList = "http://localhost:8081/trsferList";
 
 class ApiService {
     allAccountList() {
@@ -16,45 +18,46 @@ class ApiService {
     }
 
     fetchAccountList(id) {
-        console.log(id);
         return axios.get(accountList, {params: {id: id}});
     }
+
+    transferList(id) {
+        return axios.get(trsfList, {params: {id: id}});
+    }
+
+    autotransferList(id) {
+        return axios.get(autoList, {params: {id: id}});
+    }
+
     save(acNumber) {
-        console.log(acNumber)
         return axios.post(insertTransfer, acNumber,
             { headers: {'Content-Type': 'application/json'}}
         );
     }
     autoSave(acnumber) {
-        console.log(acnumber)
         return axios.post(AutoInsertTransfer, acnumber,
             { headers: {'Content-Type': 'application/json'}}
         );
     }
     checkList(data) {
-        console.log(data)
         return axios.get(AutoTransferCheck, { params: data } ,
             { headers: {'Content-Type': 'application/json'}});
     }
     cancelAuto(anum) {
-        console.log(anum)
         return axios.post(AutoCancel , anum,
         { headers: {'Content-Type': 'application/json'}});
     }
     selectOne(anum) {
-        console.log(anum)
         return axios.get(selectOne, {
             headers: { 'Content-Type': 'application/json' },
             params: { anum: anum }
           });
     }
     updateOne(datas) {
-        console.log(datas)
         return axios.post(updateOne, datas , 
             { headers: {'Content-Type': 'application/json'}})
     }
     updatetrsfLimit(limit) {
-        console.log(limit)
         return axios.post(updatetrsfLimit, limit , 
             { headers: {'Content-Type': 'application/json'}});
     }

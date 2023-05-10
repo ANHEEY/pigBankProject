@@ -7,82 +7,112 @@
     <!-- namespace="패키지명.인터페이스" -->
 <mapper namespace="com.pigbank.project.dao.LeeMapper">
 
+	<!-- 전체계좌조회 계좌번호, 은행명, 이름 -->
 	<select id="allAccountList" resultType="com.pigbank.project.dto.AccountDTO">
 		select act.acnumber, act.bankName, cs.name
 		from ACCOUNT_TBL act, CUSTOMER cs where act.id = cs.id
 	</select>
-
+	
+	<!-- 내계좌조회(id)  -->
 	<select id="accountList" parameterType="String" resultType="com.pigbank.project.dto.AccountDTO">
 		SELECT act.acnumber, act.acbalance, act.bankName, cs.name, act.acPwd, act.trsfLimit, act.acType
 		  FROM ACCOUNT_TBL act, CUSTOMER cs
 		  WHERE act.id = cs.id
 		    AND act.id = #{id}
 	</select>
-	
+	<!-- 계좌번호로 계좌 조회 -->
+	<select id="selectoneaccount" parameterType="long" resultType="com.pigbank.project.dto.AccountDTO">
+		SELECT *
+		  from account_tbl
+		  where acNumber = #{trsfacNumber}
+	</select>
+	<!-- 계좌이체 추가 -->
 	<insert id="insertTransfer" parameterType="com.pigbank.project.dto.TransferDTO">
 		INSERT INTO TRANSFER_TBL(tNum, acNumber, tDepositnum, tDepositBank, tType, tAmount, myMemo, yourMemo, tDate)
 			VALUES((SELECT NVL(MAX(tNum) + 1, 1) FROM TRANSFER_TBL), #{acNumber},
 			        #{tDepositnum}, #{tDepositBank}, #{tType}, #{tAmount}, #{myMemo},
 			        #{yourMemo}, sysdate)
 	</insert>
-	
+	<!-- 출금  -->
 	<update id="updateAccount" parameterType="com.pigbank.project.dto.TransferDTO">
 		UPDATE ACCOUNT_TBL 
 		SET ACBALANCE = ACBALANCE - #{tAmount}
 		WHERE ACNUMBER = #{acNumber}
 	</update>
-	
+	<!-- 입금  -->
 	<update id="updateAccountnext" parameterType="com.pigbank.project.dto.TransferDTO">
 		UPDATE ACCOUNT_TBL
 		SET ACBALANCE = ACBALANCE + #{tAmount}
 		WHERE ACNUMBER = #{acNumber}
 	</update>
-	
+	<!-- 자동이체등록  -->
 	<insert id="autoInsertTransfer" parameterType="com.pigbank.project.dto.AutoTransferDTO">
 		INSERT INTO auto_transferReg_tbl(aNum,acNumber,aDepositNum,aDepositBank,aDepositAmount,aTransferCycle,aStartDate,aEndDate,myMemo,yourMemo)
 			VALUES((SELECT NVL(MAX(aNum) + 1, 1) FROM auto_transferReg_tbl), #{acNumber}, #{aDepositnum}, #{aDepositBank}, #{aDepositAmount}, #{aTransferCycle}, 
-			#{aStartDate},#{aEndDate},#{myMemo},#{yourMemo})
+			#{aStartDate},#{aEndDate},	#{myMemo},#{yourMemo})
 	</insert>
 	
+	<!-- 자동 이체 조회(전체)  -->
 	<select id="autoTransferList" resultType="com.pigbank.project.dto.AutoTransferDTO">
 		select * from auto_transferReg_tbl
 	</select>
-	
+	<!-- 자동이체업데이트  -->
 	<update id="updateAutoTransfer" parameterType="java.util.Map">
 		update auto_transferReg_tbl
 		set aState = #{aState}
+		, aCancelDate = sysdate
 		where aNum = #{aNum}
 	</update>
 	
+	<!-- 자동이체내역등록  -->
+	<insert id="insertAutoTransferList" parameterType="com.pigbank.project.dto.AutoTransferListDTO">
+		INSERT INTO AUTO_TRANSFER_TBL(atNum , aNum, atResult)
+		VALUES ((SELECT NVL(MAX(atNum) + 1, 1) FROM AUTO_TRANSFER_TBL), #{aNum},#{atResult})
+	</insert>
+	<!-- 자동이체 업데이트 주기  -->
 	<update id="updateAutoTransferCycle" parameterType="java.util.Map">
 		update auto_transferReg_tbl
 		set aUpdate = #{aUpdate} + #{aTransferCycle}
 		where aNum = #{aNum}
 	</update>
-	
+	<!-- 자동 이체 조회(조건)  -->
 	<select id="autoTransferCheck" parameterType="java.util.Map" resultType="com.pigbank.project.dto.AutoTransferDTO">
 		select * from auto_transferReg_tbl
 		where acNumber = #{acNumber}
 		  and aState = #{aState}
 	</select>
-	
+	<!-- 자동 이체 조회(모든건)  -->
 	<select id="autoTransferCheckall" parameterType="java.util.Map" resultType="com.pigbank.project.dto.AutoTransferDTO">
 		select * from auto_transferReg_tbl
 		where acNumber = #{acNumber}
 		  and aState LIKE '%' || #{aState} || '%'
 	</select>
-	
+	<!-- 자동 이체 해지  -->
 	<update id="autoTransferCancel" parameterType="java.util.Map">
 		update auto_transferReg_tbl
 		set aState = #{aState}
 		, aCancelDate = sysdate
 		where aNum = #{aNum} 
 	</update>
-	
-	<select id="transferList" parameterType="String" resultType="com.pigbank.project.dto.TransferDTO">
-		select * from transfer_tbl where id = #{id}
+	<!-- 자동이체내역 조회(id)  -->
+	<select id="transferList" parameterType="String" resultType="com.pigbank.project.dto.AutoTransferListDTO">
+		SELECT DISTINCT att.ATNUM ,att.ANUM ,att.ATDATE ,att.ATRESULT , tt.ADEPOSITBANK , tt.aDepositAmount 
+			FROM auto_transfer_tbl att, auto_transferReg_tbl tt , transfer_tbl trt, ACCOUNT_TBL at2
+			WHERE trt.ACNUMBER = tt.ACNUMBER
+			AND  at2.ACNUMBER = trt.ACNUMBER 
+			AND  att.anum = tt.anum
+			AND  at2.id = #{id}
 	</select>
-	
+	<!-- 자동이체 조회(id) -->
+	<select id="autoTransferListbyid" parameterType="String" resultType="com.pigbank.project.dto.AutoTransferDTO">
+		SELECT att.aNum, att.ACNUMBER ,att.ADEPOSITNUM ,
+			att.ADEPOSITBANK ,att.ADEPOSITAMOUNT ,att.ATRANSFERCYCLE ,
+			att.ASTARTDATE ,att.AENDDATE ,att.AREGDATE ,att.ACANCELDATE ,att.ASTATE , act.ID 
+			FROM AUTO_TRANSFERREG_TBL att , ACCOUNT_TBL act
+			WHERE att.ACNUMBER = act.ACNUMBER 
+			and act.id = #{id}
+	</select>
+	<!-- 자동이체 수정창 한건 조회  -->
 	<select id="selectOne" parameterType="int" resultType="com.pigbank.project.dto.AutoTransferDTO">
 		select att.acNumber, att.acancelDate, att.adepositAmount, att.adepositBank, 
 			   att.adepositnum, att.aendDate, att.aregDate, att.anum, 
@@ -91,7 +121,7 @@
 		where act.acNumber = att.acNumber
 		  and att.aNum = #{aNum}
 	</select>
-	
+	<!--  자동이체 상세페이지에서 직접 수정  -->
 	<update id="updatedirectlyAutoTransfer">
 		update auto_transferReg_tbl
 		set aDepositAmount = #{aDepositAmount} , 
@@ -99,7 +129,7 @@
 		aEndDate = #{aEndDate}
 		where aNum = #{aNum}
 	</update>
-	
+	<!-- 이체 한도 수정  -->
 	<update id="updatetrsfLimit" parameterType="com.pigbank.project.dto.AccountDTO">
 		update account_tbl
 		set trsfLimit = #{trsfLimit}
@@ -110,31 +140,31 @@
 	<select id="noticeList" resultType="com.pigbank.project.dto.NoticeDTO">
 		select * from notice_tbl order by nNum desc
 	</select>
-	
+	<!-- 공지사항 상세페이지  -->
 	<select id="checkonenotice" parameterType="int" resultType="com.pigbank.project.dto.NoticeDTO">
 		select * from notice_tbl where nNum = #{nNum} 
 	</select>
-	
+	<!-- 공지사항 수정  -->
 	<update id="changenotice" parameterType="com.pigbank.project.dto.NoticeDTO">
 		update notice_tbl
 		set nTitle = #{nTitle}, nContent = #{nContent}, nShow = #{nShow}
 		where nNum = #{nNum}
 	</update>
-	
+	<!-- 공지사항 삭제  -->
 	<delete id="deletenotice" parameterType="int">
 		delete from notice_tbl
 		where nNum = #{nNUM}
 	</delete>
-	
+	<!-- 공지사항 추가  -->
 	<insert id="addnotice" parameterType="com.pigbank.project.dto.NoticeDTO">
 		INSERT INTO notice_tbl(nNum, nTitle, nContent, nShow)
 		VALUES ((SELECT NVL(MAX(nNum) + 1, 1) FROM notice_tbl),#{nTitle},#{nContent},#{nShow})
 	</insert>
-	
+	<!--공지사항 수정  -->
 	<select id="csboardDetail" parameterType="int" resultType="com.pigbank.project.dto.NoticeDTO">
 		select * from notice_tbl where nNum = #{nNum}
 	</select>
-	
+	<!-- 공지사항 고객 상세페이지  -->
 	<update id="updatecount" parameterType="int">
 		update notice_tbl
 		set ncount = ncount + 1

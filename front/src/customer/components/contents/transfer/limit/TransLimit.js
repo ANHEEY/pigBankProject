@@ -22,6 +22,7 @@ function TransLimit () {
         reloadAccountList();
     }, [id]);
 
+    // id 로 계좌목록 호출
     const reloadAccountList = () => {
         TransferService.fetchAccountList(id)
          .then(res => {
@@ -34,6 +35,7 @@ function TransLimit () {
          })
     }
 
+    // 선택한 계좌의 계좌번호로 이체한도 조회후 set
     const accountChange = (event) => {
         const selectedAccountInt = parseInt(event.target.value);
         const account = myaccounts.find(account => account.acNumber === selectedAccountInt);
@@ -45,6 +47,7 @@ function TransLimit () {
         }
     }
 
+    // 이체한도 변경시 최대 5천만원을 넘어갈수없고 null,NaN,0 이 들어올수 없다.
     const transLimitAccept = () => {
         if(myvalue == null || myvalue >= 50000001 || myvalue <= 0){
             return alert("희망 이체한도는 0 또는 최대한도를 초과할 수 없습니다.")
@@ -61,10 +64,11 @@ function TransLimit () {
                 trsfLimit: myvalue,
             }
             console.log(limit);
-            
+            // 해당 데이터를 limit에 담아서 한도 update
             TransferService.updatetrsfLimit(limit)
                 .then(res => {
                     console.log("한도변경완료!");
+                    // 바뀌기 전 후 의 데이터를 navigate 함수 get 방식으로 값 넘겨주기
                     navigate(`/customer/transfer/trans_limit_accept/${trsfLimit}/${myvalue}`);
                 })
         }

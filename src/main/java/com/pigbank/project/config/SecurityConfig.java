@@ -36,7 +36,7 @@ public class SecurityConfig{
 			.and()
 			.authorizeHttpRequests((requests)->requests
 					.antMatchers(HttpMethod.POST,"/login","/customerJoin").permitAll()
-					.antMatchers(HttpMethod.GET,"/members","/deposit","/loan","/duplicateId/{id}").permitAll()
+					.antMatchers(HttpMethod.GET,"/members","/deposit","/loan","/duplicateId/{id}","/noticeList").permitAll()
 					.antMatchers("/emailChk").permitAll()
 					.anyRequest().authenticated()
 			);    

@@ -13,6 +13,8 @@ import lombok.Data;
 @Data
 public class AutoTransferDTO {
 
+	
+	// 자동이체 테이블
 	@Id
 	private int aNum;
 	private long acNumber;

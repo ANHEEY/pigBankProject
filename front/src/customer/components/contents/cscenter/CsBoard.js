@@ -3,17 +3,17 @@ import React, { useEffect, useState } from "react";
 import Table from 'react-bootstrap/Table';
 import { Container } from "react-bootstrap";
 import { useNavigate} from "react-router-dom";
+import {Box} from "@mui/material";
 import NoticeApiService from "../../../../admin/components/contents/csCenter/NoticeApiService";
-import ReactPaginate from "react-paginate";
+import Pagination from "@mui/material/Pagination";
 import SearchBar from "./SearchBar";
 
 function CsBoard () {
 
     const [List, setList] = useState([]);
     const navigate = useNavigate();
-    const [pageNumber, setPageNumber] = useState(0);
-    const countlist = List.length;
-
+    const [itemsPerPage] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
     const [Search, setSearch] = useState('');
 
     useEffect(() => {
@@ -23,11 +23,6 @@ function CsBoard () {
     const handleSearchChange = (newSearch) => {
         setSearch(newSearch);
     };
-
-    const handlePageClick = (data) => {
-        const { selected } = data;
-        setPageNumber(selected);
-      };
 
     const fetchnoticeList = () => {
         NoticeApiService.noticeList()
@@ -40,6 +35,14 @@ function CsBoard () {
         console.log(nnum);
         navigate(`/customer/cscenter/cs_board_detail/${nnum}`);
     }
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const ListMember = List.slice(indexOfFirstItem, indexOfLastItem);
+   
+    const handlePageChange = (event, pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
     return (
         <Container>
@@ -56,10 +59,10 @@ function CsBoard () {
                     <th>등록일자</th>
                     <td>조회수</td>
                 </tr>
-                {List.filter(item => 
+                {ListMember.filter(item => 
                             item.ncontent.toLowerCase().includes(Search.toLowerCase().replace(/\s/g, '')) || 
                             item.ntitle.toLowerCase().includes(Search.toLowerCase().replace(/\s/g, ''))
-                        ).slice(pageNumber * 10, (pageNumber + 1) * 10).map((notice) => {
+                        ).map((notice) => {
                     if(notice.nshow == 'N'){
                         return;
                     }else {
@@ -71,16 +74,17 @@ function CsBoard () {
                     <td>{notice.ncount}</td>
                 </tr>
                  )}})}
-                  <ReactPaginate
-                    previousLabel={"이전"}
-                    nextLabel={"다음"}
-                    pageCount={countlist / 10}  // 전체 페이지 수
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={10}
-                    onPageChange={handlePageClick}
-                    containerClassName={"pagination"}
-                    activeClassName={"active"}
-                />
+                <tr>
+                    <td colSpan={4} style={{textAlign:"center"}}>
+                        <Box display="flex" justifyContent="center">
+                            <Pagination 
+                            count={Math.ceil(List.length / itemsPerPage)}
+                            page={currentPage}
+                            onChange={handlePageChange}
+                            />
+                        </Box>
+                    </td>
+                </tr>
             </tbody>
             </Table>
                

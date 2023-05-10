@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 function TransReConfirm (props) {
 
+
+    // AutoTransReConfirm.js 와 거의 일치
     const acPwd = props.data[1];
     const selectedAccount = props.data[0];
     const yourMemo = props.data[5];
