@@ -1,11 +1,11 @@
 //고객 예금 상품 상세 페이지
-import { Table, Tab, Tabs, Row, Col, Container, Button, Card, Stack } from 'react-bootstrap';
+import { Tab, Tabs, Row, Col, Container, Button, Card, Stack } from 'react-bootstrap';
 import { SlCalender, SlGraph } from "react-icons/sl";
 import { BsCash } from "react-icons/bs";
 import '../../../../resources/css/PdLoanStyle.css';
 import React,{useState,useEffect} from 'react';
 import PdDepositService from './PdDepositService';
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DeCalculator from './DeCalculator';
 
 
@@ -31,6 +31,7 @@ function PdDepositDetail() {
       .then(res=>{
         setDepositProduct(res.data);
         console.log(res.data);
+        localStorage.removeItem("dpdName");
       })
       .catch(err => {
         console.log('depositPdDetail() Error!!!', err);

@@ -43,10 +43,8 @@ function CsBoardDetail () {
             <Table align="center">
                 <thead>
                     <tr>
-                        <th><h4>{ntitle}</h4>
+                        <th><h4>{ntitle}</h4></th>
                         <td>작성일자 : {nregDate}{' / '}조회수 : {ncount}</td>
-                        </th>
-                        
                     </tr>
                 </thead>
                 <tbody>

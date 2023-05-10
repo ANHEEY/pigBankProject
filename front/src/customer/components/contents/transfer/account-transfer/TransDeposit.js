@@ -11,6 +11,8 @@ import TransReConfirm from "../account-transfer/TransReConfirm";
 
 function TransDeposit(props) {
 
+  // AddAutoTrans와 거의 일치
+
   const [data, setData] = useState([]);
   const [accounts, setAccounts] = useState([]);
   const [selectedAccount, setSelectedAccount] = useState('');
@@ -52,7 +54,6 @@ function TransDeposit(props) {
     const allAcountList = () => {
       TransferService.allAccountList()
         .then(res => {
-            console.log(res.data);
             setAllAccounts(res.data);
         })
     }
@@ -76,7 +77,7 @@ function TransDeposit(props) {
         let defaultname = allAccount.filter(all => all.name === yourMemo); // 5건
         let defaultbankName = allAccount.filter(all => all.bankName === mybkName); // 5건
           
-          if(defaultAccounts.length !== 0){
+          if(defaultAccounts.length !== 0){ 
             if(defaultname.length !== 0){
               if(defaultbankName.length !== 0){
                 if(acPwd == notePwd) {

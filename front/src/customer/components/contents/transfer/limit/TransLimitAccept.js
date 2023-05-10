@@ -6,6 +6,7 @@ import { useParams  } from "react-router-dom";
 function TransLimitAccept () {
     const {trsfLimit , myvalue} = useParams();
     
+    // navigate 함수로 받아온 get 값을 받아서 확인하는 페이지
     const comma = Number(trsfLimit).toLocaleString('ko-kR');
     const commanext = Number(myvalue).toLocaleString('ko-kR');
     return(

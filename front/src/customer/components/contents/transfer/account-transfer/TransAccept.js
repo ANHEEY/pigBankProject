@@ -1,10 +1,16 @@
 import React from "react";
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import { useParams  } from "react-router-dom";
+import { useNavigate, useParams  } from "react-router-dom";
 
 function TransAccept () {
 
+    const navigate = useNavigate();
+
+    const home  = () => {
+        navigate(`/customer/*`);
+    }
+    // AutoTransAccept 와 거의 일치
     const {selectedAccount , selectedMyAccount, yourMemo, myMemo, tAmount} = useParams();
         return(
             <div align='center'>
@@ -40,7 +46,7 @@ function TransAccept () {
                             </tr>
                         </tbody>
                     </Table>
-                    <a href="/customer/*"><Button variant="secondary" size="lg">홈으로</Button></a>
+                    <Button variant="secondary" size="lg" onClick={home}>홈으로</Button>
                 </div>
             </div>
         )

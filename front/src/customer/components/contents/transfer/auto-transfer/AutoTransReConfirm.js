@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function AutoTransReConfirm (props) {
 
-    
+    // AddAutoTrans.js 에서 넘긴 값 datas 에서 배열로 받아서 각각의 변수에 넣어줌
     const selectedAccount = props.auto[0];
     const acPwd = props.auto[1];
     const selectedMyAccount= props.auto[2];
@@ -22,7 +22,7 @@ function AutoTransReConfirm (props) {
     
     const navigate = useNavigate();
 
-    const reloadReConfirmList = (e) => {
+    const reloadReConfirmList = (e) => { // 해당 버튼 클릭시 acnumber 변수에 json 타입으로 값을 담고 axios로 백엔드에 값 넘겨주기
         e.preventDefault();
 
         let acnumber = {
@@ -39,7 +39,7 @@ function AutoTransReConfirm (props) {
 
             console.log(acnumber)
             TransferService.autoSave(acnumber)
-            .then(res => {
+            .then(res => { // axios를 통해 백엔드에서 실행이 완료되면 auto_trans_accept 페이지로 이동 get방식으로 값 넘기기
                 navigate(`/customer/transfer/auto_trans_accept/${selectedAccount}/${selectedMyAccount}/${yourMemo}/${myMemo}/${tAmount}/${transferCycle}/${startDate}/${endDate}`);
             })
             .catch(err => {

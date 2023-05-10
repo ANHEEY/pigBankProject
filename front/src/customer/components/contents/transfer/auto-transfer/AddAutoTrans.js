@@ -42,6 +42,7 @@ function AddAutoTrans () {
         
         }, [id]);
 
+    // 내 아이디로 가져온 계좌번호 목록
     const reloadAccountList = () => {
         TransferService.fetchAccountList(id)
             .then(res => {
@@ -53,10 +54,10 @@ function AddAutoTrans () {
              });
     };
 
+    // 모든 계좌 목록
     const allAcountList = () => {
         TransferService.allAccountList()
           .then(res => {
-              console.log(res.data);
               setAllAccounts(res.data);
           })
       }
@@ -83,14 +84,13 @@ function AddAutoTrans () {
         let defaultname = allAccount.filter(all => all.name === yourMemo); // 5건
         let defaultbankName = allAccount.filter(all => all.bankName === mybkName); // 5건
           
-        if(defaultAccounts.length !== 0){
-            if(defaultname.length !== 0){
-              if(defaultbankName.length !== 0){
-                if(acPwd == notePwd) {
-                  if(trsfLimit >= tAmount) {
-                  setShowComponent(true);
-                  
-                  setAuto(datas);
+        if(defaultAccounts.length !== 0){ // 전체계좌에서 내가 입력한 계좌랑 맞는 계좌가 없으면 오류
+            if(defaultname.length !== 0){ // 전체계좌에서 내가 입력한 이름하고 상대 계좌 명의가 맞지 않으면 오류
+              if(defaultbankName.length !== 0){ // 전체계좌에서 내가입력한 계좌의 은행명이 맞지않으면 오류
+                if(acPwd == notePwd) { // 비밀번호 비교
+                  if(trsfLimit >= tAmount) { // 이체 한도 내에서 이체 오버되면 오류
+                  setShowComponent(true); // 다음 컴포넌트의 상태값 true 로 변경
+                  setAuto(datas); // 입력받은값 datas 에 담아서 auto변수에 set 해줌
                   }
                   else{
                     alert('한도초과 확인후 다시 시도해주세요.')
@@ -110,7 +110,7 @@ function AddAutoTrans () {
           }
         };
 
-    const accountChange = (event) => {
+    const accountChange = (event) => {  // 내계좌중에서 선택 선택시 해당 계좌번호에 맞는 값들이 자동으로 뿌려짐
         const selectedAccountInt = parseInt(event.target.value);
         const account = accounts.find(account => account.acNumber === selectedAccountInt);
 
@@ -125,7 +125,7 @@ function AddAutoTrans () {
         }
     };
 
-    const handleBalanceClick = () => {
+    const handleBalanceClick = () => { // 선택한 계좌번호로 찾아서 잔액 조회 클릭시 값 출력
         const selectedAccountInt = parseInt(selectedAccount);
         const account = accounts.find(account => account.acNumber === selectedAccountInt);
         if (account) {
@@ -135,7 +135,7 @@ function AddAutoTrans () {
         }
     }; 
 
-    const myAccountChange = (event) => {
+    const myAccountChange = (event) => { // 내 계좌를 모두 조회한후 입출금 계좌만 필터링해서 선택
         const selectedMyAccountInt = parseInt(event.target.value);
           const account = accounts.find(account => account.acNumber === selectedMyAccountInt);
           setSelectedMyAccount(selectedMyAccountInt);
@@ -361,7 +361,7 @@ function AddAutoTrans () {
                 {showComponent && (
                 <AutoTransReConfirm  auto={auto}
                     />
-                )}
+                )} 
                 
         </Container>
     )

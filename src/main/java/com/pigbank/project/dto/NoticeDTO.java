@@ -13,6 +13,8 @@ import lombok.Data;
 @Data
 public class NoticeDTO {
 
+	
+	// 공지사항 테이블
 	@Id
 	private int nNum;
 	private String nTitle;

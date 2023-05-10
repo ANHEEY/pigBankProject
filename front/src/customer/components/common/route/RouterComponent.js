@@ -10,7 +10,6 @@ import DepositClose from "../../contents/account/Deposit/DepositClose";
 import DepositDetail from "../../contents/account/Deposit/DepositDetail";
 import Saving from "../../contents/account/Saving/Saving";
 import SavingClose from "../../contents/account/Saving/SavingClose";
-import SavingDetail from "../../contents/account/Saving/SavingDetail";
 import Sleep from "../../contents/account/Sleep";
 
 // 조회|대출조회
@@ -102,10 +101,10 @@ const AppRouter = () => {
             <Route path="/customer/account/account/accountdetail/:acNumber/:id" Component={AccountDetail} />
 
             <Route path="/customer/account/deposit" Component={Deposit} />
+            <Route path="/customer/account/deposit/depositdetail/:acNumber/:id" Component={DepositDetail} />
             <Route path="/customer/account/deposit/depositClose" Component={DepositClose} />
             <Route path="/customer/account/saving" Component={Saving} />
             <Route path="/customer/account/saving/savingClose" Component={SavingClose} />
-            <Route path="/customer/account/saving/savingDetail" Component={SavingDetail} />
 
             <Route path="/customer/account/sleep" Component={Sleep} />
 

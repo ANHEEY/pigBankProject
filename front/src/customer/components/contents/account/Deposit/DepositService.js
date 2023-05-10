@@ -22,6 +22,16 @@ class DepositService {
         console.log("info : ",cxlInfo);
         return axios.post(URL+"/cusDepositCxlReg",cxlInfo);
     }
+
+    acDetailInfo(acNumber){
+      console.log('입출금 통장 계좌 정보!!');
+      return axios.get(URL+"/acDetailInfo/"+acNumber);
+    }
+
+    deDetailInfo(acNumber){
+      console.log('예금계좌 정보!!');
+      return axios.get(URL+"/deDetailInfo/"+acNumber);
+    }
 }
 
 export default new DepositService();

@@ -4,7 +4,8 @@ import AllService from "../All/AllService";
 import "../../../../resources/css/product/saving.css";
 import Pagination from "@mui/material/Pagination";
 import {Table, TableCell,TableRow, TableHead, TableBody, Box, TableFooter}from "@mui/material";
-
+import {Card,Button,Row,Col,Stack,Container} from 'react-bootstrap';
+import DepositService from "../Deposit/DepositService";
 
 
 function DepositDetail() {
@@ -14,9 +15,16 @@ function DepositDetail() {
     const {acNumber, id} = useParams();
     const [members, setMembers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [account,setAccount] = useState([]);
+
+    const iconStyle = {
+        color: 'green',
+        fontSize: '2rem',
+    };
 
     useEffect(() => {
         reloadMemberList(acNumber);
+        deDetailInfo(acNumber);
     }, [acNumber]);
 
 
@@ -29,6 +37,17 @@ function DepositDetail() {
           .catch(err => {
             console.log('reloadMemberList() Error!!',err);
           });
+    }
+
+    const deDetailInfo = (acNumber) =>{
+        DepositService.deDetailInfo(acNumber)
+            .then(res=>{
+                setAccount(res.data);
+                console.log(res.data);
+            })
+            .catch(err=>{
+                console.log('deDetailInfo() error!!!',err);
+            });
     }
 
     const formatCurrency = (value) => {
@@ -55,10 +74,75 @@ function DepositDetail() {
         setCurrentPage(pageNumber);
     };
  
+    // 계좌번호 => 문자열로 변환 후 slice
+    const acNum = (e) => {
+        console.log(e);
+        if(!e) return "";       
+        return e.toString().slice(0, 3) + '-' + e.toString().slice(3);
+    }
    
     return(
         <main className="main">
-        
+        <Container>
+        <Card>
+            <Card.Header as="h2" style={{backgroundColor:"#dbe2d872" }}>{account.dpdName}</Card.Header>
+            <br/>
+            <Card.Body>
+                <Row className="text-center">
+                    <Col className="col-md-2 mx-auto">
+                        <i className="bi bi-coin" style={iconStyle}></i>
+                        <Card.Title>통장 잔액</Card.Title>
+                        <Card.Text>
+                            {formatCurrency(account.damount)}
+                        </Card.Text>
+                    </Col>
+                    <Col className="col-md-2 mx-auto">
+                        <i className="bi bi-calendar-check" style={iconStyle}></i>
+                        <Card.Title>개설 날짜</Card.Title>
+                        <Card.Text>
+                            {new Date(account.djoinDate).toLocaleDateString().slice(0,-1)}
+                        </Card.Text>
+                    </Col>
+                    <Col className="col-md-2 mx-auto">
+                        <i className="bi bi-bank" style={iconStyle}></i>
+                        <Card.Title>예금계좌번호</Card.Title>
+                        <Card.Text>
+                            {acNum(account.acNumber)}
+                        </Card.Text>
+                    </Col>
+                </Row>
+                <br/><br/>
+                <Row className="text-center">
+                    <Col className="col-md-2 mx-auto">
+                        <i className="bi bi-piggy-bank" style={iconStyle}></i>
+                        <Card.Title>만기 예상 금액</Card.Title>
+                        <Card.Text>
+                            {formatCurrency(account.dexpAmount)}
+                        </Card.Text>
+                        </Col>
+                    <Col className="col-md-2 mx-auto">
+                        <i className="bi bi-calendar-check-fill" style={iconStyle}></i>
+                        <Card.Title>만기 날짜</Card.Title>
+                        <Card.Text>
+                            {new Date(account.dendDate).toLocaleDateString().slice(0,-1)}
+                        </Card.Text>
+                    </Col>
+                    <Col className="col-md-2 mx-auto">        
+                        <i className="bi bi-cash" style={iconStyle}></i>        
+                        <Card.Title>만기시 입금계좌</Card.Title>
+                        <Card.Text>
+                            {acNum(account.ddeAccount)}
+                        </Card.Text>
+                    </Col>
+                </Row>
+            </Card.Body>
+            <br/> 
+            <Card.Footer style={{backgroundColor:"#dbe2d872" }}>
+            <br/>  
+            </Card.Footer>
+        </Card>
+        </Container>
+        <br/><br/>
             <div className="container">
                 <h2>예금이체내역</h2>
                 <div className="card-body">

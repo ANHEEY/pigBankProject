@@ -5,7 +5,7 @@ class MainComponents extends Component{
     render(){
         return(
             <div style={{textAlignLast:'center'}}>
-                <img src = {piggy_bank} style={{width : '90%'}}/>
+                <img src = {piggy_bank} style={{width : '100%'}}/>
             </div>
         )
     }

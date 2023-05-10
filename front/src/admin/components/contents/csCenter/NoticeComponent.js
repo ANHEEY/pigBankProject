@@ -4,16 +4,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeadset} from "@fortawesome/free-solid-svg-icons";
 import NoticeApiService from "./NoticeApiService";
 import { useNavigate} from "react-router-dom";
-import ReactPaginate from "react-paginate";
+import {Box} from "@mui/material";
 import SearchBar from "../../../../customer/components/contents/cscenter/SearchBar";
+import Pagination from "@mui/material/Pagination";
 
 // npm install react-paginate  => 페이징 처리
 
 function NoticeComponent () {
+
+
     const [List, setList] = useState([]);
     const navigate = useNavigate();
-    const [pageNumber, setPageNumber] = useState(0);
-    const listcount = List.length;
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(10);
 
     const [Search, setSearch] = useState('');
 
@@ -25,10 +28,7 @@ function NoticeComponent () {
         setSearch(newSearch);
     };
 
-    const handlePageClick = (data) => {
-        const { selected } = data;
-        setPageNumber(selected);
-      };
+    
 
     const fetchnoticeList = () => {
         NoticeApiService.noticeList()
@@ -37,6 +37,14 @@ function NoticeComponent () {
                 setList(res.data);
             })
     }
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const ListMember = List.slice(indexOfFirstItem, indexOfLastItem);
+   
+    const handlePageChange = (event, pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
     function move (nnum) {
         navigate(`detail/${nnum}`);
@@ -56,7 +64,7 @@ function NoticeComponent () {
                  <Button variant="primary" onClick={add} style={{ textAlign: 'left' }}>
                     공지사항 등록</Button>
                 </div>
-                <Table striped>
+                <Table striped style={{width:"1000px"}}>
                     <thead>
                         <tr align="center">
                             <th>#</th>
@@ -66,10 +74,10 @@ function NoticeComponent () {
                         </tr>
                     </thead>
                     <tbody>
-                        {List.filter(item => 
+                        {ListMember.filter(item => 
                             item.ncontent.toLowerCase().includes(Search.toLowerCase().replace(/\s/g, '')) || 
                             item.ntitle.toLowerCase().includes(Search.toLowerCase().replace(/\s/g, ''))
-                        ).slice(pageNumber * 10, (pageNumber + 1) * 10).map((notice) => (
+                        ).map((notice) => (
                         <tr key={notice.nnum}>
                             <td><a onClick={() => move(notice.nnum)} key={notice.nnum}>상태:{notice.nshow} {notice.nnum} </a></td>
                             <td><a onClick={() => move(notice.nnum)} key={notice.nnum}>{notice.ntitle.slice(0,15) + '...'}</a></td>
@@ -77,16 +85,18 @@ function NoticeComponent () {
                             <td><a onClick={() => move(notice.nnum)} key={notice.nnum}>{new Date(notice.nregDate).toISOString().slice(0,10)}</a></td>
                         </tr>
                         ))}
-                            <ReactPaginate
-                                previousLabel={"이전"}
-                                nextLabel={"다음"}
-                                pageCount={listcount / 10}  // 전체 페이지 수
-                                marginPagesDisplayed={2}
-                                pageRangeDisplayed={10}
-                                onPageChange={handlePageClick}
-                                containerClassName={"pagination"}
-                                activeClassName={"active"}
-                            />
+
+                        <tr>
+                            <td colSpan={4} style={{textAlign:"center"}}>
+                                <Box display="flex" justifyContent="center">
+                                    <Pagination 
+                                    count={Math.ceil(List.length / itemsPerPage)}
+                                    page={currentPage}
+                                    onChange={handlePageChange}
+                                    />
+                                </Box>
+                            </td>
+                        </tr>
                     </tbody>
                 </Table>
             </div> 

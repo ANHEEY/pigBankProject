@@ -26,6 +26,7 @@ import com.pigbank.project.dto.CredentialsDTO;
 import com.pigbank.project.dto.CustomerDTO;
 import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
+import com.pigbank.project.dto.SavingAccountDTO;
 import com.pigbank.project.exception.AppException;
 import com.pigbank.project.util.EmailChkHandler;
 
@@ -387,6 +388,32 @@ public class CustomerServiceImpl implements CustomerService{
 
 		List<AssetManagementDTO> list2 = dao.assetsManagement2(id);
 		return null;
+	}
+
+	//--------------------------------------------------------------------------
+	
+	//입출금 계좌 상세페이지 정보 불러오기
+	@Override
+	public AccountDTO acDetailInfoAction(long acNumber) {
+		System.out.println("service - acDetailInfoAction");
+
+		return dao.acDetailInfo(acNumber);
+	}
+
+	//예금 계좌 상세페이지 정보 불러오기
+	@Override
+	public DepositAccountDTO deDetailInfoAction(long acNumber) {
+		System.out.println("service - deDetailInfoAction");
+
+		return dao.deDetailInfo(acNumber);
+	}
+
+	//적금 계좌 상세페이지 정보 불러오기
+	@Override
+	public SavingAccountDTO saDetailInfoAction(long acNumber) {
+		System.out.println("service - saDetailInfoAction");
+
+		return dao.saDetailInfo(acNumber);
 	}
 
 }

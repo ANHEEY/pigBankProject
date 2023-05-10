@@ -13,6 +13,7 @@ import com.pigbank.project.dto.CredentialsDTO;
 import com.pigbank.project.dto.CustomerDTO;
 import com.pigbank.project.dto.DepositAccountDTO;
 import com.pigbank.project.dto.DepositProductDTO;
+import com.pigbank.project.dto.SavingAccountDTO;
 
 public interface CustomerService {
 
@@ -98,5 +99,15 @@ public interface CustomerService {
    
   	//고객 자산 관리 페이지2
   	public List<AssetManagementDTO> assetsManagementAction2(String id);
+  	
+  	//---------------------------------------------------------------------------
+  	
+  	//입출금 계좌 상세페이지 정보 불러오기
+  	public AccountDTO acDetailInfoAction(long acNumber);
    
+  	//예금 계좌 상세페이지 정보 불러오기
+  	public DepositAccountDTO deDetailInfoAction(long acNumber);
+  	
+  	//적금 계좌 상세페이지 정보 불러오기
+  	public SavingAccountDTO saDetailInfoAction(long acNumber);
 }

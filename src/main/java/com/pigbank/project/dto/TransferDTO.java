@@ -13,6 +13,8 @@ import lombok.Data;
 @Data
 public class TransferDTO {
 	
+	
+	// 계좌이체 테이블
 	@Id
 	private int tNum;
 	private long acNumber;

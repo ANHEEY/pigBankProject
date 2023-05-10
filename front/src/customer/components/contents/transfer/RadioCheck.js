@@ -4,7 +4,6 @@ import Form from 'react-bootstrap/Form';
 function RadioCheck(props) {
   const handlechange = (event) => {
     const astate = event.target.value;
-    console.log(astate);
     props.onChange(astate);
   }
     return (

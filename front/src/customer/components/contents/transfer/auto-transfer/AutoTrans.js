@@ -16,16 +16,16 @@ function AutoTrans () {
     const [astate,setAstate] = useState('');
     const [data,setData] = useState([])
 
-    const [id, setId] = useState(getId());
+    const [id, setId] = useState(getId()); // getid로 id 가져오기
 
     useEffect(() => {
         reloadAccountList();
     }, [id]);
     
-    const reloadAccountList = () => {
+    const reloadAccountList = () => {  // id로 계좌 조회
         TransferService.fetchAccountList(id)
          .then(res => {
-            setMyaccounts(res.data);
+            setMyaccounts(res.data); // myaccounts에 set 해주기
          })
          .catch(err => {
             alert("로그인 하세요.");
@@ -33,15 +33,15 @@ function AutoTrans () {
          })
     }
 
-    const accountChange = (event) => {
+    const accountChange = (event) => { // 불러온 계좌번호중 계좌번호 선택
         setSelectedAccount(event.target.value);
     }
 
-    const handleChange = (astate) => {
+    const handleChange = (astate) => { // 라디오 버튼으로 상태값 set 
         setAstate(astate);
     }
     
-    const handleClick = (e) => {
+    const handleClick = (e) => { // 버튼클릭시 value 값에 배열로 계좌번호와 상태값 을 넣고 하단 페이지 보여줌 data={data} 로 자식컴포넌트에 값 넘겨주기
         e.preventDefault();
 
         let value = [selectedAccount, 
