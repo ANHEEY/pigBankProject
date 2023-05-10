@@ -72,13 +72,52 @@
 	
 	<!-- 적금 중도해지 상세페이지 -->
 	<select id="findByCloseDetail" parameterType="long" resultType="com.pigbank.project.dto.SavingAccountDTO">
-		SELECT * FROM s_account_tbl
-		 WHERE acNumber = #{acNumber}
+		SELECT s.sNum, s.acNumber, s.spdName, s.samount, s.sexpAmount, s.sendDate, s.sjoinDate, s.sdeaccount, s.SSTARTDATE, p.speriod, p.scxlrate, p.srate, a.acPwd, a.acbalance
+		  FROM s_account_tbl s, savings_product p, account_tbl a
+		 WHERE s.sPdName = p.sPdName
+		   AND s.acNumber = a.acNumber
+		   AND s.acNumber = #{acNumber}
 	</select>
 	
-	<!-- 적금 중도해지 -->
-	<update id="sAccClose" parameterType="long">
-		
+	<!-- 적금 중도해지 - 전체계좌 상태변경 -->
+	<update id="sAccClose" parameterType="com.pigbank.project.dto.SavingAccountDTO">
+		UPDATE account_tbl
+   		   SET acState='DELETE', acBalance=0
+   		 WHERE acNumber=#{acNumber}
+	</update>
+	<!-- 적금 중도해지 - 적금계좌 상태변경 -->
+	<update id="sAccCloseSaving" parameterType="com.pigbank.project.dto.SavingAccountDTO">
+		UPDATE s_account_tbl
+   		   SET samount=0, sexpAmount=0
+   		 WHERE acNumber = #{acNumber}
+	</update>
+	
+	<!-- 적금 중도해지 - 만기시 입금계좌로 입금 -->
+	<update id="fSaivngPut" parameterType="com.pigbank.project.dto.SavingAccountDTO">
+		UPDATE account_tbl
+		   SET acBalance = acBalance + #{sexpAmount}
+   		 WHERE acNumber = #{sdeAccount}
+	</update>
+	
+	<!-- 적금 중도해지 - 입출금계좌 이체내역 추가 -->
+	<update id="accCxlTransfer" parameterType="com.pigbank.project.dto.SavingAccountDTO">
+		INSERT INTO transfer_tbl(tNum,acNumber,tDepositNum,tDepositBank,tType,tAmount,myMemo,yourMemo)
+		VALUES ((SELECT NVL(MAX(tNum)+1,1) FROM transfer_tbl),
+					#{sdeAccount},
+					#{acNumber},
+					'돼지은행',
+					'입금',
+					#{sexpAmount},
+					'적금해지 입금',
+					'적금해지 출금'
+				)
+	</update>
+	
+	<!-- 적금 중도해지 - 적금계좌 이체내역 추가 -->
+	<update id="savingCxlTransfer" parameterType="com.pigbank.project.dto.SavingAccountDTO">
+		INSERT INTO transfer_tbl(tNum,acNumber,tDepositNum,tDepositBank,tType,tAmount,myMemo,yourMemo)
+		VALUES ((SELECT NVL(MAX(tNum)+1,1) FROM transfer_tbl),#{acNumber}
+				,#{sdeAccount},'돼지은행','출금',#{sexpAmount},'적금해지 출금','적금해지 입금')
 	</update>
 
 </mapper>

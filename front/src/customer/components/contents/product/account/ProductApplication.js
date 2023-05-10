@@ -7,13 +7,21 @@ import PdAccApiService from "./PdAccApiService";
 
 function ProductApplication() {
     
-    // 약관 동의
+    
+     const [id, setId] = useState(getId());  // 고객정보
+     const [acPwd, setAcPwd] = useState(''); // 정보입력 비밀번호 입력, 네이버 SENS API사용 본인인증
+   
+     // 약관 동의
     const [isAgreed, setIsAgreed] = useState({
         isAgreed1: "",
         isAgreed2: ""
     })
 
     const handleSubmit = (e) => {
+        if(acPwd == "") {
+            alert('비밀번호를 입력하세요!');
+            return false;
+        }
         e.preventDefault();
     
         const id = getId(); // getId() 함수를 호출하여 반환값을 id 변수에 저장
@@ -45,12 +53,6 @@ function ProductApplication() {
           };
         });
       };
-
-    // 고객정보
-    const [id, setId] = useState(getId());
-    
-    // 정보입력 비밀번호 입력, 네이버 SENS API사용 본인인증
-    const [acPwd, setAcPwd] = useState('');
 
     const onChange = (e) => {
         const { name, value } = e.target;
@@ -127,7 +129,7 @@ function ProductApplication() {
                     <p><b>1회 이체한도 </b> 2,000,000원</p>
                 </div>
                 <div className="d-grid gap-2">
-                    <Button style = {{background:'#9dc888',border:'#9dc888'}} size="lg" type="submit" onClick={handleSubmit}> 가입하기 </Button>
+                    <Button style = {{background:'#9dc888',border:'#9dc888'}} size="lg" onClick={handleSubmit}> 가입하기 </Button>
                 </div>
             </Form>
         </div>

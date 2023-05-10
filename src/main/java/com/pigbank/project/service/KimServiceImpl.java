@@ -106,11 +106,17 @@ public class KimServiceImpl implements KimService {
 	}
 
 	@Override // 적금 중도해지
-	public void deleteCustSaving(long acNumber) throws ServletException, IOException {
+	public SavingAccountDTO deleteCustSaving(SavingAccountDTO savingDTO) throws ServletException, IOException {
 		System.out.println("Service - deleteCustSaving(적금 중도해지)");
 		
-		dao.sAccClose(acNumber);
 		
+		dao.sAccClose(savingDTO); // 전체계좌 상태변경
+		dao.sAccCloseSaving(savingDTO); // 적금계좌 상태변경
+		dao.fSaivngPut(savingDTO); // 만기시 입금
+		dao.accCxlTransfer(savingDTO); // 입출금계좌 이체내역
+		dao.savingCxlTransfer(savingDTO); // 적금계좌 이체내역
+		
+		return savingDTO;
 	}
 
 

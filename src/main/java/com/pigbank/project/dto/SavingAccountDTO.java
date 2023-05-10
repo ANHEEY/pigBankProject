@@ -32,6 +32,7 @@ public class SavingAccountDTO {
 	private long withdrawAcNumber;
 	
 	// 자동이체를 위한 변수 (적금기준으로 주석작성)
+	private int aNum;
 	private long aDepositnum;	
 	private String aDepositBank;
 	private int aDepositAmount;  
@@ -48,4 +49,6 @@ public class SavingAccountDTO {
 	//적금 계좌 상세 정보 페이지를 위한 변수
 	private long acBalance;
 	
+	// 중도해지 상세페이지를 위한 변수
+	private int scxlrate;
 }

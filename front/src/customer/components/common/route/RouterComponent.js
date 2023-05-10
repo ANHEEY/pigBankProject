@@ -10,6 +10,7 @@ import DepositClose from "../../contents/account/Deposit/DepositClose";
 import DepositDetail from "../../contents/account/Deposit/DepositDetail";
 import Saving from "../../contents/account/Saving/Saving";
 import SavingClose from "../../contents/account/Saving/SavingClose";
+//import SavingDetail from "../../contents/account/Saving/SavingDetail"; 적금이체내역 라우터만 넣어두었어요. 주석만 제거해주세요.
 import Sleep from "../../contents/account/Sleep";
 
 // 조회|대출조회
@@ -105,6 +106,7 @@ const AppRouter = () => {
             <Route path="/customer/account/deposit/depositClose" Component={DepositClose} />
             <Route path="/customer/account/saving" Component={Saving} />
             <Route path="/customer/account/saving/savingClose" Component={SavingClose} />
+            {/* <Route path="/customer/account/saving/savingDetail" Component={SavingDetail} /> */}
 
             <Route path="/customer/account/sleep" Component={Sleep} />
 

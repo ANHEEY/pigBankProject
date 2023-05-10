@@ -12,17 +12,17 @@ if(getAuthToken() !== null){
   class SavingService {
 
     // 중도해지 상세조회(1건 조회)
-    savingCloseDetail(acNumer) {
-        console.log(acNumer)
+    savingCloseDetail(acNumber) {
+        console.log(acNumber)
         console.log('savingCloseDetail(중도해지 상세) 호출')
-        return axios.get(CUSTOMER_API_PRODUCT_SAVING_URL + 'savingCloseDetail/' + acNumer);
+        return axios.get(CUSTOMER_API_PRODUCT_SAVING_URL + 'savingCloseDetail/' + acNumber);
     }
 
     // 중도해지
-    closeSaving(sNum) {
-        console.log(sNum)
+    closeSaving(acNumber) {
+        console.log(acNumber)
         console.log('closeSaving(적금 중도해지)')
-        return axios.post(CUSTOMER_API_PRODUCT_SAVING_URL + 'closeSaving/' + sNum)
+        return axios.post(CUSTOMER_API_PRODUCT_SAVING_URL + 'closeSaving/' + acNumber, acNumber)
     }
 
   }

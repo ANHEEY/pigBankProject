@@ -163,11 +163,21 @@ public class KimController {
 	}
 	
 	// 적금 중도해지(중도해지 신청)
-	@PostMapping(value="/closeSaving/{sNum}")
-	public void closeSaving(@PathVariable int sNum) throws ServletException, IOException{
+	@PostMapping(value="/closeSaving/{acNumber}")
+	public void closeSaving(@PathVariable long acNumber, @RequestBody SavingAccountDTO savingDTO) throws ServletException, IOException{
 		logger.info("<< URL - customer closeSaving(적금 중도해지) >>");
 		
-		service.deleteCustSaving(sNum);
+		service.deleteCustSaving(savingDTO);
+		System.out.println("리턴받은 savingDTO: " + savingDTO);
+		
+		AutoTransferDTO autoDTO = new AutoTransferDTO();
+	    autoDTO.setANum(savingDTO.getANum()); 
+	    autoDTO.setAState("unusing");
+	    System.out.println("autoDTO: " + autoDTO);
+	        
+	    service2.autoTransferCancel(autoDTO.getANum()); 
+	    System.out.println("자동이체해지");
+		
 	}
 	
 }

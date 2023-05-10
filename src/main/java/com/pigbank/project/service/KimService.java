@@ -45,7 +45,7 @@ public interface KimService {
 	// 적금 중도해지 조회
 	public SavingAccountDTO selectByClose(long acNumber) throws ServletException, IOException; 
 	
-	// 중도해지
-	public void deleteCustSaving(long acNumber) throws ServletException, IOException;
+	// 중도해지신청
+	public SavingAccountDTO deleteCustSaving(SavingAccountDTO savingDTO) throws ServletException, IOException;
 	
 }
