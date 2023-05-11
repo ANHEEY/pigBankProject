@@ -119,5 +119,14 @@
 		VALUES ((SELECT NVL(MAX(tNum)+1,1) FROM transfer_tbl),#{acNumber}
 				,#{sdeAccount},'돼지은행','출금',#{sexpAmount},'적금해지 출금','적금해지 입금')
 	</update>
+	
+	<!-- 자동이체번호 불러오기 -->
+	<select id="selectANum" parameterType="long" resultType="int">
+		SELECT a.aNum
+		  FROM auto_transferReg_tbl a, s_account_tbl s, account_tbl ac
+		 WHERE ac.acNumber = s.acNumber
+		   AND s.acNumber = a.adepositNum
+		   AND s.acNumber = #{acNumber}
+	</select>
 
 </mapper>

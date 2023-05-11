@@ -97,6 +97,16 @@ public class KimController {
 		System.out.println("자유입출금 개설완료!");
 	}
 	
+	// 네이버 SENS API 문자인증 - 본인인증버튼 클릭
+//	@GetMapping(value="/app/send")
+//	public customerDTO listByHP() throws ServletException, IOException {
+//		logger.info("NAVER SENS API");
+//		
+//		
+//		System.out.println("문자전송");
+//	}
+	
+	
 	// -----------------------------------------------------------------------------------------------------------------------------------------
 	
 	// 적금 상품 조회 (관리자 서비스, DAO)
@@ -165,17 +175,14 @@ public class KimController {
 	// 적금 중도해지(중도해지 신청)
 	@PostMapping(value="/closeSaving/{acNumber}")
 	public void closeSaving(@PathVariable long acNumber, @RequestBody SavingAccountDTO savingDTO) throws ServletException, IOException{
-		logger.info("<< URL - customer closeSaving(적금 중도해지) >>");
+		logger.info("<< URL - customer closeSaving(적금해지) >>");
 		
 		service.deleteCustSaving(savingDTO);
-		System.out.println("리턴받은 savingDTO: " + savingDTO);
+		System.out.println("savingDTO: " + savingDTO);
 		
-		AutoTransferDTO autoDTO = new AutoTransferDTO();
-	    autoDTO.setANum(savingDTO.getANum()); 
-	    autoDTO.setAState("unusing");
-	    System.out.println("autoDTO: " + autoDTO);
+		int aNum = service.savingselectANum(savingDTO);
 	        
-	    service2.autoTransferCancel(autoDTO.getANum()); 
+	    service2.autoTransferCancel(aNum); 
 	    System.out.println("자동이체해지");
 		
 	}

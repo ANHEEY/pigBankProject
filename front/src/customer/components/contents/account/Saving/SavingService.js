@@ -19,10 +19,10 @@ if(getAuthToken() !== null){
     }
 
     // 중도해지
-    closeSaving(acNumber) {
-        console.log(acNumber)
+    closeSaving(cxlInfo) {
+        console.log(cxlInfo)
         console.log('closeSaving(적금 중도해지)')
-        return axios.post(CUSTOMER_API_PRODUCT_SAVING_URL + 'closeSaving/' + acNumber, acNumber)
+        return axios.post(CUSTOMER_API_PRODUCT_SAVING_URL + 'closeSaving/' + cxlInfo.acNumber, cxlInfo)
     }
 
   }

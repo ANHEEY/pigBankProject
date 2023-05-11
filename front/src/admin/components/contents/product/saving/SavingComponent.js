@@ -61,7 +61,7 @@ function SavingComponent() {
                                     <td>{pdSaving.smin}만원</td>
                                     <td>{pdSaving.smax}만원</td>
                                     <td>{pdSaving.scxlrate}%</td>
-                                    <td>{pdSaving.sregdate}</td>
+                                    <td>{new Date(pdSaving.sregdate).toLocaleDateString().slice(0,-1)}</td>
                                     <td>
                                         <button className="customerinfoBtn" onClick={() => goRegister(pdSaving.spdname)}>상세페이지</button>
                                     </td>

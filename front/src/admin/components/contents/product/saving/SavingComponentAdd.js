@@ -157,7 +157,7 @@ function SavingComponentAdd(props) {
                         <Form.Control 
                             required 
                             type="number" 
-                            name="srate" 
+                            name="scxlrate"
                             value={scxlrate} 
                             onChange={onChange} 
                             placeholder="%" />

@@ -136,7 +136,7 @@ function Saving() {
                         <TableRow key={member.acNumber}>
                           <TableCell onClick={() => handleDpdNameClick(member.acNumber)}>
                             <Link to={`/customer/account/saving/savingdetail/${member.acNumber}/${member.id}`}>
-                              {member.spdName}
+                              {member.spdname}
                             </Link>
                           </TableCell>
                           <TableCell>{acNum(member.acNumber)}</TableCell>
@@ -145,7 +145,7 @@ function Saving() {
                           <TableCell>{formatCurrency(member.sexpAmount)}</TableCell>
                           <TableCell>{formatCurrency(member.samount)}</TableCell>
                           <TableCell>
-                            <button className="customerinfoBtn" onClick={() => goRegister(member.acNumber)}>계좌해지</button>
+                            <button className="customerinfoBtn" onClick={() => goRegister(member.acNumber)} disabled={member.samount === 0}>계좌해지</button>
                           </TableCell>
                           </TableRow>
                       ))}

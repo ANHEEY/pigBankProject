@@ -38,13 +38,30 @@ function SavingClose () {
 
     // 계좌 해지구분(만기/중도)
     const accCxl = () => {
-        if(saAcInfo && saAcInfo.ssendDate <= sToday) {
-            return "적금 만기해지";
+        const sendDate = new Date(saAcInfo.sendDate);
+        const today = new Date(sToday);
+      
+        if (saAcInfo && sendDate.getTime() <= today.getTime()) {
+          return "적금 만기해지";
         } else {
-            return "적금 중도해지";
+          return "적금 중도해지";
+        }
+      }
+    
+    const savingEnd = () => {
+        const sendDate = new Date(saAcInfo.sendDate);
+        const today = new Date(sToday);
+        if(saAcInfo && sendDate.getTime() <= today.getTime()) {
+            // 만기
+            return saAcInfo.sexpAmount;
+        } 
+        else {
+            // 중도
+            return saAcInfo.acBalance + ((saAcInfo.scxlrate*100)*saAcInfo.samount*(Math.floor(saAcInfo.acBalance / parseInt(saAcInfo.samount, 10))));
         }
     }
 
+    // 해지신청
     const savingCxl = () => {
         if(Number(sacPwd) !== Number(saAcInfo.acPwd)) {
             console.log('sacPwd: ', sacPwd);
@@ -56,19 +73,21 @@ function SavingClose () {
         console.log('saAcInfo.acPwd: ', saAcInfo.acPwd);
 
         const cxlInfo = {
-            acNumber: saAcInfo.acNumber,
-            sexpAmount: saAcInfo.sexpAmount,
-            sdeAccount: saAcInfo.sdeAccount
+            acNumber: saAcInfo.acNumber,     // 계좌번호
+            sexpAmount: savingEnd(),         // 예상금리 금액(만기시, 해지시 금액)
+            sdeAccount: saAcInfo.sdeAccount, // 만기시 입금계좌
+            aNum: saAcInfo.anum              // 자동이체 번호(자동이체번호로 해지)
         }
 
-        // SavingService.closeSaving(cxlInfo)
-        //     .then(res => {
-        //         alert("가입하신 적금이 해지되었습니다.");
-        //         navigate('/customer/account/saving');
-        //     })
-        //     .catch(err => {
-        //         console.log('closeSaving() Error!', err);
-        //     })
+        SavingService.closeSaving(cxlInfo)
+            .then(res => {
+                alert("가입하신 적금이 해지되었습니다.");
+                navigate('/customer/account/saving');
+            })
+            .catch(err => {
+                console.log('closeSaving() Error!', err);
+            })
+        
     }
 
     return (
@@ -111,23 +130,13 @@ function SavingClose () {
                             <td>{comma(saAcInfo.samount)}원/{Math.floor(saAcInfo.acBalance / parseInt(saAcInfo.samount, 10))}회</td>
                         </tr>
                         <tr>
-                            <th>자동이체일</th>
-                            <td>{new Date(saAcInfo.sstartDate).toLocaleDateString().slice(0,-1)}</td>
+                            <th>가입일</th>
+                            <td>{new Date(saAcInfo.sjoinDate).toLocaleDateString().slice(0,-1)}</td>
                             <th>만기일</th>
                             <td>{new Date(saAcInfo.sendDate).toLocaleDateString().slice(0,-1)}</td>
                         </tr>
                         <tr>
-                            <th>만기시 원금</th>
-                            <td>{comma(saAcInfo.samount * saAcInfo.speriod)}원</td>
-                            <th>만기시 이자</th>
-                            <td>{comma(saAcInfo.sexpAmount-(saAcInfo.samount*saAcInfo.speriod))}원</td>
-                        </tr>
-                        <tr>
-                            <th>만기시 지급금액</th>
-                            <td colSpan={3}>{comma(saAcInfo.sexpAmount)}원</td>
-                        </tr>
-                        <tr>
-                            <th>만기시 입금계좌</th>
+                            <th>해지시 입금계좌</th>
                             <td colSpan={3}>{saAcInfo.sdeAccount}</td>
                         </tr>
                     </tbody>
@@ -136,19 +145,25 @@ function SavingClose () {
                 <table className="CDTable" style={{width:"1170px"}}>
                     <thead className='CDTable-title'>
                         <tr>
-                            <th colSpan={4}>계좌 중도해지(현재까지 납부한 금액기준)</th>
+                            <th colSpan={4}>계좌해지</th>
                         </tr>
                     </thead>
                     <tbody className='CDTable-info'>
+                       <tr>
+                            <th>해지구분</th>
+                            <td colSpan={3}>
+                            {accCxl()}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>해지시 지급금액</th>
+                            <td colSpan={3}>{comma(saAcInfo.acBalance + saAcInfo.scxlrate)}원</td>
+                        </tr>
                         <tr>
                             <th style={{width:"250px"}}>원금</th>
                             <td style={{width:"300px"}}>{comma(saAcInfo.acBalance)}</td>
                             <th style={{width:"250px"}}>이자</th>
                             <td>{saAcInfo.scxlrate}원</td>
-                        </tr>
-                        <tr>
-                            <th>해지시 지급금액</th>
-                            <td colSpan={3}>{comma(saAcInfo.acBalance + saAcInfo.scxlrate)}원</td>
                         </tr>
                     </tbody>
                 </table>

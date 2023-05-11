@@ -26,6 +26,7 @@ function Loan() {
   
     // 라이프 사이클 중 컴포넌트가 생성된 후 사용자에게 보여지기까지의 전체 과정을 랜더링
 
+
     const reloadMemberList = (id) => {
         AllService.fetchLoan(id)
           .then(res => {
@@ -50,9 +51,9 @@ function Loan() {
         return formatter.format(value);
     }
 
-     const filteredMembers = members.filter(
-         (member) => member.lreqNum.indexOf(selectedOption) !== -1
-     );
+    // const filteredMembers = members.filter(
+    //     (member) => member.lreqNum.indexOf(selectedOption) !== -1
+    // );
 
     const tableHeadStyle={
         fontWeight: "bold",
@@ -106,16 +107,19 @@ function Loan() {
                 <div className="card-header" style={{backgroundColor:"#dbe2d872" }}>
                     <ul className="nav nav-tabs card-header-tabs">
                     <li className="nav-item">
-                        <a className="nav-link active" href="/customer/account/Account"><Link to="/customer/account/Account">입출금계좌</Link></a>
-                    </li>
-                    <li claclassNamess="nav-item">
-                        <a className="nav-link active" href="/customer/account/Deposit" ><Link to="/customer/account/Deposit">예금계좌</Link></a>
+                        <a className="nav-link active" href="/customer/account/Account">입출금계좌</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link active" href="/customer/account/Saving"><Link to="/customer/account/Saving">적금계좌</Link></a>
+                        <a className="nav-link active" href="/customer/account/Deposit">예금계좌</a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link active" href="/customer/account/Saving">적금계좌</a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link disabled" href="/customer/account/Loan">대출계좌</a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link active" href="/customer/account/LoanState">대출심사결과조회</a>
                     </li>
                     </ul>
                 </div>
@@ -134,10 +138,12 @@ function Loan() {
                         <TableCell style={{...tableHeadStyle, textAlign: "center"}}>업무</TableCell>
                     </TableRow>
                     </TableHead>
-                    {filteredMembers.map((member) => (
-                    <TableBody key={member.lpdName}>
-                        <TableRow >
-                        <TableCell>{member.lpdName}</TableCell>
+                    <TableBody>
+                    {members.map((member) => (
+                        <TableRow key={member.acNumber}>
+                        <TableCell onClick={() => handleGoDetailButton(member.acNumber)}>
+                            {member.lpdName}
+                        </TableCell>
                         <TableCell>{acNum(member.acNumber)}</TableCell>
                         <TableCell>{member.lperiod}년</TableCell>
                         <TableCell>{new Date(member.lstartDate).toLocaleDateString().slice(0,-1)}</TableCell>
@@ -152,8 +158,8 @@ function Loan() {
                             </Stack> 
                         </TableCell>
                         </TableRow>
-                   </TableBody>
                    ))}
+                   </TableBody>
                 </Table>
             </div>
         </div> 
@@ -163,7 +169,6 @@ function Loan() {
         <br />
         </main>
     );
-    
 }
 
 export default Loan;

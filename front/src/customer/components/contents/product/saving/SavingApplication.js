@@ -52,16 +52,15 @@ function SavingApplication(){
     const [accounts, setAccounts] = useState([]);
 
     // 자동이체 시작일, 만기일
+    // const [sstartDate, setSstartDate] = useState(new Date().toISOString().slice(0, 10));
+    // const [sendDate, setSendDate] = useState(new Date().toISOString().slice(0, 10));
     const [sstartDate, setSstartDate] = useState(new Date().toISOString().slice(0, 10));
-    const [sendDate, setSendDate] = useState(new Date().toISOString().slice(0, 10));
-
+    const sendDate = new Date(new Date(sstartDate).setMonth(new Date(sstartDate).getMonth() + savingProduct.speriod)).toISOString().slice(0, 10);
     
 
     useEffect(() => {
         savingDetail();
         custAccList(window.localStorage.getItem("id"));
-
-    
     }, []);
 
     const savingDetail = () => {
@@ -111,6 +110,10 @@ function SavingApplication(){
             alert('적금 가입금액을 입력하세요!');
             return false;
         }
+        if(sAmount < savingProduct.smin*10000 || sAmount > savingProduct.smax*10000) {
+            alert('상품 가입금액을 확인하세요!');
+            return false;
+          }
         if(sacPwd === "") {
             alert('적금 비밀번호를 입력하세요!');
             return false;
@@ -145,8 +148,8 @@ function SavingApplication(){
             samount:Number(sAmount),
             sexpAmount:Math.round(Number(savingProduct.srate/100)*Number(sAmount)*Number(savingProduct.speriod/12)+(Number(sAmount)*Number(savingProduct.speriod))), // 이자+(가입금액*가입기간(m))
             sdeAccount:sdeAccount, // 만기시 입금계좌
-            sstartDate:sstartDate,
-            sendDate:sendDate,
+            sstartDate:sstartDate, // sendDate: sendDate
+            sendDate: sendDate,
             withdrawAcNumber:selectAccount
         }
 
@@ -215,6 +218,7 @@ function SavingApplication(){
                                 <td style={{width:"280px"}}>
                                     <Form.Control 
                                         placeholder="비밀번호 4자리 입력"
+                                        maxLength={4}
                                         type="password"
                                         name="inputAcPwd"
                                         value={inputAcPwd}
@@ -284,7 +288,10 @@ function SavingApplication(){
                                 <td colSpan={3}> 
                                     <InputGroup className="mb-3">
                                         <InputGroup.Text>₩</InputGroup.Text>
-                                        <Form.Control placeholder="가입금액을 입력하세요." name="sAmount" value={sAmount} onChange={(e)=>setSAmount(e.target.value)} /> 
+                                        <Form.Control placeholder="가입금액을 입력하세요." 
+                                                      name="sAmount"
+                                                      value={sAmount} 
+                                                      onChange={(e)=>setSAmount(e.target.value)} /> 
                                     </InputGroup>
                                 </td>
                             </tr>
@@ -292,28 +299,11 @@ function SavingApplication(){
                                 <th>자동이체 시작일</th>
                                 <td> 
                                 <Form.Control type="date" name="strsfCycle"  value={sstartDate} onChange={(e) => setSstartDate(e.target.value)}/>
-                                    {/* <DatePicker
-                                        selected={strsfCycle}
-                                        name="strsfCycle"
-                                        value={strsfCycle}
-                                        onChange={(e) => onChange(e)}
-                                        minDate={new Date()}
-                                        maxDate={sendDate}
-                                        dateFormat="yyyy-MM-dd"
-                                    /> */}
                                 </td>
                                 <th>예상 만기일</th>
                                 <td> 
-                                <Form.Control type="date" name="sendDate"  value={sendDate} onChange={(e) => setSendDate(e.target.value)}/>
-                                    {/* <DatePicker
-                                        selected={sendDate}
-                                        name="sendDate"
-                                        value={sendDate}
-                                        onChange={(e) => onChange(e)}
-                                        minDate={new Date()}
-                                        maxDate={sendDate}
-                                        dateFormat="yyyy-MM-dd"
-                                    /> */}
+                                <Form.Control type="date" name="sendDate"  value={sendDate} onChange={(e) => setSstartDate(e.target.value)} />
+                                {/* {new Date(sstartDate.getFullYear(), sstartDate.getMonth() + savingProduct.speriod, sstartDate.getDate())} onChange={(e) => setSendDate(e.target.value)} */}
                                 </td>
                             </tr>
                         </tbody>

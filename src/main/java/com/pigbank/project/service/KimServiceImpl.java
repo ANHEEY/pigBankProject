@@ -106,7 +106,7 @@ public class KimServiceImpl implements KimService {
 	}
 
 	@Override // 적금 중도해지
-	public SavingAccountDTO deleteCustSaving(SavingAccountDTO savingDTO) throws ServletException, IOException {
+	public void deleteCustSaving(SavingAccountDTO savingDTO) throws ServletException, IOException {
 		System.out.println("Service - deleteCustSaving(적금 중도해지)");
 		
 		
@@ -116,7 +116,17 @@ public class KimServiceImpl implements KimService {
 		dao.accCxlTransfer(savingDTO); // 입출금계좌 이체내역
 		dao.savingCxlTransfer(savingDTO); // 적금계좌 이체내역
 		
-		return savingDTO;
+	}
+
+	@Override // 자동이체 번호 불러오기
+	public int savingselectANum(SavingAccountDTO savingDTO) throws ServletException, IOException {
+		System.out.println("Service - 자동이체 불러오기");
+		
+		long acNumber = savingDTO.getAcNumber();
+		
+		System.out.println("acNumber: " + acNumber);
+		System.out.println("dao.selectANum(acNumber) : " + dao.selectANum(acNumber));
+		return dao.selectANum(acNumber);
 	}
 
 

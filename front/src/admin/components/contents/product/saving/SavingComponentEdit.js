@@ -91,7 +91,8 @@ function SavingComponentEdit () {
                             type="text" 
                             name="spdname" 
                             value={spdname} 
-                            onChange={onChange} 
+                            onChange={onChange}
+                            readOnly
                             placeholder="상품명을 입력해주세요." />
                     </Form.Group>
 
@@ -145,7 +146,8 @@ function SavingComponentEdit () {
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>* 금리</Form.Label>
                         <Form.Control 
-                            required 
+                            required
+                            readOnly
                             type="number" 
                             name="srate" 
                             value={srate} 
@@ -159,9 +161,10 @@ function SavingComponentEdit () {
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>* 중도해지시금리</Form.Label>
                         <Form.Control 
-                            required 
+                            required
+                            readOnly
                             type="number" 
-                            name="srate" 
+                            name="scxlrate" 
                             value={scxlrate} 
                             onChange={onChange} 
                             placeholder="%" />

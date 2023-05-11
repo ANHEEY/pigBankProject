@@ -49,7 +49,7 @@
 		FROM s_account_tbl s, ACCOUNT_TBL a  
 		WHERE s.ACNUMBER = a.ACNUMBER  
 		AND a.id=#{id}
-		AND a.acState='OPEN'
+		<!-- AND a.acState='OPEN' -->
 	</select>
 	
 	<select id="savingDetail" parameterType="long" resultType="com.pigbank.project.dto.TransferDTO">

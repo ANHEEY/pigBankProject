@@ -58,5 +58,8 @@ public interface KimMapper {
 	// SavingAccount 적금 중도해지 - 적금계좌 이체내역 추가
 	public void savingCxlTransfer(SavingAccountDTO savingDTO);
 	
+	// 자동이체 번호 불러오기
+	public int selectANum(long acNumber);
+	
 }
 

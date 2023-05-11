@@ -35,7 +35,7 @@ function PdsavingDetail () {
     return (
         <div className="container">
             <br/><br/><br/>
-            <Container style={{width: "90%"}}>
+            <Container style={{width: "100%"}}>
                 <Card>
                     <Card.Header as="h2">{selectBySProduct.spdname}</Card.Header>
                     <br/><br/>

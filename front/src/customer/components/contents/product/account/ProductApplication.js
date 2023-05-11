@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AgreeAccordion from "../product-application/AgreeAccordion";
-import { Form, Button, Table } from "react-bootstrap";
+import { Form, Button, Table, InputGroup } from "react-bootstrap";
 import "../../../../resources/css/product/application-form.css";
 import { getId } from "../../../helpers/axios_helper";
 import PdAccApiService from "./PdAccApiService";
@@ -87,7 +87,10 @@ function ProductApplication() {
                         <tr>
                             <th  style={{width:"160px"}}>신청자</th>
                             <td colSpan={4}>
-                                <Form.Control placeholder="신청자" name="id" onChange={(e) => onChange(e)} readOnly value={id} />
+                                <InputGroup className="mb-3">
+                                    <Form.Control placeholder="신청자" name="id" onChange={(e) => onChange(e)} readOnly value={id} />       
+                                    <Button variant="outline-success" id="button-addon2">본인인증</Button> {/* onChange => window.open으로 본인인증 */}
+                                </InputGroup>
                             </td>
                         </tr>
                     </tbody>
@@ -113,6 +116,7 @@ function ProductApplication() {
                                     placeholder="비밀번호 4자리 입력"
                                     type="password"
                                     name="acPwd"
+                                    maxLength={4}
                                     value={acPwd}
                                     onChange={(e) => onChange(e)}
                                     variant="outlined"
