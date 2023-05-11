@@ -4,6 +4,7 @@ import { getAuthToken } from '../../../helpers/axios_helper';
 const allaccountList = "http://localhost:8081/allAccounts"
 const accountList = "http://localhost:8081/Accounts";
 const insertTransfer = "http://localhost:8081/Transfer";
+const insertOtherTrnasfer = "http://localhost:8081/OtherTransfer";
 const AutoInsertTransfer = "http://localhost:8081/autoTransfer";
 const AutoTransferCheck = "http://localhost:8081/autoCheck";
 const AutoCancel = "http://localhost:8081/cancelauto";
@@ -41,6 +42,12 @@ class ApiService {
             { headers: {'Content-Type': 'application/json'}}
         );
     }
+    othersave(acNumber) {
+        return axios.post(insertOtherTrnasfer, acNumber,
+            { headers: {'Content-Type': 'application/json'}}
+        );
+    }
+
     autoSave(acnumber) {
         return axios.post(AutoInsertTransfer, acnumber,
             { headers: {'Content-Type': 'application/json'}}

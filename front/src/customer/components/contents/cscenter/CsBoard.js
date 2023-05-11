@@ -18,11 +18,29 @@ function CsBoard () {
 
     useEffect(() => {
         fetchnoticeList();
+        const searchParams = new URLSearchParams(window.location.search);
+        const page = searchParams.get('page');
+        const search = decodeURIComponent(searchParams.get('search') || '');
+
+        setCurrentPage(Number(page) || 1);
+        setSearch(search);
     },[])
 
     const handleSearchChange = (newSearch) => {
         setSearch(newSearch);
-    };
+         const searchResultIndex = List.findIndex((item) => // 검색했을때의 값의 해당하는 인덱스 번호 찾기
+          item.nshow === 'y' &&
+           (item.ncontent.toLowerCase().includes(newSearch.toLowerCase().replace(/\s/g, '')) ||
+          item.ntitle.toLowerCase().includes(newSearch.toLowerCase().replace(/\s/g, '')))
+         );
+         if (searchResultIndex !== -1) {
+           const pageNumber = Math.ceil((searchResultIndex + 1) / itemsPerPage);
+           setCurrentPage(pageNumber);
+           navigate(`/customer/cscenter/cs_board?page=${pageNumber}&search=${encodeURIComponent(newSearch)}`);
+        } else {
+           return;
+         }
+      };
 
     const fetchnoticeList = () => {
         NoticeApiService.noticeList()
@@ -42,13 +60,14 @@ function CsBoard () {
    
     const handlePageChange = (event, pageNumber) => {
         setCurrentPage(pageNumber);
+        navigate(`/customer/cscenter/cs_board?page=${pageNumber}&search=${encodeURIComponent(Search)}`);
     };
 
     return (
         <Container>
             <h3>공지사항</h3>
             <hr/>
-            <SearchBar value={Search} onSearchChange={handleSearchChange} />
+            <SearchBar value={Search} onSearchChange={handleSearchChange} /><p>제목 또는 내용으로 검색</p>
             <br/>
             <Table align='center'>
             
@@ -59,21 +78,22 @@ function CsBoard () {
                     <th>등록일자</th>
                     <td>조회수</td>
                 </tr>
-                {ListMember.filter(item => 
-                            item.ncontent.toLowerCase().includes(Search.toLowerCase().replace(/\s/g, '')) || 
-                            item.ntitle.toLowerCase().includes(Search.toLowerCase().replace(/\s/g, ''))
-                        ).map((notice) => {
-                    if(notice.nshow == 'N'){
-                        return;
-                    }else {
-                    return (
-                <tr key={notice.nnum}>
-                    <td>{notice.nnum}</td>
-                    <td><a onClick={() => move(notice.nnum)}>{notice.ntitle}</a></td>
-                    <td>{new Date(notice.nregDate).toISOString().slice(0,10)}</td>
-                    <td>{notice.ncount}</td>
-                </tr>
-                 )}})}
+                {ListMember
+                    .filter(item =>
+                        item.nshow === 'y' &&
+                        (Search === null || Search === '' ||
+                        item.ncontent.toLowerCase().includes(Search.toLowerCase().replace(/\s/g, '')) ||
+                        item.ntitle.toLowerCase().includes(Search.toLowerCase().replace(/\s/g, ''))
+                        )
+                    )
+                    .map(notice => (
+                        <tr key={notice.nnum}>
+                        <td>{notice.nnum}</td>
+                        <td><a onClick={() => move(notice.nnum)}>{notice.ntitle}</a></td>
+                        <td>{new Date(notice.nregDate).toISOString().slice(0, 10)}</td>
+                        <td>{notice.ncount}</td>
+                        </tr>
+                    ))}
                 <tr>
                     <td colSpan={4} style={{textAlign:"center"}}>
                         <Box display="flex" justifyContent="center">

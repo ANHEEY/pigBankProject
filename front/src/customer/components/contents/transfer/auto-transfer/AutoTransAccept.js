@@ -16,6 +16,12 @@ function AutoTransAccept () {
 
     const navigate = useNavigate();
 
+     // 계좌번호 3번째에다가 - 추가해주는 함수
+     const acNum = (acNumber) => {
+        const acNum = acNumber.toString().slice(0, 3) + "-" + acNumber.toString().slice(3);
+        return acNum;
+    };
+
     const home  = () => {
         navigate('customer/*');
     }
@@ -23,48 +29,48 @@ function AutoTransAccept () {
             <div align='center'>
                 <div className="w-50 p-3" align='center'>
                     <h3 >자동이체 등록완료</h3>
-                    <Table>
+                    <Table style={{width: '900px'}}>
                         <tbody>
                             <tr>
                                 <th>받는분</th>
-                                <td align='right'>{yourMemo}</td>
+                                <td style={{textAlign:'center'}}>{yourMemo}</td>
                             </tr>
                             <tr>
                                 <th>받는계좌</th>
-                                <td align='right'>{selectedMyAccount}</td>
+                                <td style={{textAlign:'center'}}>{acNum(selectedMyAccount)}</td>
                             </tr>
                             </tbody>
                             </Table>
                             <br/>
-                            <hr/>
-                            <Table>
+                            <br/>
+                            <Table style={{width: '900px'}}>
                                 <tbody>
                             <tr>
                                 <th>자동이체주기</th>
-                                <td align='right'>{transferCycle}</td>
+                                <td style={{textAlign:'center'}}>{transferCycle}</td>
                             </tr>
                             <tr>
                                 <th>자동이체기간</th>
-                                <td align='right'>{date}개월</td>
+                                <td style={{textAlign:'center'}}>{date}개월</td>
                             </tr>
                             </tbody>
                             </Table>
 
                             <br/>
-                            <hr/>
-                            <Table>
+                            <br/>
+                            <Table style={{width: '900px'}}>
                             <tbody>
                             <tr>
                                 <th>출금계좌</th>
-                                <td align="right">{selectedAccount}</td>
+                                <td style={{textAlign:'center'}}>{acNum(selectedAccount)}</td>
                             </tr>
                             <tr>
                                 <th>보낸금액</th>
-                                <td align='right'>{Number(tAmount).toLocaleString('ko-kR')}원</td>
+                                <td style={{textAlign:'center'}}>{Number(tAmount).toLocaleString('ko-kR')}원</td>
                             </tr>
                             <tr>
                                 <th>내 메모</th>
-                                <td align='right'>{myMemo}</td>
+                                <td style={{textAlign:'center'}}>{myMemo}</td>
                             </tr>
                         </tbody>
                     </Table>

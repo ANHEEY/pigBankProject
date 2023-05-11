@@ -138,6 +138,7 @@ function AutoTransCheck (props) {
                 </div>
                 <br />
                 <div>
+                    
                         {isOpen && (
                         <div>
                             <CalendarComponent data={calendar} onDataChange={handleCalendarDataChange}/>

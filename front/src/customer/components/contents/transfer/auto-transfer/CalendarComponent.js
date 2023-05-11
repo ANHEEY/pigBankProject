@@ -3,9 +3,15 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import koLocale from '@fullcalendar/core/locales/ko'; // 한국어 로케일 임포트
 
+<<<<<<< Updated upstream
 
 function CalendarComponent(props) {
 
+=======
+// npm install @fullcalendar/react
+function CalendarComponent (props) {
+  
+>>>>>>> Stashed changes
 
   // calendar 변수에 props.data 로 받아온값 담기
   const [calendar, setCalendar] = useState(props.data);
@@ -99,6 +105,7 @@ function CalendarComponent(props) {
     const name = bank[index];
     const state = astate[index];
     const amounts = amount[index];
+<<<<<<< Updated upstream
     if (state === 'using') {
       return {
         title: `${num} : ${name} / 시작하는날 `,
@@ -118,6 +125,32 @@ function CalendarComponent(props) {
         }
       };
     }
+=======
+    const enddate = end[index];
+if(state === 'using'){
+    return {
+      title: `${num} : ${name} / 시작하는날 `,
+      date: formattedStartDate,
+      extendedProps: {
+        amount: amounts,
+        astartDate: formattedStartDate,
+        aendDate: enddate,
+      }
+    };
+  }
+  else {
+    return {
+      title: `${num} : ${name} / 해지 `,
+      date: formattedStartDate,
+      backgroundColor: '#A9A9A9',
+      extendedProps: {
+        amount: amounts,
+        astartDate: formattedStartDate,
+        aendDate: enddate,
+      }
+    };
+  }
+>>>>>>> Stashed changes
   });
 
   // 자동이체 실행 날짜 및 정보
@@ -152,6 +185,7 @@ function CalendarComponent(props) {
     const name = bank[index];
     const state = astate[index];
     const amounts = amount[index];
+<<<<<<< Updated upstream
     if (state === 'using') {
       return {
         title: `${num} : ${name} / 끝나는날 `,
@@ -171,12 +205,39 @@ function CalendarComponent(props) {
         }
       };
     }
+=======
+    const startdate = start[index];
+if(state === 'using'){
+    return {
+      title: `${num} : ${name} / 끝나는날 `, 
+      date: formattedEndDate,
+      extendedProps: {
+        amount: amounts,
+        astartDate: startdate,
+        aendDate: formattedEndDate,
+      }
+    };
+  }
+  else {
+    return {
+      title: `${num} : ${name} / 해지 `,
+      date: formattedEndDate,
+      backgroundColor: '#A9A9A9',
+      extendedProps: {
+        amount: amounts,
+        astartDate: startdate,
+        aendDate: formattedEndDate,
+      }
+    };
+  }
+>>>>>>> Stashed changes
   });
 
   const allEvents = events1.concat(events2).concat(events3);
 
   return (
     <div>
+<<<<<<< Updated upstream
 
       <FullCalendar
         plugins={[dayGridPlugin]}
@@ -189,16 +250,41 @@ function CalendarComponent(props) {
       />
       <hr />
       <br />
+=======
+      <p>이벤트 클릭시 상세정보</p>
+>>>>>>> Stashed changes
       {selectedEvent && (
         <div className="event-modal">
           <h3 align='center'>{selectedEvent.title}</h3>
           {selectedEvent.extendedProps && selectedEvent.extendedProps.result && (
             <p align="center">이체결과 : {selectedEvent.extendedProps.result}</p>
+<<<<<<< Updated upstream
+=======
+          )}{
+            selectedEvent.extendedProps && selectedEvent.extendedProps.astartDate && (
+          <p align="center">이체기간 : {selectedEvent.extendedProps.astartDate} ~ {selectedEvent.extendedProps.aendDate}</p>
+>>>>>>> Stashed changes
           )}
           <p align="center">이체금액 : {selectedEvent.extendedProps.amount}원 </p>
           <button onClick={handleCloseModal}>닫기</button>
         </div>
       )}
+<<<<<<< Updated upstream
+=======
+      <hr />
+    <br />
+    <FullCalendar 
+    plugins={[dayGridPlugin]} 
+    initialView="dayGridMonth" 
+    events={allEvents} 
+    eventTextColor='black'
+    locales={[koLocale]} // 로케일 추가
+    locale="ko" // 한국어로 설정
+    eventClick={handleEventClick}
+    />
+    
+    
+>>>>>>> Stashed changes
     </div>
   );
 };

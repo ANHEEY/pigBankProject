@@ -63,6 +63,13 @@ public class LeeController {
 		service.InsertTransfer(dto);
 	}
 	
+	// 계좌이체 다른은행 insert
+	@PostMapping(value="/OtherTransfer")
+	public void insertOtherTransfer(@RequestBody TransferDTO dto)
+			throws ServletException, IOException {
+		service.InsertOtherTransfer(dto);
+	}
+	
 	// 자동이체 insert
 	@PostMapping(value="/autoTransfer")
 	public void autoInsertTransfer(@RequestBody AutoTransferDTO dto)

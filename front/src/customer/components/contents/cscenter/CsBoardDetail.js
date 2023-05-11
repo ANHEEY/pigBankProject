@@ -49,7 +49,7 @@ function CsBoardDetail () {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>
+                        <td colSpan={4}>
                             <pre align='left'>
                             {ncontent}
                             </pre>

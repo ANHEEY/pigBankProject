@@ -11,27 +11,46 @@ import { getId } from '../../../helpers/axios_helper'
 
 function AddAutoTrans () {
 
+    // 이체주기의 값
     const number = [1,2,3,4,5,6,7,8,9,10,11,12]
-
+    // 자식 컴포넌트를 보여줄지 안보여줄지를 판단하는 변수
     const [showComponent, setShowComponent] = useState(false);
+    // 자식컴포넌트로 값을 넘길 변수
+    const [auto, setAuto] = useState('');
+    // 내 계좌
     const [accounts, setAccounts] = useState([]);
+    // 선택한출금계좌
     const [selectedAccount, setSelectedAccount] = useState('');
+    // 선택한 출금계좌의 잔액
     const [selectedBalance, setSelectedBalance] = useState('');
+    // 출금계좌의 해당하는 비밀번호
     const [acPwd, setAcPwd] = useState('');
+    // 내가 입력한 비밀번호
     const [notePwd, setNotePwd] = useState('');
+    // 선택한 입금계좌
     const [selectedMyAccount, setSelectedMyAccount] = useState('');
+    // 선택한 이체금액
     const [tAmount, setTAmount] = useState('');
+    // 출금계좌에 해당하는 이체한도
     const [trsfLimit, setTrsfLimit] = useState('');
+    // 출금계좌에 해당하는 은행명
     const [bankName, setBankName] = useState('');
+    // 메모
     const [myMemo, setMyMemo] = useState('');
     const [yourMemo, setYourMemo] = useState('');
+    // 이체시작일
     const [startDate, setStartDate] = useState('');
+    // 이체종료일
     const [endDate, setEndDate] = useState('');
+    // 이체주기 실제값
     const [transferCycle, setTransferCycle] = useState('');
+    // 입금계좌번호에 해당하는 은행명
     const [mybkName, setMybkName] = useState('');
-    const [auto, setAuto] = useState('');
+    // 입금계좌번호에 해당하는 계좌명의
     const [name, setName] = useState('');
-
+    // 출금계좌번호에 해당하는 계좌명의
+    const [myname, setMyname] = useState('');
+    // 값을 비교하기위해 가져온 모든계좌정보
     const [allAccount, setAllAccounts] = useState([]);
 
     const [id, setId] = useState(getId());
@@ -54,6 +73,13 @@ function AddAutoTrans () {
              });
     };
 
+    // 계좌번호 3번째에다가 - 추가해주는 함수
+    const acNum = (acNumber) => {
+        const acNum = acNumber.toString().slice(0, 3) + "-" + acNumber.toString().slice(3);
+        return acNum;
+    };
+
+
     // 모든 계좌 목록
     const allAcountList = () => {
         TransferService.allAccountList()
@@ -67,7 +93,6 @@ function AddAutoTrans () {
 
         let datas= [
             selectedAccount ,
-            acPwd,
             Number(selectedMyAccount) ,
             bankName,
             Number(tAmount),
@@ -77,38 +102,27 @@ function AddAutoTrans () {
             startDate,
             endDate,
             mybkName,
-            name
+            name,
+            myname
         ];
-
-        let defaultAccounts = allAccount.filter(all => all.acNumber === selectedMyAccount);
-        let defaultname = allAccount.filter(all => all.name === yourMemo); // 5건
-        let defaultbankName = allAccount.filter(all => all.bankName === mybkName); // 5건
-          
-        if(defaultAccounts.length !== 0){ // 전체계좌에서 내가 입력한 계좌랑 맞는 계좌가 없으면 오류
-            if(defaultname.length !== 0){ // 전체계좌에서 내가 입력한 이름하고 상대 계좌 명의가 맞지 않으면 오류
-              if(defaultbankName.length !== 0){ // 전체계좌에서 내가입력한 계좌의 은행명이 맞지않으면 오류
-                if(acPwd == notePwd) { // 비밀번호 비교
-                  if(trsfLimit >= tAmount) { // 이체 한도 내에서 이체 오버되면 오류
-                  setShowComponent(true); // 다음 컴포넌트의 상태값 true 로 변경
-                  setAuto(datas); // 입력받은값 datas 에 담아서 auto변수에 set 해줌
-                  }
-                  else{
-                    alert('한도초과 확인후 다시 시도해주세요.')
-                  }
+        console.log(myname);
+        console.log(datas);
+            if(acPwd == notePwd) { // 비밀번호 비교
+                if(trsfLimit >= tAmount) { // 이체 한도 내에서 이체 오버되면 오류
+                setShowComponent(true); // 다음 컴포넌트의 상태값 true 로 변경
+                setAuto(datas); // 입력받은값 datas 에 담아서 auto변수에 set 해줌
                 }
-                else {
-                  alert("비밀번호 오류 다시시도해주세요.");
+                else{
+                alert('한도초과 확인후 다시 시도해주세요.')
                 }
-              }else{
-                alert("은행명이 일치하지않습니다 다시 시도해주세요.")
-              }
-            }else{
-              alert("계좌명이 일치하지않습니다 다시 시도해주세요.")
             }
-          }else {
-            alert("계좌번호가 일치하지 않습니다 다시 시도해주세요.")
-          }
-        };
+            else {
+                alert("비밀번호 오류 다시시도해주세요.");
+            }
+            
+        }
+          
+        
 
     const accountChange = (event) => {  // 내계좌중에서 선택 선택시 해당 계좌번호에 맞는 값들이 자동으로 뿌려짐
         const selectedAccountInt = parseInt(event.target.value);
@@ -135,17 +149,22 @@ function AddAutoTrans () {
         }
     }; 
 
-    const myAccountChange = (event) => { // 내 계좌를 모두 조회한후 입출금 계좌만 필터링해서 선택
-        const selectedMyAccountInt = parseInt(event.target.value);
-          const account = accounts.find(account => account.acNumber === selectedMyAccountInt);
-          setSelectedMyAccount(selectedMyAccountInt);
-          setYourMemo(accounts[0].name);
-            if (account) {
-              setMybkName(account.bankName);
-            } else {
-              setMybkName('');
-            }
-          };
+    // 입금 계좌번호 입력 또는 내계좌번호중 선택했을시에 해당하는값을 전체계좌를 조회한 값으로 찾아서 값 set 해주기
+    const myAccountChange = (event) => {
+        console.log(allAccount);
+        const selectedAllAccountInt = parseInt(event.target.value);
+        const allaccount = allAccount.find((all) => all.acNumber === selectedAllAccountInt);
+        setSelectedMyAccount(selectedAllAccountInt);
+        console.log(allaccount);
+        if (allaccount) {
+          console.log(allaccount.name);
+          setYourMemo(allaccount.name);
+          setMybkName(allaccount.bankName);
+          setMyname(allaccount.name);
+        } else {
+          setYourMemo("");
+        }
+    };
 
     return (
         <Container >
@@ -163,7 +182,7 @@ function AddAutoTrans () {
                         <td>
                         <Form.Control
                             readOnly
-                            value={selectedAccount}
+                            value={acNum(selectedAccount)}
                             placeholder="오른쪽에서 계좌 선택해주세요"
                             aria-label="Username"
                             aria-describedby="basic-addon1"
@@ -176,7 +195,7 @@ function AddAutoTrans () {
                             .filter((account) => account.acType === "입출금통장")
                             .map((account) => (
                                 <option key={account.acNumber} value={account.acNumber}>
-                                [{account.bankName}]{account.acNumber} || {account.acType}</option>
+                                [{account.bankName}]{acNum(account.acNumber)} || {account.acType}</option>
                             ))}
                                 </Form.Select> 
                              </td>
@@ -218,18 +237,19 @@ function AddAutoTrans () {
                             </td>
                             <td>
                             <Form.Control
-                                value={selectedMyAccount}
+                                value={isNaN(selectedMyAccount) ? 0 : selectedMyAccount}
                                 placeholder="-없이 입력해주세요"
                                 aria-label="Username"
                                 aria-describedby="basic-addon1"
-                                onChange={(e) => setSelectedMyAccount(parseInt(e.target.value))}
+                                onChange={(e) => {setSelectedMyAccount(parseInt(e.target.value))
+                                                myAccountChange(e) }}
                                 />  
                             </td>    
                             <td><Form.Select aria-label="Default select example" onChange={myAccountChange}>
                                     <option>본인계좌조회</option>
                                 {accounts.map((account) => (
                                     <option key={account.acNumber} value={account.acNumber}>
-                                        [{account.bankName}]{account.acNumber} || {account.acType}</option>
+                                        [{account.bankName}]{acNum(account.acNumber)} || {account.acType}</option>
                                 ))}
                                 </Form.Select> 
                              </td>

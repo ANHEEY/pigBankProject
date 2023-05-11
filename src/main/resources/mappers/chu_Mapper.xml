@@ -111,7 +111,19 @@
 	</select>
 	
 	<select id="transferList" resultType="com.pigbank.project.dto.TransferDTO">
-		SELECT * FROM transfer_tbl ORDER BY tNum DESC
+		SELECT tt.tNum
+			, tt.acNumber
+			, tt.tDepositNum
+			, tt.tDepositBank
+			, tt.tType
+			, tt.tAmount
+			, tt.myMemo
+			, tt.yourMemo
+			, tt.tDate
+			, at2.acType
+		 FROM transfer_tbl tt, account_tbl at2 
+		 WHERE tt.ACNUMBER = at2.ACNUMBER  
+		 ORDER BY tDate DESC
 	</select>
 	
 	<select id="exchangeList" resultType="com.pigbank.project.dto.ExchangeRateListDTO">

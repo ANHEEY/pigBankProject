@@ -6,6 +6,8 @@ import DepositComponent from "../../contents/product/deposit/DepositComponent";
 import AccountComponent from "../../contents/acSearch/AccountComponent";
 import DormantComponent from "../../contents/acSearch/DormantComponent";
 import AcDepositComponent from "../../contents/acSearch/AcDepositComponent";
+import AcWithdrawComponent from "../../contents/acSearch/AcWithdrawComponent";
+import AcTransferComponent from "../../contents/acSearch/AcTransferComponent";
 import InfoComponent from "../../contents/customer/InfoComponent";
 import InfoDetailComponent from "../../contents/customer/InfoDetailCoponent";
 
@@ -54,7 +56,9 @@ class RouteComponent extends Component {
 
                 {/* 조회관리 */}
                 <Route path="/acSearch/acAccount" Component={AccountComponent} />
+                <Route path="/acSearch/acTransfer" Component={AcTransferComponent} />
                 <Route path="/acSearch/acDeposit" Component={AcDepositComponent} />
+                <Route path="/acSearch/acWithdraw" Component={AcWithdrawComponent} />
                 <Route path="/acSearch/acDormant" Component={DormantComponent} />
                 <Route path="/acSearch/acLoanRequest" Component={LoanRequestList} />
 

@@ -9,26 +9,42 @@ import { getId } from '../../../helpers/axios_helper'
 
 import TransReConfirm from "../account-transfer/TransReConfirm";
 
-function TransDeposit(props) {
+function TransDeposit() {
 
   // AddAutoTrans와 거의 일치
 
+  // 자식 컴포넌트를 보여줄지 안보여줄지를 판단하는 변수
+  const [showComponent, setShowComponent] = useState(false);
+  // 자식컴포넌트로 값을 넘길 변수
   const [data, setData] = useState([]);
+  // 내 계좌
   const [accounts, setAccounts] = useState([]);
+  // 선택한출금계좌
   const [selectedAccount, setSelectedAccount] = useState('');
+  // 선택한 출금계좌의 잔액
   const [selectedBalance, setSelectedBalance] = useState('');
+  // 선택한 입금계좌
   const [selectedMyAccount, setSelectedMyAccount] = useState('');
+  // 선택한 이체금액
   const [tAmount, setTAmount] = useState('');
+  // 메모
   const [myMemo, setMyMemo] = useState('');
   const [yourMemo, setYourMemo] = useState('');
+  // 출금계좌의 해당하는 비밀번호
   const [acPwd, setAcPwd] = useState('');
+  // 내가 입력한 비밀번호
   const [notePwd, setNotePwd] = useState('');
-  const [showComponent, setShowComponent] = useState(false);
+  // 출금계좌에 해당하는 은행명
   const [bankName, setBankName] = useState('');
+  // 출금계좌에 해당하는 이체한도
   const [trsfLimit, setTrsfLimit] = useState('');
+  // 입금계좌번호에 해당하는 은행명
   const [mybkName, setMybkName] = useState('');
+  // 입금계좌번호에 해당하는 계좌명의
   const [name, setName] = useState('');
-
+  // 출금계좌번호에 해당하는 계좌명의
+  const [myname, setMyname] = useState('');
+  // 값을 비교하기위해 가져온 모든계좌정보 
   const [allAccount, setAllAccounts] = useState([]);
 
   const [id, setId] = useState(getId());
@@ -38,6 +54,7 @@ function TransDeposit(props) {
     allAcountList();
     }, [id]);
   
+    // id 에 해당하는 고객 계좌 조회
     const reloadAccountList = () => {
       TransferService.fetchAccountList(id)
         .then(res => {
@@ -51,6 +68,13 @@ function TransDeposit(props) {
     };
 
     
+    // 계좌번호 3번째에다가 - 추가해주는 함수
+    const acNum = (acNumber) => {
+      const acNum = acNumber.toString().slice(0, 3) + "-" + acNumber.toString().slice(3);
+      return acNum;
+  };
+
+  // 전체계좌조회
     const allAcountList = () => {
       TransferService.allAccountList()
         .then(res => {
@@ -58,11 +82,11 @@ function TransDeposit(props) {
         })
     }
 
+      // 이체 확인 컴포넌트를 뿌려주는 함수 
         const handleClick = (e) => {
-          e.preventDefault();
+          e.preventDefault(); // 실행시 렌더링이 안되고 클릭했을때만 렌더링이 되게 하는 함ㅅ
 
-         
-         
+          // acNumber에 set한 모든 정보 담아주기 배열로
         let acNumber = [selectedAccount,  
                         acPwd,  
                         selectedMyAccount,  
@@ -71,19 +95,15 @@ function TransDeposit(props) {
                         yourMemo, 
                         mybkName,
                         name,
-                        bankName];
+                        bankName,
+                        myname];
 
-        let defaultAccounts = allAccount.filter(all => all.acNumber === selectedMyAccount);
-        let defaultname = allAccount.filter(all => all.name === yourMemo); // 5건
-        let defaultbankName = allAccount.filter(all => all.bankName === mybkName); // 5건
-          
-          if(defaultAccounts.length !== 0){ 
-            if(defaultname.length !== 0){
-              if(defaultbankName.length !== 0){
-                if(acPwd == notePwd) {
-                  if(trsfLimit >= tAmount) {
+                        console.log(myname);
+                        console.log(acNumber);
+       
+                if(acPwd == notePwd) { // 계좌 비밀번호 체크
+                  if(trsfLimit >= tAmount) { // 해당계좌에 이체한도와 입력한 이체금액 체크
                   setShowComponent(true);
-                  
                   setData(acNumber);
                   }
                   else{
@@ -93,23 +113,15 @@ function TransDeposit(props) {
                 else {
                   alert("비밀번호 오류 다시시도해주세요.");
                 }
-              }else{
-                alert("은행명이 일치하지않습니다 다시 시도해주세요.")
-              }
-            }else{
-              alert("계좌명이 일치하지않습니다 다시 시도해주세요.")
-            }
-          }else {
-            alert("계좌번호가 일치하지 않습니다 다시 시도해주세요.")
-          }
-        };
+              
+        }
 
-        
-
+        // 출금 계좌번호 선택시 그 계좌에 해당하는 비밀번호 이체한도 은행명 계좌명의 set 하기
         const accountChange = (event) => {
           const selectedAccountInt = parseInt(event.target.value);
           const account = accounts.find(account => account.acNumber === selectedAccountInt);
           setSelectedAccount(selectedAccountInt);
+          
           if (account) {
             setAcPwd(account.acPwd);
             setTrsfLimit(account.trsfLimit);
@@ -120,6 +132,7 @@ function TransDeposit(props) {
           }
           };
 
+        // 잔액조회 해당하는 계좌에서 잔액값 set
         const handleBalanceClick = () => {
           const selectedAccountInt = parseInt(selectedAccount);
           const account = accounts.find(account => account.acNumber === selectedAccountInt);
@@ -130,17 +143,22 @@ function TransDeposit(props) {
           }
         };
 
+
+        // 입금 계좌번호 입력 또는 내계좌번호중 선택했을시에 해당하는값을 전체계좌를 조회한 값으로 찾아서 값 set 해주기
         const myAccountChange = (event) => {
-          const selectedMyAccountInt = parseInt(event.target.value);
-          const account = accounts.find(account => account.acNumber === selectedMyAccountInt);
-          setSelectedMyAccount(selectedMyAccountInt);
-          setYourMemo(accounts[0].name);
-            if (account) {
-              setMybkName(account.bankName);
-            } else {
-              setMybkName('');
-            }
-          };
+          const selectedAllAccountInt = parseInt(event.target.value);
+          const allaccount = allAccount.find((all) => all.acNumber === selectedAllAccountInt);
+          setSelectedMyAccount(selectedAllAccountInt);
+          console.log(allaccount);
+          if (allaccount) {
+            console.log(allaccount.name);
+            setYourMemo(allaccount.name);
+            setMybkName(allaccount.bankName);
+            setMyname(allaccount.name);
+          } else {
+            setYourMemo("");
+          }
+        };
 
       return (
       <Container >
@@ -158,11 +176,11 @@ function TransDeposit(props) {
         <td>
           <Form.Control
             readOnly
-            value={selectedAccount}
+            value={acNum(selectedAccount)}
             placeholder="오른쪽에서 계좌 선택해주세요"
             aria-label="Username"
             aria-describedby="basic-addon1"
-            onChange={(event) => setSelectedAccount(event.target.value) }
+            onChange={(event) => setSelectedAccount(event.target.value)}
           />
         </td>
         <td>
@@ -172,7 +190,7 @@ function TransDeposit(props) {
             .filter((account) => account.acType === "입출금통장")
             .map((account) => (
               <option key={account.acNumber} value={account.acNumber}>
-                [{account.bankName}]{account.acNumber} || {account.acType}</option>
+                [{account.bankName}]{acNum(account.acNumber)} || {account.acType}</option>
             ))}
           </Form.Select>
         </td>
@@ -202,7 +220,6 @@ function TransDeposit(props) {
                 />  
             </td>    
         </tr>   
-
         </tbody>
         </Table>
         <br/>
@@ -218,18 +235,19 @@ function TransDeposit(props) {
                 </td>
                 <td>
                 <Form.Control
-                    value={selectedMyAccount}
+                    value={isNaN(selectedMyAccount) ? 0 : selectedMyAccount}
                     placeholder="-없이 입력해주세요"
                     aria-label="Username"
                     aria-describedby="basic-addon1"
-                    onChange={(e) => setSelectedMyAccount(parseInt(e.target.value))}
+                    onChange={(e) => {setSelectedMyAccount(parseInt(e.target.value))
+                                        myAccountChange(e) }}
                     />  
                 </td>    
                     <td><Form.Select aria-label="Default select example" onChange={myAccountChange}>
                         <option>본인계좌조회</option>
                         {accounts.map((account) => (
                             <option key={account.acNumber} value={account.acNumber}>
-                              [{account.bankName}]{account.acNumber} || {account.acType}</option>
+                              [{account.bankName}]{acNum(account.acNumber)} || {account.acType}</option>
                         ))}
                     </Form.Select> </td>
                 </tr> 

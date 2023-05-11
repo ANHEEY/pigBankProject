@@ -26,13 +26,29 @@ function NoticeComponent () {
 
     useEffect(() => {
         fetchnoticeList();
+        const searchParams = new URLSearchParams(window.location.search);
+        const page = searchParams.get('page');
+        const search = decodeURIComponent(searchParams.get('search') || '');
+
+        setCurrentPage(Number(page) || 1);
+        setSearch(search);
     },[])
 
     const handleSearchChange = (newSearch) => {
         setSearch(newSearch);
-    };
-
-    
+         const searchResultIndex = List.findIndex((item) => // 검색했을때의 값의 해당하는 인덱스 번호 찾기
+          item.nshow === 'y' &&
+           (item.ncontent.toLowerCase().includes(newSearch.toLowerCase().replace(/\s/g, '')) ||
+          item.ntitle.toLowerCase().includes(newSearch.toLowerCase().replace(/\s/g, '')))
+         );
+         if (searchResultIndex !== -1) {
+           const pageNumber = Math.ceil((searchResultIndex + 1) / itemsPerPage);
+           setCurrentPage(pageNumber);
+           navigate(`/admin/csCenter/notice?page=${pageNumber}&search=${encodeURIComponent(newSearch)}`);
+        } else {
+           return;
+         }
+      };
 
     const fetchnoticeList = () => {
         NoticeApiService.noticeList()
@@ -48,6 +64,7 @@ function NoticeComponent () {
    
     const handlePageChange = (event, pageNumber) => {
         setCurrentPage(pageNumber);
+        navigate(`/admin/csCenter/notice?page=${pageNumber}&search=${encodeURIComponent(Search)}`);
     };
 
     function move (nnum) {
@@ -78,10 +95,14 @@ function NoticeComponent () {
                         </tr>
                     </thead>
                     <tbody>
-                        {ListMember.filter(item => 
-                            item.ncontent.toLowerCase().includes(Search.toLowerCase().replace(/\s/g, '')) || 
-                            item.ntitle.toLowerCase().includes(Search.toLowerCase().replace(/\s/g, ''))
-                        ).map((notice) => (
+                    {ListMember
+                    .filter(item =>
+                        item.nshow === 'y' &&
+                        (Search === null || Search === '' ||
+                        item.ncontent.toLowerCase().includes(Search.toLowerCase().replace(/\s/g, '')) ||
+                        item.ntitle.toLowerCase().includes(Search.toLowerCase().replace(/\s/g, ''))
+                        )
+                    ).map((notice) => (
                         <tr key={notice.nnum}>
                             <td><a onClick={() => move(notice.nnum)} key={notice.nnum}>상태:{notice.nshow} {notice.nnum} </a></td>
                             <td><a onClick={() => move(notice.nnum)} key={notice.nnum}>{notice.ntitle.slice(0,15) + '...'}</a></td>

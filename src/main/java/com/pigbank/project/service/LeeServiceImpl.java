@@ -57,7 +57,6 @@ public class LeeServiceImpl implements LeeService{
 		// acNumber : 11022456542
 		// tdeposit : 21024565488
 		dao.insertTransfer(tdto);
-	
 		dao.updateAccount(tdto);
 		
 //		입금
@@ -78,6 +77,19 @@ public class LeeServiceImpl implements LeeService{
 		dao.insertTransfer(tdto);
 		dao.updateAccountnext(tdto);
 	}
+	
+	// 다른은행 계좌이체
+	@Override
+	public void InsertOtherTransfer(TransferDTO tdto) 
+			throws ServletException, IOException {
+		System.out.println("tdto : " + tdto);
+//		출금
+		String tType = "출금";
+		tdto.setTType(tType);
+		dao.insertTransfer(tdto);
+		dao.updateAccount(tdto);
+	}
+
 
 	// 자동이체 등록
 	@Override
@@ -101,6 +113,8 @@ public class LeeServiceImpl implements LeeService{
 		int month = currentDate.getMonthValue();
 		int year = currentDate.getYear();
 		
+		// 전체계좌 가져오기
+		List<AccountDTO> acdtolist = dao.allAccountList();
 		// atdto == 자동이체 내역 List로 가져오기
 		List<AutoTransferDTO> atdtolist = dao.autoTransferList();
 		for(int i = 0; i < atdtolist.size(); i++) {
@@ -134,6 +148,19 @@ public class LeeServiceImpl implements LeeService{
 			long trsfacNumber = atdtolist.get(i).getAcNumber();
 			// 날짜 + 이체주기값
 			int addamont = amonth + update;
+			// 프로그램 실행을 위한 변수
+			String good = null;
+			// 전체계좌의 계좌번호
+			
+			 for (AccountDTO dto : acdtolist) {
+				 if(dto.getAcNumber() == aDepositnum) {
+					 if(dto.getBankName().equals(aDepositBank)) {
+						 good = "go";
+						 break;
+					 }
+				 }
+			 }
+		if(good != null) {	// 전체계좌에서 내가 입력받았던 계좌 조회 후 해당계좌가 다른은행 또는 다른은행의계좌번호가 아니면 이 if문 실행
 			if(adate == day) { // 자동이체 시작날짜 일 == 오늘날짜 일
 				// 자동이체시 update라는 변수로 이체주기값을 더해서 자동입출금이 안되게 막음
 				if(addamont == month) { // 자동이체 시작날짜 월 == 오늘날짜 월
@@ -155,9 +182,11 @@ public class LeeServiceImpl implements LeeService{
 								    tdto.setTAmount(aDepositAmount);
 								    tdto.setMyMemo(myMemo);
 								    tdto.setYourMemo(yourMemo);
+								    
+								    System.out.println("같은계좌");
 
 								    dao.insertTransfer(tdto);
-								    int result =dao.updateAccount(tdto);
+								    int result = dao.updateAccount(tdto);
 								    if (result == 1) {
 								    // 입금
 								    TransferDTO tdto2 = new TransferDTO();
@@ -171,7 +200,7 @@ public class LeeServiceImpl implements LeeService{
 
 								    dao.insertTransfer(tdto2);
 								    dao.updateAccountnext(tdto2);
-								    	
+								    System.out.println("같은계좌");
 								    HashMap<String, Object> atmap = new HashMap<String, Object>();
 								    atmap.put("aNum", atdtolist.get(i).getANum());
 								    atmap.put("aUpdate", atdtolist.get(i).getAUpdate());
@@ -212,6 +241,78 @@ public class LeeServiceImpl implements LeeService{
 						}
 					}
 				}
+		}
+		else { // 해당계좌가 다른은행이거나 다른은행 계좌일때 실행 (출금만 하기 위해서)
+			if(adate == day) { // 자동이체 시작날짜 일 == 오늘날짜 일
+				// 자동이체시 update라는 변수로 이체주기값을 더해서 자동입출금이 안되게 막음
+				if(addamont == month) { // 자동이체 시작날짜 월 == 오늘날짜 월
+					if(ayear == year) {	// 자동이체 시작날짜 연 == 오늘날짜 연					
+						if(!aState.equals("unusing")) { // 자동이체 상태 가 unusing이 아닐때
+							System.out.println("trsfacNumber : " + trsfacNumber);
+							// AccountDTO에 계좌 셀렉(자동이체 출금계좌번호로 조회) 단건을 담는다.
+							AccountDTO acdto = dao.selectoneaccount(trsfacNumber);
+							// 변수 balance(통잔 잔고)에 담고 aDepositAmount(자동이체 금액) 과 비교
+							long balance = acdto.getAcBalance();
+							System.out.println("balance : " + balance);
+								if (aDepositAmount <= balance) { // 자동이체금액이 잔고보다 작거나 같으면 입/출금 실행
+								    // 출금		
+								    TransferDTO tdto = new TransferDTO();
+								    tdto.setAcNumber(acNumber);
+								    tdto.setTDepositnum(aDepositnum);
+								    tdto.setTDepositBank(aDepositBank);
+								    tdto.setTType("출금");
+								    tdto.setTAmount(aDepositAmount);
+								    tdto.setMyMemo(myMemo);
+								    tdto.setYourMemo(yourMemo);
+								    
+								    System.out.println("외부계좌");
+
+								    dao.insertTransfer(tdto);
+								    int result = dao.updateAccount(tdto);
+								    if (result == 1) {
+								    								    	
+								    HashMap<String, Object> atmap = new HashMap<String, Object>();
+								    atmap.put("aNum", atdtolist.get(i).getANum());
+								    atmap.put("aUpdate", atdtolist.get(i).getAUpdate());
+								    atmap.put("aTransferCycle", atdtolist.get(i).getATransferCycle());
+
+								    System.out.println("anum : " + atdtolist.get(i).getANum());
+								    // update = 이체주기값 + update => 
+								    // 자동이체 실행시 update 값에 이체주기값이 더해져서 누적됨
+								    // 만약 이체주기를 두달로 설정해놨을시 update 의 default 값은 0이지만
+								    // 한번 실행되고나면 cycle(이체주기)값이 2고 update(0) = cycle(2) + update(0)
+								    // 이런식으로 업데이트 후 시작날짜 + update 값으로 자동이체 실행 or 실행 x
+								    dao.updateAutoTransferCycle(atmap);
+								    System.out.println("외부계좌");
+
+								    AutoTransferListDTO atl = new AutoTransferListDTO();
+								    atl.setANum(aNum);
+								    atl.setAtResult("성공");
+								    // 자동이체내역 테이블에 성공로 insert
+								    dao.insertAutoTransferList(atl);
+								    System.out.println("afterbalance : " + balance);
+								    }
+								} else { // 자동이체금액이 잔고보다 크면 자동이체 상태 "unusing" 바뀌고 
+								    System.out.println("잔액부족합니다 자동이체 취소됩니다.");
+
+								    AutoTransferListDTO atl = new AutoTransferListDTO();
+								    atl.setANum(aNum);
+								    atl.setAtResult("실패");
+								    // 자동이체내역 테이블에 실패로 insert
+								    dao.insertAutoTransferList(atl);
+								    // 취소될시 상태 변경
+								    String unusing = "unusing";
+								    HashMap<String, Object> map = new HashMap<String, Object>();
+								    map.put("aState", unusing);
+								    map.put("aNum", atdtolist.get(i).getANum());
+								    // 자동이체 상태 업데이트 (unusing)
+								    dao.updateAutoTransfer(map);
+			                    }
+							} 
+						}
+					}
+				}
+		}
 		// 종료기간에 의한 상태변경
 			if(aendyear == year) {
 				if(aendmonth == month) {
@@ -296,9 +397,9 @@ public class LeeServiceImpl implements LeeService{
 
 	// 자동이체 수정
 	@Override
-	public void updatedirectlyAutoTransfer(AutoTransferDTO dto)
+	public void updatedirectlyAutoTransfer(AutoTransferDTO atdto)
 			throws ServletException, IOException {
-		dao.updatedirectlyAutoTransfer(dto);
+		dao.updatedirectlyAutoTransfer(atdto);
 	}
 
 	// 이체한도 수정
@@ -325,9 +426,9 @@ public class LeeServiceImpl implements LeeService{
 
 	// 공지사항 수정 
 	@Override
-	public void changenotice(NoticeDTO dto) 
+	public void changenotice(NoticeDTO ndto) 
 			throws ServletException, IOException {
-		dao.changenotice(dto);
+		dao.changenotice(ndto);
 	}
 
 	// 공지사항 삭제
@@ -340,11 +441,11 @@ public class LeeServiceImpl implements LeeService{
 
 	// 공지사항 추가
 	@Override
-	public void addnotice(NoticeDTO dto) 
+	public void addnotice(NoticeDTO ndto) 
 			throws ServletException, IOException {
 		String nShow = "N";
-		dto.setNShow(nShow);
-		dao.addnotice(dto);
+		ndto.setNShow(nShow);
+		dao.addnotice(ndto);
 	}
 
 	// 고객 상세페이지(조회수를 위한)
@@ -355,6 +456,7 @@ public class LeeServiceImpl implements LeeService{
 		return dao.csboardDetail(nNum);
 	}
 
+	
 	
 
 	

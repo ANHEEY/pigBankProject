@@ -21,11 +21,17 @@ function AutoTrans () {
     useEffect(() => {
         reloadAccountList();
     }, [id]);
+
+    const acNum = (acNumber) => {
+        const acNum = acNumber.toString().slice(0, 3) + "-" + acNumber.toString().slice(3);
+        return acNum;
+    };
     
     const reloadAccountList = () => {  // id로 계좌 조회
         TransferService.fetchAccountList(id)
          .then(res => {
             setMyaccounts(res.data); // myaccounts에 set 해주기
+            console.log(res.data);
          })
          .catch(err => {
             alert("로그인 하세요.");
@@ -59,9 +65,11 @@ function AutoTrans () {
                         <td>계좌번호</td>
                         <td><Form.Select aria-label="Floating label select example" onChange={accountChange}>
                             <option>내 계좌번호</option>
-                            {myaccounts.map((account) => (
+                            {myaccounts
+                            .filter((account) => account.acType === "입출금통장")
+                            .map((account) => (
                             <option key={account.acNumber} value={account.acNumber}>
-                                [{account.bankName}]{account.acNumber}</option>
+                                [{account.bankName}]{acNum(account.acNumber)} || {account.acType}</option>
                             ))}
                             </Form.Select></td>
                         <td>조회구분</td>

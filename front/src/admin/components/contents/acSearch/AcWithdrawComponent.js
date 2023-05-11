@@ -10,17 +10,23 @@ import { Button } from "react-bootstrap";
 import { useNavigate} from "react-router-dom";
 import ReactDatePicker from "./ReactDatePicker";
 
-function AcDepositComponent() {
+function AcWithdrawComponent() {
     // objecttype 모든 이체내역
     const [members1, setMembers1] = useState([]);
     const [itemsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     // 검색한 값
     const [Search, setSearch] = useState('');
+
     const [totalpage,setTotalPage] = useState('');
 
     const navigate = useNavigate();
-    
+
+    const today = new Date(); // 현재 날짜
+    const year = today.getFullYear(); // 현재 연도
+    const month = today.getMonth() + 1; // 현재 월 (0부터 시작하므로 +1 필요)
+    const day = today.getDate(); // 현재 일
+
     useEffect(() => {
         reloadMemberList();
         const searchParams = new URLSearchParams(window.location.search);
@@ -31,25 +37,19 @@ function AcDepositComponent() {
         setSearch(search);
     }, []);
 
-    const today = new Date(); // 현재 날짜
-    const year = today.getFullYear(); // 현재 연도
-    const month = today.getMonth() + 1; // 현재 월 (0부터 시작하므로 +1 필요)
-    const day = today.getDate(); // 현재 일
-
     // 날짜를 원하는 형식으로 표현할 경우
     const todayDate = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
 
     const [selectedDate, setSelectedDate] = useState(todayDate);
 
-    
-     // onDateChange 자식 컴포넌트 ReactDatePicker 에서 호출됨 선택한 값이 다시 set 되서 자식컴포넌트로 전달
-     const handleDateChange = (date) => {
+    // onDateChange 자식 컴포넌트 ReactDatePicker 에서 호출됨 선택한 값이 다시 set 되서 자식컴포넌트로 전달
+    const handleDateChange = (date) => {
         const formattedDate = formatDate(date); // 선택한 날짜를 형식에 맞게 변환
         setSelectedDate(formattedDate); // 선택한 날짜 업데이트
       
         // 선택한 날짜에 해당하는 값들 가져오기
         AllService.fetchTransfer().then((res) => {
-          const searchResults = res.data.filter(item => item.ttype == '입금').filter((item) => {
+          const searchResults = res.data.filter(item => item.ttype == '출금').filter((item) => {
             const formattedItemDate = formatDate(item.tdate);
             return formattedItemDate === formattedDate;
           });
@@ -60,31 +60,31 @@ function AcDepositComponent() {
             setMembers1(searchResults);
 
             setTotalPage(pageNumber);
-            navigate(`/admin/acSearch/acDeposit?page=${currentPage}&search=${encodeURIComponent(Search)}`);
+            navigate(`/admin/acSearch/acWithdraw?page=${currentPage}&search=${encodeURIComponent(Search)}`);
           } else {
             setMembers1([]);
             setTotalPage(0);
-            navigate(`/admin/acSearch/acDeposit?page=1&search=${encodeURIComponent(Search)}`);
+            navigate(`/admin/acSearch/acWithdraw?page=1&search=${encodeURIComponent(Search)}`);
           }
         });
       };
 
+    
     // 이체내역 전체 불러오기
     const reloadMemberList = () => {
         AllService.fetchTransfer()
         .then((res) => {
             setMembers1(res.data);
-
-            const pagenum = Math.ceil(res.data.filter(item => item.ttype == '입금').length / itemsPerPage);
-            console.log(pagenum);
+            const pagenum = Math.ceil(res.data.filter(item => item.ttype == '출금').length / itemsPerPage);
             setTotalPage(pagenum)
         })
         .catch((err) => {
             console.log("reloadMemberList() Error!!", err);
         });
     };
-    // 입금내역 조회기때문에 members1인 Object에서 필터링후 값 추출 
-    const deposit = Object.values(members1).filter(item => item.ttype == '입금')
+
+    // 출금내역 조회기때문에 members1인 Object에서 필터링후 값 추출 
+    const deposit = Object.values(members1).filter(item => item.ttype == '출금')
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const ListMember = deposit.slice(indexOfFirstItem, indexOfLastItem);
@@ -100,16 +100,17 @@ function AcDepositComponent() {
          if (searchResultIndex !== -1) {
            const pageNumber = Math.ceil((searchResultIndex + 1) / itemsPerPage);
            setCurrentPage(pageNumber);
-           navigate(`/admin/acSearch/acDeposit?page=${pageNumber}&search=${encodeURIComponent(newSearch)}`);
+           navigate(`/admin/acSearch/acWithdraw?page=${pageNumber}&search=${encodeURIComponent(newSearch)}`);
         } else {
            return;
          }
     };
 
+    
     // 페이지 이동 누를때마다 해당하는 페이지 넘버 를 setCurrentPage 담기
     const handlePageChange = (event, pageNumber) => {
         setCurrentPage(pageNumber);
-        navigate(`/admin/acSearch/acDeposit?page=${pageNumber}&search=${encodeURIComponent(Search)}`);
+        navigate(`/admin/acSearch/acWithdraw?page=${pageNumber}&search=${encodeURIComponent(Search)}`);
     };
 
     // 숫자 KRW(원) 으로 변경
@@ -140,9 +141,9 @@ function AcDepositComponent() {
         fontWeight: "bold",
     };
 
-    // 컴포넌트 이동 함수(출금내역)
-    const withdraw = () => {
-        navigate(`/admin/acSearch/acWithdraw`)
+    // 컴포넌트 이동 함수(입금내역)
+    const deposited = () => {
+        navigate(`/admin/acSearch/acDeposit`)
     }
     // 컴포넌트 이동 함수(이체내역)
     const all = () => {
@@ -152,7 +153,7 @@ function AcDepositComponent() {
         return(
             <div className="component-div">
                 <h1>
-                <FontAwesomeIcon icon={faSearch} /> 입금내역
+                <FontAwesomeIcon icon={faSearch} /> 출금내역
                 </h1>
                 <ul>
                 <li><SearchBar value={Search} onSearchChange={handleSearchChange}  /> </li>
@@ -161,12 +162,12 @@ function AcDepositComponent() {
                 <br/>
                 <li><ReactDatePicker selectedDate={selectedDate} onDateChange={handleDateChange}/></li>
                 </ul>
-                <div>
+                <div >
                     <Button onClick={all} variant="primary">입출금내역</Button>
                     {' '}
-                    <Button onClick={withdraw} variant="info"> 출금내역 </Button>
+                    <Button onClick={deposited} variant="success"> 입금내역 </Button>
                 </div>
-                <Table>
+                <Table >
                 <TableHead style={{ backgroundColor: "#dbe2d872" }}>
                     <TableRow>
                     <TableCell style={tableHeadStyle}>은행명</TableCell>
@@ -182,7 +183,7 @@ function AcDepositComponent() {
                 <TableBody>
                 {ListMember
                     .filter(item => { // 검색조건 계좌번호 은행명 날짜를 대소문자, 띄어쓰기 상관없이 검색
-                        const acNumber = item.acNumber && item.acNumber.toString();
+                        const acNumber = item.acNumber && item.acNumber.toString(); 
                         return acNumber.includes(Search.toLowerCase().replace(/\s/g, '')) || 
                         item.tdepositBank.toLowerCase().includes(Search.toLowerCase().replace(/\s/g, '')) ||
                         formatDate(item.tdate).toLowerCase().includes(Search.toLowerCase().replace(/\s/g, ''))
@@ -203,7 +204,6 @@ function AcDepositComponent() {
                         </TableRow>
                     ))}
 
-                    
                     <TableRow>
                         <TableCell colSpan={7} style={{textAlign:"center"}}>
                             <Box display="flex" justifyContent="center">
@@ -221,4 +221,4 @@ function AcDepositComponent() {
     );
 };
 
-export default AcDepositComponent;
+export default AcWithdrawComponent;

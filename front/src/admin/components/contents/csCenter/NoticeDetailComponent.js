@@ -31,11 +31,11 @@ function NoticeDetailComponent () {
     }
 
     const nshowchange = () => {
-        if(nshow === 'Y'){
-            setNShow('N');
+        if(nshow === 'y'){
+            setNShow('n');
         }
         else{
-            setNShow('Y');
+            setNShow('y');
         }
     }
 

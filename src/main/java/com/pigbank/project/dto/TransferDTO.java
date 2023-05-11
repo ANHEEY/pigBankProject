@@ -28,4 +28,7 @@ public class TransferDTO {
 	
 	// 계좌에서 조인한 비밀번호
 	private int acPwd;
+	
+	// 계좌에서 조인한 타입
+	private String acType;
 }

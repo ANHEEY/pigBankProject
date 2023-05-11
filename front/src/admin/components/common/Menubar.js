@@ -58,7 +58,7 @@ function MenuBar() {
                         <NavItem eventKey="acSearch/acAccount">
                             <NavText>계좌조회</NavText>
                         </NavItem>
-                        <NavItem eventKey="acSearch/acDeposit">
+                        <NavItem eventKey="acSearch/acTransfer">
                             <NavText>이체내역조회</NavText>
                         </NavItem>'
                         <NavItem eventKey="acSearch/acLoanRequest">

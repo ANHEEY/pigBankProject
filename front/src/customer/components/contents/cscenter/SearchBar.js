@@ -12,6 +12,7 @@ function SearchBar({ search, onSearchChange }) {
     <TextField
       value={search}
       onChange={handleChange}
+      style={{width: '700px'}}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">

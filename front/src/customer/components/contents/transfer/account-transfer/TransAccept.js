@@ -10,13 +10,20 @@ function TransAccept () {
     const home  = () => {
         navigate(`/customer/*`);
     }
+
+    // 계좌번호 3번째에다가 - 추가해주는 함수
+    const acNum = (acNumber) => {
+        const acNum = acNumber.toString().slice(0, 3) + "-" + acNumber.toString().slice(3);
+        return acNum;
+    };
+
     // AutoTransAccept 와 거의 일치
     const {selectedAccount , selectedMyAccount, yourMemo, myMemo, tAmount} = useParams();
         return(
             <div align='center'>
                 <div className="w-50 p-3" align='center'>
                     <h3 >이체완료</h3>
-                    <Table>
+                    <Table style={{width: '900px'}}>
                         <tbody>
                             <tr>
                                 <th>받는분</th>
@@ -24,13 +31,13 @@ function TransAccept () {
                             </tr>
                             <tr>
                                 <th>받는계좌</th>
-                                <td align='right'>{selectedAccount}</td>
+                                <td align='right'>{acNum(selectedAccount)}</td>
                             </tr>
                             </tbody>
                             </Table>
                             <br/>
-                            <hr/>
-                            <Table>
+                            <br />
+                            <Table style={{width: '900px'}}>
                         <tbody>
                             <tr>
                                 <th>보낸금액</th>
@@ -38,7 +45,7 @@ function TransAccept () {
                             </tr>
                             <tr>
                                 <th>보낸계좌</th>
-                                <td align='right'>{selectedMyAccount}</td>
+                                <td align='right'>{acNum(selectedMyAccount)}</td>
                             </tr>
                             <tr>
                                 <th>나의 메모</th>

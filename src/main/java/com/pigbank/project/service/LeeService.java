@@ -24,11 +24,15 @@ public interface LeeService {
 			throws ServletException,IOException;
 	
 	// 단일건 계좌이체
-	public void InsertTransfer(TransferDTO dto)
+	public void InsertTransfer(TransferDTO tdto)
+			throws ServletException,IOException;
+	
+	// 다른은행 계좌이체
+	public void InsertOtherTransfer(TransferDTO tdto)
 			throws ServletException,IOException;
 	
 	// 자동이체 등록
-	public void AutoInsertTransfer(AutoTransferDTO dto)
+	public void AutoInsertTransfer(AutoTransferDTO atdto)
 			throws ServletException,IOException;
 	
 	// 스케쥴러로 시간마다 체크후 자동이체 및 자동이체 상태 변경
@@ -52,7 +56,7 @@ public interface LeeService {
 	public AutoTransferDTO selectOne(int aNum)
 			throws ServletException,IOException;
 	// 자동이체 수정
-	public void updatedirectlyAutoTransfer(AutoTransferDTO dto)
+	public void updatedirectlyAutoTransfer(AutoTransferDTO atdto)
 			throws ServletException,IOException;
 	// 이체한도 수정	
 	public void updatetrsfLimit(AccountDTO dto)
@@ -65,13 +69,13 @@ public interface LeeService {
 	public NoticeDTO checkonenotice(int nNum)
 			throws ServletException,IOException;
 	// 공지사항 수정
-	public void changenotice(NoticeDTO dto)
+	public void changenotice(NoticeDTO ndto)
 			throws ServletException,IOException;
 	// 공지사항 삭제
 	public void deletenotice(int nNum)
 			throws ServletException,IOException;
 	// 공지사항 추가
-	public void addnotice(NoticeDTO dto)
+	public void addnotice(NoticeDTO ndto)
 			throws ServletException,IOException;
 	// 고객 상세페이지(조회수를 위한)
 	public NoticeDTO csboardDetail(int nNum)
