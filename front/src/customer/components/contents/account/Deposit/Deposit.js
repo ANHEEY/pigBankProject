@@ -4,13 +4,9 @@ import {Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import AllService from "../All/AllService";
 import {Link, useNavigate } from 'react-router-dom';
 import "../../../../resources/css/product/saving.css";
-<<<<<<< Updated upstream
-import {Button} from 'react-bootstrap';
-
-=======
 import { getAuthToken } from "../../../helpers/axios_helper";
 import axios from "axios";
->>>>>>> Stashed changes
+import { Button } from "react-bootstrap"; 
 
 function Deposit() {
 

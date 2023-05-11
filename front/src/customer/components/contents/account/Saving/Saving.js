@@ -133,17 +133,12 @@ function Saving() {
                     </TableHead>
                     <TableBody>
                       {filteredMembers.map((member) => (
-<<<<<<< Updated upstream
-                        <TableRow key={member.snum}>
-                          <TableCell >{member.spdname}</TableCell>
-=======
                         <TableRow key={member.acNumber}>
                           <TableCell onClick={() => handleDpdNameClick(member.acNumber)}>
                             <Link to={`/customer/account/saving/savingdetail/${member.acNumber}/${member.id}`}>
                               {member.spdName}
                             </Link>
                           </TableCell>
->>>>>>> Stashed changes
                           <TableCell>{acNum(member.acNumber)}</TableCell>
                           <TableCell>{formatDate(member.sjoinDate)}</TableCell>
                           <TableCell>{formatDate(member.sendDate)}</TableCell>

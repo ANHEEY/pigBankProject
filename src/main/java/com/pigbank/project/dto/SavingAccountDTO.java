@@ -17,7 +17,6 @@ public class SavingAccountDTO {
 	@Id
 	private int sNum;
 	private long acNumber;
-<<<<<<< Updated upstream
 	private String spdname;
 	private int samount;
 	private int sexpAmount;
@@ -25,16 +24,8 @@ public class SavingAccountDTO {
 	private Date sjoinDate;
 	private long sdeAccount;
 	private Date sstartDate;
-=======
-	private String sPdName;
-	private int sAmount;
-	private int sExpAmount;
-	private Date sEndDate;
-	private Date sJoinDate;
-	private long sDeAccount;
 	private int sTrsfCycle;
 	private String acState;
->>>>>>> Stashed changes
 	
 	//계좌 개설을 위한 변수
 	private String id;

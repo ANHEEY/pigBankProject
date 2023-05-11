@@ -17,10 +17,7 @@ function NoticeComponent () {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(10);
-<<<<<<< Updated upstream
-=======
     const listcount = List.length;
->>>>>>> Stashed changes
 
     const [Search, setSearch] = useState('');
 
