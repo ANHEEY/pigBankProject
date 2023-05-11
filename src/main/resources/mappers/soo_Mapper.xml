@@ -24,8 +24,8 @@
 	<!-- 대출상품 수정 -->
 	<update id="updateProduct" parameterType="com.pigbank.project.dto.LoanProductDTO">
 		UPDATE loan_product
-		SET lSubTitle=#{lsubTitle}, lContent=#{lcontent}, lGrade=#{lgrade}, lMaxPeriod=#{lmaxPeriod}, lMaxPrice=#{lmaxPrice}
-		WHERE lPdName=#{lpdName}
+		SET lsubTitle=#{lsubTitle}, lcontent=#{lcontent}, lgrade=#{lgrade}, lmaxPeriod=#{lmaxPeriod}, lmaxPrice=#{lmaxPrice}
+		WHERE lpdName=#{lpdName}
 	</update>
 	
 	<!-- 대출상품 삭제 -->

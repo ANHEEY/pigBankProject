@@ -161,7 +161,7 @@ export default function LoanCancel() {
                             <th style={tableStyle}>대출 계좌</th>
                             <td style={tableStyle}>{acNum(loanCancelInfo.acNumber)}</td>
                             <th style={tableStyle} >대출 잔액</th>
-                            <td style={tableStyle}>{comma(loanCancelInfo.acBalance)}</td>
+                            <td style={tableStyle}>{comma(loanCancelInfo.acBalance)}원</td>
                         </tr>
                         <tr>
                             <th style={tableStyle}>신규일</th>

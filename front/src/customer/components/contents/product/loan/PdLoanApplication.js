@@ -79,6 +79,10 @@ function PdLoanApplication() {
             alert(' 대출기간을 선택해주세요.')
             return;
         }
+        if(inputs.acPwd.length < 4) {
+            alert(' 대출 계좌 비밀번호는 4자리입니다.')
+            return;
+        }
         if(inputs.acPwd === "") {
             alert(' 대출 비밀번호를 입력해주세요.')
             return;
@@ -284,7 +288,7 @@ function PdLoanApplication() {
                 <br/>
                 <br/>
                 <div className="d-grid gap-2">
-                    <Button type="submit" style = {{background:'#9dc888',border:'#9dc888'}} size="lg" > 가입하기 </Button>
+                    <Button type="submit" style = {{background:'#9dc888',border:'#9dc888'}} size="lg"> 가입하기 </Button>
                 </div>
             </Form>
         </Container>

@@ -38,20 +38,6 @@ const LoanComponent = () => {
                     <Table responsive striped style={{textAlign:"center"}}>
                     <thead>
                         <tr>
-                            <th>
-                            <Form>
-                            {['checkbox'].map((type) => (
-                                <div key={`inline-${type}`} className="mb-3">
-                                <Form.Check
-                                    inline
-                                    name="group1"
-                                    type={type}
-                                    id={`inline-${type}-1`}
-                                />
-                                </div>
-                            ))}
-                            </Form>
-                            </th>
                             <th>대출상품이름</th>
                             <th>대출상품금리</th>
                             <th>대출가입기간</th>
@@ -64,20 +50,6 @@ const LoanComponent = () => {
                     <tbody>
                         {listPdLoan.map(product =>
                         <tr key={product.lpdName}>
-                            <td>
-                            <Form>
-                            {['checkbox'].map((type) => (
-                                <div key={`inline-${type}`} className="mb-3">
-                                <Form.Check
-                                    inline
-                                    name="group1"
-                                    type={type}
-                                    id={`inline-${type}-1`}
-                                />
-                                </div>
-                            ))}
-                            </Form>
-                            </td>
                             <td>{product.lpdName}</td>
                             <td>{product.lrate}%</td>
                             <td>{product.lmaxPeriod}년</td>
