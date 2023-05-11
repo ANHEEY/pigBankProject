@@ -24,12 +24,12 @@ class DepositService {
     }
 
     acDetailInfo(acNumber){
-      console.log('입출금 통장 계좌 정보!!');
+      console.log('입출금 통장 계좌 상세 정보!!');
       return axios.get(URL+"/acDetailInfo/"+acNumber);
     }
 
     deDetailInfo(acNumber){
-      console.log('예금계좌 정보!!');
+      console.log('예금계좌 상세 정보!!');
       return axios.get(URL+"/deDetailInfo/"+acNumber);
     }
 }

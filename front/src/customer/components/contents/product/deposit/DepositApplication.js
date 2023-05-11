@@ -37,6 +37,13 @@ function DepositApplication(){
         });
     }
 
+    // 계좌번호 => 문자열로 변환 후 slice
+    const acNum = (e) => {
+        console.log(e);
+        if(!e) return "";       
+        return e.toString().slice(0, 3) + '-' + e.toString().slice(3);
+    }
+
     const [depositProduct, setDepositProduct] = useState({
         dpdName:"",
         dcontent:"",
@@ -118,6 +125,10 @@ function DepositApplication(){
         }
         if(dacPwd === ""){
             alert("예금 비밀번호를 입력하세요!");
+            return false;
+        }
+        else if(dacPwd.length !== 4){
+            alert("예금 비밀번호 4자리로 입력해주세요!");
             return false;
         }
         if(selectedAccount === ""){
@@ -242,7 +253,7 @@ function DepositApplication(){
                                 <option value="">출금계좌를 선택하세요</option>
                                 {accounts.filter((account) => account.acType === "입출금통장").map((account)=>(
                                         <option key={account.acNumber} value={account.acNumber}>
-                                            [{account.bankName}]{account.acNumber}||{account.acType}
+                                            [{account.bankName}]{acNum(account.acNumber)}||{account.acType}
                                         </option>))}
                             </Form.Select>
                         </Col>
@@ -262,7 +273,7 @@ function DepositApplication(){
                                 <option value="">만기 시 입금계좌를 선택하세요</option>
                                 {accounts.filter((account) => account.acType === "입출금통장").map((account)=>(
                                         <option key={account.acNumber} value={account.acNumber}>
-                                            [{account.bankName}]{account.acNumber}||{account.acType}
+                                            [{account.bankName}]{acNum(account.acNumber)}||{account.acType}
                                         </option>))}
                             </Form.Select>
                         </Col>

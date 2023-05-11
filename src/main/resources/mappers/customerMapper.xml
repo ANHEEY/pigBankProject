@@ -78,7 +78,7 @@
    <!-- 관리자 예금 상품 수정 -->
    <update id="depositPdUpdate" parameterType="com.pigbank.project.dto.DepositProductDTO">
    	UPDATE DEPOSIT_PRODUCT 
-   	   SET dPeriod=#{dperiod}, dRate=#{drate}, dContent=#{dcontent}, dMin=#{dmin}, dMax=#{dmax}, dCxlRate=#{dcxlRate}
+   	   SET dPeriod=#{dperiod}, dContent=#{dcontent}, dMin=#{dmin}, dMax=#{dmax}
  	 WHERE dPdName =#{dpdName}
    </update>
    
@@ -231,7 +231,7 @@
 	
 	<!-- 적금 계좌 상세페이지 정보 불러오기 -->
 	<select id="saDetailInfo" parameterType="long" resultType="com.pigbank.project.dto.SavingAccountDTO">
-		SELECT s.ACNUMBER, s.SPDNAME, s.SAMOUNT, s.SEXPAMOUNT, s.SJOINDATE,s.SENDDATE,a.ACBALANCE, atr.ACNUMBER AS withdrawAcNumber
+		SELECT s.ACNUMBER, s.SPDNAME, s.SAMOUNT, s.SEXPAMOUNT, s.SJOINDATE,s.SENDDATE,a.ACBALANCE, s.SDEACCOUNT, atr.ACNUMBER AS withdrawAcNumber
   		  FROM S_ACCOUNT_TBL s, ACCOUNT_TBL a, auto_transferReg_tbl atr
  		 WHERE a.ACNUMBER =s.ACNUMBER
    		   AND a.ACNUMBER = atr.ADEPOSITNUM 

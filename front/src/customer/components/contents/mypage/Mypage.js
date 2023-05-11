@@ -84,7 +84,12 @@ function Mypage(){
     const validateEmail=(email)=>{
         const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         return regex.test(email);
-    }
+    };
+
+    const validateHp=(hp)=>{
+        const regex = /^[0-9]{10,11}$/;
+        return regex.test(hp);
+    };
 
     const update = (e)=> {
         e.preventDefault();
@@ -149,7 +154,11 @@ function Mypage(){
             alert("핸드폰 번호를 입력하세요!");
             return false;
         }
-
+        else if(!validateHp(customerInfo.hp)){
+            alert("핸드폰 번호 형식에 맞게 입력하세요!");
+            return false;
+        }
+        
         if(!customerInfo.birthday){
             alert("생일을 입력하세요!");
             return false;

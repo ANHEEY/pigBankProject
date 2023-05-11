@@ -63,6 +63,11 @@ function Join(){
         return regex.test(email);
     }
 
+    const validateHp=(hp)=>{
+        const regex = /^[0-9]{10,11}$/;
+        return regex.test(hp);
+    }
+
     const handleCheckDuplicate = () => {
         CustomerService.duplicateId(id)
             .then(res=>{
@@ -156,6 +161,10 @@ function Join(){
             alert("핸드폰 번호를 입력하세요!");
             return false;
         }
+        else if(!validateHp(customerInfo.hp)){
+            alert("핸드폰 번호 형식에 맞게 입력하세요!");
+            return false;
+        }
 
         if(!customerInfo.birthday){
             alert("생일을 입력하세요!");
@@ -171,6 +180,10 @@ function Join(){
         .catch(err => {
         console.log('customerJoin() 에러!!', err);
         });        
+    }
+
+    const move = ()=>{
+        navigate('/customer/*');
     }
     
     return( 
@@ -242,8 +255,9 @@ function Join(){
             <br/>
             <Stack direction="horizontal" gap={2} className="col-md-2 mx-auto">
                     <Button variant="success" onClick={join}>회원가입</Button>
-                    <Button variant="outline-success">취소</Button>
+                    <Button variant="outline-success" onClick={move}>취소</Button>
             </Stack> 
+            <br/><br/>
         </Container>
     );
 }

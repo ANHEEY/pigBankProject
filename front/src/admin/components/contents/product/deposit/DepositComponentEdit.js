@@ -3,7 +3,7 @@ import React, { useState,useEffect } from "react";
 import { Container, Button, Form, Stack } from 'react-bootstrap'; // npm install react-bootstrap bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 css를 적용하기 위함
 import AdminDepositService from "./AdminDepositService";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 function DepositComponentEdit(){
@@ -53,8 +53,6 @@ function DepositComponentEdit(){
             dperiod:depositProduct.dperiod,
             dmin:depositProduct.dmin,
             dmax:depositProduct.dmax,
-            drate:depositProduct.drate,
-            dcxlRate:depositProduct.dcxlRate
         }
 
         AdminDepositService.depositPdUpdate(product)
@@ -116,19 +114,13 @@ function DepositComponentEdit(){
                     <Form.Group className="mb-3" controlId="formGroupDrate">
                     <Form.Label>* 예금이자</Form.Label>
                     <Form.Control required type="number" name="drate"
-                        value={depositProduct.drate} placeholder="%" onChange={onChange} />
-                    <Form.Text className="text-muted">
-                        소수점 첫째자리까지만 입력해주세요.
-                    </Form.Text>
+                        value={depositProduct.drate} placeholder="%" disabled />
                     </Form.Group>
                     
                     <Form.Group className="mb-3" controlId="formGroupDcxlRate">
                     <Form.Label>* 중도 해지시 금리</Form.Label>
                     <Form.Control type="number" name="dcxlRate"
-                        value={depositProduct.dcxlRate} placeholder="%" onChange={onChange} />
-                    <Form.Text className="text-muted">
-                        소수점 첫째자리까지만 입력해주세요.
-                    </Form.Text>
+                        value={depositProduct.dcxlRate} placeholder="%" disabled />
                     </Form.Group> 
 
                     <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto">

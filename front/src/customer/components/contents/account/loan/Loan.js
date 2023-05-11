@@ -31,6 +31,7 @@ function Loan() {
         AllService.fetchLoan(id)
           .then(res => {
             setMembers(res.data);
+            console.log(res.data);
           })
           .catch(err => {
             console.log('reloadMemberList() Error!!',err);
