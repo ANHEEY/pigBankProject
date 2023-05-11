@@ -4,6 +4,8 @@ import {Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import AllService from "../All/AllService";
 import {Link, useNavigate} from 'react-router-dom';
 import "../../../../resources/css/product/saving.css";
+import { getAuthToken } from "../../../helpers/axios_helper";
+import axios from "axios";
 
 function Account() {
 
@@ -18,6 +20,11 @@ function Account() {
   const [selectedOption, setSelectedOption] = useState("");
 
   useEffect(() => {
+    if(getAuthToken() !== null){
+      axios.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`;
+    } else{
+      axios.defaults.headers.common['Authorization'] = ``;
+    }
     reloadMemberList(window.localStorage.getItem("id"));
   }, []);
 
@@ -31,8 +38,10 @@ function Account() {
       });
   }
    
+  
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
+    date.setTime(date.getTime() + (9 * 60 * 60 * 1000)); 
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');

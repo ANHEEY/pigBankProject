@@ -25,6 +25,7 @@
                 WHERE da.dPdName = d.dPdName
                 AND da.acNumber = a.acNumber
                 AND a.id=#{id}
+                AND a.acState='OPEN'
 	</select>
 	
 	<select id="depositDetail" parameterType="long" resultType="com.pigbank.project.dto.TransferDTO">
@@ -48,6 +49,23 @@
 		FROM s_account_tbl s, ACCOUNT_TBL a  
 		WHERE s.ACNUMBER = a.ACNUMBER  
 		AND a.id=#{id}
+		AND a.acState='OPEN'
+	</select>
+	
+	<select id="savingDetail" parameterType="long" resultType="com.pigbank.project.dto.TransferDTO">
+		SELECT DISTINCT t.tNum
+			, t.acNumber
+			, t.tDepositNum
+			, t.tDepositBank
+			, t.tType
+			, t.tAmount
+			, t.myMemo
+			, t.yourMemo
+			, t.tDate
+		FROM s_account_tbl s, transfer_tbl t
+		WHERE s.ACNUMBER = t.ACNUMBER 
+		AND t.ACNUMBER = #{acNumber}
+		ORDER BY t.tDate DESC
 	</select>
 	
 	<!-- csy_ 대출 잔액이 노출되어야 하므로 고침 -->
@@ -72,6 +90,7 @@
 		SELECT *
 		FROM account_tbl
 		WHERE acType='입출금통장'
+		and acState='OPEN'
 	  	AND id=#{id}
 	</select>
 	
@@ -98,5 +117,59 @@
 	<select id="exchangeList" resultType="com.pigbank.project.dto.ExchangeRateListDTO">
 		SELECT * FROM chuexchange_tbl2 
 	</select>
+	
+	<select id="sleepList" parameterType="String" resultType="com.pigbank.project.dto.AccountDTO">
+		SELECT *
+		FROM account_tbl
+		WHERE id = #{id}
+  		AND (acState = 'SLEEP' OR acState = '요청 확인 중')
+	</select>
+	
+	<update id="sleepRelease" parameterType="long">
+		UPDATE account_tbl
+		SET acState='요청 확인 중'
+		WHERE acNumber = #{acNumber}
+	</update>
+	
+	<!-- ===================[관리자]===================== -->
+	
+	<select id="adminSaving" resultType="com.pigbank.project.dto.SavingAccountDTO">
+		SELECT DISTINCT s.sNum, a.id, s.acNumber, s.sPdName, s.sAmount, s.sExpAmount, s.sJoinDate, s.sEndDate, a.acState
+		FROM s_account_tbl s, account_tbl a  
+		WHERE s.acNumber = a.acNumber  
+	</select>
+	
+	<select id="adminDeposit" resultType="com.pigbank.project.dto.DepositAccountDTO">
+		SELECT  DISTINCT a.acState, da.dNum, a.id,  da.acNumber, da.dPdName, da.dAmount, da.dExpAmount, da.dJoinDate, da.dEndDate, da.dDeAccount
+        FROM d_account_tbl da, deposit_product d, account_tbl a
+        WHERE da.dPdName = d.dPdName
+        AND da.acNumber = a.acNumber
+	</select>
+	
+	<select id="adminAccount" resultType="com.pigbank.project.dto.AccountDTO">
+		SELECT DISTINCT*
+		FROM account_tbl
+		WHERE acType='입출금통장'
+	</select>
+	
+	<select id="adminLoan" resultType="com.pigbank.project.dto.LoanAccountDTO">
+		SELECT DISTINCT *
+          FROM  l_account_tbl l, loan_req_tbl r, ACCOUNT_TBL a
+          WHERE l.LREQNUM  = r.LREQNUM 
+          AND l.ACNUMBER = a.ACNUMBER 
+	</select>
+	
+	<select id="adminSleep" resultType="com.pigbank.project.dto.AccountDTO">
+		SELECT *
+		FROM account_tbl
+  		WHERE (acState = 'SLEEP' OR acState = '요청 확인 중')
+	</select>
+	
+	<update id="adminSleepRelease" parameterType="long">
+		UPDATE account_tbl
+		SET acState='OPEN'
+		WHERE acNumber = #{acNumber}
+	</update>
+	
 	
 </mapper>

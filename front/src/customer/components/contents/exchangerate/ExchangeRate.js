@@ -29,6 +29,16 @@ function ExchangeRate (){
           console.log("reloadMemberList() Error!!", err);
         });
     };
+    const formatDate = (dateStr) => {
+      const date = new Date(dateStr);
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
+      const hours = (date.getHours() + 9).toString().padStart(2, '0'); // 한국 시간 추가
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+      const seconds = date.getSeconds().toString().padStart(2, '0');
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
 
     const tableHeadStyle = {
       fontWeight: "bold",
@@ -47,10 +57,10 @@ function ExchangeRate (){
     return(
         <div className="container" >
             <h1><FontAwesomeIcon icon={faSearch}/> 환율정보 </h1>
-            <ul>
-                
-            </ul>
-            <div className="container" >
+            <br />
+            <br />
+            <br />
+            <div className="container" style={{padding:"5px", margin:"5px"}} >
                 <Table >
                     <TableHead style={{backgroundColor:"#dbe2d872"}}>
                         <TableRow >
@@ -78,7 +88,7 @@ function ExchangeRate (){
                                 <TableCell style={tableCellStyle}>{member.sell}</TableCell>
                                 <TableCell style={tableCellStyle}>{member.send}</TableCell>
                                 <TableCell style={tableCellStyle}>{member.receive}</TableCell>
-                                <TableCell style={tableCellStyle}>{member.exDate}</TableCell> 
+                                <TableCell style={tableCellStyle}>{formatDate(member.exDate)}</TableCell> 
                             </TableRow>
                         ))}
                     
@@ -89,6 +99,19 @@ function ExchangeRate (){
                         </TableRow>
                     </TableBody>
                 </Table>
+
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
                 
             </div>
         </div>            

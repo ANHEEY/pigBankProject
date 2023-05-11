@@ -94,6 +94,17 @@ public class ChuServiceImpl implements ChuService{
 		System.out.println("list : " + list);
 		return list;
 	}
+	
+	@Override
+	public List<TransferDTO> savingDetail(long acNumber) 
+			throws ServletException, IOException {
+		System.out.println("서비스 - 적금통장상세");
+		List<TransferDTO> list;
+		list = dao.savingDetail(acNumber);
+		System.out.println("list : " + list);
+		return list;
+	}
+	
 	@Override
 	public List<LoanAccountDTO> loanAccountList(String id) 
 			throws ServletException, IOException {
@@ -123,7 +134,7 @@ public class ChuServiceImpl implements ChuService{
 	}
 	
 	@Override
-	public List<TransferDTO> accountDetail(Long acNumber) throws ServletException, IOException {
+	public List<TransferDTO> accountDetail(long acNumber) throws ServletException, IOException {
 		System.out.println("서비스 - 입출금통장상세");
 		List<TransferDTO> list;
 		list = dao.accountDetail(acNumber);
@@ -149,7 +160,93 @@ public class ChuServiceImpl implements ChuService{
 		
 		return list;
 	}
+	
+	@Override
+	public List<AccountDTO> sleepList(String id) 
+			throws ServletException, IOException {
+		System.out.println("서비스 - 휴면계좌조회");
+		List<AccountDTO> list;
+		list = dao.sleepList(id);
+		System.out.println("list : " + list);
+		
+		return list;
+	}
+	
+	@Override
+	public void sleepRelease(long acNumber) 
+			throws ServletException, IOException {
+		System.out.println("서비스 - 휴면계좌해지");
+		dao.sleepRelease(acNumber);
+	}
 
+	
+	//===================[관리자]=====================
+	@Override
+	public List<SavingAccountDTO> adminSaving(HttpServletRequest req, Model model)
+			throws ServletException, IOException {
+
+		System.out.println("서비스 - 관리자적금");
+		List<SavingAccountDTO> list;
+		list = dao.adminSaving();
+		
+		return list;
+	}
+	
+	@Override
+	public List<DepositAccountDTO> adminDeposit(HttpServletRequest req, Model model)
+			throws ServletException, IOException {
+
+		System.out.println("서비스 - 관리자예금");
+		List<DepositAccountDTO> list;
+		list = dao.adminDeposit();
+		
+		return list;
+	}
+	
+	@Override
+	public List<AccountDTO> adminAccount(HttpServletRequest req, Model model)
+			throws ServletException, IOException {
+
+		System.out.println("서비스 - 관리자입출금");
+		List<AccountDTO> list;
+		list = dao.adminAccount();
+		
+		return list;
+	}
+	
+	@Override
+	public List<LoanAccountDTO> adminLoan(HttpServletRequest req, Model model)
+			throws ServletException, IOException {
+
+		System.out.println("서비스 - 관리자대출");
+		List<LoanAccountDTO> list;
+		list = dao.adminLoan();
+		
+		return list;
+	}
+	
+	@Override
+	public List<AccountDTO> adminSleep(HttpServletRequest req, Model model)
+			throws ServletException, IOException {
+
+		System.out.println("서비스 - 관리자휴면");
+		List<AccountDTO> list;
+		list = dao.adminSleep();
+		
+		return list;
+	}
+	
+	@Override
+	public void adminSleepRelease(long acNumber) 
+			throws ServletException, IOException {
+		System.out.println("서비스 - 휴면계좌해지");
+		dao.adminSleepRelease(acNumber);
+	}
+
+	
+	
+	
+	
 	
 	
 	

@@ -4,25 +4,40 @@ import AllService from "../All/AllService";
 import "../../../../resources/css/product/saving.css";
 import Pagination from "@mui/material/Pagination";
 import {Table, TableCell,TableRow, TableHead, TableBody, Box, TableFooter}from "@mui/material";
+<<<<<<< Updated upstream
 import {Card,Button,Row,Col,Stack,Container} from 'react-bootstrap';
 import DepositService from "../Deposit/DepositService";
+=======
+import { getAuthToken } from "../../../helpers/axios_helper";
+import axios from "axios";
+>>>>>>> Stashed changes
 
 
 function DepositDetail() {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(10);
-    const {acNumber, id} = useParams();
+    const {acNumber} = useParams();
     const [members, setMembers] = useState([]);
     const [loading, setLoading] = useState(true);
+<<<<<<< Updated upstream
     const [account,setAccount] = useState([]);
 
     const iconStyle = {
         color: 'green',
         fontSize: '2rem',
     };
+=======
+    const [sortColumn, setSortColumn] = useState("");
+    const [sortOrder, setSortOrder] = useState("");
+>>>>>>> Stashed changes
 
     useEffect(() => {
+        if(getAuthToken() !== null){
+            axios.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`;
+          } else{
+            axios.defaults.headers.common['Authorization'] = ``;
+          }
         reloadMemberList(acNumber);
         deDetailInfo(acNumber);
     }, [acNumber]);
@@ -60,6 +75,7 @@ function DepositDetail() {
 
     const formatDate = (dateStr) => {
         const date = new Date(dateStr);
+        date.setTime(date.getTime() + (9 * 60 * 60 * 1000)); 
         const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const day = date.getDate().toString().padStart(2, '0');
@@ -72,6 +88,49 @@ function DepositDetail() {
    
     const handlePageChange = (event, pageNumber) => {
         setCurrentPage(pageNumber);
+    };
+
+    const handleSort = (column) => {
+        let sortedItems = [...members];
+      
+        if (sortColumn === column) {
+          sortedItems.reverse();
+          setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+        } else {
+          sortedItems.sort((a, b) => {
+            const valueA = typeof a[column] === "string" ? a[column] : "";
+            const valueB = typeof b[column] === "string" ? b[column] : "";
+      
+            if (sortOrder === "asc") {
+              return valueA.localeCompare(valueB);
+            } else {
+              return valueB.localeCompare(valueA);
+            }
+          });
+          setSortColumn(column);
+          setSortOrder("asc");
+        }
+      
+        setMembers(sortedItems);
+    };
+
+    let sortedItems = JSON.parse(JSON.stringify(currentItems));
+
+    if (sortColumn !== "") {
+        sortedItems.sort((a, b) => {
+            const valueA = typeof a.tdate === "string" ? a.tdate : "";
+            const valueB = typeof b.tdate === "string" ? b.tdate : "";
+
+            if (sortOrder === "asc") {
+                return valueA.localeCompare(valueB);
+            } else {
+                return valueB.localeCompare(valueA);
+            }
+        });
+    }
+
+    const handleSortColumnClick = (column) => {
+        handleSort(column.toLowerCase());
     };
  
     // 계좌번호 => 문자열로 변환 후 slice
@@ -153,24 +212,37 @@ function DepositDetail() {
                     <Table>
                     <TableHead style={{ backgroundColor: "#dbe2d872" }}>
                         <TableRow>
-                        <TableCell>거래번호</TableCell>
+                        <TableCell>거래번호 </TableCell>
                         <TableCell>계좌번호</TableCell>
                         <TableCell>거래종류</TableCell>
                         <TableCell>금액</TableCell>
                         <TableCell>내통장메모</TableCell>
                         <TableCell>받는통장메모</TableCell>
-                        <TableCell>거래날짜</TableCell>
+                        <TableCell onClick={() => handleSortColumnClick("tdate")} style={{ cursor: "pointer" }}>
+                            거래날짜
+                            <span>
+                                {sortColumn === "tdate" ? (
+                                sortOrder === "desc" ? (
+                                    "▲"
+                                ) : (
+                                    "▼"
+                                )
+                                ) : (
+                                    "▼" 
+                                )}
+                            </span>
+                        </TableCell>
                         </TableRow>
                     </TableHead>
 
                     <TableBody>
-                        {currentItems.length === 0 ? (
+                        {sortedItems.length === 0 ? (
                         <TableRow>
                             <TableCell colSpan={7} style={{textAlign:"center"}}>이체결과없음</TableCell>
                         </TableRow>
 
                         ) : (
-                        currentItems.map((member) => (
+                        sortedItems.map((member) => (
                         <TableRow key={member.tnum}>
                             <TableCell>{member.tnum}</TableCell>
                             <TableCell>{member.tdepositBank}</TableCell>

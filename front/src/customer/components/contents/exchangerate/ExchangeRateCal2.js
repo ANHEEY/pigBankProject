@@ -116,7 +116,7 @@
                     <span>
                       결과: {(result.toFixed(2))}{" "}
                       {selectedExchangeRate?.name}
-                      <button onClick={() => handleExchangeList(result)}>환전신청</button>
+                      {/* <button onClick={() => handleExchangeList(result)}>환전신청</button> */}
                     </span>
                   )}
               </TableCell> 

@@ -5,6 +5,12 @@ import { Typography} from "@mui/material";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CustomerService from '../CustomerService';
 import { useNavigate } from "react-router-dom";
+<<<<<<< Updated upstream
+=======
+//import DaumPostcode from 'react-daum-postcode';
+//<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_APP_KEY&libraries=services"></script>
+
+>>>>>>> Stashed changes
 
 function Join(){
     

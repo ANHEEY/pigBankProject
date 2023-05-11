@@ -35,7 +35,7 @@ public interface ChuService {
 	public List<AccountDTO> accountList(String id)
 			throws ServletException,IOException;
 	
-	public List<TransferDTO> accountDetail(Long acNumber)
+	public List<TransferDTO> accountDetail(long acNumber)
 			throws ServletException,IOException;
 	
 	public List<DepositAccountDTO>depositAccountList(String id)
@@ -45,6 +45,9 @@ public interface ChuService {
 			throws ServletException, IOException;
 	
 	public List<SavingAccountDTO>savingAccountList(String id)
+			throws ServletException,IOException;
+	
+	public List<TransferDTO>savingDetail(long acNumber)
 			throws ServletException,IOException;
 	
 	public List<LoanAccountDTO> loanAccountList(String id)
@@ -59,4 +62,28 @@ public interface ChuService {
 	public List<ExchangeRateListDTO> exchangeList(HttpServletRequest req, Model model)
 			throws ServletException,IOException;
 	
+	public List<AccountDTO> sleepList(String id) 
+			throws ServletException, IOException;
+	
+	public void sleepRelease(long acNumber) 
+			throws ServletException, IOException;
+	
+	//===================[관리자]=====================
+	public List<SavingAccountDTO> adminSaving(HttpServletRequest req, Model model)
+			throws ServletException, IOException;
+	
+	public List<DepositAccountDTO> adminDeposit(HttpServletRequest req, Model model)
+			throws ServletException, IOException;
+	
+	public List<AccountDTO> adminAccount(HttpServletRequest req, Model model)
+			throws ServletException, IOException;
+	
+	public List<LoanAccountDTO> adminLoan(HttpServletRequest req, Model model)
+			throws ServletException, IOException;
+	
+	public List<AccountDTO> adminSleep(HttpServletRequest req, Model model)
+			throws ServletException, IOException;
+	
+	public void adminSleepRelease(long acNumber)
+			throws ServletException, IOException;
 }

@@ -6,12 +6,19 @@ import All from "../../contents/account/All/All";
 import Account from "../../contents/account/Account/Account";
 import AccountDetail from "../../contents/account/Account/AccountDetail";
 import Deposit from "../../contents/account/Deposit/Deposit";
+<<<<<<< Updated upstream
 import DepositClose from "../../contents/account/Deposit/DepositClose";
 import DepositDetail from "../../contents/account/Deposit/DepositDetail";
 import Saving from "../../contents/account/Saving/Saving";
 import SavingClose from "../../contents/account/Saving/SavingClose";
 //import SavingDetail from "../../contents/account/Saving/SavingDetail"; 적금이체내역 라우터만 넣어두었어요. 주석만 제거해주세요.
 import Sleep from "../../contents/account/Sleep";
+=======
+import DepositDetail from "../../contents/account/Deposit/DepositDetail";
+import Saving from "../../contents/account/Saving/Saving";
+import SavingDetail from "../../contents/account/Saving/SavingDetail";
+import Sleep from "../../contents/account/Sleep/Sleep";
+>>>>>>> Stashed changes
 
 // 조회|대출조회
 import Loan from "../../contents/account/loan/Loan";
@@ -104,11 +111,16 @@ const AppRouter = () => {
 
             <Route path="/customer/account/deposit" Component={Deposit} />
             <Route path="/customer/account/deposit/depositdetail/:acNumber/:id" Component={DepositDetail} />
+<<<<<<< Updated upstream
             <Route path="/customer/account/deposit/depositClose" Component={DepositClose} />
             <Route path="/customer/account/saving" Component={Saving} />
             <Route path="/customer/account/saving/savingClose" Component={SavingClose} />
             {/* <Route path="/customer/account/saving/savingDetail" Component={SavingDetail} /> */}
 
+=======
+            <Route path="/customer/account/saving" Component={Saving} />
+            <Route path="/customer/account/saving/savingdetail/:acNumber/:id" Component={SavingDetail} />
+>>>>>>> Stashed changes
             <Route path="/customer/account/sleep" Component={Sleep} />
 
             {/* 대출조회 */}

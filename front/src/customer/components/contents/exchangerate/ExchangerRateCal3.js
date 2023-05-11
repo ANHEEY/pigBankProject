@@ -111,7 +111,7 @@
                   {result !== null && (
                     <span>
                       결과: {formatCurrency(result.toFixed(2))}{" "}원
-                      <button>환전신청</button>
+                      {/* <button>환전신청</button> */}
                     </span>
                   )}
               </TableCell> 

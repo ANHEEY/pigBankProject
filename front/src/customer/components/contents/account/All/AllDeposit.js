@@ -2,13 +2,19 @@
  import React, { useEffect,useState } from "react";
  import {Table, TableHead, TableRow, TableCell,  TableBody } from "@mui/material";
  import AllService from "./AllService";
- 
+ import { getAuthToken } from "../../../helpers/axios_helper";
+ import axios from "axios";
  
   
  function AllDeposit() {
   const [members, setMembers] = useState([]);
 
   useEffect(() => {
+    if(getAuthToken() !== null){
+      axios.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`;
+    } else{
+      axios.defaults.headers.common['Authorization'] = ``;
+    }
     fetchDepositList(window.localStorage.getItem("id"));
   }, []);
 
@@ -31,6 +37,7 @@
 
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
+    date.setTime(date.getTime() + (9 * 60 * 60 * 1000)); 
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');

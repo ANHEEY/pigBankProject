@@ -3,6 +3,8 @@ import '../../../../resources/css/AllStyle.css';
 import React, { useState, useEffect } from "react";
 import {Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import AllService from "./AllService";
+import { getAuthToken } from '../../../helpers/axios_helper';
+import axios from 'axios';
 
 function AllLoan (){
 
@@ -10,6 +12,11 @@ function AllLoan (){
   
 
   useEffect(() => {
+    if(getAuthToken() !== null){
+      axios.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`;
+    } else{
+      axios.defaults.headers.common['Authorization'] = ``;
+    }
       reloadMemberList(window.localStorage.getItem("id"));
   }, []);
 
@@ -41,6 +48,7 @@ function AllLoan (){
 
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
+    date.setTime(date.getTime() + (9 * 60 * 60 * 1000)); 
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');

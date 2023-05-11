@@ -4,8 +4,18 @@ import {Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import AllService from "../All/AllService";
 import {Link, useNavigate} from 'react-router-dom';
 import "../../../../resources/css/product/saving.css";
+import { getAuthToken } from "../../../helpers/axios_helper";
+import axios from "axios";
 
 function Saving() {    
+
+  const navigate = useNavigate();
+
+  const handleDpdNameClick = (acNumber) => {
+    const id = window.localStorage.getItem("id");
+    navigate(`/customer/account/saving/savingdetail/${acNumber}/${id}`);
+  };
+
   const [members, setMembers] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
 
@@ -16,6 +26,11 @@ function Saving() {
   }
 
   useEffect(() => {
+    if(getAuthToken() !== null){
+      axios.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`;
+    } else{
+      axios.defaults.headers.common['Authorization'] = ``;
+    }
     reloadMemberList(window.localStorage.getItem("id"));
   }, []);
 
@@ -48,6 +63,7 @@ function Saving() {
 
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
+    date.setTime(date.getTime() + (9 * 60 * 60 * 1000)); 
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
@@ -117,8 +133,17 @@ function Saving() {
                     </TableHead>
                     <TableBody>
                       {filteredMembers.map((member) => (
+<<<<<<< Updated upstream
                         <TableRow key={member.snum}>
                           <TableCell >{member.spdname}</TableCell>
+=======
+                        <TableRow key={member.acNumber}>
+                          <TableCell onClick={() => handleDpdNameClick(member.acNumber)}>
+                            <Link to={`/customer/account/saving/savingdetail/${member.acNumber}/${member.id}`}>
+                              {member.spdName}
+                            </Link>
+                          </TableCell>
+>>>>>>> Stashed changes
                           <TableCell>{acNum(member.acNumber)}</TableCell>
                           <TableCell>{formatDate(member.sjoinDate)}</TableCell>
                           <TableCell>{formatDate(member.sendDate)}</TableCell>

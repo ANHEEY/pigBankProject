@@ -1,37 +1,23 @@
 import React,{useEffect, useState} from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import AllService from "../All/AllService";
+
 import Pagination from "@mui/material/Pagination";
 import {Table, TableCell,TableRow, TableHead, TableBody, Box, TableFooter}from "@mui/material";
-<<<<<<< Updated upstream
-import {Card,Button,Row,Col,Stack,Container} from 'react-bootstrap';
-import DepositService from "../Deposit/DepositService";
-
-
-=======
 import { getAuthToken } from "../../../helpers/axios_helper";
 import axios from "axios";
->>>>>>> Stashed changes
 
-function AccountDetail() {
-    const navigate = useNavigate();
+
+
+function SavingDetail() {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(10);
     const {acNumber} = useParams();
     const [members, setMembers] = useState([]);
     const [loading, setLoading] = useState(true);
-<<<<<<< Updated upstream
-    const [account,setAccount] = useState([]);
-
-    const iconStyle = {
-        color: 'green',
-        fontSize: '2rem',
-    };
-=======
     const [sortColumn, setSortColumn] = useState("");
     const [sortOrder, setSortOrder] = useState("");
->>>>>>> Stashed changes
 
     useEffect(() => {
         if(getAuthToken() !== null){
@@ -40,12 +26,11 @@ function AccountDetail() {
             axios.defaults.headers.common['Authorization'] = ``;
           }
         reloadMemberList(acNumber);
-        acDetailInfo(acNumber);
     }, [acNumber]);
 
 
     const reloadMemberList = (acNumber) => {
-        AllService.fetchAccountDetail(acNumber)
+        AllService.fetchSavingDetail(acNumber)
           .then(res => {
             setMembers(res.data);
             setLoading(false);
@@ -53,17 +38,6 @@ function AccountDetail() {
           .catch(err => {
             console.log('reloadMemberList() Error!!',err);
           });
-    }
-
-    const acDetailInfo = (acNumber) =>{
-        DepositService.acDetailInfo(acNumber)
-            .then(res=>{
-                setAccount(res.data);
-                console.log(res.data);
-            })
-            .catch(err=>{
-                console.log('acDetailInfo() error!!!',err);
-            });
     }
 
     const formatCurrency = (value) => {
@@ -74,6 +48,7 @@ function AccountDetail() {
         return formatter.format(value);
     }
 
+    
     const formatDate = (dateStr) => {
         const date = new Date(dateStr);
         date.setTime(date.getTime() + (9 * 60 * 60 * 1000)); 
@@ -91,15 +66,6 @@ function AccountDetail() {
         setCurrentPage(pageNumber);
     };
 
-<<<<<<< Updated upstream
-    // 계좌번호 => 문자열로 변환 후 slice
-    const acNum = (e) => {
-        console.log(e);
-        if(!e) return "";       
-        return e.toString().slice(0, 3) + '-' + e.toString().slice(3);
-    }
-
-=======
     const handleSort = (column) => {
         let sortedItems = [...members];
       
@@ -143,54 +109,11 @@ function AccountDetail() {
         handleSort(column.toLowerCase());
     };
 
->>>>>>> Stashed changes
     return(
         <main className="main">
-        <Container>
-        <Card>
-            <Card.Header as="h2" style={{backgroundColor:"#dbe2d872" }}>{account.acType}</Card.Header>
-            <br/>
-            <Card.Body>
-                <Row className="text-center">
-                    <Col className="col-md-2 mx-auto">
-                    <i className="bi bi-piggy-bank" style={iconStyle}></i>
-                    <Card.Title>통장 잔액</Card.Title>
-                    <Card.Text>
-                        {formatCurrency(account.acBalance)}
-                    </Card.Text>
-                    </Col>
-                    <Col className="col-md-2 mx-auto">
-                    <i className="bi bi-calendar-check" style={iconStyle}></i>
-                    <Card.Title>개설 날짜</Card.Title>
-                    <Card.Text>
-                        {new Date(account.newDate).toLocaleDateString().slice(0,-1)}
-                    </Card.Text>
-                    </Col>
-                    <Col className="col-md-2 mx-auto">        
-                    <i className="bi bi-cash" style={iconStyle}></i>        
-                    <Card.Title>이체 한도</Card.Title>
-                    <Card.Text>
-                        {formatCurrency(account.trsfLimit)}원
-                    </Card.Text>
-                    </Col>
-                    <Col className="col-md-2 mx-auto">
-                    <i className="bi bi-bank" style={iconStyle}></i>
-                    <Card.Title>계좌번호</Card.Title>
-                    <Card.Text>
-                        {acNum(account.acNumber)}
-                    </Card.Text>
-                    </Col>
-                </Row>
-            </Card.Body>
-            <br/> 
-            <Card.Footer style={{backgroundColor:"#dbe2d872" }}>
-            <br/>  
-            </Card.Footer>
-        </Card>
-        </Container>
-        <br/> <br/> <br/>
+        
             <div className="container">
-                <h2>입출금이체내역</h2>
+                <h2>적금이체내역</h2>
                 <div className="card-body">
 
                 {loading ? (
@@ -208,16 +131,16 @@ function AccountDetail() {
                             <TableCell onClick={() => handleSortColumnClick("tdate")} style={{ cursor: "pointer" }}>
                                 거래날짜
                                 <span>
-                                {sortColumn === "tdate" ? (
-                                sortOrder === "desc" ? (
-                                    "▲"
-                                ) : (
-                                    "▼"
-                                )
-                                ) : (
-                                    "▼" 
-                                )}
-                            </span>
+                                    {sortColumn === "tdate" ? (
+                                    sortOrder === "desc" ? (
+                                        "▲"
+                                    ) : (
+                                        "▼"
+                                    )
+                                    ) : (
+                                        "▼" 
+                                    )}
+                                </span>
                             </TableCell>
                             </TableRow>
                         </TableHead>
@@ -258,7 +181,7 @@ function AccountDetail() {
                             <TableRow>
                             <TableCell colSpan={7} style={{textAlign:"center"}}>
                                     <Box display="flex" justifyContent="center">
-                                    <Link to="/customer/account/account">Back</Link>
+                                    <Link to="/customer/account/saving">Back</Link>
                                     </Box>
                             </TableCell>
                             </TableRow>
@@ -274,4 +197,4 @@ function AccountDetail() {
         </main>
     )
 }
-export default AccountDetail;
+export default SavingDetail;

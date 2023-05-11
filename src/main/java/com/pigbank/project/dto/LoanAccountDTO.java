@@ -29,6 +29,7 @@ public class LoanAccountDTO {
 	private int acPwd;
 	private long trsfLimit;
 	private String lReason;
+	private String acState;
 	
 	// 중도해지시 필요한 정보를 불러오기 위한 추가 변수
 	private double lrate;

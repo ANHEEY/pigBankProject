@@ -31,13 +31,15 @@ public interface ChuMapper {
 	
 	public List<AccountDTO> accountList(String id);
 	
-	public List<TransferDTO> accountDetail(Long acNumber);
+	public List<TransferDTO> accountDetail(long acNumber);
 	
 	public List<DepositAccountDTO> depositAccountList(String id);
 	
 	public List<TransferDTO> depositDetail(long acNumber);
 	
 	public List<SavingAccountDTO> savingAccountList(String id);
+	
+	public List<TransferDTO> savingDetail(long acNumber);
 	
 	public List<LoanAccountDTO> loanAccountList(String id);
 	
@@ -47,8 +49,23 @@ public interface ChuMapper {
 	
 	public List<ExchangeRateListDTO> exchangeList();
 	
+	public List<AccountDTO> sleepList(String id);
+	
+	public void sleepRelease(long acNumber);
 	
 	
+	//===================[관리자]=====================
 	
+	public List<SavingAccountDTO> adminSaving();
+	
+	public List<DepositAccountDTO> adminDeposit();
+	
+	public List<AccountDTO> adminAccount();
+	
+	public List<LoanAccountDTO> adminLoan();
+	
+	public List<AccountDTO> adminSleep();
+	
+	public void adminSleepRelease(long acNumber);
 	
 }

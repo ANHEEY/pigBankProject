@@ -57,7 +57,7 @@ public class ChuController {
 	@GetMapping(value="/deposit")
 	public List<DepositProductDTO> depositList(HttpServletRequest req, Model model)
 			throws ServletException, IOException {
-		logger.info("<<< url - depositList >>>");
+		logger.info("<<< url - deposit >>>");
 		
 		List<DepositProductDTO> list = service.depositList(req, model);
 		System.out.println(list);
@@ -68,7 +68,7 @@ public class ChuController {
 	@GetMapping(value="/loan")
 	public List<LoanProductDTO> loanList(HttpServletRequest req, Model model)
 			throws ServletException, IOException {
-		logger.info("<<< url - depositList >>>");
+		logger.info("<<< url - loan >>>");
 		
 		List<LoanProductDTO> list = service.loanList(req, model);
 		System.out.println(list);
@@ -79,7 +79,7 @@ public class ChuController {
 	@GetMapping(value="/account/{id}")
 	public List<AccountDTO> accountList(@PathVariable String id)
 			throws ServletException, IOException {
-		logger.info("<<< url - accountList >>>");
+		logger.info("<<< url - account >>>");
 		
 		List<AccountDTO> list = service.accountList(id);
 		
@@ -91,7 +91,7 @@ public class ChuController {
 	@GetMapping(value="/accountDetail/{acNumber}")
 	public List<TransferDTO> accountDetail(@PathVariable("acNumber") Long acNumber)
 			throws ServletException, IOException {
-		logger.info("<<< url - accountList >>>");
+		logger.info("<<< url - accountDetail >>>");
 		
 		List<TransferDTO> list = service.accountDetail(acNumber);
 		
@@ -100,12 +100,11 @@ public class ChuController {
 	}
 	
 	//예금계좌조회
-
 	// http://localhost:8081/depositAccount/{id}
 	@GetMapping(value="/depositAccount/{id}")
 	public List<DepositAccountDTO> depositAccountList(@PathVariable String id)
 			throws ServletException, IOException {
-		logger.info("<<< url - depositAccountList() >>>");
+		logger.info("<<< url - depositAccount() >>>");
 		
 		List<DepositAccountDTO> list = service.depositAccountList(id);
 		System.out.println(list);
@@ -130,13 +129,25 @@ public class ChuController {
 	@GetMapping(value="/savingAccount/{id}")
 	public List<SavingAccountDTO> savingAccountList(@PathVariable String id)
 			throws ServletException, IOException {
-		logger.info("<<< url - savingAccountList() >>>");
+		logger.info("<<< url - savingAccount() >>>");
 		
 		List<SavingAccountDTO> list = service.savingAccountList(id);
 		
 		System.out.println(id);
 		System.out.println(list);
 		
+		return list;
+	}
+	
+	//적금통장상세
+	@GetMapping(value="/savingDetail/{acNumber}")
+	public List<TransferDTO> savingDetail(@PathVariable("acNumber") Long acNumber)
+			throws ServletException, IOException {
+		logger.info("<<< url - savingDetail >>>");
+		
+		List<TransferDTO> list = service.savingDetail(acNumber);
+		
+		System.out.println(list);
 		return list;
 	}
 	
@@ -168,7 +179,7 @@ public class ChuController {
 	@GetMapping(value="/transferList")
 	public List<TransferDTO> transferList(HttpServletRequest req, Model model)
 			throws ServletException, IOException {
-		logger.info("<<< url - transferAccount() >>>");
+		logger.info("<<< url - transferList() >>>");
 		
 		List<TransferDTO> list = service.transferList(req, model);
 		System.out.println(list);
@@ -185,6 +196,90 @@ public class ChuController {
 		System.out.println(list);
 		
 		return list;
+	}
+	//휴면계좌조회
+	@GetMapping(value="/sleepList/{id}")
+	public List<AccountDTO> sleepList(@PathVariable String id)
+			throws ServletException, IOException {
+		logger.info("<<< url - sleepList() >>>");
+		
+		List<AccountDTO> list = service.sleepList(id);
+		System.out.println(list);
+		
+		return list;
+	}
+	
+	//휴면계좌해지
+	@GetMapping(value="/sleepRelease/{acNumber}")
+	public void sleepRelease(@PathVariable("acNumber") long acNumber)
+			throws ServletException, IOException {
+		logger.info("<<< url - sleepRelease() >>>");
+		service.sleepRelease(acNumber);
+		
+		
+		
+	}
+	
+	//===================[관리자]=====================
+	@GetMapping(value="/adminSaving")
+	public List<SavingAccountDTO> adminSaving(HttpServletRequest req, Model model)
+			throws ServletException, IOException {
+		logger.info("<<< url - adminSaving() >>>");
+		
+		List<SavingAccountDTO> list = service.adminSaving(req, model);
+		return list;
+	}
+	
+	@GetMapping(value="/adminDeposit")
+	public List<DepositAccountDTO> adminDeposit(HttpServletRequest req, Model model)
+			throws ServletException, IOException {
+		logger.info("<<< url - adminDeposit() >>>");
+		
+		List<DepositAccountDTO> list = service.adminDeposit(req,model);
+		return list;
+	}
+	
+	@GetMapping(value="/adminAccount")
+	public List<AccountDTO> adminAccount(HttpServletRequest req, Model model)
+			throws ServletException, IOException {
+		logger.info("<<< url - adminAccount >>>");
+		
+		List<AccountDTO> list = service.adminAccount(req, model);
+		
+		System.out.println(list);
+		return list;
+	}
+	
+	@GetMapping(value="/adminLoan")
+	public List<LoanAccountDTO> adminLoan(HttpServletRequest req, Model model)
+			throws ServletException, IOException {
+		logger.info("<<< url - adminLoan >>>");
+		
+		List<LoanAccountDTO> list = service.adminLoan(req, model);
+		
+		System.out.println(list);
+		return list;
+	}
+	
+	//휴면계좌조회
+	@GetMapping(value="/adminSleep")
+	public List<AccountDTO> adminSleep(HttpServletRequest req, Model model)
+			throws ServletException, IOException {
+		logger.info("<<< url - adminSleep() >>>");
+		
+		List<AccountDTO> list = service.adminSleep(req, model);
+		System.out.println(list);
+		
+		return list;
+	}
+	
+	//휴면계좌해지
+	@GetMapping(value="/adminSleepRelease/{acNumber}")
+	public void adminSleepRelease(@PathVariable("acNumber") long acNumber)
+			throws ServletException, IOException {
+		logger.info("<<< url - adminSleepRelease() >>>");
+		service.adminSleepRelease(acNumber);
+		
 	}
 
 
