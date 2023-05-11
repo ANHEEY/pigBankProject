@@ -60,6 +60,12 @@ public interface SooMapper {
 	// 1-2. 스케쥴 테이블에 추가
 	public void insertLoanPaySchedule(LoanWillPayDTO loanWillPayDTO);
 	
+	// 대출 계좌 상세 조회
+	public LoanAccountDTO showLoanDetail(long acNumber);
+	
+	// 대출 납부 내역 조회
+	public List<LoanAccountDetailDTO> showLoanPaidList(long acNumber);
+		
 	// 대출 상환 스케쥴 조회
 	public List<LoanWillPayDTO> showLoanSchedule(int lnum);
 	

@@ -24,8 +24,8 @@
 	<!-- 대출상품 수정 -->
 	<update id="updateProduct" parameterType="com.pigbank.project.dto.LoanProductDTO">
 		UPDATE loan_product
-		SET lsubTitle=#{lsubTitle}, lcontent=#{lcontent}, lgrade=#{lgrade}, lmaxPeriod=#{lmaxPeriod}, lmaxPrice=#{lmaxPrice}, lrate=#{lrate}, ltype=#{ltype}, lcxlRate=#{lcxlRate}
-		WHERE lpdName=#{lpdName}
+		SET lSubTitle=#{lsubTitle}, lContent=#{lcontent}, lGrade=#{lgrade}, lMaxPeriod=#{lmaxPeriod}, lMaxPrice=#{lmaxPrice}
+		WHERE lPdName=#{lpdName}
 	</update>
 	
 	<!-- 대출상품 삭제 -->
@@ -129,6 +129,31 @@
 				  #{lmonRate})
 	</insert>
 	
+	<!-- 대출 계좌 상세 조회  -->
+	<select id="showLoanDetail" parameterType="long" resultType="com.pigbank.project.dto.LoanAccountDTO">
+		SELECT l.lStartDate, l.lEndDate, p.lType, p.lRate, p.lCxlRate, a.acBalance, p.lPdName
+		  FROM account_tbl a,
+		       l_account_tbl l,
+		       loan_req_tbl r,
+		       loan_product p
+		 WHERE a.acNumber = l.acNumber
+		   AND l.lreqNum = r.lreqNum
+		   AND r.lpdName = p.lpdName
+		   AND a.acNumber = #{acNumber}
+	</select>
+	
+	<!-- 대출 계좌 상세 조회  -->
+	<select id="showLoanPaidList" parameterType="long" resultType="com.pigbank.project.dto.LoanAccountDetailDTO">
+		SELECT d.lpaidNum, l.acNumber, p.lpayTurn, p.lmonRate, p.lmonPrice, p.lmonTotal, d.lpayDate
+		  FROM l_account_tbl l,
+		       l_accountPay_tbl p,
+		       l_detail_tbl d
+		 WHERE d.lwillPayNum = p.lwillPayNum
+		   AND p.lnum = l.lnum
+		   AND l.acNumber = #{acNumber}
+	</select>
+	
+	
 	<!-- 대출 스케쥴 조회  -->
 	<select id="showLoanSchedule" parameterType="int" resultType="com.pigbank.project.dto.LoanWillPayDTO">
 		SELECT * FROM l_accountPay_tbl WHERE lnum=#{lnum} AND lPayStatus='상환예정' ORDER BY lPayTurn
@@ -165,12 +190,12 @@
 		        (SELECT l.acNumber 
 		          FROM l_account_tbl l, l_accountPay_tbl p 
 		         WHERE l.lnum = p.lnum 
-		           AND p.lWillPayNum = #{lwillPayNum})
+		           AND p.lWillPayNum = #{lwillPayNum}),
 		        '돼지은행', 
 		        '출금', 
 		        #{cancelFee} + #{acBalance}, 
-		        '대출금상환금납부',
-		        '대출상환금납부', 
+		        '대출금상환',
+		        '대출금상환', 
 		        sysdate)
 	</update>
 	

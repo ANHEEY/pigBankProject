@@ -50,13 +50,19 @@ function Loan() {
         return formatter.format(value);
     }
 
-    const filteredMembers = members.filter(
-        (member) => member.lpdName.indexOf(selectedOption) !== -1
-    );
+    // const filteredMembers = members.filter(
+    //     (member) => member.lreqNum.indexOf(selectedOption) !== -1
+    // );
 
     const tableHeadStyle={
         fontWeight: "bold",
     }
+
+    // 상세페이지 이동
+    const handleGoDetailButton = (acNumber) => {
+        const id = window.localStorage.getItem("id");
+        navigate(`/customer/account/loan/LoanDetail/${acNumber}/${id}`);
+    };
 
     // CSY_계좌번호 - 추가 처리
     const acNum = (acNumber) => {
@@ -73,6 +79,8 @@ function Loan() {
     const goCancel = (lnum) => {
         navigate(`/customer/account/loan/LoanCancel/${lnum}`);
     }
+
+    
       
     return (
     <main className="main">
@@ -88,7 +96,7 @@ function Loan() {
                 <select value={selectedOption} onChange={handleChange}>
                     <option value="">전체선택</option>
                     {members.map((member) => (
-                    <option key={member.lnum} value={member.lpdName}>{member.lpdName}</option>
+                    <option key={member.lreqNum} value={member.lpdName}>{member.lpdName}</option>
                     ))}
                 </select>    
                 </p>  
@@ -123,32 +131,30 @@ function Loan() {
                         <TableCell style={tableHeadStyle}>계좌명</TableCell>
                         <TableCell style={tableHeadStyle}>계좌번호</TableCell>
                         <TableCell style={tableHeadStyle}>가입기간</TableCell>
-                        <TableCell style={tableHeadStyle}>용도</TableCell>
-                        <TableCell style={tableHeadStyle}>한도</TableCell>
+                        <TableCell style={tableHeadStyle}>가입일</TableCell>
+                        <TableCell style={tableHeadStyle}>만기일</TableCell>
                         <TableCell style={tableHeadStyle}>상환잔액</TableCell>
                         <TableCell style={{...tableHeadStyle, textAlign: "center"}}>업무</TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
-                    {filteredMembers.map((member) => (
-                        <TableRow key={member.lnum}>
-                        <TableCell>{member.lpdName}</TableCell>
+                    {members.map((member) => (
+                        <TableRow key={member.acNumber}>
+                        <TableCell onClick={() => handleGoDetailButton(member.acNumber)}>
+                            {member.lpdName}
+                        </TableCell>
                         <TableCell>{acNum(member.acNumber)}</TableCell>
-                        <TableCell>{member.lperiod}</TableCell>
-                        <TableCell>{member.lpurpose}</TableCell>
-                        <TableCell>{member.lincome}</TableCell>
-                         {/*CSY_대출잔액이 0인 경우 대출중도상환완료로 노출 */}
+                        <TableCell>{member.lperiod}년</TableCell>
+                        <TableCell>{new Date(member.lstartDate).toLocaleDateString().slice(0,-1)}</TableCell>
+                        <TableCell>{new Date(member.lendDate).toLocaleDateString().slice(0,-1)}</TableCell>
+                        {/*CSY_대출잔액이 0인 경우 대출중도상환완료로 노출 */}
                         <TableCell>{member.acBalance === 0 ? "대출상환완료" : formatCurrency(member.acBalance)}</TableCell>
                         <TableCell>
                             {/*CSY_업무 버튼 추가*/}
                             <Stack direction="horizontal" gap={2} className="col-md-12 mx-auto" style={buttonStyle}>
-                            <Link to={`/customer/account/loan/LoanSchedule/${member.lnum}`}> 
-                                <Button variant="outline-secondary" onClick={() => {goPaySchedule(member.lnum)}}>상환스케쥴</Button>
-                            </Link>
-                            <Link to={`/customer/account/loan/LoanCancel/${member.lnum}`}>
-                                <Button variant="outline-secondary" onClick={() => {goCancel(member.lnum)}}>중도해지</Button>
-                            </Link>                           
-                            </Stack>
+                                <Button variant="success" onClick={() => {goPaySchedule(member.lnum)}} disabled={member.acBalance === 0}>상환스케쥴</Button>
+                                <Button variant="outline-secondary" onClick={() => {goCancel(member.lnum)}} disabled={member.acBalance === 0}>중도해지</Button>                          
+                            </Stack> 
                         </TableCell>
                         </TableRow>
                    ))}

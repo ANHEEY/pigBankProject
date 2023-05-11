@@ -97,7 +97,7 @@ function Login() {
                 width : 600,
                 align:"center",
             }}><br/><br/>
-                <Typography variant="h2" textAlign="center" color="green">로그인</Typography><br/><br/>
+                <Typography variant="h3" textAlign="center" color="green">로그인</Typography><br/><br/>
                 <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={3}>아이디</Form.Label>
                 <Col sm={8}>
@@ -112,7 +112,6 @@ function Login() {
                 />
                 </Col>
                 </Form.Group>
-                <br/>
                 <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={3}>비밀번호</Form.Label>
                 <Col sm={8}>
@@ -128,7 +127,7 @@ function Login() {
                 </Col>
                 </Form.Group>
                 <br/><br/>
-                <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto">
+                <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto" size="lg">
                     <Button variant="success" onClick={login}>로그인</Button>
                     <Button variant="outline-success" onClick={cxl}>취소</Button>
                 </Stack> 

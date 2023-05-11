@@ -50,11 +50,13 @@
 		AND a.id=#{id}
 	</select>
 	
+	<!-- csy_ 대출 잔액이 노출되어야 하므로 고침 -->
 	<select id="loanAccountList" parameterType="String" resultType="com.pigbank.project.dto.LoanAccountDTO">
 		SELECT *
-          FROM  l_account_tbl l, loan_req_tbl r
-          WHERE l.LREQNUM  = r.LREQNUM 
-          AND id =#{id} 
+		  FROM account_tbl a, l_account_tbl l, loan_req_tbl r
+		 WHERE l.acNumber = a.acNumber
+		   AND l.lreqNum = r.lreqNum 
+		   AND a.id = #{id}
 	</select>
 	
 	<select id="loanState" resultType="com.pigbank.project.dto.LoanAccountDTO">

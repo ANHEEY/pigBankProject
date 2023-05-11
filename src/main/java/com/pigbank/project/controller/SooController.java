@@ -160,6 +160,24 @@ public class SooController {
 		service.refuseLoan(lreqNum, lreason);
 	}
 	
+	// 대출 계좌 상세조회
+	@GetMapping("/loanAccount/loanDetail/{acNumber}")
+	public LoanAccountDTO loanAccountDetail (@PathVariable long acNumber)		
+		throws ServletException, IOException {
+		logger.info("<<< url - loanAccountDetail >>>");
+		
+		return service.myLoanDetail(acNumber);
+	}
+	
+	// 대출 납분 내역 조회
+	@GetMapping("/loanAccount/loanPaidList/{acNumber}")
+	public List<LoanAccountDetailDTO> loanAccountPaidList (@PathVariable long acNumber)		
+		throws ServletException, IOException {
+		logger.info("<<< url - loanAccountDetail >>>");
+		
+		return service.myLoanPaidList(acNumber);
+	}
+	
 	// 대출 상환 스케쥴 조회 
 	@GetMapping(value="/loanAccount/listLoanSchedule/{lnum}")
 	public List<LoanWillPayDTO> loanScheduleList(@PathVariable int lnum)

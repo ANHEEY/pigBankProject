@@ -64,6 +64,14 @@ public interface SooService {
 	public void refuseLoan(int lreqNum, String lreason)
 			throws ServletException, IOException;
 	
+	// 대출 계좌 상세
+	public LoanAccountDTO myLoanDetail(long acNumber)
+			throws ServletException, IOException;
+
+	// 대출 납부 내역 조회
+	public List<LoanAccountDetailDTO> myLoanPaidList(long acNumber)
+			throws ServletException, IOException;
+	
 	// 대출 상환 스케쥴 계산
 	public ArrayList<Map<String, Object>> calcLoanPaySchedule(int lreqNum)
 			throws ServletException, IOException;

@@ -12,8 +12,8 @@ const LoanRequestList = () => {
     // 대출 신청 리스트
     const [listLoanRequest, setListLoanRequest]= useState([]);
 
-    // 승인 버튼 비활성화 설정
-    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    // // 버튼 비활성화 설정
+    // const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
     // class 컴포넌트에서의 라이프사이클 역할과 같음
     useEffect(() => {
@@ -37,7 +37,7 @@ const LoanRequestList = () => {
           });
 
           setListLoanRequest(newListLoanRequest);
-          setIsButtonDisabled(true);
+          // setIsButtonDisabled(true);
     }
 
     // 승인거절 업데이트
@@ -50,7 +50,7 @@ const LoanRequestList = () => {
           });
         
           setListLoanRequest(newListLoanRequest);
-          setIsButtonDisabled(true);
+          // setIsButtonDisabled(true);
     }
     return(
         <div className="component-div2">
@@ -86,8 +86,8 @@ const LoanRequestList = () => {
                             <td>
                             {product.lstate === '승인전' ? (
                                 <div style={{display: "flex", flexDirection: "row"}}>
-                                <LoanAcceptButton lreqNum={product.lreqNum} onUpdate={handleLoanState} isDisabled={isButtonDisabled}/>
-                                <LoanRefuseButton lreqNum={product.lreqNum} onUpdate={handleLoanState2} isDisabled={isButtonDisabled}/>
+                                <LoanAcceptButton lreqNum={product.lreqNum} onUpdate={handleLoanState} />
+                                <LoanRefuseButton lreqNum={product.lreqNum} onUpdate={handleLoanState2} />
                                 </div>
                             ) : (
                                 <div style={{display: "flex", flexDirection: "row"}}>

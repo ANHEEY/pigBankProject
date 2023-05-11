@@ -123,7 +123,7 @@ const PayLoan = (props) => {
        
         alert("상환금 납부가 완료되었습니다.");
         // 대출 거래 내역으로 이동
-        navigate('/customer/product/loan/pdLoan');
+        navigate(`/customer/account/loan/LoanDetail/${payLoanInfo.acNumber}/${id}`);
 
     };
 

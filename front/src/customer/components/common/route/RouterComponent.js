@@ -15,6 +15,7 @@ import Sleep from "../../contents/account/Sleep";
 
 // 조회|대출조회
 import Loan from "../../contents/account/loan/Loan";
+import LoanDetail from "../../contents/account/loan/LoanDetail";
 import LoanState from "../../contents/account/loan/LoanState";
 import LoanSchedule from "../../contents/account/loan/LoanSchedule";
 import LoanCancel from "../../contents/account/loan/LoanCancel";
@@ -113,7 +114,9 @@ const AppRouter = () => {
             {/* 대출조회 */}
             <Route path="/customer/account/LoanState" Component={LoanState} />
             <Route path="/customer/account/Loan" Component={Loan} />
-            <Route path="/customer/account/loan/LoanSchedule" Component={LoanSchedule} />
+            <Route path="/customer/account/loan/LoanDetail/:acNumber/:id" Component={LoanDetail} />
+            <Route path="/customer/account/loan/LoanSchedule/:lnum" Component={LoanSchedule} />
+            <Route path="/customer/account/loan/LoanCancel/:lnum" Component={LoanCancel} />
 
             {/* 이체 */}
             <Route path="/customer/transfer/trans_deposit" Component={TransDeposit} />

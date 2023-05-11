@@ -77,7 +77,7 @@ function AllLoan (){
                 <TableCell>{acNum(member.acNumber)}</TableCell>
                 <TableCell>{formatDate(member.lreqDate)}</TableCell>
                 <TableCell>{member.lincome}</TableCell>
-                <TableCell>{formatCurrency(member.lprincipal)}</TableCell>
+                <TableCell>{member.acBalance === 0? "대출상환완료" : formatCurrency(member.acBalance)}</TableCell>
               </TableRow>
             ))}
           </TableBody>

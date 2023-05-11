@@ -25,6 +25,7 @@ const LoanComponentDetail = () => {
 
     // edit 버튼
     const edit = (lpdName) => {
+        console.log("수정버튼: " + lpdName);
         window.localStorage.setItem("lpdName", lpdName);
         navigate("/admin/product/loan/edit");
     }

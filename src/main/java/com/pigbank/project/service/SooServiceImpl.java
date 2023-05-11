@@ -300,6 +300,23 @@ public class SooServiceImpl implements SooService{
 		
 		return dao.showLoanSchedule(lnum);
 	}
+	
+	// 대출 계좌 상세
+	@Override
+	public LoanAccountDTO myLoanDetail(long acNumber) throws ServletException, IOException {
+		System.out.println("service - myLoanDetail ");
+		
+		return dao.showLoanDetail(acNumber);
+	}
+	
+	// 대출 납부 내역 조회
+	@Override
+	public List<LoanAccountDetailDTO> myLoanPaidList(long acNumber) throws ServletException, IOException {
+		System.out.println("service - myLoanPaidList ");
+		
+		return dao.showLoanPaidList(acNumber);
+	}
+
 
 	// 대출 납부 정보 
 	@Override
@@ -354,7 +371,7 @@ public class SooServiceImpl implements SooService{
 	public LoanAccountDTO loanCancelInfo(int lnum) throws ServletException, IOException {
 		System.out.println("service - loanCancelInfo");
 		
-		// 대출 중도 상환 해지시 필요한 정보들을 물러온다.
+		// 대출 중도 상환 해지시 필요한 정보들을 불러온다.
 		LoanAccountDTO loanAccountDTO = dao.getLoanCancelInfo(lnum);
 		
 		double lcxlRate = loanAccountDTO.getLcxlRate(); // 중도상환수수료율
@@ -387,6 +404,7 @@ public class SooServiceImpl implements SooService{
 		return loanAccountDTO;
 	}
 
+	// 대출 해지처리
 	@Override
 	public void loanCancel(LoanAccountDTO loanAccountDTO) throws ServletException, IOException {
 		System.out.println("service - loanCancel");
@@ -403,7 +421,6 @@ public class SooServiceImpl implements SooService{
 		// 대출 상환 스케쥴 업데이트
 		dao.updateLoanPayAll(loanAccountDTO);
 	}
-
 	
 	
 }

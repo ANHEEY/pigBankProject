@@ -61,6 +61,16 @@ function AllService() {
     return axios.get(loanAccount+id);
   }
 
+  function fetchLoanDetail(acNumber) {
+    console.log('대출계좌상세호출!!');
+    return axios.get(loanAccount + 'loanDetail/' + acNumber);
+  }
+
+  function fetchPaidList(acNumber) {
+    console.log('대출납부내역호출!!');
+    return axios.get(loanAccount + 'loanPaidList/' + acNumber);
+  }
+
   function fetchLoanState(id) {
     console.log('대출상태호출!!');
     console.log(id);
@@ -97,10 +107,12 @@ function AllService() {
     fetchDeposit,
     fetchSaving,
     fetchLoan,
+    fetchLoanDetail,
     fetchLoanState,
     fetchLoanSchedule,
     fetchLoanCancelInfo,
     fetchTransfer,
+    fetchPaidList,
     fetchExchangeUpdate,
     fetchExchangeList,
     fetchDepositDetail,

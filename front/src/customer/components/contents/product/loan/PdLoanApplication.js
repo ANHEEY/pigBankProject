@@ -84,7 +84,7 @@ function PdLoanApplication() {
             return;
         }
         // 약관동의 설정
-        if(isAgreed.isAgreed1 || isAgreed.isAgreed2) {
+        if(!isAgreed.isAgreed1 || !isAgreed.isAgreed2) {
             alert('이용약관에 동의해주세요!');
             return;
         }
