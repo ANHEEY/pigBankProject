@@ -11,8 +11,9 @@ function SPdResultCalculator({props}){
     let period=props.period; // 기간
     let rate=props.rate;     // 금리
 
-    let expRate = (rate/100)*amount*(period/12);
-    let expAmount = ((amount*period)+expRate);
+    let expRate = Math.floor((rate/100)*amount*(period/12));
+    let expAmount = Math.floor(((amount*period)+expRate));
+
 
     // 콤마 찍기
     const comma = (number) => {
@@ -28,9 +29,9 @@ function SPdResultCalculator({props}){
             <Table striped bordered hover>
                 <thead style={{textAlign:"center"}}>
                     <tr>
-                    <th>예치금액</th>
-                    <th>만기금액</th>
-                    <th>금리</th>
+                    <th>납부금액</th>
+                    <th>만기시 금액</th>
+                    <th>이자</th>
                     </tr>
                 </thead>
                 <tbody>

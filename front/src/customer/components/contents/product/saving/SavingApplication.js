@@ -275,6 +275,7 @@ function SavingApplication(){
                                 <td style={{width:"250px"}}>
                                     <Form.Control 
                                         placeholder="비밀번호 4자리 입력"
+                                        maxLength={4}
                                         type="password"
                                         name="sacPwd"
                                         onChange={(e) => setSAcPwd(e.target.value)}
