@@ -36,17 +36,17 @@
 	
 	<!-- cust-Account(자유일출금 개설) -->
 	<insert id="aPdInsert" parameterType="com.pigbank.project.dto.AccountDTO">
-		INSERT INTO account_tbl(acNumber, id, bankName, acState, acType, acPwd)
+		INSERT INTO account_tbl(acNumber, id, bankName, acState, acType, acPwd, lastDate)
 		VALUES (
 		     '110' || LPAD(FLOOR(DBMS_RANDOM.VALUE(1, 10000000)), 7, '0'),
-	    #{id}, '돼지은행', 'OPEN', '입출금통장', #{acPwd})
+	    #{id}, '돼지은행', 'OPEN', '입출금통장', #{acPwd}, sysdate)
 	</insert>
 	<!-- cust-SavingAccount(적금계좌 생성) -->
 	<!-- 1) 계좌 개설 -->
 	<insert id="custAPdInsert" parameterType="com.pigbank.project.dto.SavingAccountDTO">
-	  INSERT INTO account_tbl(acNumber, id, acBalance, bankName, acState, acType, acPwd)
+	  INSERT INTO account_tbl(acNumber, id, acBalance, bankName, acState, acType, acPwd, lastDate)
 	  VALUES (
-	    #{acNumber}, #{id}, #{samount},'돼지은행', 'OPEN', '적금계좌', #{acPwd})
+	    #{acNumber}, #{id}, #{samount},'돼지은행', 'OPEN', '적금계좌', #{acPwd}, sysdate)
 	</insert>
 	<!-- 2) 적금계좌 개설(acNumber => FK) -->
 	<insert id="custSPdInsert" parameterType="com.pigbank.project.dto.SavingAccountDTO">
@@ -85,12 +85,6 @@
    		   SET acState='DELETE', acBalance=0
    		 WHERE acNumber=#{acNumber}
 	</update>
-	<!-- 적금 중도해지 - 적금계좌 상태변경 -->
-	<update id="sAccCloseSaving" parameterType="com.pigbank.project.dto.SavingAccountDTO">
-		UPDATE s_account_tbl
-   		   SET samount=0, sexpAmount=0
-   		 WHERE acNumber = #{acNumber}
-	</update>
 	
 	<!-- 적금 중도해지 - 만기시 입금계좌로 입금 -->
 	<update id="fSaivngPut" parameterType="com.pigbank.project.dto.SavingAccountDTO">
@@ -108,8 +102,8 @@
 					'돼지은행',
 					'입금',
 					#{sexpAmount},
-					'적금해지 입금',
-					'적금해지 출금'
+					'적금해지 출금',
+					'적금해지 입금'
 				)
 	</update>
 	

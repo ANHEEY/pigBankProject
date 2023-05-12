@@ -41,6 +41,8 @@ import TransLimitAccept from "../../contents/transfer/limit/TransLimitAccept";
 // 상품 | 입출금 계좌
 import PdAccount from "../../contents/product/account/PdAccount";
 import ProductApplication from "../../contents/product/account/ProductApplication";
+import FormSMS from "../../contents/product/account/sms_api/Form";
+import FormSMS2 from "../../contents/product/account/sms_api/Form2";
 
 // 상품 | 적금상품
 import PdSaving from "../../contents/product/saving/PdSaving";
@@ -142,6 +144,9 @@ const AppRouter = () => {
             {/* 상품(입출금) */}
             <Route path="/customer/product/pdAccount" Component={PdAccount} />
             <Route path="/customer/product/account/application" Component={ProductApplication} />
+            <Route path="/customer/product/account/FormSMS" Component={FormSMS} />
+            <Route path="/customer/product/account/FormSMS2" Component={FormSMS2} />
+           
             {/* 상품(예금) */}
             <Route path="/customer/product/pdDeposit" Component={PdDeposit} />
             <Route path="/customer/product/deposit/application" Component={DepositApplication} />

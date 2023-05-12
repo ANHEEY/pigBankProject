@@ -85,7 +85,7 @@ function AllSaving() {
                     <TableCell>{acNum(member.acNumber)}</TableCell>
                     <TableCell>{formatDate(member.sjoinDate)}</TableCell>
                     <TableCell>{formatDate(member.sendDate)}</TableCell>
-                    <TableCell>{formatCurrency(member.samount)}</TableCell>
+                    <TableCell>{member.acBalance === 0 ? "적금해지완료" : formatCurrency(member.acBalance) }</TableCell>
                     </TableRow>
                 ))}
               </TableBody>

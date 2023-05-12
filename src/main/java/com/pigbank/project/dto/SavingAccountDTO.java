@@ -32,6 +32,7 @@ public class SavingAccountDTO {
 	private String acPwd;
 	private int speriod;
 	private long withdrawAcNumber;
+	private Date lastDate;
 	
 	// 자동이체를 위한 변수 (적금기준으로 주석작성)
 	private int aNum;

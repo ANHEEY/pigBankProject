@@ -46,9 +46,6 @@ public interface KimMapper {
 	// SavingAccount 적금 중도해지 - 전체계좌 상태변경
 	public void sAccClose(SavingAccountDTO savingDTO);
 	
-	// SavingAccount 적금 중도해지 - 적금계좌 상태변경
-	public void sAccCloseSaving(SavingAccountDTO savingDTO);
-	
 	// SavingAccount 적금 중도해지 - 만기시 입금계좌로 입금 - > 자동이체 만기일까지. 그 이후에 돈 넣어줘야함.
 	public void fSaivngPut(SavingAccountDTO savingDTO);
 	

@@ -4,13 +4,16 @@ import { Form, Button, Table, InputGroup } from "react-bootstrap";
 import "../../../../resources/css/product/application-form.css";
 import { getId } from "../../../helpers/axios_helper";
 import PdAccApiService from "./PdAccApiService";
+import { useNavigate } from "react-router-dom";
+import FormSMS from "./sms_api/Form";
 
 function ProductApplication() {
     
     
-     const [id, setId] = useState(getId());  // 고객정보
-     const [acPwd, setAcPwd] = useState(''); // 정보입력 비밀번호 입력, 네이버 SENS API사용 본인인증
-   
+    const [id, setId] = useState(getId());  // 고객정보
+    const [acPwd, setAcPwd] = useState(''); // 정보입력 비밀번호 입력, 네이버 SENS API사용 본인인증
+    const navigate = useNavigate();
+
      // 약관 동의
     const [isAgreed, setIsAgreed] = useState({
         isAgreed1: "",
@@ -54,6 +57,10 @@ function ProductApplication() {
         });
       };
 
+    const FormSMS = () => {
+        navigate('/customer/product/account/FormSMS');
+    }
+
     const onChange = (e) => {
         const { name, value } = e.target;
         switch (name) {
@@ -89,7 +96,7 @@ function ProductApplication() {
                             <td colSpan={4}>
                                 <InputGroup className="mb-3">
                                     <Form.Control placeholder="신청자" name="id" onChange={(e) => onChange(e)} readOnly value={id} />       
-                                    <Button variant="outline-success" id="button-addon2">본인인증</Button> {/* onChange => window.open으로 본인인증 */}
+                                    <Button variant="outline-secondary" id="button-addon2" onClick={FormSMS}>본인인증</Button>
                                 </InputGroup>
                             </td>
                         </tr>

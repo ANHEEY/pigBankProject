@@ -7,8 +7,11 @@
     <!-- namespace="패키지명.인터페이스" -->
 <mapper namespace="com.pigbank.project.dao.ChuMapper">
 
+	<!-- 삭제된 상품 목록에서 지워지도록 WHERE 조건을 위해 수정했습니다.  -->
 	<select id="savingList" resultType="com.pigbank.project.dto.SavingProductDTO">
-		SELECT * FROM savings_product
+		SELECT * 
+		  FROM savings_product
+		 WHERE show = 'y'
 	</select>
 	
 	<select id="depositList" resultType="com.pigbank.project.dto.DepositProductDTO">
@@ -44,12 +47,13 @@
 		ORDER BY t.tDate DESC 
 	</select>
 	
+	<!-- 적금계좌 잔액 노출을 위해 수정했습니다. -->
 	<select id="savingAccountList" parameterType="String" resultType="com.pigbank.project.dto.SavingAccountDTO">
 		SELECT *  
-		FROM s_account_tbl s, ACCOUNT_TBL a  
-		WHERE s.ACNUMBER = a.ACNUMBER  
-		AND a.id=#{id}
-		<!-- AND a.acState='OPEN' -->
+		FROM s_account_tbl s, ACCOUNT_TBL a
+		WHERE s.ACNUMBER = a.ACNUMBER
+		  AND a.id=#{id}
+		<!-- AND a.acState='OPEN' 해지된 계좌 목록에 노출하기 위해서 수정했습니다. -->
 	</select>
 	
 	<select id="savingDetail" parameterType="long" resultType="com.pigbank.project.dto.TransferDTO">

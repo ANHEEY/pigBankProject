@@ -6,6 +6,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import "../../../../resources/css/product/saving.css";
 import { getAuthToken } from "../../../helpers/axios_helper";
 import axios from "axios";
+import { Button } from "react-bootstrap";
 
 function Saving() {    
 
@@ -119,8 +120,9 @@ function Saving() {
                         <TableCell style={tableHeadStyle}>가입날짜</TableCell>
                         <TableCell style={tableHeadStyle}>만기날짜</TableCell>
                         <TableCell style={tableHeadStyle}>예상금리금액</TableCell>
+                        <TableCell style={tableHeadStyle}>납입금액</TableCell>
                         <TableCell style={tableHeadStyle}>잔액</TableCell>
-                        <TableCell style={tableHeadStyle}>버튼</TableCell>
+                        <TableCell style={tableHeadStyle}>해지</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -137,7 +139,9 @@ function Saving() {
                           <TableCell>{formatCurrency(member.sexpAmount)}</TableCell>
                           <TableCell>{formatCurrency(member.samount)}</TableCell>
                           <TableCell>
-                            <button className="customerinfoBtn" onClick={() => goRegister(member.acNumber)} disabled={member.samount === 0}>계좌해지</button>
+                            {member.acBalance === 0 ? "적금해지완료" : formatCurrency(member.acBalance) }</TableCell>
+                          <TableCell>
+                            <Button className="btn" variant="success"  onClick={() => goRegister(member.acNumber)} disabled={member.acBalance === 0}>계좌해지</Button>
                           </TableCell>
                           </TableRow>
                       ))}

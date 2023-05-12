@@ -15,31 +15,32 @@ import lombok.Data;
 @Table(name="l_account_tbl")
 @Data
 public class LoanAccountDTO {
-	
-	@Id
-	private long lnum;
-	private long acNumber;
-	private String lpdName;
-	private String id;
-	private int lprincipal;
-	private String lpurpose;
-	private String lincome;
-	private String lstate;
-	private Date lreqDate;
-	private int acPwd;
-	private long trsfLimit;
-	private String lReason;
-	private String acState;
-	
-	// 중도해지시 필요한 정보를 불러오기 위한 추가 변수
-	private double lrate;
-	private double lcxlRate;
-	private int acBalance;
-	private Date lstartDate;
-	private Date lendDate;
-	private int lperiod; 
-	
-	// 상세 조회를 위한 추가 변수
-	private String ltype;
-	
+   
+   @Id
+   private long lnum;
+   private long acNumber;
+   private String lpdName;
+   private String id;
+   private int lprincipal;
+   private String lpurpose;
+   private String lincome;
+   private String lstate;
+   private Date lreqDate;
+   private int acPwd;
+   private long trsfLimit;
+   private String lReason;
+   private String acState;
+   
+   // 중도해지시 필요한 정보를 불러오기 위한 추가 변수
+   private double lrate;
+   private double lcxlRate;
+   private int acBalance;
+   private Date lstartDate;
+   private Date lendDate;
+   private int lperiod; 
+   private int cancelFee;
+   
+   // 상세 조회를 위한 추가 변수
+   private String ltype;
+   
 }

@@ -4,16 +4,13 @@ import { Form, Button, Table, InputGroup } from "react-bootstrap";
 import "../../../../../resources/css/product/application-form.css";
 import { getId } from "../../../../helpers/axios_helper";
 import PdAccApiService from "../PdAccApiService";
-import { useNavigate } from "react-router-dom";
 
-function FormSMS() {
+function FormSMS2() {
     
     
-    const [id, setId] = useState(getId());  // 고객정보
-    const [acPwd, setAcPwd] = useState(''); // 정보입력 비밀번호 입력, 네이버 SENS API사용 본인인증
-    
-    const navigate = useNavigate();
-
+     const [id, setId] = useState(getId());  // 고객정보
+     const [acPwd, setAcPwd] = useState(''); // 정보입력 비밀번호 입력, 네이버 SENS API사용 본인인증
+   
      // 약관 동의
     const [isAgreed, setIsAgreed] = useState({
         isAgreed1: "",
@@ -32,7 +29,7 @@ function FormSMS() {
           id: id, // id 변수를 사용하여 acInfo 객체를 생성
           acPwd: acPwd,
         };
-        
+    
         if (isAgreed.isAgreed1 && isAgreed.isAgreed2) {
             PdAccApiService.pdAccAdd(acInfo)
             .then((res) => {
@@ -56,10 +53,6 @@ function FormSMS() {
           };
         });
       };
-
-    const FormSMS2 = () => {
-        navigate('/customer/product/account/FormSMS2');
-    }
 
     const onChange = (e) => {
         const { name, value } = e.target;
@@ -104,17 +97,18 @@ function FormSMS() {
                             <th colSpan={2}></th>
                         </tr>
                         <tr>
-                            <th colSpan={2} style={{fontSize:"16px"}}>본인인증을 위하여 전화번호를 입력하세요.</th>
+                            <th colSpan={2} style={{ fontSize:"16px"}}>인증번호</th>
                         </tr>
                         <tr>
                             <td colSpan={2} style={{textAlign:"left"}}>
                                 <InputGroup className="mb-3" style={{width:"40%", justifyContent:"right"}}>
-                                    <Form.Control placeholder="전화번호를 입력하세요." name="hpSMS"  />       
-                                    <Button variant="outline-dark" id="btn-sms" onClick={FormSMS2}>인증번호전송</Button> {/* onClick => window.open으로 본인인증 */}
+                                    <Form.Control placeholder="인증번호를 입력하세요." name="hpSMS2" />       
+                                    <Button variant="outline-dark" id="btn-sms">인증번호확인</Button> {/* onClick => window.open으로 본인인증 */}
                                 </InputGroup>
                                 <p style={{fontSize:"12px"}}>
-                                    <span style={{color:"red"}}><b>※ 이 상품은 본인인증 후 가입하실 수 있는 상품입니다.</b></span><br/>
-                                    ⬞ 본인의 정확한 정보를 입력하여 주세요.<br/>
+                                    <span style={{color:"red"}}><b>※ 인증번호 문자를 못 받으셨나요?</b></span><br />
+                                    ⬞ 입력하신 인증정보가 일치하지 않을 경우, 인증번호 문자는 발송되지 않습니다.<br />
+                                    ⬞ 인증번호가 문자로 수신되지 않을 경우 정확한 정보로 재시도해 주시기 바랍니다.<br />
                                 </p>
                             </td>
                         </tr>
@@ -168,4 +162,4 @@ function FormSMS() {
 
    )
 }
-export default FormSMS;
+export default FormSMS2;

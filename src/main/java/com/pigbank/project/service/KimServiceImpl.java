@@ -111,7 +111,6 @@ public class KimServiceImpl implements KimService {
 		
 		
 		dao.sAccClose(savingDTO); // 전체계좌 상태변경
-		dao.sAccCloseSaving(savingDTO); // 적금계좌 상태변경
 		dao.fSaivngPut(savingDTO); // 만기시 입금
 		dao.accCxlTransfer(savingDTO); // 입출금계좌 이체내역
 		dao.savingCxlTransfer(savingDTO); // 적금계좌 이체내역

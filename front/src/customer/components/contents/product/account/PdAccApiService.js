@@ -16,5 +16,11 @@ class PdAccApiService {
         console.log('pdAccAdd 호출')
         return axios.post(Product_Account_API_URL + "custAInsert", acInfo);
     }
+
+    // 문자전송
+    sendMessage(sms) {
+      console.log('sendMessage 호출')
+      return axios.post(Product_Account_API_URL + "user/sms", sms);
+    }
 }
 export default new PdAccApiService();
