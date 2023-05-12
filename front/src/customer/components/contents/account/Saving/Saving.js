@@ -87,16 +87,8 @@ function Saving() {
           <section className="section">
           <div className="container">
               <h2>적금계좌조회</h2>                
-
-                  <p className="thead1">
-                  <select value={selectedOption} onChange={handleChange}>
-                  <option value="">전체선택</option>
-                      {members.map((member) => (
-                  <option key={member.snum} value={member.spdname}>{member.spdname}</option>
-                  ))}
-                  </select>    
-                  </p>  
-                                      
+              <br />
+              <br />                        
               <div className="card text-center">
                   
                   <div className="card-header" style={{backgroundColor:"#dbe2d872" }}>

@@ -47,18 +47,20 @@ const LoanComponentDetail = () => {
     };
 
     // lgrade 선택시 
-    const handleSelectChange1 = (e) => {
+    const handleSelectChange = (e) => {
+        console.log("handleSelect:" + e.target.value)
         setLGradeSelected(e.target.value)
     }
 
     const handleInputValue = (e) => {
+        console.log("handleInputValue:" + e.target.value)
         // 소수점 처리
         const value = e.target.name === 'lrate' || e.target.name === "lcxlRate"? parseFloat(e.target.value) : e.target.value;
 
         setInputs(prevState => {
             return{
                 ...prevState,
-                [e.target.name] : value
+                [e.target.name] : e.target.value
             }
         })
     }
@@ -69,16 +71,16 @@ const LoanComponentDetail = () => {
     const submit = (e) => {
         e.preventDefault(); // submit으로 인한 폼 데이터 서버 전송을 막는다.
 
-        console.log(lGradeSelected);
+        console.log("submit : " + lGradeSelected);
        
-        setInputs(prevState => ({
-            ...prevState,
-            lsubTitle: inputs.lsubTitle,
-            lcontent: inputs.lcontent,
-            lgrade: lGradeSelected,
-            lmaxPeriod: inputs.lmaxPeriod,
-            lmaxPrice: inputs.lmaxPrice,
-        }))
+        // setInputs(prevState => ({
+        //     ...prevState,
+        //     lsubTitle: inputs.lsubTitle,
+        //     lcontent: inputs.lcontent,
+        //     lgrade: lGradeSelected,
+        //     lmaxPeriod: inputs.lmaxPeriod,
+        //     lmaxPrice: inputs.lmaxPrice,
+        // }))
         
         console.log("입력 수정한 내용: " + inputs);
 
@@ -116,7 +118,7 @@ const LoanComponentDetail = () => {
 
                 <Form.Group className="mb-3">
                 <Form.Label>* 대출신청자격</Form.Label>
-                <Form.Select id="lGrade" name="lGrade" value={lGradeSelected} onChange={handleSelectChange1} required>
+                <Form.Select id="lGrade" name="lGrade" value={lGradeSelected} onChange={handleSelectChange} required>
                     <option value="미지정">신청가능한 자격 등급을 선택헤주세요.</option>
                     <option value="gold">gold</option>
                     <option value="black">black</option>

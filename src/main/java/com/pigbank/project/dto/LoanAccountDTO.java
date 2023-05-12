@@ -38,7 +38,6 @@ public class LoanAccountDTO {
 	private Date lstartDate;
 	private Date lendDate;
 	private int lperiod; 
-	private int cancelFee; // 중도상환수수료 
 	
 	// 상세 조회를 위한 추가 변수
 	private String ltype;

@@ -93,6 +93,7 @@ function SavingComponentEdit () {
                             value={spdname} 
                             onChange={onChange}
                             readOnly
+                            disabled
                             placeholder="상품명을 입력해주세요." />
                     </Form.Group>
 
@@ -148,6 +149,7 @@ function SavingComponentEdit () {
                         <Form.Control 
                             required
                             readOnly
+                            disabled
                             type="number" 
                             name="srate" 
                             value={srate} 
@@ -163,6 +165,7 @@ function SavingComponentEdit () {
                         <Form.Control 
                             required
                             readOnly
+                            disabled
                             type="number" 
                             name="scxlrate" 
                             value={scxlrate} 

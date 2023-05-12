@@ -169,7 +169,7 @@ public class SooController {
 		return service.myLoanDetail(acNumber);
 	}
 	
-	// 대출 납분 내역 조회
+	// 대출 납부 내역 조회
 	@GetMapping("/loanAccount/loanPaidList/{acNumber}")
 	public List<LoanAccountDetailDTO> loanAccountPaidList (@PathVariable long acNumber)		
 		throws ServletException, IOException {

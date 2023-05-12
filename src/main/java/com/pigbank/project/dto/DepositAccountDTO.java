@@ -25,7 +25,7 @@ public class DepositAccountDTO {
 	private String acState;
 	
 	//예금 계좌 개설을 위한 변수
-	//private String id;		//가입자 아이디
+	private String id;		//가입자 아이디
 	private String acPwd;	//예금 계좌 비밀번호
 	private int dperiod;	//예금 예치 기간
 	private long withdrawAcNumber;	//출금계좌

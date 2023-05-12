@@ -151,6 +151,7 @@
 		 WHERE d.lwillPayNum = p.lwillPayNum
 		   AND p.lnum = l.lnum
 		   AND l.acNumber = #{acNumber}
+	  ORDER BY p.lpayTurn
 	</select>
 	
 	
@@ -193,7 +194,7 @@
 		           AND p.lWillPayNum = #{lwillPayNum}),
 		        '돼지은행', 
 		        '출금', 
-		        #{cancelFee} + #{acBalance}, 
+		        #{lmonTotal}, 
 		        '대출금상환',
 		        '대출금상환', 
 		        sysdate)
