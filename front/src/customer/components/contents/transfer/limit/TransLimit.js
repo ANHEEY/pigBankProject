@@ -35,6 +35,12 @@ function TransLimit () {
          })
     }
 
+    // 계좌번호 3번째에다가 - 추가해주는 함수
+    const acNum = (acNumber) => {
+        const acNum = acNumber.toString().slice(0, 3) + "-" + acNumber.toString().slice(3);
+        return acNum;
+    };
+
     // 선택한 계좌의 계좌번호로 이체한도 조회후 set
     const accountChange = (event) => {
         const selectedAccountInt = parseInt(event.target.value);
@@ -89,7 +95,7 @@ function TransLimit () {
                         .filter((account) => account.acType === "입출금통장")
                         .map((account) => (
                         <option key={account.acNumber} value={account.acNumber}>
-                            [{account.bankName}]{account.acNumber}</option>
+                            [{account.bankName}]{acNum(account.acNumber)}</option>
                         ))}
                         </Form.Select></td>
                 </tr>

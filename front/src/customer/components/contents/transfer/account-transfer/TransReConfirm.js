@@ -74,7 +74,7 @@ function TransReConfirm (props) {
                 TransferService.save(acnumber)
                 .then(res => {
                     alert("이체완료");
-                    navigate(`/customer/transfer/trans_accept/${selectedAccount}/${selectedMyAccount}/${yourMemo}/${myMemo}/${tAmount}`);            
+                    navigate(`/customer/transfer/trans_accept/${selectedAccount}/${selectedMyAccount}/${myname}/${myMemo}/${tAmount}`);            
                 })
                 .catch(err => {
                     console.log('error', err);
@@ -87,7 +87,7 @@ function TransReConfirm (props) {
             TransferService.othersave(acnumber)
               .then(res => {
                     alert('이체완료');
-                    navigate(`/customer/transfer/trans_accept/${selectedAccount}/${selectedMyAccount}/${yourMemo}/${myMemo}/${tAmount}`);           
+                    navigate(`/customer/transfer/trans_accept/${selectedAccount}/${selectedMyAccount}/${myname}/${myMemo}/${tAmount}`);           
               })
         }
     };

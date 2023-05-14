@@ -16,6 +16,9 @@ import lombok.Data;
 @Data
 public class LoanAccountDTO {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
    
    @Id
    private long lnum;
@@ -44,6 +47,7 @@ public class LoanAccountDTO {
    // 상세 조회를 위한 추가 변수
    private String ltype;
    
+<<<<<<< Updated upstream
 =======
 
 	@Id
@@ -73,5 +77,7 @@ public class LoanAccountDTO {
 	// 상세 조회를 위한 추가 변수
 	private String ltype;
 
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }

@@ -123,7 +123,7 @@ const AppRouter = () => {
             {/* 이체 */}
             <Route path="/customer/transfer/trans_deposit" Component={TransDeposit} />
             <Route path="/customer/transfer/trans_reConfirm" Component={TransReConfirm} />
-            <Route path="/customer/transfer/trans_accept/:selectedAccount/:selectedMyAccount/:yourMemo/:myMemo/:tAmount" Component={TransAccept} />
+            <Route path="/customer/transfer/trans_accept/:selectedAccount/:selectedMyAccount/:myname/:myMemo/:tAmount" Component={TransAccept} />
 
             {/* 자동이체 */}
             <Route path="/customer/transfer/add_auto_trans" Component={AddAutoTrans} />
@@ -131,7 +131,7 @@ const AppRouter = () => {
             <Route path="/customer/transfer/auto_trans_check" Component={AutoTransCheck} />
             <Route path="/customer/transfer/auto_trans_reConfirm" Component={AutoTransReConfirm} />
             <Route path="/customer/transfer/auto_trans_detail/:anum" Component={AutoTransDetail} />
-            <Route path="/customer/transfer/auto_trans_accept/:selectedAccount/:selectedMyAccount/:yourMemo/:myMemo/:tAmount/:transferCycle/:startDate/:endDate" Component={AutoTransAccept} />
+            <Route path="/customer/transfer/auto_trans_accept/:selectedAccount/:selectedMyAccount/:myname/:myMemo/:tAmount/:transferCycle/:startDate/:endDate" Component={AutoTransAccept} />
 
             {/* 이체한도 */}
             <Route path="/customer/transfer/trans_limit" Component={TransLimit} />

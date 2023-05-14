@@ -67,7 +67,7 @@ function AutoTransReConfirm (props) {
             TransferService.autoSave(acnumber)
             .then(res => { // axios를 통해 백엔드에서 실행이 완료되면 auto_trans_accept 페이지로 이동 get방식으로 값 넘기기
                 alert("등록완료");
-                navigate(`/customer/transfer/auto_trans_accept/${selectedAccount}/${selectedMyAccount}/${yourMemo}/${myMemo}/${tAmount}/${transferCycle}/${startDate}/${endDate}`);
+                navigate(`/customer/transfer/auto_trans_accept/${selectedAccount}/${selectedMyAccount}/${myname}/${myMemo}/${tAmount}/${transferCycle}/${startDate}/${endDate}`);
             })
             .catch(err => {
                 console.log('error', err);
@@ -79,7 +79,7 @@ function AutoTransReConfirm (props) {
             TransferService.autoSave(acnumber)
             .then(res => { // axios를 통해 백엔드에서 실행이 완료되면 auto_trans_accept 페이지로 이동 get방식으로 값 넘기기
                 alert("등록완료");
-                navigate(`/customer/transfer/auto_trans_accept/${selectedAccount}/${selectedMyAccount}/${yourMemo}/${myMemo}/${tAmount}/${transferCycle}/${startDate}/${endDate}`);
+                navigate(`/customer/transfer/auto_trans_accept/${selectedAccount}/${selectedMyAccount}/${myname}/${myMemo}/${tAmount}/${transferCycle}/${startDate}/${endDate}`);
             })
             .catch(err => {
                 console.log('error', err);

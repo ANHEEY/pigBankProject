@@ -13,7 +13,10 @@ function SPdResultCalculator({props}){
 
     let expRate = Math.floor((rate/100)*amount*(period/12));
     let expAmount = Math.floor(((amount*period)+expRate));
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 
     // 콤마 찍기
     const comma = (number) => {

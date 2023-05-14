@@ -35,7 +35,7 @@ function Chatting () {
                         </Card.Text>
                     </Col>
                     <Col className="col-md-2 mx-auto">
-                        <i class="bi bi-telephone-fill"  style={iconStyle}></i><br/>
+                        <i className="bi bi-telephone-fill"  style={iconStyle}></i><br/>
                         <Card.Title>전화상담</Card.Title>
                         <Card.Text>
                             업무상담: 1588-0000 <br />

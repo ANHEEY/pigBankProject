@@ -28,6 +28,8 @@ public interface LeeMapper {
 	public int updateAccount(TransferDTO dto);
 	// 입금
 	public void updateAccountnext(TransferDTO dto);
+	// 계좌 이체시 계좌의 마지막 거래날짜 업데이트
+	public void updatelastDate(TransferDTO dto);
 	
 	// 자동이체등록
 	public void autoInsertTransfer(AutoTransferDTO atdto);
