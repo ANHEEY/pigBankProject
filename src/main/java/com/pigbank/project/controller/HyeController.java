@@ -7,16 +7,13 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import com.pigbank.project.dto.FundAccountDTO;
-import com.pigbank.project.dto.FundProductDTO;
+import com.pigbank.project.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.pigbank.project.dto.AccountDTO;
-import com.pigbank.project.dto.CustomerDTO;
 import com.pigbank.project.service.HyeServiceImpl;
 
 @CrossOrigin(origins="**",maxAge=3600)
@@ -104,5 +101,10 @@ public class HyeController {
 		throws  ServletException, IOException{
 		logger.info("=== url | havingFundById ===");
 		return  service.havingFundById(id);
+	}
+	@PostMapping(value = "/customer/fundBuy")
+	public void insertBuyFund(@RequestBody FundAPIDTO dto)
+		throws ServletException, IOException{
+		logger.info("=== url | insertBuyFund ===");
 	}
 }

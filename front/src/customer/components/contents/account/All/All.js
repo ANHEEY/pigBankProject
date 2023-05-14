@@ -59,7 +59,6 @@ function All() {
                   type="checkbox"
                   checked={accountChecked}
                   onChange={handleAccountCheckboxChange}/>
-              
               <Form.Check.Label>입출금</Form.Check.Label>
             </Form.Check>
             

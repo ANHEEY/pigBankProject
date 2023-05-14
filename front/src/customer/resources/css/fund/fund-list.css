@@ -159,7 +159,7 @@
     text-shadow: 0px 1px 0px #7c987355;
 }
 
-/*  */
+/*******************           펀드상품 목록           *******************/
 .fundProduct-list {
     display: grid;
     justify-content: center;
@@ -185,4 +185,15 @@
     font-weight: bold;
     text-shadow: 0px 1px 0px #698a647e;
 
+}
+.fundNm{
+    text-decoration: solid;
+    font-weight: bold;
+    color: #0c185f;
+}
+.plusPre{
+    color: #ff3d1b;
+}
+.minusPre{
+    color: #331dff;
 }

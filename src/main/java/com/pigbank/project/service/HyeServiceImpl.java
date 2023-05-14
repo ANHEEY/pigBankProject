@@ -120,6 +120,22 @@ public class HyeServiceImpl implements HyeService{
 		System.out.println("========== 서비스 | havingFundById | ==========");
 		return  dao.havingFundById(id);
 	};
+	/**				펀드상품 구매 				**/
+	// 펀드상품 구매
+	public void insertBuyFund(FundAPIDTO dto)
+			throws  ServletException, IOException{
+		System.out.println("========== 서비스 | insertBuyFund | ==========");
+		String isinCd = dao.checkIsinCd(dto.getIsinCd());
+		if (isinCd != null){
+			// 보유내역 업데이트
 
+		}
+		else{
+			// 거래내역 + 보유내역 추가
+			dao.insertDetailTbl(dto);
+			dao.insertHavingTbl(dto);
+			// 펀드계좌 update => 잔액 차감하기
+		}
+	};
 
 }

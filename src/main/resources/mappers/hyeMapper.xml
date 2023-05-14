@@ -89,4 +89,19 @@
 		   AND  d.FDETAILSTATE = '매수'
 		   AND  a.ID = #{id}
 	</select>
+	<!--***************  펀드 상품 구매  ***************-->
+	<!-- 보유내역 확인하기 -->
+	<select id="checkIsinCd" parameterType="String" resultType="String">
+		SELECT FISINCD
+		FROM F_HAVING_TBL
+		WHERE FISINCD = #{isinCd}
+	</select>
+	<!-- 거래내역에 추가 -->
+	<insert id="insertDetailTbl" parameterType="com.pigbank.project.dto.FundAPIDTO">
+
+	</insert>
+	<!-- 보유내역에 추가 -->
+	<insert id="insertHavingTbl" parameterType="com.pigbank.project.dto.FundAPIDTO">
+
+	</insert>
 </mapper>

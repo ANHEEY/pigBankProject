@@ -18,7 +18,7 @@ public class FundProductDTO {
     private int fTrsfLimit;
 
     // f_detail_tbl(펀드 거래 내역 테이블) column
-    private int fTransNum;  // PK ,f_having_tbl FK
+    private int fTransNum;      // PK ,f_having_tbl FK
     private Date fTransDate;
     private String fPdName;
     private int fBuyPrice;
@@ -40,4 +40,13 @@ public class FundProductDTO {
     private long acNumber;
     private int acBalance;
 
+    //API를 통해 전달받은 데이터
+    private String isinCd;      // 고유번호
+    private String itmsNm;      // 종목명
+    private String clpr;        // 현재가
+    private String vs;          // 전일비
+    private String fltRt;       // 등락율
+    private String trqu;        // 거래량
+    private String trPrc;       // 거래대금
+    private String nPptTotAmt;  // 순자산
 }

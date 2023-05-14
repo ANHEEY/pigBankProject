@@ -6,12 +6,8 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import com.pigbank.project.dto.FundAccountDTO;
-import com.pigbank.project.dto.FundProductDTO;
+import com.pigbank.project.dto.*;
 import org.springframework.ui.Model;
-
-import com.pigbank.project.dto.AccountDTO;
-import com.pigbank.project.dto.CustomerDTO;
 
 public interface HyeService {
 	
@@ -58,5 +54,10 @@ public interface HyeService {
 	// 고객별 펀드 보유내역 목록
 	public List<FundProductDTO> havingFundById(String id)
 		throws ServletException, IOException;
+
+	/**				펀드상품 구매 				**/
+	// 펀드상품 구매
+	public void insertBuyFund(FundAPIDTO dto)
+		throws  ServletException, IOException;
 
 }

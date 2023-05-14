@@ -52,6 +52,10 @@
   const tableHeadStyle={
     fontWeight: "bold",
   }
+  const acTypeStyle ={
+    fontWeight:'bolder',
+    color:'#35396b',
+  }
 
   return (
     <main className="main">
@@ -75,7 +79,7 @@
             <TableBody>
               {members.map((member) => (
                 <TableRow key={member.dnum}>
-                  <TableCell style={{color:"navy"}}>{member.dpdName}</TableCell>
+                  <TableCell style={acTypeStyle}>{member.dpdName}</TableCell>
                   <TableCell>{acNum(member.acNumber)}</TableCell>
                   <TableCell>{formatDate(member.djoinDate)}</TableCell>
                   <TableCell>{formatDate(member.dendDate)}</TableCell>

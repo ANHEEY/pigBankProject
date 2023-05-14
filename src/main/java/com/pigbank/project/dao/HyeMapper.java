@@ -43,4 +43,12 @@ public interface HyeMapper {
 
 	// 펀드 보유내역 조회
 	public List<FundProductDTO> havingFundById(String id);
+
+	/**				펀드상품 구매  				**/
+	// 보유내역 확인하기
+	public String checkIsinCd(String fIsinCd);
+	// 거래내역에 추가
+	public  void insertDetailTbl(FundAPIDTO dto);
+	// 보유내역에 추가
+	public void insertHavingTbl(FundAPIDTO dto);
 }

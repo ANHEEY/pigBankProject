@@ -58,6 +58,10 @@ function AllLoan (){
   const tableHeadStyle={
     fontWeight: "bold",
   }
+  const acTypeStyle ={
+    fontWeight:'bold',
+    color:'#35396b',
+  }
 
   return (
     <main className="main">
@@ -81,7 +85,7 @@ function AllLoan (){
             <TableBody>
             {members.map((member) => (
               <TableRow key={member.lnum}>
-                <TableCell style={{color:"navy"}}>{member.lpdName}</TableCell>
+                <TableCell style={acTypeStyle}>{member.lpdName}</TableCell>
                 <TableCell>{acNum(member.acNumber)}</TableCell>
                 <TableCell>{formatDate(member.lreqDate)}</TableCell>
                 <TableCell>{member.lincome}</TableCell>

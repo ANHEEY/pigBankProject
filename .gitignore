@@ -20,6 +20,7 @@ target/
 *.ipr
 
 ### NetBeans ###
+/venv
 /nbproject/private/
 /nbbuild/
 /dist/
