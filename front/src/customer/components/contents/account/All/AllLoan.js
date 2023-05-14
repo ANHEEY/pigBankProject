@@ -76,9 +76,10 @@ function AllLoan (){
               <TableRow >
                 <TableCell style={tableHeadStyle}>계좌명</TableCell>
                 <TableCell style={tableHeadStyle}>계좌번호</TableCell>
-                <TableCell style={tableHeadStyle}>가입날짜</TableCell>
-                <TableCell style={tableHeadStyle}>이체한도</TableCell>
-                <TableCell style={tableHeadStyle}>잔액</TableCell>              
+                <TableCell style={tableHeadStyle}>대출기간</TableCell>
+                <TableCell style={tableHeadStyle}>가입일</TableCell>
+                <TableCell style={tableHeadStyle}>만기일</TableCell>
+                <TableCell style={tableHeadStyle}>상환잔액</TableCell>              
               </TableRow>
             </TableHead>
 
@@ -87,8 +88,9 @@ function AllLoan (){
               <TableRow key={member.lnum}>
                 <TableCell style={acTypeStyle}>{member.lpdName}</TableCell>
                 <TableCell>{acNum(member.acNumber)}</TableCell>
-                <TableCell>{formatDate(member.lreqDate)}</TableCell>
-                <TableCell>{member.lincome}</TableCell>
+                <TableCell>{member.lperiod}년</TableCell>
+                <TableCell>{formatDate(member.lstartDate)}</TableCell>
+                <TableCell>{formatDate(member.lendDate)}</TableCell>
                 <TableCell>{member.acBalance === 0? "대출상환완료" : formatCurrency(member.acBalance)}</TableCell>
               </TableRow>
             ))}

@@ -137,7 +137,7 @@ function Saving() {
                           <TableCell>{formatDate(member.sjoinDate)}</TableCell>
                           <TableCell>{formatDate(member.sendDate)}</TableCell>
                           <TableCell>{formatCurrency(member.sexpAmount)}</TableCell>
-                          <TableCell>{formatCurrency(member.samount)}</TableCell>
+                          <TableCell>{formatCurrency(member.acBalance)}</TableCell>
                           <TableCell>
                             {member.acBalance === 0 ? "적금해지완료" : formatCurrency(member.acBalance) }</TableCell>
                           <TableCell>

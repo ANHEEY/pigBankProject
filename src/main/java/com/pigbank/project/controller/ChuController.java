@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -281,6 +282,24 @@ public class ChuController {
 		service.adminSleepRelease(acNumber);
 		
 	}
+	
+   //마지막 거래일로부터 2년이 지난 계좌 불러오기
+   @GetMapping(value="/breakAccountInfo")
+   public List<AccountDTO> breakAccountInfo()
+         throws ServletException, IOException {
+      logger.info("url - breakAccountInfo");
+      
+      return service.breakAccountInfoAction();
+   }
+   
+   //마지막 거래일로부터 2년지난 통장 휴면처리
+   @PostMapping(value="/accountSleep/{acNumber}")
+   public void accountSleep(@PathVariable long acNumber)
+      throws ServletException, IOException {
+      logger.info("url - accountSleep");
+      
+      service.accountSleepAction(acNumber);
+   }
 
 
 	

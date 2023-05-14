@@ -81,7 +81,7 @@ function DepositComponentEdit(){
                     <Form.Group className="mb-3" controlId="formGroupDpdName">
                     <Form.Label>* 예금상품명</Form.Label>
                     <Form.Control required type="text" name="dpdName"
-                        readOnly value={depositProduct.dpdName} placeholder="예금상품명을 입력해주세요."/>
+                        readOnly value={depositProduct.dpdName} disabled/>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formGroupDcontent">

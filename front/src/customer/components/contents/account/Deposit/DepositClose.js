@@ -37,13 +37,12 @@ export default function DepositClose() {
 
     // 해지 구분을 결정하는 함수
     const determineCxl = () => {
-        if (cusDepositExpInfo && cusDepositExpInfo.dendDate <= koToday) {
+        if (cusDepositExpInfo && new Date(cusDepositExpInfo.dendDate) <= today) {
             return "만기해지";
         } 
         else {
             return "중도해지";
         }
-       // return cusDepositExpInfo.dendDate <= koToday ? "만기해지" : "중도해지";
     };
 
     const move = ()=>{

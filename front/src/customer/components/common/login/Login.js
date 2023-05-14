@@ -76,6 +76,7 @@ function Login() {
             })
             .catch((err) => {
                 console.log('login() 에러!!',err)
+                alert('로그인 실패! 다시 로그인해주세요!');
                 localStorage.clear();
             }
         );

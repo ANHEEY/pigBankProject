@@ -28,7 +28,7 @@
                 WHERE da.dPdName = d.dPdName
                 AND da.acNumber = a.acNumber
                 AND a.id=#{id}
-                AND a.acState='OPEN'
+                <!-- AND a.acState='OPEN' -->
 	</select>
 	
 	<select id="depositDetail" parameterType="long" resultType="com.pigbank.project.dto.TransferDTO">
@@ -185,6 +185,22 @@
 		UPDATE account_tbl
 		SET acState='OPEN'
 		WHERE acNumber = #{acNumber}
+	</update>
+		
+	<!-- 마지막 거래일로부터 2년이 지난 계좌 불러오기 -->
+	<select id="breakAccountInfo" resultType="com.pigbank.project.dto.AccountDTO">
+		 <![CDATA[
+		SELECT * FROM ACCOUNT_TBL 
+		 WHERE LASTDATE < ADD_MONTHS(SYSDATE, -24)
+		   AND acType='입출금통장'
+		 ]]>
+	</select>
+	
+	<!-- 마지막 거래일로부터 2년지난 통장 휴면처리 -->
+	<update id="accountSleep" parameterType="long">
+		UPDATE account_tbl
+		   SET acState='SLEEP'
+		 WHERE acNumber=#{acNumber}
 	</update>
 	
 	

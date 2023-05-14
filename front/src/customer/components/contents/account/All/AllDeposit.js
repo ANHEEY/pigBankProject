@@ -83,7 +83,7 @@
                   <TableCell>{acNum(member.acNumber)}</TableCell>
                   <TableCell>{formatDate(member.djoinDate)}</TableCell>
                   <TableCell>{formatDate(member.dendDate)}</TableCell>
-                  <TableCell>{formatCurrency(member.damount)}</TableCell>
+                  <TableCell>{member.damount !== 0 ? formatCurrency(member.damount):'해지완료'}</TableCell>
 
                 </TableRow>
               ))}

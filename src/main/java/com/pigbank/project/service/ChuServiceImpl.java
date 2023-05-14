@@ -243,7 +243,21 @@ public class ChuServiceImpl implements ChuService{
 		dao.adminSleepRelease(acNumber);
 	}
 
-	
+   //마지막 거래일로부터 2년이 지난 계좌 불러오기
+   @Override
+   public List<AccountDTO> breakAccountInfoAction() {
+      System.out.println("service - breakAccountInfoAction");
+
+      return dao.breakAccountInfo();
+   }
+
+   //마지막 거래일로부터 2년지난 통장 휴면처리
+   @Override
+   public void accountSleepAction(long acNumber) {
+      System.out.println("service - accountSleepAction");
+      
+      dao.accountSleep(acNumber);
+   }
 	
 	
 	

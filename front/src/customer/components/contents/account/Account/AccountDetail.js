@@ -131,6 +131,7 @@ function AccountDetail() {
         <br/> <br/> <br/>
             <div className="container">
                 <h2>입출금이체내역</h2>
+                <br/>
                 <div className="card-body">
 
                 {loading ? (
@@ -144,7 +145,7 @@ function AccountDetail() {
                             <TableCell>거래종류</TableCell>
                             <TableCell>금액</TableCell>
                             <TableCell>내통장메모</TableCell>
-                            <TableCell>받는통장메모</TableCell>
+                            {/* <TableCell>받는통장메모</TableCell> */}
                             <TableCell>거래날짜</TableCell>
                             </TableRow>
                         </TableHead>
@@ -162,8 +163,8 @@ function AccountDetail() {
                                 <TableCell>{member.tdepositBank}</TableCell>
                                 <TableCell>{member.ttype}</TableCell>
                                 <TableCell>{formatCurrency(member.tamount)}</TableCell>
-                                <TableCell>{member.myMemo}</TableCell>
-                                <TableCell>{member.yourMemo}</TableCell>
+                                <TableCell>{member.ttype === '출금' ? member.myMemo:member.yourMemo}</TableCell>
+                                {/* <TableCell>{member.yourMemo}</TableCell> */}
                                 <TableCell>{formatDate(member.tdate)}</TableCell>
                             </TableRow>
                             ))

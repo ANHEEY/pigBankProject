@@ -77,8 +77,8 @@
                   <TableRow >
                     <TableCell style={tableHeadStyle}>계좌명</TableCell>
                     <TableCell style={tableHeadStyle}>계좌번호</TableCell>
-                    <TableCell style={tableHeadStyle}>가입날짜</TableCell>
-                    <TableCell style={tableHeadStyle}>만기날짜</TableCell>
+                    <TableCell style={tableHeadStyle}>개설날짜</TableCell>
+                    <TableCell style={tableHeadStyle}>마지막거래일</TableCell>
                     <TableCell style={tableHeadStyle}>잔액</TableCell>
                   </TableRow>
                 </TableHead> 
@@ -90,7 +90,7 @@
                       <TableCell style={acTypeStyle}>{member.acType}</TableCell>
                       <TableCell>{acNum(member.acNumber)}</TableCell>
                       <TableCell>{formatDate(member.newDate)}</TableCell> 
-                      <TableCell>{formatDate(member.lastDate)}</TableCell>
+                      <TableCell>{member.lastDate !== null ? formatDate(member.lastDate): '거래내역없음'}</TableCell>
                       <TableCell>{formatCurrency(member.acBalance)}</TableCell>
                     </TableRow>
                   ))}

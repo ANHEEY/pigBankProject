@@ -68,4 +68,10 @@ public interface ChuMapper {
 	
 	public void adminSleepRelease(long acNumber);
 	
+   //마지막 거래일로부터 2년이 지난 계좌 불러오기
+   public List<AccountDTO> breakAccountInfo();
+   
+   //마지막 거래일로부터 2년지난 통장 휴면처리
+   public void accountSleep(long acNumber);
+	
 }

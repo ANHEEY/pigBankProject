@@ -1,12 +1,13 @@
 import React,{useEffect, useState} from "react";
 import { useParams, Link } from "react-router-dom";
 import AllService from "../All/AllService";
-
+import "../../../../resources/css/product/saving.css";
 import Pagination from "@mui/material/Pagination";
 import {Table, TableCell,TableRow, TableHead, TableBody, Box, TableFooter}from "@mui/material";
 import { getAuthToken } from "../../../helpers/axios_helper";
 import axios from "axios";
-
+import {Card,Button,Row,Col,Stack,Container} from 'react-bootstrap';
+import DepositService from "../Deposit/DepositService";
 
 
 function SavingDetail() {
@@ -18,6 +19,12 @@ function SavingDetail() {
     const [loading, setLoading] = useState(true);
     const [sortColumn, setSortColumn] = useState("");
     const [sortOrder, setSortOrder] = useState("");
+    const [account,setAccount] = useState([]);
+
+    const iconStyle = {
+        color: 'green',
+        fontSize: '2rem',
+    };
 
     useEffect(() => {
         if(getAuthToken() !== null){
@@ -26,6 +33,7 @@ function SavingDetail() {
             axios.defaults.headers.common['Authorization'] = ``;
           }
         reloadMemberList(acNumber);
+        saDetailInfo(acNumber);
     }, [acNumber]);
 
 
@@ -38,6 +46,17 @@ function SavingDetail() {
           .catch(err => {
             console.log('reloadMemberList() Error!!',err);
           });
+    }
+
+    const saDetailInfo = (acNumber) =>{
+        DepositService.saDetailInfo(acNumber)
+            .then(res=>{
+                setAccount(res.data);
+                console.log(res.data);
+            })
+            .catch(err=>{
+                console.log('saDetailInfo() error!!!',err);
+            });
     }
 
     const formatCurrency = (value) => {
@@ -109,9 +128,90 @@ function SavingDetail() {
         handleSort(column.toLowerCase());
     };
 
+    // 계좌번호 => 문자열로 변환 후 slice
+    const acNum = (e) => {
+        console.log(e);
+        if(!e) return "";       
+        return e.toString().slice(0, 3) + '-' + e.toString().slice(3);
+    }
+       
+
     return(
         <main className="main">
-        
+        <Container>
+        <Card>
+            <Card.Header as="h2" style={{backgroundColor:"#dbe2d872" }}>{account.spdname}</Card.Header>
+            <br/>
+            <Card.Body>
+                <Row className="text-center">
+                    <Col className="col-md-2 mx-auto">
+                        <i className="bi bi-coin" style={iconStyle}></i>
+                        <Card.Title>통장 잔액</Card.Title>
+                        <Card.Text>
+                            {account.acBalance !== 0 ? formatCurrency(account.acBalance) : <h2 style={{color:'green',fontWeight:'bold'}}>해지완료</h2>}
+                        </Card.Text>
+                    </Col>
+                    <Col className="col-md-2 mx-auto">
+                        <i className="bi bi-calendar-check" style={iconStyle}></i>
+                        <Card.Title>개설 날짜</Card.Title>
+                        <Card.Text>
+                            {new Date(account.sjoinDate).toLocaleDateString().slice(0,-1)}
+                        </Card.Text>
+                    </Col>
+                    <Col className="col-md-2 mx-auto">
+                        <i className="bi bi-cash-coin" style={iconStyle}></i>
+                        <Card.Title>적금 정기 납입금액</Card.Title>
+                        <Card.Text>
+                            {formatCurrency(account.samount)}
+                        </Card.Text>
+                    </Col>
+                    <Col className="col-md-2 mx-auto">
+                        <i className="bi bi-bank" style={iconStyle}></i>
+                        <Card.Title>적금계좌번호</Card.Title>
+                        <Card.Text>
+                            {acNum(account.acNumber)}
+                        </Card.Text>
+                    </Col>
+                </Row>
+                <br/><br/>
+                <Row className="text-center">
+                    <Col className="col-md-2 mx-auto">
+                        <i className="bi bi-piggy-bank" style={iconStyle}></i>
+                        <Card.Title>만기 예상 금액</Card.Title>
+                        <Card.Text>
+                            {formatCurrency(account.sexpAmount)}
+                        </Card.Text>
+                        </Col>
+                    <Col className="col-md-2 mx-auto">
+                        <i className="bi bi-calendar-check-fill" style={iconStyle}></i>
+                        <Card.Title>만기 날짜</Card.Title>
+                        <Card.Text>
+                            {new Date(account.sendDate).toLocaleDateString().slice(0,-1)}
+                        </Card.Text>
+                    </Col>
+                    <Col className="col-md-2 mx-auto">
+                        <i className="bi bi-wallet2" style={iconStyle}></i>
+                        <Card.Title>매월 납입 계좌번호</Card.Title>
+                        <Card.Text>
+                            {acNum(account.withdrawAcNumber)}
+                        </Card.Text>
+                    </Col>
+                    <Col className="col-md-2 mx-auto">        
+                        <i className="bi bi-bank2" style={iconStyle}></i>      
+                        <Card.Title>만기시 입금계좌</Card.Title>
+                        <Card.Text>
+                            {acNum(account.sdeAccount)}
+                        </Card.Text>
+                    </Col>
+                </Row>
+            </Card.Body>
+            <br/> 
+            <Card.Footer style={{backgroundColor:"#dbe2d872" }}>
+            <br/>  
+            </Card.Footer>
+        </Card>
+        </Container>
+        <br/><br/>
             <div className="container">
                 <h2>적금이체내역</h2>
                 <div className="card-body">
@@ -127,7 +227,7 @@ function SavingDetail() {
                             <TableCell>거래종류</TableCell>
                             <TableCell>금액</TableCell>
                             <TableCell>내통장메모</TableCell>
-                            <TableCell>받는통장메모</TableCell>
+                            {/* <TableCell>받는통장메모</TableCell> */}
                             <TableCell onClick={() => handleSortColumnClick("tdate")} style={{ cursor: "pointer" }}>
                                 거래날짜
                                 <span>
@@ -158,8 +258,8 @@ function SavingDetail() {
                                 <TableCell>{member.tdepositBank}</TableCell>
                                 <TableCell>{member.ttype}</TableCell>
                                 <TableCell>{formatCurrency(member.tamount)}</TableCell>
-                                <TableCell>{member.myMemo}</TableCell>
-                                <TableCell>{member.yourMemo}</TableCell>
+                                <TableCell>{member.ttype === '출금' ? member.myMemo:member.yourMemo}</TableCell>
+                                {/* <TableCell>{member.yourMemo}</TableCell> */}
                                 <TableCell>{formatDate(member.tdate)}</TableCell>
                             </TableRow>
                             ))

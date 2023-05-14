@@ -9,14 +9,14 @@ class ChatComponent extends Component{
     
     render(){
         const chat = ()=>{
-            window.location.href = "http://192.168.0.17:3003";
+            window.open('http://192.168.0.17:3003', '_blank', 'width=800,height=1000');
         }
         return(
             <div className="component-div">
                 <div style={{ width: "1200px" }}>
                 <Card>
-                <Card.Header as="h2" style={{backgroundColor:"#dbe2d872" }}>
-                <h1><FontAwesomeIcon icon={faHeadset}/> 채팅상담</h1>
+                <Card.Header style={{backgroundColor:"#dbe2d872" }}>
+                <h1 style={{textAlign:'center'}}><FontAwesomeIcon icon={faHeadset}/> 채팅상담</h1>
                 </Card.Header>
                 <br/>
                 <Card.Body>

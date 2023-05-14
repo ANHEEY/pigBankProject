@@ -42,6 +42,16 @@ class AdminDepositService {
       console.log('예금상품삭제');
       return axios.put(DEPOSIT_URL+"depositPdDelete/"+dPdName);
     }
+
+    breakAccountInfo(){
+      console.log('마지막 거래일로 부터 2년 지난 계좌');
+      return axios.get(DEPOSIT_URL+"breakAccountInfo");
+    }
+
+    accountSleep(acNumber){
+      console.log('입출금통장 휴면처리!!');
+      return axios.post(DEPOSIT_URL+"accountSleep/"+acNumber);
+    }
   }
 
 export default new AdminDepositService();
