@@ -74,7 +74,7 @@ function DepositComponentEdit(){
         return(
             <div className="component-div">
                 <div className="admin-title">
-                   예금상품등록
+                   예금상품수정
                 </div>
                 <Container><br/><br/>
                 <Form>

@@ -161,7 +161,7 @@ function DormantComponent (){
                             <TableCell>{account.acState}</TableCell>
                             <TableCell>
                                 <Button variant="success" onClick={() => handleSleep(account.acNumber)}
-                                style={{background:"green", color:"white"}} disabled={account.acState === 'SLEEP'||'요청 확인 중'}>휴면처리</Button>
+                                style={{background:"green", color:"white"}} disabled={account.acState === 'SLEEP'||account.acState === '요청 확인 중'}>휴면처리</Button>
                             </TableCell>
                             <TableCell>
                                 <Button variant="success" onClick={() => handleSleepRelease(account.acNumber)}

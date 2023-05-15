@@ -8,14 +8,14 @@ function CalculatorResult({props}){
         fontWeight: "bold",
     }
 
-    let amount=props.amount*10000;
-    let period=props.period;
-    let rate=props.rate;
+    let amount=props.amount*10000;//만원단위를 원단위로
+    let period=props.period;//예치기간
+    let rate=props.rate;//금리
 
-    let expRate = Math.round((rate/100)*amount*(period/12));
-    let afterTaxRate = Math.round(expRate*0.846);
-    let expAmount = (amount+expRate);
-    let aterTaxAmount = (amount+afterTaxRate);
+    let expRate = Math.round((rate/100)*amount*(period/12));//비과세 이자
+    let afterTaxRate = Math.round(expRate*0.846);//과세 이자
+    let expAmount = (amount+expRate);//비과세 만기금액
+    let aterTaxAmount = (amount+afterTaxRate);//과세 만기금액
 
     // 콤마 찍기
     const comma = (number) => {
