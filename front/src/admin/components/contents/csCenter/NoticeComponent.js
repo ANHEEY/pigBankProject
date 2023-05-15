@@ -17,7 +17,6 @@ function NoticeComponent () {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(10);
-    const listcount = List.length;
 
     const [Search, setSearch] = useState('');
 
@@ -94,11 +93,9 @@ function NoticeComponent () {
                     <tbody>
                     {ListMember
                     .filter(item =>
-                        item.nshow === 'y' &&
-                        (Search === null || Search === '' ||
+                        Search === null || Search === '' ||
                         item.ncontent.toLowerCase().includes(Search.toLowerCase().replace(/\s/g, '')) ||
                         item.ntitle.toLowerCase().includes(Search.toLowerCase().replace(/\s/g, ''))
-                        )
                     ).map((notice) => (
                         <tr key={notice.nnum}>
                             <td><a onClick={() => move(notice.nnum)} key={notice.nnum}>상태:{notice.nshow} {notice.nnum} </a></td>

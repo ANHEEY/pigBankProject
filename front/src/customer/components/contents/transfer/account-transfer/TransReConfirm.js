@@ -51,9 +51,11 @@ function TransReConfirm (props) {
     const reloadReConfirmList = (e) => {
         e.preventDefault();
 
+        console.log(allAccount);
+
         let defaultMyAccounts = allAccount.filter(all => all.acNumber === selectedMyAccount)
         let defaultmybkName = allAccount.filter(all => all.bankName === mybkName); // 5건
-        
+        console.log(defaultMyAccounts);
 
         let acnumber = {
             acNumber: Number(selectedAccount),
@@ -70,7 +72,6 @@ function TransReConfirm (props) {
 
         if(defaultMyAccounts.length !== 0){
             if(defaultmybkName.length !== 0) {
-                console.log("on",acnumber);
                 TransferService.save(acnumber)
                 .then(res => {
                     alert("이체완료");
@@ -151,4 +152,4 @@ function TransReConfirm (props) {
     )
 }
 
-export default TransReConfirm
+export default TransReConfirm;

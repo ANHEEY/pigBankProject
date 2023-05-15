@@ -34,7 +34,6 @@ function AutoTrans () {
             console.log(res.data);
          })
          .catch(err => {
-            alert("로그인 하세요.");
             console.log('fetchAccountList() Error!!', err);
          })
     }

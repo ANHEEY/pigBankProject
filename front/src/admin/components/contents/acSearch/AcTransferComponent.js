@@ -78,6 +78,7 @@ function AcTransferComponent() {
         AllService.fetchTransfer()
         .then((res) => {
             setMembers1(res.data);
+            console.log(members1);
 
             const pagenum = Math.ceil(res.data.length / itemsPerPage);
             setTotalPage(pagenum)
@@ -89,6 +90,7 @@ function AcTransferComponent() {
 
     const handleSearchChange = (newSearch) => {
         setSearch(newSearch);
+        console.log(newSearch.toLowerCase().replace(/\s/g, ''));
       
         if (newSearch === "") {
           // 검색어가 비어있는 경우 전체 값을 다시 불러옴
@@ -98,13 +100,17 @@ function AcTransferComponent() {
         } else {
           const searchResults = members1.filter((item) => {
             const acNumber = item.acNumber && item.acNumber.toString();
+            const bank = item.tdepositBank && item.tdepositBank.toString();
+            console.log(bank);
+            console.log(item.tdepositBank);
+            
             return (
               acNumber.includes(newSearch.toLowerCase().replace(/\s/g, '')) ||
-              item.tdepositBank.toLowerCase().includes(newSearch.toLowerCase().replace(/\s/g, '')) ||
+              bank.toLowerCase().includes(newSearch.toLowerCase().replace(/\s/g, '')) ||
               formatDate(item.tdate).toLowerCase().includes(newSearch.toLowerCase().replace(/\s/g, ''))
             );
           });
-      
+          console.log(searchResults);
           if (searchResults.length > 0) {
             const pageNumber = Math.ceil(searchResults.length / itemsPerPage);
             setMembers1(searchResults);

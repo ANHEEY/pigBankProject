@@ -99,7 +99,7 @@ function AcDepositComponent() {
           setCurrentPage(1); // 첫 페이지로 이동
           navigate(`/admin/acSearch/acDeposit?page=1&search=`);
         } else {
-          const searchResults = members1.filter((item) => {
+            const searchResults = members1.filter((item) => { // 검색한값과 전체 데이터에서 비교한후 searchResults에 담기
             const acNumber = item.acNumber && item.acNumber.toString();
             return (
               acNumber.includes(newSearch.toLowerCase().replace(/\s/g, '')) ||
@@ -108,22 +108,22 @@ function AcDepositComponent() {
             );
           });
       
-          if (searchResults.length > 0) {
-            const pageNumber = Math.ceil(searchResults.length / itemsPerPage);
-            setMembers1(searchResults);
-            setTotalPage(pageNumber);
+          if (searchResults.length > 0) { // 검색결과의 값의 index가 0보다 크면
+            const pageNumber = Math.ceil(searchResults.length / itemsPerPage); // 검색결과의 길이 / 10
+            setMembers1(searchResults); // 검색결과를 members1변수에 담기
+            setTotalPage(pageNumber); // 전체페이지
             setCurrentPage(1); // 검색 시 첫 페이지로 이동
             navigate(`/admin/acSearch/acDeposit?page=1&search=${encodeURIComponent(newSearch)}`);
           } else {
-            setMembers1([]);
-            setTotalPage(0);
+            setMembers1([]); // 검색결과에 따른 값이 없으면 값 초기화 해주기
+            setTotalPage(0); // 전체페이지도 초기화
             setCurrentPage(1); // 검색 결과가 없으면 첫 페이지로 이동
             navigate(`/admin/acSearch/acDeposit?page=1&search=${encodeURIComponent(newSearch)}`);
           }
         }
 
-        if (newSearch === "" && selectedDate !== todayDate) {
-            handleDateChange(selectedDate);
+        if (newSearch === "" && selectedDate !== todayDate) { // 겁색값이 비어있고 선택한 날짜가 오늘날짜가 아니면
+            handleDateChange(selectedDate); // 선택한 날짜로 handleDateChange 함수를탐
           }
       };
 

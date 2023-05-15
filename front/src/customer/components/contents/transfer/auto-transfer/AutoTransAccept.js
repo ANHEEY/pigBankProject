@@ -2,10 +2,11 @@ import React from "react";
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { useNavigate, useParams  } from "react-router-dom";
+import AutoPDFDownloadComponent from "../../transfer/AutoPdfFile";
 
 function AutoTransAccept () {
     // navigate get 방식으로 넘긴값들 useParams로 받아서 변수에 셋팅
-    const {selectedAccount , selectedMyAccount, yourMemo, myMemo, tAmount, transferCycle,startDate,endDate} = useParams();
+    const {selectedAccount , selectedMyAccount, myname, myMemo, tAmount, transferCycle,startDate,endDate} = useParams();
 
     const sDate = new Date(startDate)
     const eDate = new Date(endDate)
@@ -37,7 +38,7 @@ function AutoTransAccept () {
                         <tbody>
                             <tr>
                                 <th>받는분</th>
-                                <td style={{textAlign:'center'}}>{yourMemo}</td>
+                                <td style={{textAlign:'center'}}>{myname}</td>
                             </tr>
                             <tr>
                                 <th>받는계좌</th>
@@ -78,6 +79,13 @@ function AutoTransAccept () {
                             </tr>
                         </tbody>
                     </Table>
+                        <div>
+                        <h4>Download PDF</h4>
+                        <AutoPDFDownloadComponent 
+                        data={{ selectedAccount , selectedMyAccount, myname, myMemo, tAmount, transferCycle,startDate,endDate}}
+                        />
+                        </div>
+                        <br/>
                     <Button variant="secondary" size="lg" onClick={home}>홈으로</Button>
                 </div>
             </div>

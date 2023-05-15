@@ -21,6 +21,8 @@ function AddAutoTrans () {
     const [accounts, setAccounts] = useState([]);
     // 선택한출금계좌
     const [selectedAccount, setSelectedAccount] = useState('');
+    // 잔액 보여주기
+    const [showbalance,setShowbalance] = useState(false);
     // 선택한 출금계좌의 잔액
     const [selectedBalance, setSelectedBalance] = useState('');
     // 출금계좌의 해당하는 비밀번호
@@ -68,7 +70,6 @@ function AddAutoTrans () {
                 setAccounts(res.data);
             })
             .catch(err => {
-                alert("로그인 하세요.");
                 console.log('fetchAccountList() Error!!', err);
              });
     };
@@ -105,18 +106,20 @@ function AddAutoTrans () {
             name,
             myname
         ];
-        console.log(myname);
-        console.log(datas);
+
+
             if(acPwd == notePwd) { // 비밀번호 비교
                 if(trsfLimit >= tAmount) { // 이체 한도 내에서 이체 오버되면 오류
+                    if(selectedBalance >= tAmount){
                 setShowComponent(true); // 다음 컴포넌트의 상태값 true 로 변경
                 setAuto(datas); // 입력받은값 datas 에 담아서 auto변수에 set 해줌
+                    }else {
+                        alert('잔액이 부족합니다 확인후 다시 시도해주세요.');
+                    }
+                }else{
+                    alert('한도초과 확인후 다시 시도해주세요.')
                 }
-                else{
-                alert('한도초과 확인후 다시 시도해주세요.')
-                }
-            }
-            else {
+            }else {
                 alert("비밀번호 오류 다시시도해주세요.");
             }
             
@@ -134,19 +137,17 @@ function AddAutoTrans () {
           setTrsfLimit(account.trsfLimit);
           setBankName(account.bankName);
           setName(account.name);
+          setSelectedBalance(account.acBalance);
         } else {
           setAcPwd('');
         }
     };
 
     const handleBalanceClick = () => { // 선택한 계좌번호로 찾아서 잔액 조회 클릭시 값 출력
-        const selectedAccountInt = parseInt(selectedAccount);
-        const account = accounts.find(account => account.acNumber === selectedAccountInt);
-        if (account) {
-          setSelectedBalance(account.acBalance);
-        } else {
-          setSelectedBalance(0);
-        }
+        setShowbalance(true);
+          if(showbalance == true) {
+            setShowbalance(false);
+          }
     }; 
 
     // 입금 계좌번호 입력 또는 내계좌번호중 선택했을시에 해당하는값을 전체계좌를 조회한 값으로 찾아서 값 set 해주기
@@ -165,6 +166,10 @@ function AddAutoTrans () {
           setYourMemo("");
         }
     };
+
+    const show = () => {
+        setShowComponent(false);
+      }
 
     return (
         <Container >
@@ -208,7 +213,9 @@ function AddAutoTrans () {
                                     disabled={isNaN(selectedAccount) || !selectedAccount}
                                     >잔액조회</Button>{' '} </td>
                             <td>
-                                <p>{Number(selectedBalance).toLocaleString('ko-kR')}원</p>
+                            {showbalance && (
+                                    Number(selectedBalance).toLocaleString('ko-kR')
+                                )}원
                             </td>
                         </tr>
                     <tr>
@@ -372,10 +379,10 @@ function AddAutoTrans () {
                     </tbody>
                 </Table>
                 <div className="mb-2" align='center'>
-                    <a href="/customer/transfer/auto_trans_check">
+                    <a href="/customer/transfer/auto_trans">
                         <Button variant="light" size="lg">조회</Button>
                     </a>{'  '}{' '}
-
+                    <button onClick={show} >닫기</button>{' '}                
                     <Button variant="primary" size="lg" onClick={handleClick} disabled={!selectedAccount || !notePwd || !selectedMyAccount || !tAmount}>
                     다음
                     </Button>
