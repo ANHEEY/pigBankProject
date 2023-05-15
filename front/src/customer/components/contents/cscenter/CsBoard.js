@@ -70,7 +70,9 @@ function CsBoard () {
                     공지사항
                 </div>
             </div>
+            <div align='center'>
             <SearchBar value={Search} onSearchChange={handleSearchChange} />
+            </div>
             <br/>
             <Table align='center'>
             

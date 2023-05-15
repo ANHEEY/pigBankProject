@@ -37,9 +37,10 @@ function CsBoardDetail () {
  
     return(
         <Container>
-            <h3>공지사항</h3>
-            <hr />
-            <br />
+            <div className="title_div">
+                <div className="title_see">공지사항
+                </div>
+            </div>
             <Table align="center">
                 <thead>
                     <tr>
@@ -57,7 +58,7 @@ function CsBoardDetail () {
                     </tr>
                     <tr>
                         <td colSpan={4} align="center">
-                            <a onClick={back}><Button variant="primary" >이전</Button></a>
+                            <button className="btnbtnclose trns" onClick={back}>이전</button>
                         </td>
                     </tr>
                 </tbody>

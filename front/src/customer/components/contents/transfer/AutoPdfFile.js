@@ -56,7 +56,7 @@ function AutoPDFDownloadComponent(props) {
   
     return (
       <div>
-        <button onClick={downloadPDF}>PDF 다운로드</button>
+        <button className="btnbtnpdf trnspdf" onClick={downloadPDF}>PDF 다운로드</button>
       </div>
     );
   }

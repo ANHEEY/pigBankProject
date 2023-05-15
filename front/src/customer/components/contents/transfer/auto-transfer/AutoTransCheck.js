@@ -103,6 +103,7 @@ function AutoTransCheck (props) {
         });
     }
 
+
     const cancel = () => { // 체크박스 ing
 
         console.log(anum);
@@ -138,7 +139,6 @@ function AutoTransCheck (props) {
                 </div>
                 <br />
                 <div>
-                    
                         {isOpen && (
                         <div>
                             <CalendarComponent data={calendar} onDataChange={handleCalendarDataChange}/>
@@ -226,9 +226,9 @@ function AutoTransCheck (props) {
                    
                 </div>
             <div align='center'>
-                <Button variant="primary" size="lg" onClick={cancel}>
+                <button className="btnbtnfind big trns" onClick={cancel}>
                     자동이체 해지   
-                </Button>
+                </button>
             </div>
         </Container>
     )

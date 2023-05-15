@@ -1,7 +1,5 @@
 import React, {useState , useEffect } from "react";
-import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
 import TransferService from "../transfer-service/TransferService";
 import { useNavigate } from "react-router-dom";
 
@@ -95,9 +93,9 @@ function AutoTransReConfirm (props) {
                 자동 이체 확인
             </div>
         </div>
-        <hr />
-        <Table>
-                <tbody>
+        <div className="trnsChk">
+        <table style={{width:'1000px'}}> 
+            <tbody>
                     <tr>
                         <th>이체 주기</th>
                         <td style={{textAlign:'right'}}>{transferCycle}개월</td>
@@ -114,12 +112,7 @@ function AutoTransReConfirm (props) {
                         <th>이체 시작/종료일</th>
                         <td style={{textAlign:'right'}}>{startDate} ~ {endDate}</td>
                     </tr>
-                    </tbody>
-                    </Table>
-                    <br/>
-                    <hr/>
-                    <Table>
-                    <tbody>
+                    
                     <tr>
                         <th>받는 분</th>
                         <td style={{textAlign:'right'}}>{myname}</td>
@@ -133,12 +126,8 @@ function AutoTransReConfirm (props) {
                         <td style={{textAlign:'right'}}>{mybkName}</td>
                     </tr>
                     </tbody>
-                    </Table>
-                    <br />
-                    <hr />
-                    <Table>
                     
-                    <tbody>
+                    
                     <tr>
                         <th>이체금액</th>
                         <td style={{textAlign:'right'}}>{Number(tAmount).toLocaleString('ko-kR')}원</td>
@@ -152,13 +141,12 @@ function AutoTransReConfirm (props) {
                         <td style={{textAlign:'right'}}>{yourMemo}</td>
                         
                     </tr>
-                </tbody>
-        </Table>
-                <div align='right'>
-                    {' '} 
-                    <Button variant="primary" size="lg" onClick={reloadReConfirmList}>
+                    </table>
+                </div>
+                <div className="mb-2" align='center'>
+                    <button className="btnbtn big trns" onClick={reloadReConfirmList}>
                     자동 이체    
-                    </Button>
+                    </button>
                 </div>
     </Container>
     )

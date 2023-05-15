@@ -183,6 +183,7 @@ if(state === 'using'){
   }
   });
 
+  // 이벤트 합치기
   const allEvents = events1.concat(events2).concat(events3);
 
   return (
@@ -206,7 +207,7 @@ if(state === 'using'){
     <FullCalendar 
     plugins={[dayGridPlugin]} 
     initialView="dayGridMonth" 
-    events={allEvents} 
+    events={allEvents} // 데이터 값
     eventTextColor='black'
     locales={[koLocale]} // 로케일 추가
     locale="ko" // 한국어로 설정

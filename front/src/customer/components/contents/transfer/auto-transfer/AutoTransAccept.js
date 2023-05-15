@@ -1,6 +1,5 @@
 import React from "react";
 import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
 import { useNavigate, useParams  } from "react-router-dom";
 import AutoPDFDownloadComponent from "../../transfer/AutoPdfFile";
 
@@ -34,6 +33,12 @@ function AutoTransAccept () {
                             자동이체 등록완료
                         </div>
                     </div>
+                    <div align="right">
+                        <h4>자동이체 PDF</h4>
+                        <AutoPDFDownloadComponent 
+                        data={{ selectedAccount , selectedMyAccount, myname, myMemo, tAmount, transferCycle,startDate,endDate}}
+                        />
+                        </div>
                     <Table style={{width: '900px'}}>
                         <tbody>
                             <tr>
@@ -79,14 +84,9 @@ function AutoTransAccept () {
                             </tr>
                         </tbody>
                     </Table>
-                        <div>
-                        <h4>Download PDF</h4>
-                        <AutoPDFDownloadComponent 
-                        data={{ selectedAccount , selectedMyAccount, myname, myMemo, tAmount, transferCycle,startDate,endDate}}
-                        />
-                        </div>
-                        <br/>
-                    <Button variant="secondary" size="lg" onClick={home}>홈으로</Button>
+                    <div className="mb-2" align='center'>
+                        <button className="btnbtn big trns" onClick={home}>홈으로</button>
+                    </div>
                 </div>
             </div>
         )

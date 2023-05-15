@@ -2,8 +2,6 @@
 import React, {useState , useEffect } from "react";
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Button from 'react-bootstrap/Button';
-import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import TransferService from "../transfer-service/TransferService";
 import AutoTransReConfirm from "./AutoTransReConfirm";
@@ -178,14 +176,17 @@ function AddAutoTrans () {
                     자동이체 등록
                 </div>
             </div>
-            <hr />
-            <h3>출금정보</h3>
-            <hr />
-            <Table align="center">
-                <tbody>
+                <div className="trans-div">
+                <table align="center">
+                    <thead>
+                    <tr>
+                        <th colSpan={3}>출금정보</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     <tr>
                         <td>
-                        <InputGroup.Text id="basic-addon1" >출금 계좌번호</InputGroup.Text>
+                        <InputGroup.Text id="basic-addon1">출금 계좌번호</InputGroup.Text>
                         </td>
                         <td>
                         <Form.Control
@@ -194,109 +195,120 @@ function AddAutoTrans () {
                             placeholder="오른쪽에서 계좌 선택해주세요"
                             aria-label="Username"
                             aria-describedby="basic-addon1"
-                            onChange={(event) => setSelectedAccount(event.target.value) }
-                            />  
-                        </td>    
-                        <td><Form.Select aria-label="Default select example" onChange={accountChange}>
+                            onChange={(event) => setSelectedAccount(event.target.value)}
+                        />
+                        </td>
+                        <td>
+                        <Form.Select aria-label="Default select example" onChange={accountChange}>
                             <option>계좌선택</option>
                             {accounts
                             .filter((account) => account.acType === "입출금통장")
                             .map((account) => (
-                                <option key={account.acNumber} value={account.acNumber}>
+                            <option key={account.acNumber} value={account.acNumber}>
                                 [{account.bankName}]{acNum(account.acNumber)} || {account.acType}</option>
                             ))}
-                                </Form.Select> 
-                             </td>
-                             <td><Button 
-                                    variant="light" 
-                                    onClick={handleBalanceClick} 
-                                    disabled={isNaN(selectedAccount) || !selectedAccount}
-                                    >잔액조회</Button>{' '} </td>
-                            <td>
-                            {showbalance && (
-                                    Number(selectedBalance).toLocaleString('ko-kR')
-                                )}원
-                            </td>
-                        </tr>
+                        </Form.Select>
+                        </td>
+                    </tr>
                     <tr>
-                <       td>
-                        <InputGroup.Text id="basic-addon1" >계좌 비밀번호</InputGroup.Text>
+                        <td></td>
+                        <td>
+                        {showbalance && (
+                            Number(selectedBalance).toLocaleString('ko-kR')
+                        )}원
                         </td>
                         <td>
-                        <Form.Control
-                            value={notePwd}
-                            type="password"
-                            maxLength={4}
-                            placeholder="숫자 4자리"
-                            onChange={(e) => setNotePwd(e.target.value)}
-                            />  
-                        </td>    
+                            <button 
+                            className="trnsbtn" 
+                            onClick={handleBalanceClick} 
+                            disabled={isNaN(selectedAccount) || !selectedAccount}
+                            >
+                                잔액조회</button>
+                        </td>
                     </tr>
-                     
-                </tbody>
-                </Table>
-                <br/>
-                <hr/>
-                <h3>입금정보</h3>
-                <hr />
-                <Table align="center">
-                    <tbody>
-                        <tr>
-                            <td>
-                            <InputGroup.Text id="basic-addon1" >입금 계좌번호</InputGroup.Text>
-                            </td>
-                            <td>
+                    <tr>
+                        <td>
+                            <InputGroup.Text>계좌 비밀번호</InputGroup.Text>
+                        </td>
+                        <td>
                             <Form.Control
-                                value={isNaN(selectedMyAccount) ? 0 : selectedMyAccount}
-                                placeholder="-없이 입력해주세요"
-                                aria-label="Username"
-                                aria-describedby="basic-addon1"
-                                onChange={(e) => {setSelectedMyAccount(parseInt(e.target.value))
-                                                myAccountChange(e) }}
+                                value={notePwd}
+                                type="password"
+                                maxLength={4}
+                                placeholder="숫자 4자리"
+                                onChange={(e) => setNotePwd(e.target.value)}
                                 />  
-                            </td>    
-                            <td><Form.Select aria-label="Default select example" onChange={myAccountChange}>
-                                    <option>본인계좌조회</option>
-                                {accounts.map((account) => (
-                                    <option key={account.acNumber} value={account.acNumber}>
-                                        [{account.bankName}]{acNum(account.acNumber)} || {account.acType}</option>
-                                ))}
-                                </Form.Select> 
-                             </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <InputGroup.Text id="basic-addon1" >입금은행</InputGroup.Text>
-                                </td>
-                                <td>
-                                <Form.Control
-                                    value={mybkName}
-                                    placeholder="은행명"
-                                    aria-label="Username"
-                                    aria-describedby="basic-addon1"
-                                    onChange={(e) => setMybkName(e.target.value)}
-                                    />  
-                                </td>    
-                            </tr> 
-                        <tr>
-                            <td>
-                            <InputGroup.Text id="basic-addon1" >이체금액</InputGroup.Text>
-                            </td>
-                            <td>
-                            <Form.Control
-                                  value={tAmount ? Number(tAmount).toLocaleString('ko-kR') : ''}
-                                  placeholder="원(KRW)"
-                                  aria-label="Username"
-                                  aria-describedby="basic-addon1"
-                                  onChange={(e) => setTAmount(Number(e.target.value.replace(/[^0-9]/g, '')))}
-                                />  
-                            </td>    
+                        </td>    
+                    </tr>   
+                    </tbody>
+                </table>
+                </div>
+          
+            <div className="trans-div">
+            <table align="center">
+                <thead>
+              <tr>
+                <th colSpan={3}>입금정보</th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr>
+                    <td>
+                    <InputGroup.Text id="basic-addon1" >입금 계좌번호</InputGroup.Text>
+                    </td>
+                    <td colSpan={3}>
+                    <Form.Control
+                        value={isNaN(selectedMyAccount) ? 0 : selectedMyAccount}
+                        placeholder="-없이 입력해주세요"
+                        aria-label="Username"
+                        aria-describedby="basic-addon1"
+                        onChange={(e) => {setSelectedMyAccount(parseInt(e.target.value))
+                                            myAccountChange(e) }}
+                        />  
+                    </td>    
+                    <td>
+                    <Form.Select aria-label="Default select example" onChange={myAccountChange}>
+                            <option>본인계좌조회</option>
+                            {accounts.map((account) => (
+                                <option key={account.acNumber} value={account.acNumber}>
+                                    [{account.bankName}]{acNum(account.acNumber)} || {account.acType}</option>
+                            ))}
+                    </Form.Select> 
+                    </td>
+                </tr> 
+              <tr>
+                <td>
+                  <InputGroup.Text id="basic-addon1" >입금은행</InputGroup.Text>
+                </td>
+                <td colSpan={3}>
+                  <Form.Control
+                      value={mybkName}
+                      placeholder="은행명"
+                      aria-label="Username"
+                      aria-describedby="basic-addon1"
+                      onChange={(e) => setMybkName(e.target.value)}
+                      />  
+                </td>    
+              </tr> 
+              <tr>
+                <td>
+                  <InputGroup.Text id="basic-addon1" >이체금액</InputGroup.Text>
+                </td>
+                <td colSpan={3}>
+                  <Form.Control
+                      value={tAmount ? Number(tAmount).toLocaleString('ko-kR') : ''}
+                      placeholder="원(KRW)"
+                      aria-label="Username"
+                      aria-describedby="basic-addon1"
+                      onChange={(e) => setTAmount(Number(e.target.value.replace(/[^0-9]/g, '')))}
+                      />  
+                </td>    
                         </tr>
                         <tr>
                             <td>
                             <InputGroup.Text id="basic-addon1" >이체주기</InputGroup.Text>
                             </td>
-                            <td>
+                            <td colSpan={3}>
                             <Form.Select aria-label="Floating label select example" onChange={(e) => setTransferCycle(e.target.value)}>
                                 <option>이체주기선택</option>
                                 {number.map((anumber) => (
@@ -306,10 +318,6 @@ function AddAutoTrans () {
                             </Form.Select>  
                             </td>
                         </tr>
-                        </tbody>
-                        </Table>
-                        <Table>
-                            <tbody>
                         <tr>
                             <td>
                             <InputGroup.Text >이체시작일/종료일</InputGroup.Text>
@@ -323,7 +331,6 @@ function AddAutoTrans () {
                                  aria-describedby="basic-addon1"
                                  onChange={(e) => setStartDate(e.target.value)}
                                 />  
-                                
                             </td>
                             <td>~</td>
                             <td>
@@ -340,32 +347,25 @@ function AddAutoTrans () {
                             <p size='lg' align='left'>이체시작일을 기준으로 매월 이체일자 설정</p>
                             </td>
                         </tr>
-                        </tbody>
-                        </Table>
-                                
-                    <Table>
-                        <tbody>
                         <tr>
-                         <td>
+                            <td>
                             <InputGroup.Text id="basic-addon1" >내통장 메모</InputGroup.Text>
                             </td>
-                            <td>
-                                
+                            <td colSpan={3}>
                             <Form.Control
-                                 value={myMemo}
-                                 placeholder="(선택)"
-                                 aria-label="Username"
-                                 aria-describedby="basic-addon1"
-                                 onChange={(e) => setMyMemo(e.target.value)}
+                                value={myMemo}
+                                placeholder="(선택)"
+                                aria-label="Username"
+                                aria-describedby="basic-addon1"
+                                onChange={(e) => setMyMemo(e.target.value)}
                                 />  
-                            </td>    
-                            <td>{' '}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        </tr>
+                            </td>
+                        </tr>   
                         <tr>
-                    <       td>
+                            <td>
                             <InputGroup.Text id="basic-addon1" >받는통장 메모</InputGroup.Text>
                             </td>
-                            <td>
+                            <td colSpan={3}>
                             <Form.Control
                                 value={yourMemo}
                                 placeholder="받는 통장(계좌) 명의"
@@ -373,19 +373,19 @@ function AddAutoTrans () {
                                 aria-describedby="basic-addon1"
                                 onChange={(e) => setYourMemo(e.target.value)}
                                 />  
-                            </td>    
+                            </td>   
                         </tr> 
-
-                    </tbody>
-                </Table>
+                       </tbody>                 
+                    </table>
+                </div>
                 <div className="mb-2" align='center'>
                     <a href="/customer/transfer/auto_trans">
-                        <Button variant="light" size="lg">조회</Button>
-                    </a>{'  '}{' '}
-                    <button onClick={show} >닫기</button>{' '}                
-                    <Button variant="primary" size="lg" onClick={handleClick} disabled={!selectedAccount || !notePwd || !selectedMyAccount || !tAmount}>
+                        <button className="btnbtnfind big trns">조회</button>
+                    </a>{'  '}&nbsp;
+                    <button className="btnbtnclose big trns" onClick={show} >닫기</button>{' '}&nbsp;                
+                    <button className="btnbtn big trns" onClick={handleClick} disabled={!selectedAccount || !notePwd || !selectedMyAccount || !tAmount}>
                     다음
-                    </Button>
+                    </button>
                 </div>
                 <br/>
                 {showComponent && (

@@ -23,36 +23,34 @@ function PDFDownloadComponent(props) {
         <Document>
           <Page>
             <Text style={styles.header}>
-                자동 이체 결과
+                이체 결과
             </Text>
             <Text style={styles.text}>
-                출금계좌: {acNum(selectedAccount)} <br />
+              ● 출금계좌: {acNum(selectedAccount)} 
             </Text>
             <Text style={styles.text}>
-                입금계좌: {acNum(selectedMyAccount)} <br />
+              ● 입금계좌: {acNum(selectedMyAccount)} 
             </Text>
             <Text style={styles.text}>
-                입금자명: {myname}<br />
+              ● 입금자명: {myname}
             </Text>
             <Text style={styles.text}>
-                내 메모: {myMemo}<br />
+              ● 내 메모: {myMemo}
             </Text>
             <Text style={styles.text}>
-                이체 금액: {tAmount}원<br />
+              ● 이체 금액: {tAmount}원
             </Text>
           </Page>
         </Document>
       );
-  
       const asBlob = await pdf(doc).toBlob();
-  
       // PDF 다운로드
       saveAs(asBlob, "이체결과.pdf");
     };
   
     return (
       <div>
-        <button onClick={downloadPDF}>PDF 다운로드</button>
+        <button className="btnbtnpdf trnspdf" onClick={downloadPDF}>PDF 다운로드</button>
       </div>
     );
   }

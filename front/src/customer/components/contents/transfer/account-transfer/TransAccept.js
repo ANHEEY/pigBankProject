@@ -1,6 +1,5 @@
 import React from "react";
 import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
 import { useNavigate, useParams  } from "react-router-dom";
 import PDFDownloadComponent from "../pdfFile";
 
@@ -20,7 +19,17 @@ function TransAccept() {
   return (
     <div align='center'>
       <div className="w-50 p-3" align='center'>
-        <h3>이체완료</h3>
+      <div className="title_div">
+        <div className="title_see">
+          이체완료
+        </div>
+        </div>
+        <div align="right">
+            <h4 >이체결과 PDF</h4>
+            <PDFDownloadComponent 
+            data={{ selectedAccount, selectedMyAccount, myname, myMemo, tAmount }}
+             />
+            </div>
         <Table style={{ width: '900px' }}>
           <tbody>
             <tr>
@@ -51,12 +60,10 @@ function TransAccept() {
             </tr>
           </tbody>
         </Table>
-            <div>
-            <h4>Download PDF</h4>
-            <PDFDownloadComponent 
-            data={{ selectedAccount, selectedMyAccount, myname, myMemo, tAmount }}
-             />
+            <div className="mb-2" align='center'>
+                    <button className="btnbtn big trns" onClick={home}>홈으로</button>
             </div>
+           
         </div>
         </div>
         )

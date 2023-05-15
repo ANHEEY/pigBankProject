@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name="auto_transfer_tbl ")
+@Table(name="auto_transfer_tbl")
 @Data
 public class AutoTransferListDTO {
 

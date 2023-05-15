@@ -57,6 +57,11 @@ function AutoTrans () {
 
     return (
         <div className="container">
+            <div className="title_div">
+                <div className="title_see">
+                    자동이체 조회
+                </div>
+            </div>
             <hr />
             <Table striped="columns">
                 <tbody>
@@ -75,8 +80,8 @@ function AutoTrans () {
                         <td><RadioCheck onChange={handleChange}/></td>
                     </tr>
                     <tr>
-                        <td colSpan={4} align="center">
-                                <Button variant="primary" size="lg" onClick={handleClick}>조회</Button>
+                        <td colSpan={4} align="center" style={{paddingTop: '50px'}}>
+                                <button className="btnbtn big trns" onClick={handleClick}>조회</button>
                         </td>
                     </tr>
                 </tbody>
@@ -88,8 +93,6 @@ function AutoTrans () {
           <AutoTransCheck  data={data} 
             />
         )}
-
-        
         </div>
     )
     

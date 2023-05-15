@@ -205,12 +205,12 @@ function AutoTransDetail () {
             </tbody>
             </Table>
             <div className="mb-2" align='center'>
-            <Button variant="primary" size="lg" onClick={updateAutoTransfer} >
+            <button className="btnbtn big trns" onClick={updateAutoTransfer} >
                 변경
-                </Button> {' '}
-                <a href="/customer/transfer/auto_trans"><Button variant="secondary" size="lg">
+                </button>{' '}&nbsp;&nbsp;&nbsp;
+                <a href="/customer/transfer/auto_trans"><button className="btnbtnclose big trns">
                 이전
-                </Button></a>
+                </button></a>
             </div>
         </Container>
     )

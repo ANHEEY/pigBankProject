@@ -97,7 +97,7 @@ function TransReConfirm (props) {
     <Container>
         <div className="title_div">
           <div className="title_see">
-          이체 확인
+            이체 확인
           </div>
         </div>
         <div className="trnsChk">

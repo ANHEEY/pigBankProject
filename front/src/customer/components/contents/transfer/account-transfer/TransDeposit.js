@@ -21,6 +21,8 @@ function TransDeposit() {
   const [accounts, setAccounts] = useState([]);
   // 선택한출금계좌
   const [selectedAccount, setSelectedAccount] = useState('');
+  // 잔액 보여주기
+  const [showbalance,setShowbalance] = useState(false);
   // 선택한 출금계좌의 잔액
   const [selectedBalance, setSelectedBalance] = useState('');
   // 선택한 입금계좌
@@ -52,7 +54,7 @@ function TransDeposit() {
   useEffect(() => {
     reloadAccountList();
     allAcountList();
-    }, [id]);
+    }, []);
   
     // id 에 해당하는 고객 계좌 조회
     const reloadAccountList = () => {
@@ -61,7 +63,6 @@ function TransDeposit() {
           setAccounts(res.data);
         })
       .catch(err => {
-        alert('로그인하세요.');
         console.log('fetchAccountList() Error!!', err);
       });
       
@@ -98,19 +99,20 @@ function TransDeposit() {
                         bankName,
                         myname];
 
-                        console.log(myname);
-                        console.log(acNumber);
-       
                 if(acPwd == notePwd) { // 계좌 비밀번호 체크
                   if(trsfLimit >= tAmount) { // 해당계좌에 이체한도와 입력한 이체금액 체크
+                    if(selectedBalance >= tAmount){
                   setShowComponent(true);
                   setData(acNumber);
                   }
+                  else {
+                    alert('잔액이 부족합니다 확인후 다시 시도해주세요.');
+                  }
+                 }
                   else{
                     alert('한도초과 확인후 다시 시도해주세요.')
                   }
-                }
-                else {
+                } else {
                   alert("비밀번호 오류 다시시도해주세요.");
                 }
               
@@ -127,22 +129,19 @@ function TransDeposit() {
             setTrsfLimit(account.trsfLimit);
             setBankName(account.bankName);
             setName(account.name);
+            setSelectedBalance(account.acBalance);
           } else {
             setAcPwd('');
           }
           };
 
-        // 잔액조회 해당하는 계좌에서 잔액값 set
+        // 잔액조회 보여주기
         const handleBalanceClick = () => {
-          const selectedAccountInt = parseInt(selectedAccount);
-          const account = accounts.find(account => account.acNumber === selectedAccountInt);
-          if (account) {
-            setSelectedBalance(account.acBalance);
-          } else {
-            setSelectedBalance(0);
+          setShowbalance(true);
+          if(showbalance == true) {
+            setShowbalance(false);
           }
         };
-
 
         // 입금 계좌번호 입력 또는 내계좌번호중 선택했을시에 해당하는값을 전체계좌를 조회한 값으로 찾아서 값 set 해주기
         const myAccountChange = (event) => {
@@ -160,8 +159,12 @@ function TransDeposit() {
           }
         };
 
+        const show = () => {
+          setShowComponent(false);
+        }
+
       return (
-      <Container >
+        <Container >
         <div className="title_div">
           <div className="title_see">
             계좌이체
@@ -204,7 +207,9 @@ function TransDeposit() {
               <tr>
                 <td></td>
                 <td>
-                  {Number(selectedBalance).toLocaleString('ko-kR')}원
+                  {showbalance && (
+                      Number(selectedBalance).toLocaleString('ko-kR')
+                  )}원
                 </td>
                 <td>
                     <button 
@@ -324,6 +329,7 @@ function TransDeposit() {
           </table>     
         </div>
         <div className="mb-2" align='center'>
+              <button className="btnbtnclose big trns" onClick={show} >닫기</button>{' '}&nbsp;
               <button className="btnbtn big trns"  onClick={handleClick} disabled={!selectedAccount || !notePwd || !selectedMyAccount || !tAmount} >
               다음
               </button>
@@ -338,11 +344,3 @@ function TransDeposit() {
 
 
 export default TransDeposit;
-
-
-
-
-
-
-
-

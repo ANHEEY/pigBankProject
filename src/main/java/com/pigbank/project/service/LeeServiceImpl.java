@@ -62,7 +62,7 @@ public class LeeServiceImpl implements LeeService{
 		// 이체시 입력한 출금계좌번호의 이체금액
 		int amount = tdto.getTAmount();
 		
-		if(amount < acbal) {
+		if(amount <= acbal) {
 //			출금
 			String tType = "출금";
 			tdto.setTType(tType);
@@ -177,15 +177,14 @@ public class LeeServiceImpl implements LeeService{
 			// 프로그램 실행을 위한 변수
 			String good = null;
 			// 전체계좌의 계좌번호
-			
-			 for (AccountDTO dto : acdtolist) {
-				 if(dto.getAcNumber() == aDepositnum) {
-					 if(dto.getBankName().equals(aDepositBank)) {
-						 good = "go";
-						 break;
-					 }
+		 for (AccountDTO dto : acdtolist) {
+			 if(dto.getAcNumber() == aDepositnum) {
+				 if(dto.getBankName().equals(aDepositBank)) {
+					 good = "go";
+					 break;
 				 }
 			 }
+		 }
 		if(good != null) {	// 전체계좌에서 내가 입력받았던 계좌 조회 후 해당계좌가 다른은행 또는 다른은행의계좌번호가 아니면 이 if문 실행
 			if(adate == day) { // 자동이체 시작날짜 일 == 오늘날짜 일
 				// 자동이체시 update라는 변수로 이체주기값을 더해서 자동입출금이 안되게 막음

@@ -137,9 +137,9 @@ function TransLimit () {
             </tbody>
             </Table>
             <div className="mb-2" align='center'>
-                <Button variant="primary" size="lg" onClick={transLimitAccept}>
+                <button className="btnbtn big trns" onClick={transLimitAccept}>
                 변경
-                </Button>{' '}
+                </button>{' '}
             </div>
         </Container>
     )
