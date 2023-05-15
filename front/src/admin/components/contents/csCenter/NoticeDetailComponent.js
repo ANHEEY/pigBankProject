@@ -86,7 +86,7 @@ function NoticeDetailComponent () {
                     <tbody>
                         <tr>
                             <th style={{ width: "50px" }}>내용</th>
-                            <td colspan={4} style={{ width: "500px" }}>
+                            <td colSpan={4} style={{ width: "500px" }}>
                                 <Form.Control value={ncontent} as="textarea"
                                 onChange={(e) => setNcontent(e.target.value)}></Form.Control></td>
                         </tr>

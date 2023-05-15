@@ -25,8 +25,6 @@ function Loan() {
     }, []);
   
     // 라이프 사이클 중 컴포넌트가 생성된 후 사용자에게 보여지기까지의 전체 과정을 랜더링
-
-
     const reloadMemberList = (id) => {
         AllService.fetchLoan(id)
           .then(res => {

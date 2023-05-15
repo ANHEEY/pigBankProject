@@ -204,7 +204,7 @@ function Mypage(){
                 <Typography variant="h2" textAlign="center" color="green">회원 정보 수정</Typography><br/><br/>
                 <Form.Group as={Row} className="mb-3" controlId="formGroupId">
                     <Form.Label column sm={2}>아이디</Form.Label>
-                    <Col sm={10}><Form.Control type="text" name="id" defaultValue={customer.id} readOnly/></Col>
+                    <Col sm={10}><Form.Control type="text" name="id" defaultValue={customer.id} readOnly disabled/></Col>
                 </Form.Group>
                 <br/>
                 <Form.Group as={Row} className="mb-3" controlId="formGroupPassword">

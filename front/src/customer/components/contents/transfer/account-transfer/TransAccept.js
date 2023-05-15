@@ -1,21 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { useNavigate, useParams  } from "react-router-dom";
+import PDFDownloadComponent from "../pdfFile";
 
-function TransAccept () {
+function TransAccept() {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const home = () => {
+    navigate(`/customer/*`);
+  };
 
-    const home  = () => {
-        navigate(`/customer/*`);
-    }
+  const acNum = (acNumber) => {
+    const acNum = acNumber.toString().slice(0, 3) + "-" + acNumber.toString().slice(3);
+    return acNum;
+  };
 
-    // 계좌번호 3번째에다가 - 추가해주는 함수
-    const acNum = (acNumber) => {
-        const acNum = acNumber.toString().slice(0, 3) + "-" + acNumber.toString().slice(3);
-        return acNum;
-    };
 
     // AutoTransAccept 와 거의 일치
     const {selectedAccount , selectedMyAccount, yourMemo, myMemo, tAmount} = useParams();

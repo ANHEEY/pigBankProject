@@ -12,7 +12,7 @@ function Chatting () {
 
     const chat = ()=>{
         //navigate('http://192.168.0.17:3003');
-        window.location.href = "http://192.168.0.17:3003";
+        window.open('http://192.168.0.17:3003', '_blank', 'width=800,height=1000');
     }
     return (
         <div className="container">
@@ -35,7 +35,7 @@ function Chatting () {
                         </Card.Text>
                     </Col>
                     <Col className="col-md-2 mx-auto">
-                        <i class="bi bi-telephone-fill"  style={iconStyle}></i><br/>
+                        <i className="bi bi-telephone-fill"  style={iconStyle}></i><br/>
                         <Card.Title>전화상담</Card.Title>
                         <Card.Text>
                             업무상담: 1588-0000 <br />

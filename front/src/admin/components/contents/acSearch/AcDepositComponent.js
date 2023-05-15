@@ -92,19 +92,40 @@ function AcDepositComponent() {
     // 검색한값 setSearch에 담기
     const handleSearchChange = (newSearch) => {
         setSearch(newSearch);
-         const searchResultIndex = deposit.findIndex((item) => // 검색했을때의 값의 해당하는 인덱스 번호 찾기
-          item.nshow === 'y' &&
-           (item.ncontent.toLowerCase().includes(newSearch.toLowerCase().replace(/\s/g, '')) ||
-          item.ntitle.toLowerCase().includes(newSearch.toLowerCase().replace(/\s/g, '')))
-         );
-         if (searchResultIndex !== -1) {
-           const pageNumber = Math.ceil((searchResultIndex + 1) / itemsPerPage);
-           setCurrentPage(pageNumber);
-           navigate(`/admin/acSearch/acDeposit?page=${pageNumber}&search=${encodeURIComponent(newSearch)}`);
+      
+        if (newSearch === "") {
+          // 검색어가 비어있는 경우 전체 값을 다시 불러옴
+          reloadMemberList();
+          setCurrentPage(1); // 첫 페이지로 이동
+          navigate(`/admin/acSearch/acDeposit?page=1&search=`);
         } else {
-           return;
-         }
-    };
+          const searchResults = members1.filter((item) => {
+            const acNumber = item.acNumber && item.acNumber.toString();
+            return (
+              acNumber.includes(newSearch.toLowerCase().replace(/\s/g, '')) ||
+              item.tdepositBank.toLowerCase().includes(newSearch.toLowerCase().replace(/\s/g, '')) ||
+              formatDate(item.tdate).toLowerCase().includes(newSearch.toLowerCase().replace(/\s/g, ''))
+            );
+          });
+      
+          if (searchResults.length > 0) {
+            const pageNumber = Math.ceil(searchResults.length / itemsPerPage);
+            setMembers1(searchResults);
+            setTotalPage(pageNumber);
+            setCurrentPage(1); // 검색 시 첫 페이지로 이동
+            navigate(`/admin/acSearch/acDeposit?page=1&search=${encodeURIComponent(newSearch)}`);
+          } else {
+            setMembers1([]);
+            setTotalPage(0);
+            setCurrentPage(1); // 검색 결과가 없으면 첫 페이지로 이동
+            navigate(`/admin/acSearch/acDeposit?page=1&search=${encodeURIComponent(newSearch)}`);
+          }
+        }
+
+        if (newSearch === "" && selectedDate !== todayDate) {
+            handleDateChange(selectedDate);
+          }
+      };
 
     // 페이지 이동 누를때마다 해당하는 페이지 넘버 를 setCurrentPage 담기
     const handlePageChange = (event, pageNumber) => {

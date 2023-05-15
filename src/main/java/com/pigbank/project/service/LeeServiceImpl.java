@@ -58,7 +58,7 @@ public class LeeServiceImpl implements LeeService{
 		// tdeposit : 21024565488
 		dao.insertTransfer(tdto);
 		dao.updateAccount(tdto);
-		
+		dao.updatelastDate(tdto);
 //		입금
 		String tType2 = "입금";
 		tdto.setTType(tType2);
@@ -76,6 +76,7 @@ public class LeeServiceImpl implements LeeService{
 		
 		dao.insertTransfer(tdto);
 		dao.updateAccountnext(tdto);
+		dao.updatelastDate(tdto);
 	}
 	
 	// 다른은행 계좌이체
@@ -88,6 +89,7 @@ public class LeeServiceImpl implements LeeService{
 		tdto.setTType(tType);
 		dao.insertTransfer(tdto);
 		dao.updateAccount(tdto);
+		dao.updatelastDate(tdto);
 	}
 
 
@@ -187,6 +189,7 @@ public class LeeServiceImpl implements LeeService{
 
 								    dao.insertTransfer(tdto);
 								    int result = dao.updateAccount(tdto);
+								    dao.updatelastDate(tdto);
 								    if (result == 1) {
 								    // 입금
 								    TransferDTO tdto2 = new TransferDTO();
@@ -200,6 +203,7 @@ public class LeeServiceImpl implements LeeService{
 
 								    dao.insertTransfer(tdto2);
 								    dao.updateAccountnext(tdto2);
+								    dao.updatelastDate(tdto2);
 								    System.out.println("같은계좌");
 								    HashMap<String, Object> atmap = new HashMap<String, Object>();
 								    atmap.put("aNum", atdtolist.get(i).getANum());
@@ -269,6 +273,7 @@ public class LeeServiceImpl implements LeeService{
 
 								    dao.insertTransfer(tdto);
 								    int result = dao.updateAccount(tdto);
+								    dao.updatelastDate(tdto);
 								    if (result == 1) {
 								    								    	
 								    HashMap<String, Object> atmap = new HashMap<String, Object>();

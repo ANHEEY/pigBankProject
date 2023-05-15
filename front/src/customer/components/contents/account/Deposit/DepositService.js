@@ -32,6 +32,11 @@ class DepositService {
       console.log('예금계좌 상세 정보!!');
       return axios.get(URL+"/deDetailInfo/"+acNumber);
     }
+
+    saDetailInfo(acNumber){
+      console.log('적금계좌 상세 정보!!');
+      return axios.get(URL+"/saDetailInfo/"+acNumber);
+    }
 }
 
 export default new DepositService();

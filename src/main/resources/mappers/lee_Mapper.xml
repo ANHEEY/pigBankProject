@@ -45,6 +45,12 @@
 		SET ACBALANCE = ACBALANCE + #{tAmount}
 		WHERE ACNUMBER = #{acNumber}
 	</update>
+	<!-- 마지막 거래날짜 -->
+	<update id="updatelastDate" parameterType="com.pigbank.project.dto.TransferDTO">
+		UPDATE ACCOUNT_TBL
+		SET LASTDATE = SYSDATE
+		WHERE ACNUMBER = #{acNumber}
+	</update>
 	<!-- 자동이체등록  -->
 	<insert id="autoInsertTransfer" parameterType="com.pigbank.project.dto.AutoTransferDTO">
 		INSERT INTO auto_transferReg_tbl(aNum,acNumber,aDepositNum,aDepositBank,aDepositAmount,aTransferCycle,aStartDate,aEndDate,myMemo,yourMemo)

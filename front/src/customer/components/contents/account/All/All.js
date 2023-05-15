@@ -112,8 +112,7 @@ function All() {
                 <div>
                     <p className="account-span">입출금계좌</p>
                     <AllAccount />
-
-                    
+                    <br/>              
                     
                 </div>
             </div>
@@ -134,7 +133,7 @@ function All() {
                 <div>
                   <p className="account-span">예금계좌</p>
                     <AllDeposit />
-
+                    <br/>
                     {/* <button className="button-link active">
                         <Link to="/customer/account/Deposit">계좌조회</Link>
                     </button> */}
@@ -156,7 +155,7 @@ function All() {
                 <div>
                     <p className="account-span">적금계좌</p>
                     <AllSaving />
-
+                    <br/>
                     {/* <button className="button-link active">
                         <Link to="/customer/account/Saving">계좌조회</Link>
                     </button> */}
@@ -175,7 +174,7 @@ function All() {
                 <div>
                     <p className="account-span">대출계좌</p>
                     <AllLoan />
-                    
+                    <br/>
                     {/* <button className="button-link active">
                         <Link to="/customer/account/loan">계좌조회</Link>
                     </button>

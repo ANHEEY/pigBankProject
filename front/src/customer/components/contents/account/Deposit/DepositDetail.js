@@ -93,7 +93,7 @@ function DepositDetail() {
                         <i className="bi bi-coin" style={iconStyle}></i>
                         <Card.Title>통장 잔액</Card.Title>
                         <Card.Text>
-                            {formatCurrency(account.damount)}
+                            {account.damount !== 0 ? formatCurrency(account.damount) : <h2 style={{color:'green',fontWeight:'bold'}}>해지완료</h2>}
                         </Card.Text>
                     </Col>
                     <Col className="col-md-2 mx-auto">
@@ -158,7 +158,7 @@ function DepositDetail() {
                         <TableCell>거래종류</TableCell>
                         <TableCell>금액</TableCell>
                         <TableCell>내통장메모</TableCell>
-                        <TableCell>받는통장메모</TableCell>
+                        {/* <TableCell>받는통장메모</TableCell> */}
                         <TableCell>거래날짜</TableCell>
                         </TableRow>
                     </TableHead>
@@ -178,8 +178,8 @@ function DepositDetail() {
                             <TableCell>
                                 {formatCurrency(member.tamount)}
                             </TableCell>
-                            <TableCell>{member.myMemo}</TableCell>
-                            <TableCell>{member.yourMemo}</TableCell>
+                            <TableCell>{member.ttype === '출금' ? member.myMemo:member.yourMemo}</TableCell>
+                            {/* <TableCell>{member.yourMemo}</TableCell> */}
                             <TableCell>{formatDate(member.tdate)}</TableCell>
                         </TableRow>
                         ))

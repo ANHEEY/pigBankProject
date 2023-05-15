@@ -134,7 +134,9 @@ function Deposit() {
                             <TableCell>{formatDate(member.djoinDate)}</TableCell>
                             <TableCell>{formatDate(member.dendDate)}</TableCell>
                             <TableCell>{formatCurrency(member.dexpAmount)}</TableCell>
-                            <TableCell>{formatCurrency(member.damount)}</TableCell>
+                            <TableCell>
+                              {member.damount !== 0 ? formatCurrency(member.damount) : <h5 style={{color:'green',fontWeight:'bold'}}>해지완료</h5>}
+                            </TableCell>
                             <TableCell>
                               { member.damount === 0 ?(
                                 <span className="btnbtn zero">해지불가</span>

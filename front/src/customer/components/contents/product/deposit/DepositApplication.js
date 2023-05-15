@@ -214,7 +214,7 @@ function DepositApplication(){
                     <Form.Group as={Row}>
                         <Form.Label column sm="2">가입자명</Form.Label>
                         <Col sm="10">
-                            <Form.Control readOnly value={window.localStorage.getItem("id")} />
+                            <Form.Control readOnly value={window.localStorage.getItem("id")} disabled/>
                         </Col>
                     </Form.Group>
                     <br/>
