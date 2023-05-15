@@ -56,10 +56,11 @@ function ExchangeRate (){
 
     return(
         <div className="container" >
-            <h1><FontAwesomeIcon icon={faSearch}/> 환율정보 </h1>
-            <br />
-            <br />
-            <br />
+            <div className="title_div">
+                <div className="title_see">
+                  <FontAwesomeIcon icon={faSearch}/> 환율정보
+                </div>
+            </div>
             <div className="container" style={{padding:"5px", margin:"5px"}} >
                 <Table >
                     <TableHead style={{backgroundColor:"#dbe2d872"}}>

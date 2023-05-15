@@ -113,7 +113,11 @@ function SavingDetail() {
         <main className="main">
         
             <div className="container">
-                <h2>적금이체내역</h2>
+                <div className="title_div">
+                    <div className="title_see">
+                        적금 이체내역
+                    </div>
+                </div>                
                 <div className="card-body">
 
                 {loading ? (

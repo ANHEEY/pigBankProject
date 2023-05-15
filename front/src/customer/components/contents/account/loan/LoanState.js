@@ -44,10 +44,11 @@ const LoanState = () => {
       
       <section className="section" style={{textAlign:"center"}}>
       <div className="container">
-          <h2>대출심사결과조회</h2>    
-          <br />
-          <br />            
-
+        <div className="title_div">
+          <div className="title_see">
+            대출심사결과조회
+          </div>
+        </div>
           {/* <p className="thead1">
             <select value={selectedOption} onChange={handleChange}>
                 <option value="">전체선택</option>

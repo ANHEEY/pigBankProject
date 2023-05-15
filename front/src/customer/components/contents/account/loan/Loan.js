@@ -91,9 +91,11 @@ function Loan() {
         
         <section className="section">
         <div className="container">
-            <h2>대출계좌조회</h2>                
-            <br />
-            <br />                        
+            <div className="title_div">
+              <div className="title_see">
+              대출계좌 조회
+              </div>
+            </div>
             <div className="card text-center">
                 
                 <div className="card-header" style={{backgroundColor:"#dbe2d872" }}>

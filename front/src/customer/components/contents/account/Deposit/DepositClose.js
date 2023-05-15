@@ -81,10 +81,11 @@ export default function DepositClose() {
         <Container>
             <br/><br/><br/><br/>
             <div>
-                <div>
-                    <h1 style={{textAlign:"center"}}>예금 해지 예상 조회</h1>
+                <div className="title_div">
+                    <div className="title_see">
+                        예금 해지 예상 조회
+                    </div>
                 </div>
-                <br/><br/>
                 <div className='border' style={{textAlign:"center"}}>
                     <p style={{marginLeft:"10px"}}>
                         ￭ 조회시점의 잔액을 기준으로 한 해지예상조회 결과입니다.<br/>
@@ -98,7 +99,9 @@ export default function DepositClose() {
                     <table className="CDTable"  style={{width:'1300px'}}>
                         <thead className='CDTable-title'>
                             <tr>
-                                <th colSpan={4}><h2>예금 계좌 정보</h2></th>
+                                <th colSpan={4}>
+                                    <h2>예금 계좌 정보</h2>
+                                </th>
                             </tr>
                         </thead>
                         <tbody className='CDTable-info'>
@@ -150,8 +153,8 @@ export default function DepositClose() {
                 </div>
                 <br/><br/><br/><br/>
                 <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto">
-                    <Button variant="success" size='lg' style={{background:"green", color:"white"}} onClick={depositCxl}>해지</Button>
-                    <Button variant="outline-secondary" size='lg' onClick={move}>계좌목록</Button>
+                    <button className='btnbtn big' onClick={depositCxl}>해지</button>
+                    <button className='btnbtn bigAgo' onClick={move}>계좌목록</button>
                 </Stack>  
                 <br/><br/><br/><br/>      
             </div>

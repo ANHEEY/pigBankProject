@@ -22,8 +22,13 @@ function TransAccept () {
         return(
             <div align='center'>
                 <div className="w-50 p-3" align='center'>
-                    <h3 >이체완료</h3>
-                    <Table style={{width: '900px'}}>
+                <div className="title_div">
+                    <div className="title_see">
+                        이체 완료
+                    </div>
+                </div>
+                <div className="trnsChk">
+                    <table style={{width: '900px'}}>
                         <tbody>
                             <tr>
                                 <th>받는분</th>
@@ -33,12 +38,6 @@ function TransAccept () {
                                 <th>받는계좌</th>
                                 <td align='right'>{acNum(selectedAccount)}</td>
                             </tr>
-                            </tbody>
-                            </Table>
-                            <br/>
-                            <br />
-                            <Table style={{width: '900px'}}>
-                        <tbody>
                             <tr>
                                 <th>보낸금액</th>
                                 <td align='right'>{Number(tAmount).toLocaleString('ko-kR')}원</td>
@@ -52,10 +51,13 @@ function TransAccept () {
                                 <td align="right">{myMemo}</td>
                             </tr>
                         </tbody>
-                    </Table>
-                    <Button variant="secondary" size="lg" onClick={home}>홈으로</Button>
+                    </table>
+                </div>
+                <div className="mb-2" align='center'>
+                    <button className="btnbtn big trns" onClick={home}>홈으로</button>
                 </div>
             </div>
+        </div>
         )
     }
 export default TransAccept;

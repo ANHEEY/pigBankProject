@@ -93,7 +93,11 @@ function SavingClose () {
     return (
         <Container>
             <div className='saving-title fw-bold' style={{textAlign:"center"}}>
-            <br/><br/> 해지계좌 조회 <br/><br/>
+            <div className="title_div">
+                    <div className="title_see">
+                        해지계좌 조회
+                    </div>
+                </div>     
             </div>
             <div className='border' style={{width:"90%", letterSpacing:"2px", margin:"auto", paddingTop:"10px"}}>
                 <p style={{marginLeft:"10px"}}>
@@ -170,8 +174,8 @@ function SavingClose () {
             </div>
             <br/><br/><br/>
             <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto" style={{marginLeft:"100px"}}>
-                <Button variant="success" size='lg' onClick={savingCxl}>해지</Button>
-                <Button variant="outline-secondary" size='lg' onClick={saAccList}>목록</Button>
+                <button className='btnbtn big' onClick={savingCxl}>해지</button>
+                <button className='btnbtn big' onClick={saAccList}>목록</button>
             </Stack>
             <br/><br/><br/>
         </Container>

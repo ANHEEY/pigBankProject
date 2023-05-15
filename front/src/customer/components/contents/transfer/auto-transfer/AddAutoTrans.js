@@ -168,8 +168,11 @@ function AddAutoTrans () {
 
     return (
         <Container >
-            <h2> 자동이체 </h2>
-            <br />
+            <div className="title_div">
+                <div className="title_see">
+                    자동이체 등록
+                </div>
+            </div>
             <hr />
             <h3>출금정보</h3>
             <hr />

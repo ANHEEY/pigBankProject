@@ -34,7 +34,12 @@ function All() {
 
     return (
     <div className="container">
-      <h2>전체계좌 조회</h2>
+        <div className="title_div">
+          <div className="title_see">
+            전체계좌 조회
+          </div>
+        </div>
+            
         <main className="main">
         <br />
         <section>
@@ -105,7 +110,7 @@ function All() {
 
             <div className="account_card" >
                 <div>
-                    <h4>입출금계좌</h4>
+                    <p className="account-span">입출금계좌</p>
                     <AllAccount />
 
                     
@@ -127,7 +132,7 @@ function All() {
 
             <div className="account_card" >
                 <div>
-                    <h4>예금계좌</h4>
+                  <p className="account-span">예금계좌</p>
                     <AllDeposit />
 
                     {/* <button className="button-link active">
@@ -149,7 +154,7 @@ function All() {
           savingChecked ? (
             <div className="account_card" >
                 <div>
-                    <h4>적금계좌</h4>
+                    <p className="account-span">적금계좌</p>
                     <AllSaving />
 
                     {/* <button className="button-link active">
@@ -168,7 +173,7 @@ function All() {
           loanChecked ? (
             <div className="account_card" >
                 <div>
-                    <h4>대출계좌</h4>
+                    <p className="account-span">대출계좌</p>
                     <AllLoan />
                     
                     {/* <button className="button-link active">

@@ -98,7 +98,11 @@ function Sleep () {
         <main className="main">
         
             <div className="container">
-                <h2>휴면계좌내역</h2>
+                <div className="title_div">
+                    <div className="title_see">
+                    휴면계좌내역
+                    </div>
+                </div>
                 <div className="card-body">
 
                 {loading ? (

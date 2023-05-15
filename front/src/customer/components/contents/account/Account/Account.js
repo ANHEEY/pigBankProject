@@ -83,9 +83,12 @@ function Account() {
           
           <section className="section">
           <div className="container">
-              <h2>입출금계좌조회</h2>                
-              <br />
-              <br />                         
+            <div className="title_div">
+              <div className="title_see">
+                입출금계좌조회
+              </div>
+            </div>
+                       
               <div className="card text-center">
                   
                   <div className="card-header" style={{backgroundColor:"#dbe2d872" }}>

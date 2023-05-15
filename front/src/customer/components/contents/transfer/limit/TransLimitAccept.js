@@ -11,10 +11,12 @@ function TransLimitAccept () {
     const commanext = Number(myvalue).toLocaleString('ko-kR');
     return(
         <Container>
-        <h2 align="center">이체한도 변경 완료</h2>
+            <div className="title_div">
+                <div className="title_see">
+                    이체한도 변경 완료
+                </div>
+            </div>
         <hr />
-        <br />
-        <br />
         <Table>
             <tbody>
                 <tr>

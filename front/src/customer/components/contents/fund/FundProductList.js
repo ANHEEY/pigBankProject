@@ -39,12 +39,12 @@ function FundProductList() {
         }
         FundAPIService.fundProductList()
             .then((response) => {
-                console.log('장고테스트 성공 ');
+                console.log('장고서버 호출 성공 ');
                 const parsedData = JSON.parse(response.data);
                 setFund(parsedData);
             })
             .catch((err) => {
-                console.log('장고테스트 실패 ',err);
+                console.log('장고서버 호출 실패 ',err);
             });
     },[])
 
@@ -76,7 +76,7 @@ function FundProductList() {
             <div className="fund-title">
                 펀드 상품 목록
             </div>
-            <div className="fund-contents fundProduct-list ">
+            <div className="fund-contents fundProduct-list">
                 <ul>
                     <li>
                         <Link to='/customer/product/fund/detail'>
@@ -84,7 +84,7 @@ function FundProductList() {
                         </Link>
                     </li>
                 </ul>
-                <table className="">
+                <table className="fund-listTbl">
                     <thead>
                         <tr>
                             <th>종목명</th>

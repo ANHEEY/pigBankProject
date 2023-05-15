@@ -14,11 +14,11 @@ import ExchangeRateCal3 from './ExchangerRateCal3';
   
     return (
       <div className='container' >
-       <h1><FontAwesomeIcon icon={faSearch}/>환율계산기</h1>
-        <br />
-        <br />
-        <br />
-        <br />
+        <div className="title_div">
+            <div className="title_see">
+              <FontAwesomeIcon icon={faSearch}/> 환율계산기
+            </div>
+        </div>
         <div className="container" style={{padding:"5px", margin:"5px"}}>
           <div className='card' style={{ width: '100%' ,textAlign:"center" }}>
             

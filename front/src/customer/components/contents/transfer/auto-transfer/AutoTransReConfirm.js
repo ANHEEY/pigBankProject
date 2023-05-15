@@ -90,8 +90,11 @@ function AutoTransReConfirm (props) {
 
     return(
     <Container>
-        <br />
-        <h3>자동 이체 확인</h3>
+        <div className="title_div">
+            <div className="title_see">
+                자동 이체 확인
+            </div>
+        </div>
         <hr />
         <Table>
                 <tbody>

@@ -77,7 +77,11 @@ function TransLimit () {
 
     return (
         <Container>
-            <h3 align='left'>이체 한도 조회/변경</h3>
+            <div className="title_div">
+                <div className="title_see">
+                    이체 한도 조회/변경
+                </div>
+            </div>
             <hr />
             <Table align='center'>
             <thead>

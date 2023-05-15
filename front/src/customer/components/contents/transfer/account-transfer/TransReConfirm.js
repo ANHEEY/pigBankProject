@@ -94,30 +94,26 @@ function TransReConfirm (props) {
           
     return(
     <Container>
-        
-        <br />
-        <h3>이체 확인</h3>
-        <hr />
-        <Table width={'200px'}> 
-                <tbody>
-                    <tr>
-                        <th>이체 일시</th>
-                        <td style={{textAlign:'right'}}>{currentTime}</td>
-                    </tr>
-                    <tr>
-                        <th>예금주</th>
-                        <td style={{textAlign:'right'}}>{name}</td>
-                    </tr>
-                    <tr>
-                        <th>출금계좌</th>
-                        <td style={{textAlign:'right'}}>[{bankName}]{acNum(selectedAccount)}</td>
-                    </tr>
-                    </tbody>
-                    </Table>
-                    <br/>
-                    <hr/>
-                    <Table>
+        <div className="title_div">
+          <div className="title_see">
+          이체 확인
+          </div>
+        </div>
+        <div className="trnsChk">
+            <table style={{width:'1000px'}}> 
                     <tbody>
+                        <tr>
+                            <th>이체 일시</th>
+                            <td style={{textAlign:'right'}}>{currentTime}</td>
+                        </tr>
+                        <tr>
+                            <th>예금주</th>
+                            <td style={{textAlign:'right'}}>{name}</td>
+                        </tr>
+                        <tr>
+                            <th>출금계좌</th>
+                            <td style={{textAlign:'right'}}>[{bankName}]{acNum(selectedAccount)}</td>
+                        </tr>
                     <tr>
                         <th>받는 분</th>
                         <td style={{textAlign:'right'}}>{myname}</td>
@@ -131,12 +127,6 @@ function TransReConfirm (props) {
                         <td style={{textAlign:'right'}}>{mybkName}</td>
                     </tr>
                     </tbody>
-                    </Table>
-                    <br />
-                    <hr />
-                    <Table>
-                    
-                    <tbody>
                     <tr>
                         <th>이체금액</th>
                         <td style={{textAlign:'right'}}>{Number(tAmount).toLocaleString('ko-kR')}원</td>
@@ -150,13 +140,13 @@ function TransReConfirm (props) {
                         <td style={{textAlign:'right'}}>{yourMemo}</td>
                         
                     </tr>
-                    </tbody>
-        </Table>
-                <div align='right'>
-                    <Button variant="primary" size="lg" onClick={reloadReConfirmList}>
-                    이체    
-                    </Button>
-                </div>
+            </table>
+        </div>
+        <div className="mb-2" align='center'>
+            <button className="btnbtn big trns" onClick={reloadReConfirmList}>
+            이체    
+            </button>
+        </div>
     </Container>
     )
 }

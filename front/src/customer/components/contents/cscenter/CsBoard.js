@@ -65,9 +65,12 @@ function CsBoard () {
 
     return (
         <Container>
-            <h3>공지사항</h3>
-            <hr/>
-            <SearchBar value={Search} onSearchChange={handleSearchChange} /><p>제목 또는 내용으로 검색</p>
+            <div className="title_div">
+                <div className="title_see">
+                    공지사항
+                </div>
+            </div>
+            <SearchBar value={Search} onSearchChange={handleSearchChange} />
             <br/>
             <Table align='center'>
             

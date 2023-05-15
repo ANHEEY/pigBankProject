@@ -85,9 +85,11 @@ function Deposit() {
       </section>
       <section className="section">
         <div className="container">
-          <h2>예금계좌조회</h2>
-          <br />
-          <br />          
+          <div className="title_div">
+            <div className="title_see">
+            예금계좌 조회
+            </div>
+          </div>
           <div className="card text-center">
             <div className="card-header" style={{backgroundColor:"#dbe2d872" }}>
               <ul className="nav nav-tabs card-header-tabs">
@@ -134,13 +136,16 @@ function Deposit() {
                             <TableCell>{formatCurrency(member.dexpAmount)}</TableCell>
                             <TableCell>{formatCurrency(member.damount)}</TableCell>
                             <TableCell>
-                              <Button variant="success" size='sm' style={{background:"green", color:"white"}} onClick={()=>depositCxlExp(member.dnum)} disabled={member.damount === 0}>해지신청</Button>
+                              { member.damount === 0 ?(
+                                <span className="btnbtn zero">해지불가</span>
+                              ) : (
+                              <button className="btnbtn"  onClick={()=>depositCxlExp(member.dnum)} disabled={member.damount === 0}>해지신청</button>
+                              )}
                             </TableCell>
                            </TableRow>
                         ))}
                       </TableBody>
                     </Table>
-                    
                 </div>
             </div>
               

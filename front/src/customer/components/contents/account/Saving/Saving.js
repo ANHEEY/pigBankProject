@@ -87,9 +87,11 @@ function Saving() {
           
           <section className="section">
           <div className="container">
-              <h2>적금계좌조회</h2>                
-              <br />
-              <br />                        
+            <div className="title_div">
+              <div className="title_see">
+              적금계좌 조회
+              </div>
+            </div>
               <div className="card text-center">
                   
                   <div className="card-header" style={{backgroundColor:"#dbe2d872" }}>
@@ -141,7 +143,7 @@ function Saving() {
                           <TableCell>
                             {member.acBalance === 0 ? "적금해지완료" : formatCurrency(member.acBalance) }</TableCell>
                           <TableCell>
-                            <Button className="btn" variant="success"  onClick={() => goRegister(member.acNumber)} disabled={member.acBalance === 0}>계좌해지</Button>
+                            <button className="btnbtn" variant="success"  onClick={() => goRegister(member.acNumber)} disabled={member.acBalance === 0}>해지</button>
                           </TableCell>
                           </TableRow>
                       ))}

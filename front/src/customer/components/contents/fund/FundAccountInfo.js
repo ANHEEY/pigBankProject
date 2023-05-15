@@ -69,7 +69,7 @@ function FundAccountInfo() {
         // fNum, fAcNumber ,fBalance ,fNewDate ,fLastDate , fAcPwd ,fTrsfLimit :계좌 + 계좌 펀드 거래 내역 리스트
         <div className="fund-div">
             <div className="fund-title">
-                펀드계좌 거래 내역
+                펀드계좌 거래내역
             </div>
             <div className="fund-contents">
                 {faccount.length === 0 ? (
