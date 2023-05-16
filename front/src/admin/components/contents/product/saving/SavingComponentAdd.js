@@ -18,35 +18,44 @@ function SavingComponentAdd(props) {
 
     const onChange = (e) => {
         const { name, value } = e.target;
+      
+        // // 입력값을 검증하여 숫자와 소수점 이하 둘째 자리까지만 유효하도록 처리
+        // if (name === "srate" || name === "scxlrate") {
+        //   const regex = /^\d*\.?\d{0,2}$/; // 숫자와 소수점 이하 둘째 자리까지 유효한 정규식
+        //   if (!regex.test(value)) {
+        //     return; // 유효하지 않은 형식의 값이면 처리 중단
+        //   }
+        // }
+      
         switch (name) {
-        case "spdname":
+          case "spdname":
             setSPdName(value);
             break;
-        case "scontent":
+          case "scontent":
             setSContent(value);
             break;
-        case "speriod":
+          case "speriod":
             setSPeriod(value);
             break;
-        case "smin":
+          case "smin":
             setSMin(value);
             break;
-        case "smax":
+          case "smax":
             setSMax(value);
             break;
-        case "srate":
+          case "srate":
             setSRate(value);
             break;
-        case "scxlrate":
+          case "scxlrate":
             setSCxlRate(value);
             break;
-        case "sregdate":
+          case "sregdate":
             setSRegDate(value);
             break;
-        default:
+          default:
             break;
         }
-    }
+      };
 
     const savePdsaving = (e) => {
         e.preventDefault();
@@ -81,7 +90,7 @@ function SavingComponentAdd(props) {
             <Container><br/><br/>
                 <Form onSubmit={savePdsaving}>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>* 적금상품명</Form.Label>
+                    <Form.Label>* 적금 상품명</Form.Label>
                     <Form.Control 
                         required 
                         type="text" 
@@ -92,7 +101,7 @@ function SavingComponentAdd(props) {
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>* 적금상품설명</Form.Label>
+                    <Form.Label>* 적금 상품설명</Form.Label>
                     <Form.Control 
                         required 
                         as="textarea" 
@@ -104,7 +113,7 @@ function SavingComponentAdd(props) {
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>* 적금가능 최장기간</Form.Label>
+                    <Form.Label>* 적금 가입기간</Form.Label>
                     <Form.Control 
                         required 
                         type="text" 
@@ -117,7 +126,7 @@ function SavingComponentAdd(props) {
                     </Form.Text>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>* 적금가능 최저금액</Form.Label>
+                    <Form.Label>* 적금 최저금액</Form.Label>
                     <Form.Control 
                         required 
                         type="number" 
@@ -128,7 +137,7 @@ function SavingComponentAdd(props) {
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>* 적금가능 최고금액</Form.Label>
+                    <Form.Label>* 적금 최고금액</Form.Label>
                     <Form.Control 
                         required 
                         type="number" 

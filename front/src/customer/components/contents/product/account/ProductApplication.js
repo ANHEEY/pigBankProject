@@ -36,7 +36,7 @@ function ProductApplication() {
         if (isAgreed.isAgreed1 && isAgreed.isAgreed2) {
             PdAccApiService.pdAccAdd(acInfo)
             .then((res) => {
-                alert("<꿀꿀 자유입출금> 통장이 계설되었습니다.");
+                alert("<꿀꿀 자유입출금> 통장이 개설되었습니다.");
                 window.location.href = "/*"; // 네비게이트로 바꾸기
             })
             .catch((err) => {

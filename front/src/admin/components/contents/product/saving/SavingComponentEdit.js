@@ -147,34 +147,36 @@ function SavingComponentEdit () {
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>* 금리</Form.Label>
                         <Form.Control 
-                            required
                             readOnly
                             disabled
                             type="number" 
                             name="srate" 
-                            value={srate} 
+                            value={spdupdate.srate} 
                             onChange={onChange} 
-                            placeholder="%" />
+                            placeholder="%" 
+                            title="소수점 둘째자리까지만 입력해주세요."
+                            />
                         <Form.Text className="text-muted">
                             소수점 둘째자리까지만 입력해주세요.
                         </Form.Text>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>* 중도해지시금리</Form.Label>
-                        <Form.Control 
-                            required
-                            readOnly
-                            disabled
-                            type="number" 
-                            name="scxlrate" 
-                            value={scxlrate} 
-                            onChange={onChange} 
-                            placeholder="%" />
-                        <Form.Text className="text-muted">
-                            소수점 둘째자리까지만 입력해주세요.
-                        </Form.Text>
-                    </Form.Group>
+                      <Form.Label>* 중도해지시금리</Form.Label>
+                      <Form.Control 
+                        required
+                        
+                        type="text" // type을 text로 변경
+                        name="scxlrate" 
+                        value={spdupdate.scxlrate} 
+                        onChange={onChange} 
+                        placeholder="%" 
+                        title="소수점 둘째자리까지만 입력해주세요."
+                      />
+                      <Form.Text className="text-muted">
+                        소수점 둘째자리까지만 입력해주세요.
+                      </Form.Text>
+                     </Form.Group>
 
                     <Stack direction="horizontal" gap={2} className="col-md-2 mx-auto">
                         <Button variant="success" onClick={savePdSaving}>수정</Button>

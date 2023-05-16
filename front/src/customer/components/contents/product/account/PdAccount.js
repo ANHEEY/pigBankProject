@@ -64,32 +64,6 @@ function PdAccount () {
                 <PdAccountInfo /> 
             </Tab>
 
-            {/* <Tab eventKey="profile" title="금리및이율">
-                <Container>
-                    <hr />
-                    <Row className="justify-content-md-center"> 
-                    <Col className="style" lg={2} >
-                        금리
-                    </Col>
-                    <Col>
-                        <Table bordered style={{textAlign:"center"}}>
-                            <thead>
-                            <tr>
-                                <th>분류</th>
-                                <th>금리(연율,세전)</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>-</td>
-                                <td>0.1%</td> 
-                            </tr>
-                            </tbody>
-                        </Table>
-                    </Col>
-                    </Row>
-                </Container>
-            </Tab> */}
             <Tab eventKey="longer-tab" title="유의사항">
                 <Container>
                 <hr />

@@ -57,8 +57,8 @@ function SavingClose () {
         } 
         else {
             // 중도
-            return saAcInfo.acBalance + ((saAcInfo.scxlrate*100)*saAcInfo.samount*(Math.floor(saAcInfo.acBalance / parseInt(saAcInfo.samount, 10))));
-        }
+            return saAcInfo.acBalance + ((saAcInfo.scxlrate*0.01)*saAcInfo.samount*(Math.floor(saAcInfo.acBalance / parseInt(saAcInfo.samount, 10))));
+        }   // Math.floor((amount*(rate*0.01)*(period/12*12+1)*(period/12*12)/2)/12);
     }
 
     // 해지신청

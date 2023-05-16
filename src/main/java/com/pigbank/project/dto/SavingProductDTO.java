@@ -21,7 +21,7 @@ public class SavingProductDTO {
 	private double srate;
 	private int smin;
 	private int smax;
-	private int scxlrate;
+	private double scxlrate; // int형으로 되어있어서 double로 고침
 	private Date sregdate;
 
 }

@@ -11,8 +11,10 @@ function SPdResultCalculator({props}){
     let period=props.period; // 기간
     let rate=props.rate;     // 금리
 
-    let expRate = Math.floor((rate/100)*amount*(period/12));
+    let expRate = Math.floor((amount*(rate*0.01)*(period/12*12+1)*(period/12*12)/2)/12);
+    // 단리계산식: (납부금액*금리*(기간년수*12+1)*기간년수*12/2)/12
     let expAmount = Math.floor(((amount*period)+expRate));
+
 
     // 콤마 찍기
     const comma = (number) => {

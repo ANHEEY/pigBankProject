@@ -46,7 +46,7 @@
 	<insert id="custAPdInsert" parameterType="com.pigbank.project.dto.SavingAccountDTO">
 	  INSERT INTO account_tbl(acNumber, id, acBalance, bankName, acState, acType, acPwd, lastDate)
 	  VALUES (
-	    #{acNumber}, #{id}, #{samount},'돼지은행', 'OPEN', '적금계좌', #{acPwd}, sysdate)
+	    #{acNumber}, #{id}, 0,'돼지은행', 'OPEN', '적금계좌', #{acPwd}, sysdate)
 	</insert>
 	<!-- 2) 적금계좌 개설(acNumber => FK) -->
 	<insert id="custSPdInsert" parameterType="com.pigbank.project.dto.SavingAccountDTO">

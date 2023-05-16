@@ -82,7 +82,7 @@ function SavingComponentDetail () {
                             </tr>
                             <tr>
                                 <th>상품등록일</th>
-                                <td>{selectByPdName.sregdate}</td>
+                                <td>{new Date(selectByPdName.sregdate).toLocaleDateString().slice(0,-1)}</td>
                             </tr>
                         </tbody>
                </table>
