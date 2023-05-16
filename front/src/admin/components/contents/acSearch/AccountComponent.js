@@ -7,7 +7,8 @@ import axios from "axios";
 import { getAuthToken } from "../../../../customer/components/helpers/axios_helper";
 import Pagination from "@mui/material/Pagination";
 import SearchBar from "../../../../customer/components/contents/cscenter/SearchBar";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import NoticeApiService from "../csCenter/NoticeApiService";
 
 function AccountComponent() {
 
@@ -17,17 +18,18 @@ function AccountComponent() {
   const [loading, setLoading] = useState(true);
   const [sortColumn, setSortColumn] = useState("");
   const [sortOrder, setSortOrder] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
   const navigate = useNavigate();
 
   // 검색한 값
   const [Search, setSearch] = useState('');
 
-  const [totalpage,setTotalPage] = useState();
+  const [totalpage, setTotalPage] = useState();
 
   useEffect(() => {
-    if(getAuthToken() !== null){
+    if (getAuthToken() !== null) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`;
-    } else{
+    } else {
       axios.defaults.headers.common['Authorization'] = ``;
     }
     reloadMemberList();
@@ -36,9 +38,9 @@ function AccountComponent() {
     const page = searchParams.get('page');
     const search = decodeURIComponent(searchParams.get('search') || '');
 
-     setCurrentPage(Number(page) || 1);
-        setSearch(search);
-        setCurrentPage(1); 
+    setCurrentPage(Number(page) || 1);
+    setSearch(search);
+    setCurrentPage(1);
   }, []);
 
   const reloadMemberList = () => {
@@ -56,7 +58,7 @@ function AccountComponent() {
           ...depositData.data,
           ...loanData.data,
         ];
-        
+
         const pagenum = Math.ceil(members.length / itemsPerPage);
         setCombinedMembers(members);
         setTotalPage(pagenum);
@@ -66,22 +68,22 @@ function AccountComponent() {
         console.log("reloadMemberList() Error!!", err);
       });
   };
-  
+
 
   const formatCurrency = (value) => {
     if (isNaN(value)) {
       return "₩0";
     }
-    
+
     if (value === 0) {
       return "₩0";
     }
-  
+
     const formatter = new Intl.NumberFormat("ko-KR", {
       style: "currency",
       currency: "KRW",
     });
-  
+
     return formatter.format(value);
   };
 
@@ -91,7 +93,7 @@ function AccountComponent() {
     }
 
     const date = new Date(dateStr);
-    date.setTime(date.getTime() + (9 * 60 * 60 * 1000)); 
+    date.setTime(date.getTime() + (9 * 60 * 60 * 1000));
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
@@ -109,7 +111,7 @@ function AccountComponent() {
 
   const handleSort = (column) => {
     let sortedItems = [...combinedMembers];
-  
+
     if (sortColumn === column) {
       sortedItems.reverse();
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
@@ -117,7 +119,7 @@ function AccountComponent() {
       sortedItems.sort((a, b) => {
         const valueA = parseFloat(a[column] || a.acBalance || a.samount || a.damount || a.lprincipal || 0);
         const valueB = parseFloat(b[column] || b.acBalance || b.samount || b.damount || b.lprincipal || 0);
-  
+
         if (column === "잔액") {
           if (sortOrder === "asc") {
             return valueA - valueB;
@@ -131,151 +133,133 @@ function AccountComponent() {
       setSortColumn(column);
       setSortOrder("asc");
     }
-  
+
     setCombinedMembers(sortedItems);
   };
-  
+
   const handleSortColumnClick = (column) => {
     handleSort(column.toLowerCase());
   };
 
   const handleSearchChange = (newSearch) => {
     setSearch(newSearch);
-  
+
     if (newSearch === "") {
       reloadMemberList();
       setCurrentPage(1);
       navigate(`/admin/acSearch/acAccount?page=1&search=`);
     } else {
-      reloadMemberList();
       const searchKeywords = newSearch.toLowerCase().split(/\s+/);
-      const filteredItems = combinedMembers.filter((item) => {
+      const searchResultIndex = combinedMembers.filter((item) => {
         const acType = String(item.acType);
         const id = String(item.id) && item.id.toString();
         const spdname = String(item.spdname);
         const dpdName = String(item.dpdName);
         const lpdName = String(item.lpdName);
-  
+        const acnumber = String(item.acNumber);
+
         return searchKeywords.every((keyword) =>
           acType.toLowerCase().includes(keyword) ||
           id.toLowerCase().includes(keyword) ||
           spdname.toLowerCase().includes(keyword) ||
           dpdName.toLowerCase().includes(keyword) ||
-          lpdName.toLowerCase().includes(keyword)
+          lpdName.toLowerCase().includes(keyword) ||
+          acnumber.toLowerCase().includes(keyword)
         );
       });
-  
-      if (filteredItems.length > 0) {
-        const pageNumber = Math.ceil(filteredItems.length / itemsPerPage);
-        setCombinedMembers(filteredItems);
-        setTotalPage(pageNumber);
-        setCurrentPage(1);
-        navigate(`/admin/acSearch/acAccount?page=1&search=${encodeURIComponent(newSearch)}`);
-      } else {
-        setCombinedMembers([]);
-        setTotalPage(0);
-        setCurrentPage(1);
-        navigate(`/admin/acSearch/acAccount?page=1&search=${encodeURIComponent(newSearch)}`);
-      }
+      console.log(searchResultIndex);
+      const pageNumber = Math.ceil(searchResultIndex.length / itemsPerPage)
+      setTotalPage(pageNumber)
+      setSearchResult(searchResultIndex);
+
     }
   };
-  
+
+  let displayMembers = Search ? searchResult : combinedMembers;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = combinedMembers.slice(indexOfFirstItem, indexOfLastItem);
+  displayMembers = displayMembers.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (event, pageNumber) => {
     setCurrentPage(pageNumber);
     navigate(`/admin/acSearch/acAccount?page=${pageNumber}&search=${encodeURIComponent(Search)}`);
   };
-        
 
-    return(
-        <div className="component-div">
-            <h1><FontAwesomeIcon icon={faSearch}/> 계좌목록 </h1>
-            <ul>
-           {/* <li><SearchBar value={Search} onSearchChange={handleSearchChange}/></li> */ } 
-            <br />
-            </ul>
-            {loading ? (
-                    <p style={{textAlign:"center"}}>Loading...</p>
-            ) : (
-            
-            <Table>
-                <TableHead style={{backgroundColor:"#dbe2d872"}}>
-                    <TableRow>
-                        <TableCell style={tableHeadStyle}>가입자</TableCell>
-                        <TableCell style={tableHeadStyle}>계좌명</TableCell>
-                        <TableCell style={tableHeadStyle}>계좌번호</TableCell>
-                        <TableCell style={tableHeadStyle}>가입날짜</TableCell>
-                        <TableCell style={tableHeadStyle}>만기날짜</TableCell>
-                        <TableCell style={tableHeadStyle}>상태</TableCell>
-                        <TableCell onClick={() => handleSortColumnClick("잔액")} style={{ cursor: "pointer" }}>
-                            잔액
-                            <span>
-                                {sortColumn === "잔액" ? (
-                                sortOrder === "desc" ? (
-                                    "▲"
-                                ) : (
-                                    "▼"
-                                )
-                                ) : (
-                                    "▼" 
-                                )}
-                            </span>
-                        </TableCell>
-                    </TableRow>
-                </TableHead>
+  return (
+    <div className="component-div">
+      <h1><FontAwesomeIcon icon={faSearch} /> 계좌목록 </h1>
+      <ul>
+        <li><SearchBar value={Search} onSearchChange={handleSearchChange} /></li>
+        <br />
+        <li><p>은행명과 계좌명,계좌번호(-를 제외한)로 조회하세요.</p></li>
+        <br />
+      </ul>
+      {loading ? (
+        <p style={{ textAlign: "center" }}>Loading...</p>
+      ) : (
+
+        <Table>
+          <TableHead style={{ backgroundColor: "#dbe2d872" }}>
+            <TableRow>
+              <TableCell style={tableHeadStyle}>가입자</TableCell>
+              <TableCell style={tableHeadStyle}>계좌명</TableCell>
+              <TableCell style={tableHeadStyle}>계좌번호</TableCell>
+              <TableCell style={tableHeadStyle}>가입날짜</TableCell>
+              <TableCell style={tableHeadStyle}>만기날짜</TableCell>
+              <TableCell style={tableHeadStyle}>상태</TableCell>
+              <TableCell onClick={() => handleSortColumnClick("잔액")} style={{ cursor: "pointer" }}>
+                잔액
+                <span>
+                  {sortColumn === "잔액" ? (
+                    sortOrder === "desc" ? (
+                      "▲"
+                    ) : (
+                      "▼"
+                    )
+                  ) : (
+                    "▼"
+                  )}
+                </span>
+              </TableCell>
+            </TableRow>
+          </TableHead>
 
 
-                <TableBody>
-                {currentItems
-                  .filter(item => {
-                    const id = item.id && item.id.toString().toLowerCase().replace(/\s/g, '');
-                    const actype = item.acType && item.acType.toString().toLowerCase().replace(/\s/g, '');
-                    const spdname = item.spdname && item.spdname.toString().toLowerCase().replace(/\s/g, '');
-                    const dpdname = item.dpdName && item.dpdName.toString().toLowerCase().replace(/\s/g, '');
-                    const lpdname = item.lpdName && item.lpdName.toString().toLowerCase().replace(/\s/g, '');
-                    
-                    return (id && id.includes(Search.toLowerCase().replace(/\s/g, ''))) ||
-                      (actype && actype.includes(Search.toLowerCase().replace(/\s/g, ''))) ||
-                      (spdname && spdname.includes(Search.toLowerCase().replace(/\s/g, ''))) ||
-                      (dpdname && dpdname.includes(Search.toLowerCase().replace(/\s/g, ''))) ||
-                      (lpdname && lpdname.includes(Search.toLowerCase().replace(/\s/g, '')))
-                  })
-                .map((member, index) => {
-                  return (
-                    <TableRow key={`member${index}`}>
-                      <TableCell>{member.id}</TableCell>
-                      <TableCell>{member.acType || member.spdname || member.dpdName || member.lpdName}</TableCell>
-                      <TableCell>{acNum(member.acNumber)}</TableCell>
-                      <TableCell>{formatDate(member.newDate || member.sendDate || member.djoinDate || member.lreqDate)}</TableCell>
-                      <TableCell>{formatDate(member.lastDate || member.sjoinDate || member.dendDate || member.lendDate)}</TableCell>
-                      <TableCell>{member.acState}</TableCell>
-                      <TableCell>{formatCurrency(member.acBalance || member.samount || member.damount || member.lprincipal)}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-
-                <TableFooter>
-                  <TableRow>
-                    <TableCell colSpan={7} style={{textAlign:"center"}}>
-                        <Box display="flex" justifyContent="center">
-                        <Pagination 
-                          count={totalpage}
-                          page={currentPage}
-                          onChange={handlePageChange}
-                        />
-                        </Box>
-                    </TableCell>
+          <TableBody>
+            {displayMembers
+              .map((member, index) => {
+                return (
+                  <TableRow key={`member${index}`}>
+                    <TableCell>{member.id}</TableCell>
+                    <TableCell>{member.acType || member.spdname || member.dpdName || member.lpdName}</TableCell>
+                    <TableCell>{acNum(member.acNumber)}</TableCell>
+                    <TableCell>{formatDate(member.newDate || member.sendDate || member.djoinDate || member.lreqDate)}</TableCell>
+                    <TableCell>{formatDate(member.lastDate || member.sjoinDate || member.dendDate || member.lendDate)}</TableCell>
+                    <TableCell>{member.acState}</TableCell>
+                    <TableCell>{formatCurrency(member.acBalance || member.samount || member.damount || member.lprincipal)}</TableCell>
                   </TableRow>
-                </TableFooter>
+                );
+              })}
+          </TableBody>
 
-            </Table>
-            )}   
-        </div>                
-    )
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={7} style={{ textAlign: "center" }}>
+                <Box display="flex" justifyContent="center">
+                  <Pagination
+                    count={totalpage}
+                    page={currentPage}
+                    onChange={handlePageChange}
+                  />
+                </Box>
+              </TableCell>
+            </TableRow>
+          </TableFooter>
+
+        </Table>
+      )}
+    </div>
+  )
 
 }
 export default AccountComponent;

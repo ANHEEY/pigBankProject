@@ -48,6 +48,7 @@ function TransDeposit() {
   const [myname, setMyname] = useState('');
   // 값을 비교하기위해 가져온 모든계좌정보 
   const [allAccount, setAllAccounts] = useState([]);
+  
 
   const [id, setId] = useState(getId());
 
@@ -162,6 +163,19 @@ function TransDeposit() {
         const show = () => {
           setShowComponent(false);
         }
+        // 이체금액 값 누적 버튼
+        const plus10000 = () => {
+          setTAmount(prevAmount => Number(prevAmount) + 10000);
+        }
+        const plus100000 = () => {
+          setTAmount(prevAmount => Number(prevAmount) + 100000);
+        }
+        const plus1000000 = () => {
+          setTAmount(prevAmount => Number(prevAmount) + 1000000);
+        }
+        const reset = () => {
+          setTAmount('');
+        }
 
       return (
         <Container >
@@ -273,7 +287,7 @@ function TransDeposit() {
                 <td>
                   <InputGroup.Text id="basic-addon1" >입금은행</InputGroup.Text>
                 </td>
-                <td colSpan={2}>
+                <td colSpan={1}>
                   <Form.Control
                       value={mybkName}
                       placeholder="은행명"
@@ -287,7 +301,7 @@ function TransDeposit() {
                 <td>
                   <InputGroup.Text id="basic-addon1" >이체금액</InputGroup.Text>
                 </td>
-                <td colSpan={2}>
+                <td>
                   <Form.Control
                       value={tAmount ? Number(tAmount).toLocaleString('ko-kR') : ''}
                       placeholder="원(KRW)"
@@ -295,7 +309,13 @@ function TransDeposit() {
                       aria-describedby="basic-addon1"
                       onChange={(e) => setTAmount(Number(e.target.value.replace(/[^0-9]/g, '')))}
                       />  
-                </td>    
+                </td>
+                <td>
+                    <button onClick={plus10000}>+10000</button>&nbsp;
+                    <button onClick={plus100000}>+100,000</button>&nbsp;
+                    <button onClick={plus1000000}>+1,000,000</button>&nbsp;
+                    <button onClick={reset}>초기화</button>
+                  </td>    
               </tr>
               <tr>
                 <td>

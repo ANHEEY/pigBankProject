@@ -9,6 +9,7 @@ import { ko } from "date-fns/esm/locale";
 
 const ReactDatePicker = () => {
     const [startDate, setStartDate] = useState(new Date());
+    console.log(startDate);
       return (
           <div>
             <DatePicker

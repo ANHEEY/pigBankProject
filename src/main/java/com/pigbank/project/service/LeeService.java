@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.ui.Model;
 
 import com.pigbank.project.dto.AccountDTO;
@@ -80,4 +82,5 @@ public interface LeeService {
 	// 고객 상세페이지(조회수를 위한)
 	public NoticeDTO csboardDetail(int nNum)
 			throws ServletException,IOException;
+	
 }

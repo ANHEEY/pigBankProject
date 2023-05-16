@@ -37,6 +37,7 @@ function NoticeComponent () {
            (item.ncontent.toLowerCase().includes(newSearch.toLowerCase().replace(/\s/g, '')) ||
           item.ntitle.toLowerCase().includes(newSearch.toLowerCase().replace(/\s/g, '')))
          );
+         console.log(searchResultIndex)
          if (searchResultIndex !== -1) {
            const pageNumber = Math.ceil((searchResultIndex + 1) / itemsPerPage);
            setCurrentPage(pageNumber);
@@ -45,6 +46,7 @@ function NoticeComponent () {
            return;
          }
       };
+    
 
     const fetchnoticeList = () => {
         NoticeApiService.noticeList()
@@ -78,8 +80,8 @@ function NoticeComponent () {
                 <br/>
                 <br/>
                 <div >
-                 <Button variant="primary" onClick={add} style={{ textAlign: 'left' }}>
-                    공지사항 등록</Button>
+                 <button  className="btnbtn big trns" onClick={add} >
+                    공지사항 등록</button>
                 </div>
                 <Table striped style={{width:"1000px"}}>
                     <thead>

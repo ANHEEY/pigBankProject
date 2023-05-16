@@ -12,6 +12,8 @@ const changenotice = "http://localhost:8081/changenotice";
 const deletenotice = "http://localhost:8081/deletenotice";
 const addnotice = "http://localhost:8081/addnotice";
 const csboardDetail = "http://localhost:8081/csboardDetail";
+const aclist = "http://localhost:8081/searchPaging";
+
 
 if(getAuthToken() !== null){
     axios.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`;

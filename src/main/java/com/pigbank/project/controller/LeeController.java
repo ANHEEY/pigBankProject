@@ -1,7 +1,6 @@
 package com.pigbank.project.controller;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,24 +9,29 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
+
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+
 
 import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.AutoTransferDTO;
 import com.pigbank.project.dto.AutoTransferListDTO;
 import com.pigbank.project.dto.NoticeDTO;
+
 import com.pigbank.project.dto.TransferDTO;
 import com.pigbank.project.service.LeeServiceImpl;
+
+
 
 
 @CrossOrigin(origins="**", maxAge=3600)
@@ -166,7 +170,7 @@ public class LeeController {
 	}
 	
 	// 공지사항 삭제
-	@PostMapping(value="deletenotice")
+	@PostMapping(value="/deletenotice")
 	public void deletenotice(@RequestBody int nNum)
 			throws ServletException,IOException {
 		System.out.println("nNum : " + nNum);
@@ -175,7 +179,7 @@ public class LeeController {
 	}
 	
 	// 공지사항 추가
-	@PostMapping(value="addnotice")
+	@PostMapping(value="/addnotice")
 	public void addnotice(@RequestBody NoticeDTO dto)
 			throws ServletException,IOException {
 		System.out.println("noticedtoadd : " + dto);
@@ -191,4 +195,6 @@ public class LeeController {
 		
 		return service.csboardDetail(nnum);
 	}
+	
+
 }

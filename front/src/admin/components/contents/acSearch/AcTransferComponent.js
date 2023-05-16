@@ -4,10 +4,10 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import AllService from "../../../../customer/components/contents/account/All/AllService";
 import SearchBar from "../../../../customer/components/contents/cscenter/SearchBar";
-import {Box} from "@mui/material";
+import { Box } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import { Button } from "react-bootstrap";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ReactDatePicker from "./ReactDatePicker";
 
 function AcTransferComponent() {
@@ -18,21 +18,11 @@ function AcTransferComponent() {
     const [currentPage, setCurrentPage] = useState(1);
     // 검색한 값
     const [Search, setSearch] = useState('');
-   
-    const [totalpage,setTotalPage] = useState();
-    
+    const [searchResult, setSearchResult] = useState([]);
+    const [totalpage, setTotalPage] = useState();
+    const [daybyData, setDaybyData] = useState([]);
 
-    useEffect(() => {
-        reloadMemberList();
-        const searchParams = new URLSearchParams(window.location.search);
-        const page = searchParams.get('page');
-        const search = decodeURIComponent(searchParams.get('search') || '');
-
-        setCurrentPage(Number(page) || 1);
-        setSearch(search);
-        setCurrentPage(1); 
-        
-    }, []);
+    const [filteredMembers, setFilteredMembers] = useState([]);
 
     const today = new Date(); // 현재 날짜
     const year = today.getFullYear(); // 현재 연도
@@ -44,99 +34,134 @@ function AcTransferComponent() {
 
     const [selectedDate, setSelectedDate] = useState(todayDate);
 
-    
-    
+    // 화면에 뿌려줄 date 값으로 변환해주는 함수
+    const formatDate = (dateStr) => {
+        const date = new Date(dateStr);
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const day = date.getDate().toString().padStart(2, "0");
+        return `${year}-${month}-${day}`;
+    };
+
+    useEffect(() => {
+        reloadMemberList();
+        const searchParams = new URLSearchParams(window.location.search);
+        const page = searchParams.get('page');
+        const search = decodeURIComponent(searchParams.get('search') || '');
+
+        setCurrentPage(Number(page) || 1);
+        setSearch(search);
+    }, []);
+
     // onDateChange 자식 컴포넌트 ReactDatePicker 에서 호출됨 선택한 값이 다시 set 되서 자식컴포넌트로 전달
     const handleDateChange = (date) => {
         const formattedDate = formatDate(date); // 선택한 날짜를 형식에 맞게 변환
+        console.log(formattedDate);
         setSelectedDate(formattedDate); // 선택한 날짜 업데이트
-      
+
+        console.log(members1);
         // 선택한 날짜에 해당하는 값들 가져오기
-        AllService.fetchTransfer().then((res) => {
-          const searchResults = res.data.filter((item) => {
+        const searchResults = members1.filter((item) => {
             const formattedItemDate = formatDate(item.tdate);
             return formattedItemDate === formattedDate;
-          });
-      
-          if (searchResults.length > 0) {
+        })
+
+        console.log(searchResults);
+
+        if (searchResults.length > 0) {
             const pageNumber = Math.ceil(searchResults.length / itemsPerPage);
-      
-            setMembers1(searchResults);
+            console.log(pageNumber);
+            setDaybyData(searchResults);
             setTotalPage(pageNumber);
             setCurrentPage(1); // 선택한 날짜에 해당하는 페이지로 이동하기 위해 currentPage를 1로 설정
             navigate(`/admin/acSearch/acTransfer?page=1&search=${encodeURIComponent(Search)}`);
-          } else {
-            setMembers1([]);
+        } else {
+            setDaybyData([]);
             setTotalPage(0);
             setCurrentPage(1);
             navigate(`/admin/acSearch/acTransfer?page=1&search=${encodeURIComponent(Search)}`);
-          }
-        });
-      };
-      
+        }
+    };
 
     const reloadMemberList = () => {
         AllService.fetchTransfer()
-        .then((res) => {
-            setMembers1(res.data);
-            console.log(members1);
+            .then((res) => {
+                setMembers1(res.data);
+                const pagenum = Math.ceil(res.data.length / itemsPerPage);
+                setTotalPage(pagenum)
 
-            const pagenum = Math.ceil(res.data.length / itemsPerPage);
-            setTotalPage(pagenum)
-        })
-        .catch((err) => {
-            console.log("reloadMemberList() Error!!", err);
-        });
+                const formattedDate = formatDate(todayDate); // 선택한 날짜를 형식에 맞게 변환
+                const searchResults = res.data.filter((item) => {
+                    const formattedItemDate = formatDate(item.tdate);
+                    return formattedItemDate === formattedDate;
+                })
+
+                if (searchResults.length > 0) {
+                    const pageNumber = Math.ceil(searchResults.length / itemsPerPage);
+                    console.log(pageNumber);
+                    setDaybyData(searchResults);
+                    setTotalPage(pageNumber);
+                    setCurrentPage(1); // 선택한 날짜에 해당하는 페이지로 이동하기 위해 currentPage를 1로 설정
+                    navigate(`/admin/acSearch/acTransfer?page=1&search=${encodeURIComponent(Search)}`);
+                } else {
+                    setDaybyData([]);
+                    setTotalPage(0);
+                    setCurrentPage(1);
+                    navigate(`/admin/acSearch/acTransfer?page=1&search=${encodeURIComponent(Search)}`);
+                }
+            })
+            .catch((err) => {
+                console.log("reloadMemberList() Error!!", err);
+            });
     };
 
     // 검색한값 setSearch에 담기
     const handleSearchChange = (newSearch) => {
         setSearch(newSearch);
-        console.log(newSearch.toLowerCase().replace(/\s/g, ''));
-      
+
         if (newSearch === "") {
-          // 검색어가 비어있는 경우 전체 값을 다시 불러옴
-          reloadMemberList();
-          setCurrentPage(1); // 첫 페이지로 이동
-          navigate(`/admin/acSearch/acTransfer?page=1&search=`);
+            setSearchResult([]);
+            // 검색어가 비어있는 경우 전체 값을 다시 불러옴
+            handleDateChange(selectedDate);
         } else {
-          const searchResults = members1.filter((item) => { // 검색한값과 전체 데이터에서 비교한후 searchResults에 담기
-            const acNumber = item.acNumber && item.acNumber.toString();
-            const bank = item.tdepositBank && item.tdepositBank.toString();
-            console.log(bank);
-            console.log(item.tdepositBank);
-            
-            return (
-              acNumber.includes(newSearch.toLowerCase().replace(/\s/g, '')) ||
-              bank.toLowerCase().includes(newSearch.toLowerCase().replace(/\s/g, '')) ||
-              formatDate(item.tdate).toLowerCase().includes(newSearch.toLowerCase().replace(/\s/g, ''))
-            );
-          });
-          console.log(searchResults); 
-          if (searchResults.length > 0) { // 검색결과의 값의 index가 0보다 크면
-            const pageNumber = Math.ceil(searchResults.length / itemsPerPage); // 검색결과의 길이 / 10
-            setMembers1(searchResults); // 검색결과를 members1변수에 담기
-            setTotalPage(pageNumber); // 전체페이지
-            setCurrentPage(1); // 검색 시 첫 페이지로 이동
-            navigate(`/admin/acSearch/acTransfer?page=1&search=${encodeURIComponent(newSearch)}`);
-          } else {
-            setMembers1([]); // 검색결과에 따른 값이 없으면 값 초기화 해주기
-            setTotalPage(0); // 전체페이지도 초기화
-            setCurrentPage(1); // 검색 결과가 없으면 첫 페이지로 이동
-            navigate(`/admin/acSearch/acTransfer?page=1&search=${encodeURIComponent(newSearch)}`);
-          }
+            console.log(daybyData);
+            const searchResults = daybyData.filter((item) => { // 검색한값과 전체 데이터에서 비교한후 searchResults에 담기
+                const acNumber = item.acNumber && item.acNumber.toString();
+                const bank = item.tdepositBank && item.tdepositBank.toString()
+                const acType = item.acType && item.acType.toString();
+                console.log(bank);
+                return (
+                    acNumber.includes(newSearch.toLowerCase().replace(/\s/g, '')) ||
+                    bank.toLowerCase().includes(newSearch.toLowerCase().replace(/\s/g, '')) ||
+                    acType.toLowerCase().includes(newSearch.toLowerCase().replace(/\s/g, '')) ||
+                    formatDate(item.tdate).toLowerCase().includes(newSearch.toLowerCase().replace(/\s/g, ''))
+                );
+            });
+            console.log(searchResults);
+
+            if (searchResults.length > 0) { // 검색결과의 값의 index가 0보다 크면
+                const pageNumber = Math.ceil(searchResults.length / itemsPerPage); // 검색결과의 길이 / 10
+                setSearchResult(searchResults); // 검색결과를 members1변수에 담기
+                setTotalPage(pageNumber); // 전체페이지
+                setCurrentPage(1); // 검색 시 첫 페이지로 이동
+                navigate(`/admin/acSearch/acTransfer?page=1&search=${encodeURIComponent(newSearch)}`);
+            } else {
+                setSearchResult([]); // 검색결과에 따른 값이 없으면 값 초기화 해주기
+                setTotalPage(0); // 전체페이지도 초기화
+                setCurrentPage(1); // 검색 결과가 없으면 첫 페이지로 이동
+                navigate(`/admin/acSearch/acTransfer?page=1&search=${encodeURIComponent(newSearch)}`);
+            }
         }
 
         if (newSearch === "" && selectedDate !== todayDate) { // 겁색값이 비어있고 선택한 날짜가 오늘날짜가 아니면
             handleDateChange(selectedDate); // 선택한 날짜로 handleDateChange 함수를탐
-          }
-      };
-      
+        }
+    };
 
-    // 전체이체내역 조회기 때문에 필터링 X 
+    let displayMembers = Search ? searchResult : daybyData;
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const ListMember = members1.slice(indexOfFirstItem, indexOfLastItem);
+    displayMembers = displayMembers.slice(indexOfFirstItem, indexOfLastItem);
 
     // 페이지 이동 누를때마다 해당하는 페이지 넘버 를 setCurrentPage 담기
     const handlePageChange = (event, pageNumber) => {
@@ -147,20 +172,12 @@ function AcTransferComponent() {
     // 숫자 KRW(원) 으로 변경
     const formatCurrency = (value) => {
         const formatter = new Intl.NumberFormat("ko-KR", {
-        style: "currency",
-        currency: "KRW",
+            style: "currency",
+            currency: "KRW",
         });
         return formatter.format(value);
     };
 
-    // 화면에 뿌려줄 date 값으로 변환해주는 함수
-    const formatDate = (dateStr) => {
-        const date = new Date(dateStr);
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, "0");
-        const day = date.getDate().toString().padStart(2, "0");
-        return `${year}-${month}-${day}`;
-    };
 
     // 계좌번호 3번째에다가 - 추가해주는 함수
     const acNum = (acNumber) => {
@@ -172,83 +189,133 @@ function AcTransferComponent() {
         fontWeight: "bold",
     };
 
-    // 컴포넌트 이동 함수(출금내역)
     const withdraw = () => {
-        navigate(`/admin/acSearch/acWithdraw`)
-    }
-    // 컴포넌트 이동 함수(입금내역)
-    const deposited = () => {
-        navigate(`/admin/acSearch/acDeposit`)
-    }
-        return(
-            <div className="component-div">
-                <h1>
-                <FontAwesomeIcon icon={faSearch} /> 입출금내역
-                </h1>
 
-                <ul>
+        setSearchResult([]);
+        const searchResults = members1
+            .filter((item) => item.ttype === "출금")
+            .filter((item) => {
+            const formattedItemDate = formatDate(item.tdate);
+            return formattedItemDate === selectedDate;
+        })
+        if (searchResults.length > 0) {
+            const pageNumber = Math.ceil(searchResults.length / itemsPerPage);
+            setDaybyData(searchResults);
+            setTotalPage(pageNumber);
+            setCurrentPage(1); // 선택한 날짜에 해당하는 페이지로 이동하기 위해 currentPage를 1로 설정
+            navigate(`/admin/acSearch/acTransfer?page=1&search=${encodeURIComponent(Search)}`);
+        } else {
+            setDaybyData([]);
+            setTotalPage(0);
+            setCurrentPage(1);
+            navigate(`/admin/acSearch/acTransfer?page=1&search=${encodeURIComponent(Search)}`);
+        }
+        
+    };
+
+    const transfer = () => {
+        setSearchResult([]);
+        const searchResults = members1
+            .filter((item) => {
+            const formattedItemDate = formatDate(item.tdate);
+            return formattedItemDate === selectedDate;
+        })
+        if (searchResults.length > 0) {
+            const pageNumber = Math.ceil(searchResults.length / itemsPerPage);
+            setDaybyData(searchResults);
+            setTotalPage(pageNumber);
+            setCurrentPage(1); // 선택한 날짜에 해당하는 페이지로 이동하기 위해 currentPage를 1로 설정
+            navigate(`/admin/acSearch/acTransfer?page=1&search=${encodeURIComponent(Search)}`);
+        } else {
+            setDaybyData([]);
+            setTotalPage(0);
+            setCurrentPage(1);
+            navigate(`/admin/acSearch/acTransfer?page=1&search=${encodeURIComponent(Search)}`);
+        }
+    }
+    const deposited = () => {
+        setSearchResult([]);
+        const searchResults = members1
+            .filter((item) => item.ttype === "입금")
+            .filter((item) => {
+            const formattedItemDate = formatDate(item.tdate);
+            return formattedItemDate === selectedDate;
+        })
+        if (searchResults.length > 0) {
+            const pageNumber = Math.ceil(searchResults.length / itemsPerPage);
+            setDaybyData(searchResults);
+            setTotalPage(pageNumber);
+            setCurrentPage(1); // 선택한 날짜에 해당하는 페이지로 이동하기 위해 currentPage를 1로 설정
+            navigate(`/admin/acSearch/acTransfer?page=1&search=${encodeURIComponent(Search)}`);
+        } else {
+            setDaybyData([]);
+            setTotalPage(0);
+            setCurrentPage(1);
+            navigate(`/admin/acSearch/acTransfer?page=1&search=${encodeURIComponent(Search)}`);
+        }
+    }
+    return (
+        <div className="component-div">
+            <h1>
+                <FontAwesomeIcon icon={faSearch} /> 입출금내역
+            </h1>
+
+            <ul>
                 <hr />
-                <li><SearchBar value={Search} onSearchChange={handleSearchChange}/></li>
+                <li><SearchBar value={Search} onSearchChange={handleSearchChange} /></li>
                 <br />
-                <li><p>은행명과 계좌번호(-를 제외한)로 조회하세요.</p></li>
-                <br/>
-                <li><ReactDatePicker selectedDate={selectedDate} onDateChange={handleDateChange}/></li>
-                </ul>
-                <div>
-                    <Button onClick={deposited} variant="success"> 입금 내역 </Button>
-                    {' '}
-                    <Button onClick={withdraw} variant="info"> 출금 내역 </Button>
-                </div>
-                <Table>
+                <li><p>은행명과 계좌명,계좌번호(-를 제외한)로 조회하세요.</p></li>
+                <br />
+                <li><ReactDatePicker selectedDate={selectedDate} onDateChange={handleDateChange} /></li>
+            </ul>
+            <div>
+                <Button onClick={deposited} variant="success"> 입금 내역 </Button>
+                {' '}
+                <Button onClick={withdraw} variant="info"> 출금 내역 </Button>
+                {' '}
+                <Button onClick={transfer} variant="primary">입출금 내역</Button>
+            </div>
+            <br />
+            <Table>
                 <TableHead style={{ backgroundColor: "#dbe2d872" }}>
                     <TableRow>
-                    <TableCell style={tableHeadStyle}>은행명</TableCell>
-                    <TableCell style={tableHeadStyle}>계좌번호</TableCell>
-                    <TableCell style={tableHeadStyle}>입출금</TableCell>
-                    <TableCell style={tableHeadStyle}>금액</TableCell>
-                    <TableCell style={tableHeadStyle}>mymemo</TableCell>
-                    <TableCell style={tableHeadStyle}>yourmemo</TableCell>
-                    <TableCell style={tableHeadStyle}>날짜</TableCell>
+                        <TableCell style={tableHeadStyle}>은행명</TableCell>
+                        <TableCell style={tableHeadStyle}>계좌번호</TableCell>
+                        <TableCell style={tableHeadStyle}>입출금</TableCell>
+                        <TableCell style={tableHeadStyle}>금액</TableCell>
+                        <TableCell style={tableHeadStyle}>mymemo</TableCell>
+                        <TableCell style={tableHeadStyle}>yourmemo</TableCell>
+                        <TableCell style={tableHeadStyle}>날짜</TableCell>
                     </TableRow>
                 </TableHead>
 
                 <TableBody>
-                {ListMember
-                    .filter(item => { // 검색조건 계좌번호 은행명 날짜를 대소문자, 띄어쓰기 상관없이 검색
-                        const acNumber = item.acNumber && item.acNumber.toString();
-                        return acNumber.includes(Search.toLowerCase().replace(/\s/g, '')) || 
-                        item.tdepositBank.toLowerCase().includes(Search.toLowerCase().replace(/\s/g, '')) ||
-                        formatDate(item.tdate).toLowerCase().includes(Search.toLowerCase().replace(/\s/g, ''))
-                    })
-                    .filter(member => {
-                        const formattedDate = formatDate(member.tdate); // member.tdate를 형식에 맞게 변환
-                        return formattedDate === selectedDate; // 선택한 날짜와 일치하는지 확인
-                    })
-                    .map((member) => (
-                        <TableRow key={member.tnum}>
-                        <TableCell style={{ color: "navy" }}>{member.tdepositBank}</TableCell>
-                        <TableCell>{member.acType} | {acNum(member.acNumber)}</TableCell>
-                        <TableCell>{member.ttype}</TableCell>
-                        <TableCell>{formatCurrency(member.tamount)}</TableCell>
-                        <TableCell>{member.myMemo}</TableCell>
-                        <TableCell>{member.yourMemo}</TableCell>
-                        <TableCell>{formatDate(member.tdate)}</TableCell>
-                        </TableRow>
-                    ))}
+                    {displayMembers
+                        .map((member) => (
+                            <TableRow key={member.tnum}>
+                                <TableCell style={{ color: "navy" }}>{member.tdepositBank}</TableCell>
+                                <TableCell>{member.acType} | {acNum(member.acNumber)}</TableCell>
+                                <TableCell>{member.ttype}</TableCell>
+                                <TableCell>{formatCurrency(member.tamount)}</TableCell>
+                                <TableCell>{member.myMemo}</TableCell>
+                                <TableCell>{member.yourMemo}</TableCell>
+                                <TableCell>{formatDate(member.tdate)}</TableCell>
+                            </TableRow>
+                        ))}
                     <TableRow>
-                        <TableCell colSpan={7} style={{textAlign:"center"}}>
+                        <TableCell colSpan={7} style={{ textAlign: "center" }}>
                             <Box display="flex" justifyContent="center">
-                                <Pagination 
-                                count={totalpage}
-                                page={currentPage}
-                                onChange={handlePageChange}
+                                <Pagination
+                                    count={totalpage}
+                                    page={currentPage}
+                                    onChange={handlePageChange}
                                 />
                             </Box>
                         </TableCell>
                     </TableRow>
                 </TableBody>
-                </Table>
-            </div>
+            </Table>
+        </div>
     );
 };
 

@@ -1,9 +1,11 @@
 package com.pigbank.project.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.data.domain.Page;
 
 import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.AutoTransferDTO;
@@ -90,4 +92,6 @@ public interface LeeMapper {
 	
 	// 공지사항 고객 상세페이지
 	public NoticeDTO csboardDetail(int nNum);
+
+	
 }
