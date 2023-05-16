@@ -42,21 +42,6 @@
   font-weight: bold;
   text-shadow: 0px 1px 0px #698a647e;
 }
-
-.btnbtnopen {
-  font-size: 11px;
-  box-shadow:  2px 2px 2px 2px #3251da;
-  background: linear-gradient(to bottom, #73a178 5%);
-  background-color: #3251da;
-  color: #fff;
-  border-radius: 8px;
-  padding: 7px 10px 7px 10px;
-  border: 1px solid #3251da;
-  font-size: 15PX;
-  font-weight: bold;
-  text-shadow: 0px 1px 0px #698a647e;
-}
-
 .btnbtnclose {
   font-size: 11px;
   box-shadow: 2px 2px 2px 2px #CACACA;
@@ -104,15 +89,6 @@
 .big{
   font-size: 20px;
   padding: 13px 30px;
-}
-.small{
-  font-size: 10px;
-  padding: 7px 15px;
-}
-.smaller{
-  font-size:10px;
-  padding: 4px 10px;
-  margin-right: 8px;
 }
 .zero{
   background: linear-gradient(to bottom, #ffffff 10%);

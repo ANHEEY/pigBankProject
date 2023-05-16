@@ -4,15 +4,32 @@ import FundAPIService from "./service/FundAPIService";
 import { getAuthToken, getId } from "../../helpers/axios_helper";
 import '../../../resources/css/fund/fund-list.css'
 import axios from "axios";
-import {Box} from "@mui/material";
-import Pagination from "@mui/material/Pagination";
 
 function FundProductList() {
     const navigate = useNavigate();
     const [fund,setFund] = useState([]);
-    const [itemsPerPage] = useState(30);
-    const [currentPage, setCurrentPage] = useState(1);
 
+    // 금액 , 으로 반환
+    function loCale(number) {
+        return Number(number).toLocaleString();
+    }
+    // 숫자 절대값으로 변환
+    function abs(number){
+        return Math.abs(number);
+    };
+    // 백만단위로 변환
+    function trunc(number){
+        return Math.floor(number / 1000000);
+    }
+    // 십만단위로 변환
+    function truncTen(number){
+        return Math.floor(number / 100000);
+    }
+    // 0빠져 반환된 소수점 숫자 0추가하여 반환 ex) .28 -> 0.28
+    function format(number){
+        const parsedNumber = parseFloat(number);
+        return isNaN(parsedNumber) ? NaN : parsedNumber.toFixed(2);
+    }
     // api 호출하여 펀드상품 목록 가져오기  
     useEffect(()=>{
         if (getAuthToken() !== null) {
@@ -31,16 +48,8 @@ function FundProductList() {
             });
     },[])
 
-    const handlePageChange = (event, pageNumber) => {
-        setCurrentPage(pageNumber);
-    };
-
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const fundlist = fund.slice(indexOfFirstItem, indexOfLastItem);
-
-    // 상세 페이지로 이동
-    const goDetail = (isinCd) => {
+    // 상품 구매 
+    function buyProduct(isinCd) {
         const fundItem = fund.find(item => item.isinCd === isinCd);
         const fundItems = {
             isinCd : isinCd,
@@ -52,27 +61,29 @@ function FundProductList() {
             trPrc: fundItem.trPrc,
             nPptTotAmt: fundItem.nPptTotAmt
         }
-        navigate(`/customer/fund/detail/${isinCd}`, { state: { fundItems }});
-    };
-    // 금액 , 으로 반환
-    function loCale(number) {return Number(number).toLocaleString();}
-    // 숫자 절대값으로 변환
-    function abs(number){return Math.abs(number);};
-    // 백만단위로 변환
-    function trunc(number){return Math.floor(number / 1000000);}
-    // 십만단위로 변환
-    function truncTen(number){return Math.floor(number / 100000);}
-    // 0빠져 반환된 소수점 숫자 0추가하여 반환 ex) .28 -> 0.28
-    function format(number){
-        const parsedNumber = parseFloat(number);
-        return isNaN(parsedNumber) ? NaN : parsedNumber.toFixed(2);
+        FundAPIService.fundProductBuy(fundItems)
+            .then(() => {
+                alert('상품구매 완료했습니다.');
+                navigate('/customer/fund/list');
+            })
+            .catch(err => {
+                console.log('insertFundAccount 에러', err)
+            })
     }
+
     return (
         <div className="fund-div">
             <div className="fund-title">
                 펀드 상품 목록
             </div>
             <div className="fund-contents fundProduct-list">
+                <ul>
+                    <li>
+                        <Link to='/customer/product/fund/detail'>
+                            <button>클릭하면 상세페이지로 이동합니다.</button>
+                        </Link>
+                    </li>
+                </ul>
                 <table className="fund-listTbl">
                     <thead>
                         <tr>
@@ -83,11 +94,12 @@ function FundProductList() {
                             <th>거래량</th>
                             <th>거래대금(십만)</th>
                             <th>순자산(백만)</th>
+                            <th>매수</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {fundlist.map((list) => (
-                        <tr key={list.isinCd} onClick={() => goDetail(list.isinCd)}>
+                    {fund.map((list) => (
+                        <tr key={list.isinCd}>
                             <td className="fundNm">{list.itmsNm}</td>
                             <td>{loCale(list.clpr)}</td>
                             <td>
@@ -107,18 +119,14 @@ function FundProductList() {
                             <td>{loCale(list.trqu)}</td>
                             <td>{loCale(truncTen(Number(list.trPrc)))}</td>
                             <td>{loCale(trunc(Number(list.nPptTotAmt)))}</td>
+                            <td>
+                                <div>
+                                    <button onClick={()=>buyProduct(list.isinCd)}>매수</button>
+                                </div>
+                            </td>
                         </tr>
                     ))}
                     </tbody>
-                        <td colSpan={7} style={{textAlign:"center"}}>
-                            <Box display="flex" justifyContent="center">
-                                <Pagination 
-                                count={Math.ceil(fund.length / itemsPerPage)}
-                                page={currentPage}
-                                onChange={handlePageChange}
-                                />
-                            </Box>
-                        </td>
                 </table>
             </div>
         </div>
