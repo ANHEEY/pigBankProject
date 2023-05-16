@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from "react";
 import { useParams, Link } from "react-router-dom";
 import {Table, TableCell,TableRow, TableHead, TableBody, Box, TableFooter}from "@mui/material";
-import {Card,Row,Col,Stack,Container} from 'react-bootstrap';
+import {Card,Row,Col,Container} from 'react-bootstrap';
 import AllService from "../All/AllService";
 import Pagination from "@mui/material/Pagination";
 
@@ -93,7 +93,7 @@ function AccountDetail() {
         <main className="main">
         <Container>
         <Card>
-            <Card.Header as="h2" style={{backgroundColor:"#dbe2d872" }}>대출상품명</Card.Header>
+            <Card.Header as="h2" style={{backgroundColor:"#dbe2d872" }}>{accountDetail.lpdName}</Card.Header>
             <br/>
             <Card.Body>
             <Row className="text-center">

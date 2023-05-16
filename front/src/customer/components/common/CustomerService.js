@@ -53,6 +53,11 @@ class CustomerService {
       console.log("회원 자산 관리!!");
       return axios.get(URL+"/assetsManagement/"+id);
     }
+
+    assetsManagementFund(id){
+      console.log("회원 펀드 자산 관리!!");
+      return axios.get(URL+"/assetsManagementFund/"+id);
+    }
     
 }
 export default new CustomerService();

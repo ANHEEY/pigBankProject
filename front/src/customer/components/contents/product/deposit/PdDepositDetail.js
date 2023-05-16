@@ -52,7 +52,7 @@ function PdDepositDetail() {
     <Card>
         <Card.Header as="h2">{depositProduct.dpdName}</Card.Header>
         <br/><br/>
-        <Card.Body>
+        <Card.Body className="text-center">
           <Row>
             <Col>
               <SlCalender size="30" color="#009000"/>

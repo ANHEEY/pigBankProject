@@ -112,10 +112,11 @@ public interface CustomerMapper {
    
    //---------------------------------------------------------------------
 
-   //고객 자산 관리 페이지
+   //고객 자산 관리 페이지 (예금, 적금, 입출금, 펀드)
    public List<AssetManagementDTO> assetsManagement1(String id);
    
-   public List<AssetManagementDTO> assetsManagement2(String id);
+   //고객 자산 관리 페이지 - 펀드 부분
+   public List<AssetManagementDTO> assetsManagementFund(String id);
    
    //----------------------------------------------------------------------
    

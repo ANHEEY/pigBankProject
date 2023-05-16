@@ -47,7 +47,7 @@ const LoanSchedule = () => {
 
     // 상환 대상 상태 표시
     const formattedLoanScheduleList = LoanScheduleList.map((schedule, index) => {
-      const formattedPaystatus = index === 0 ? '상환대상' : '상한예정';
+      const formattedPaystatus = index === 0 ? '상환대상' : '상환예정';
       return {
         ...schedule,
         formattedPaystatus,
