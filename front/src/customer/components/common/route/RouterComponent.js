@@ -169,6 +169,7 @@ const AppRouter = () => {
             {/* 펀드 */}
             <Route path="/customer/fund/info" Component={FundAccountInfo} />
             <Route path='/customer/fund/info/detail/:fNum' Component={FundAccountDetail} />
+            <Route path="/customer/fund/detail/:isinCd" Component={FundProductDetail} />
 
             <Route path="/customer/fund/having" Component={FundHavingList} />
             <Route path='/customer/fund/account' Component={FundProductAccount} />

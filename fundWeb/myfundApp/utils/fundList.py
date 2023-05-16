@@ -14,7 +14,7 @@ import ssl
 # url + serviceKey + 한 페이지 결과수 30개
 
 def get_json_fund():
-    requestURL = "http://apis.data.go.kr/1160100/service/GetSecuritiesProductInfoService/getETFPriceInfo?serviceKey=zC0NCRtOkyKmmp%2FlYj1jwn9fMTkMWlT9b%2B8LMz9QqRlpfZssfsDbZuSRs5w0f%2FZBqTQiH4Q%2FjreSevtU057hrg%3D%3D&numOfRows=30&pageNo=1&resultType=json&beginMrktTotAmt=5000000"
+    requestURL = "http://apis.data.go.kr/1160100/service/GetSecuritiesProductInfoService/getETFPriceInfo?serviceKey=zC0NCRtOkyKmmp%2FlYj1jwn9fMTkMWlT9b%2B8LMz9QqRlpfZssfsDbZuSRs5w0f%2FZBqTQiH4Q%2FjreSevtU057hrg%3D%3D&numOfRows=1000&pageNo=1&resultType=json&beginMrktTotAmt=5000000"
     response = requests.get(requestURL, verify=False)
 
     contents = response.text
