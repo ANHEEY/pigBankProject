@@ -79,8 +79,8 @@ const LoanRequestList = () => {
                             <td>{product.name}[{product.id}]</td>
                             <td>{product.lpdName}</td>
                             <td>{product.lrate}%</td>
-                            <td>{product.lperiod}년</td>
-                            <td>{product.lprincipal.toLocaleString()}만원</td>
+                            <td>{(product.lperiod)/12}년</td>
+                            <td>{(product.lprincipal/10000).toLocaleString()}만원</td>
                             <td>{new Date(product.lreqDate).toLocaleDateString().slice(0,-1)}</td>                            
                             <td>{product.lstate}</td>
                             <td>

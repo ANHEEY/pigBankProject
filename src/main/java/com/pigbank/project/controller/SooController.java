@@ -193,7 +193,7 @@ public class SooController {
 	@GetMapping(value="/loan/customer/getPayInfo")
 	public LoanWillPayDTO getLoanPayInfo(@RequestParam int lwillPayNum)
 		throws ServletException, IOException {
-			logger.info("<<< url - loanScheduleList >>>");
+			logger.info("<<< url - getLoanPayInfo >>>");
 			
 		LoanWillPayDTO loanWillPayDTO = service.loanPayInfo(lwillPayNum);
 		

@@ -99,7 +99,7 @@ function PdLoanApplication() {
             lpurpose: selectedPurpose,
             lincome: inputs.lincome,
             lprincipal: Number(inputs.lprincipal),
-            lperiod: Number(inputs.lperiod),
+            lperiod: Number(inputs.lperiod*12),
             acNumber: Number(selectedAccount),
             acPwd: Number(inputs.acPwd)
         };
@@ -253,7 +253,7 @@ function PdLoanApplication() {
                             <option value="3">3년(36개월)</option>
                             <option value="4">4년(48개월)</option>
                             <option value="5">5년(60개월)</option>
-                            <option value="7">7년(60개월)</option>
+                            <option value="7">7년(84개월)</option>
                             <option value="10">10년(120개월)</option>
                         </Form.Select>
                     </Col>

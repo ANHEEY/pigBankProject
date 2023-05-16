@@ -137,7 +137,7 @@ function Loan() {
                             {member.lpdName}
                         </TableCell>
                         <TableCell>{acNum(member.acNumber)}</TableCell>
-                        <TableCell>{member.lperiod}년</TableCell>
+                        <TableCell>{(member.lperiod)/12}년</TableCell>
                         <TableCell>{new Date(member.lstartDate).toLocaleDateString().slice(0,-1)}</TableCell>
                         <TableCell>{new Date(member.lendDate).toLocaleDateString().slice(0,-1)}</TableCell>
                         {/*CSY_대출잔액이 0인 경우 대출중도상환완료로 노출 */}

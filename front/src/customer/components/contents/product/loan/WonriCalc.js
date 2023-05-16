@@ -22,8 +22,8 @@ const WonriCalc = ({ props }) => {
       balance -=  monPrincipal; 
     }
 
-    let avgInterest = Math.round(totalInterest / month);
-    let avgTotalPayment = avgInterest + monPrincipal;
+    let avgInterest = Math.round(totalInterest / month); // 월평균 이자액
+    let avgTotalPayment = avgInterest + monPrincipal; // 월평균 상환금액(이자+원금)
 
     // 콤마 찍기
     const comma = (number) => {

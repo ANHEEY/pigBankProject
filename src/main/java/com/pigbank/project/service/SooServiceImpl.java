@@ -165,7 +165,7 @@ public class SooServiceImpl implements SooService{
 		String ltype = dto.getLtype(); // 대출상환종류
 		int lprincipal = dto.getLprincipal(); // 대출금액
 		double lrate = dto.getLrate(); // 대출금리
-		int lperiod = dto.getLperiod() * 12; // 대출기간(년 -> 월)
+		int lperiod = dto.getLperiod(); // 대출기간(웖)
 		
 		// list 생성
 		ArrayList<Map<String, Object>> list = null;

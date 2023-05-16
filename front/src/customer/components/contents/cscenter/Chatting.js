@@ -10,6 +10,7 @@ function Chatting () {
         fontSize: '3rem',
     };
 
+
     const chat = ()=>{
         //navigate('http://192.168.0.17:3003');
         window.open('http://192.168.0.17:3003', '_blank', 'width=800,height=1000');

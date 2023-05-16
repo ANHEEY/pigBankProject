@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import { Table, Tab, Tabs, Row, Col, Container, Button, Card, Stack } from 'react-bootstrap';
 import { SlCalender, SlGraph } from "react-icons/sl";
 import { BsCash } from "react-icons/bs";
+import { RiGovernmentFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import '../../../../resources/css/PdLoanStyle.css';
 import PdLoanInfo from './PdLoanInfo';
@@ -37,7 +38,7 @@ function PdLoanDetail() {
       <Card>
         <Card.Header as="h2">{product.lpdName}</Card.Header>
         <br/><br/>
-        <Card.Body>
+        <Card.Body className='text-center'>
           <Row>
             <Col>
               <SlCalender size="30" color="#009000"/>
@@ -62,9 +63,18 @@ function PdLoanDetail() {
               )}
               </Card.Text>
             </Col>
+            <Col>
+              <RiGovernmentFill size="30" color="#009000"/>
+              <Card.Title className="mt-3">상환종류</Card.Title>
+              <Card.Text>
+              {product.lmaxPrice && (
+                <span>{product.ltype}</span>
+              )}
+              </Card.Text>
+            </Col>
           </Row>
         <br/><br/>
-        <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto">
+        <Stack direction="horizontal" gap={2} className="col-md-3 mx-auto text-center">
           <Button variant="outline-success" size="lg" onClick={() => goRegister(product.lpdName)} style={{background:"green", color:"white"}}>대출신청</Button>
           <Button variant="outline-dark" size="lg" onClick={() => navigate(-1)}> 상품목록</Button>
         </Stack>
