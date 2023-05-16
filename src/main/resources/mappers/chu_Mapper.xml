@@ -183,9 +183,10 @@
 	
 	<update id="adminSleepRelease" parameterType="long">
 		UPDATE account_tbl
-		SET acState='OPEN'
+		SET acState='OPEN', lastDate=SYSDATE
 		WHERE acNumber = #{acNumber}
 	</update>
+	<!-- 휴면해제하면 마지막 거래일 업데이트 -->
 		
 	<!-- 마지막 거래일로부터 2년이 지난 계좌 불러오기 -->
 	<select id="breakAccountInfo" resultType="com.pigbank.project.dto.AccountDTO">

@@ -29,12 +29,10 @@ public interface CustomerService {
 	//이메일 인증 후 권한(enabled) update   
 	public void emailChkAction(HttpServletRequest req, Model model);
 	
-	//회원 로그인
-	public CustomerDTO loginCustomerAction(CustomerDTO customerDTO);
-	
 	//회원 인증
 	public CustomerDTO cusById(String id);
 	
+	//로그인
 	public CustomerDTO login(CredentialsDTO credentialsDTO);
    
 	//회원 수정, 탈퇴 전 인증
@@ -94,11 +92,11 @@ public interface CustomerService {
   	
   	//---------------------------------------------------------------------------------------------
   	
-  	//고객 자산 관리 페이지
+  	//고객 자산 관리 페이지 (예금, 적금, 입출금, 펀드)
   	public String assetsManagementAction1(String id);
    
-  	//고객 자산 관리 페이지2
-  	public List<AssetManagementDTO> assetsManagementAction2(String id);
+  	//고객 자산 관리 페이지 - 펀드 부분
+  	public String assetsManagementFundAction(String id);
   	
   	//---------------------------------------------------------------------------
   	

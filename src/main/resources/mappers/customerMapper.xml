@@ -199,19 +199,19 @@
 
 	<!-- /////////////////////////////////////////////////////////////////////////////////////////////////// -->
 	
-	<!-- 고객 자산 관리(예금, 적금, 입출금) -->
+	<!-- 고객 자산 관리(예금, 적금, 입출금, 펀드) -->
 	<select id="assetsManagement1" parameterType="String" resultType="com.pigbank.project.dto.AssetManagementDTO">
 		SELECT sum(ACBALANCE) as acBalance,acType FROM account_tbl WHERE id=#{id} GROUP BY actype
 	</select>
 	
-	<!-- 고객 자산 관리(대출) -->
-	<select id="assetsManagement2" parameterType="String" resultType="com.pigbank.project.dto.AssetManagementDTO">
-		SELECT SUM(lr.lPrincipal), lr.id 
-		  FROM L_ACCOUNT_TBL la, loan_req_tbl lr 
-		WHERE lr.LREQNUM = la.LREQNUM 
-		  AND lr.id=#{id}
-		  AND lr.LSTATE ='승인완료'
-		 GROUP BY lr.id
+	<!-- 고객 자산 관리 페이지 - 펀드 부분 -->
+	<select id="assetsManagementFund" parameterType="String" resultType="com.pigbank.project.dto.AssetManagementDTO">
+		SELECT SUM(fh.FNOWPRICE*fh.FHAVINGCNT) AS fHavingTotal, fh.FISINCD  
+		  FROM F_DETAIL_TBL fd, F_HAVING_TBL fh, F_ACCOUNT_TBL fa
+		 WHERE fd.FTRANSNUM = fh.FTRANSNUM
+		   AND fd.FNUM = fa.FNUM
+		   AND fa.id=#{id}
+		 GROUP BY fh.FISINCD
 	</select>
 	
 	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////// -->

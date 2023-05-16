@@ -277,13 +277,22 @@ public class HeeController {
    
    //--------------------------------------------------------------------
    
-   //자산관리 페이지
+   //고객 자산 관리 페이지 (예금, 적금, 입출금, 펀드)
    @GetMapping(value="/assetsManagement/{id}")
    public String assetsManagement(@PathVariable String id)
 		   throws ServletException, IOException {
 	   logger.info("url - assetsManagement1");
 	   
 	   return service.assetsManagementAction1(id);
+   }
+
+   //고객 자산 관리 페이지 - 펀드 부분
+   @GetMapping(value="/assetsManagementFund/{id}")
+   public String assetsManagementFund(@PathVariable String id)
+   			throws ServletException, IOException {
+	   logger.info("url - assetsManagementFund");
+	   
+	   return service.assetsManagementFundAction(id);
    }
    
    //---------------------------------------------------------------------

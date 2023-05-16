@@ -110,14 +110,6 @@ public class CustomerServiceImpl implements CustomerService{
 			 dao.updateGrade(key);
 		 }
 	}
-
-
-   //회원 로그인
-   @Override
-   public CustomerDTO loginCustomerAction(CustomerDTO customerDTO) {
-      System.out.println("service - loginCustomerAction");
-      return null;
-   }
    
    //회원 인증
 	@Override
@@ -308,7 +300,6 @@ public class CustomerServiceImpl implements CustomerService{
 			    .toLocalDate();
 		
 		LocalDate currentDate = LocalDate.now();
-		//LocalDate joinDate = depositAccountDTO.getDjoinDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		
 		// 만기 해지인 경우
 		if(depositAccountDTO.getDendDate().before
@@ -353,7 +344,7 @@ public class CustomerServiceImpl implements CustomerService{
 	
 	//--------------------------------------------------------------------
 	
-	//고객 자산 관리 페이지1
+	//고객 자산 관리 페이지 (예금, 적금, 입출금, 펀드)
 	@Override
 	public String assetsManagementAction1(String id) {
 		System.out.println("service - assetsManagementAction");
@@ -381,13 +372,34 @@ public class CustomerServiceImpl implements CustomerService{
 		return result;
 	}
 
-	//고객 자산 관리 페이지2
+	//고객 자산 관리 페이지 - 펀드 부분
 	@Override
-	public List<AssetManagementDTO> assetsManagementAction2(String id) {
+	public String assetsManagementFundAction(String id) {
 		System.out.println("service - assetsManagementAction");
 
-		List<AssetManagementDTO> list2 = dao.assetsManagement2(id);
-		return null;
+		List<AssetManagementDTO> list = dao.assetsManagementFund(id);
+		
+		System.out.println("list: "+list);
+		
+		StringBuilder resultBuilder = new StringBuilder();
+		
+		resultBuilder.append("[");
+		for(int i=0; i<list.size();i++) {
+			String fIsinCd = list.get(i).getFIsinCd();
+			double fHavingTotal = list.get(i).getFHavingTotal();
+			resultBuilder.append("['").append(fIsinCd).append("',").append(fHavingTotal).append("]");
+			if(i<list.size()-1) {
+				resultBuilder.append(",");
+			}
+		}
+		
+		resultBuilder.append("]");
+		
+		String result = resultBuilder.toString();
+		
+		System.out.println("result : "+result);
+		
+		return result;
 	}
 
 	//--------------------------------------------------------------------------
