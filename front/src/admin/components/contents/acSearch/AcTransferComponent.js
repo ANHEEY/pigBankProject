@@ -269,11 +269,11 @@ function AcTransferComponent() {
                 <li><ReactDatePicker selectedDate={selectedDate} onDateChange={handleDateChange} /></li>
             </ul>
             <div>
-                <Button onClick={deposited} variant="success"> 입금 내역 </Button>
-                {' '}
-                <Button onClick={withdraw} variant="info"> 출금 내역 </Button>
-                {' '}
-                <Button onClick={transfer} variant="primary">입출금 내역</Button>
+                <button onClick={deposited} className="btnbtn small"> 입금 내역 </button>
+                {' '}&nbsp;
+                <button onClick={withdraw} className="btnbtnopen small"> 출금 내역 </button>
+                {' '}&nbsp;
+                <button onClick={transfer} className="btnbtnfind small">입출금 내역</button>
             </div>
             <br />
             <Table>
