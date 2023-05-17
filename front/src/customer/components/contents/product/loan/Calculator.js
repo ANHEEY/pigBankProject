@@ -18,6 +18,7 @@ const Calculator = () => {
     // tabs 클릭시 showResult 컨트롤
     const handleClick = () => {
         setShowResult(false);
+        reset();
     }
 
     const onChange = (e) => {
@@ -133,7 +134,7 @@ const Calculator = () => {
                     size="sm"
                     type="number"
                     id="rate"
-                    vaue={inputs.rate}
+                    value={inputs.rate}
                     placeholder="이자"
                     min={0}
                 />
@@ -178,7 +179,7 @@ const Calculator = () => {
                     size="sm"
                     type="number"
                     id="rate"
-                    vaue={inputs.rate}
+                    value={inputs.rate}
                     placeholder="이자"
                     min={0}
                 />

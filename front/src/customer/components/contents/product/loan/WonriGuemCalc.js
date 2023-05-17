@@ -17,7 +17,7 @@ const WonriGuemCalc= ({ props }) => {
     let bunmo = rm - 1
 
     let lMonTotal = Math.round(bunja/bunmo) // 매월 상환액 반올림 (원금 + 이자)
-    let lMonRate = Math.round((lMonTotal - amount/month)*100)/100; // 월평균 이자금액 반올림
+    let lMonRate = Math.round((lMonTotal - amount/month)); // 월평균 이자금액 반올림
     let lMonPrice = Math.round(lMonTotal - lMonRate)
 
     // 콤마 찍기

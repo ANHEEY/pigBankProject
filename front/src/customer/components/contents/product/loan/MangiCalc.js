@@ -24,7 +24,7 @@ import { Table } from 'react-bootstrap';
         return(
             <>
             <p><span style={style}>{comma(props.amount)}</span>만원을 {comma(props.period)}년동안 {comma(props.rate)}%로 대출받으시면 
-                원금만기일시상환 기준 매월 약 <span style={style}>{comma(avgTotalPay)}</span>원씩 상환하시면 됩니다.
+                만기일시상환 기준 매월 약 <span style={style}>{comma(avgMonInterest)}</span>원씩 상환하시면 됩니다.
             </p>
             <Table striped bordered hover>
                     <thead>
