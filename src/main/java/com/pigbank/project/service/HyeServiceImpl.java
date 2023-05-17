@@ -1,6 +1,8 @@
 package com.pigbank.project.service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
 
@@ -16,25 +18,25 @@ import com.pigbank.project.dao.HyeMapper;
 
 @Service
 public class HyeServiceImpl implements HyeService{
-	
+
 	@Autowired
 	private HyeMapper dao;
-	
+
 	/*****************			회원 정보 목록			***************/
 	public List<CustomerDTO> listCustomerAll(HttpServletRequest req, Model model)
 		throws ServletException, IOException{
 		System.out.println("========== 서비스 | listCustomerAll | ==========");
-		
+
 		List<CustomerDTO> list = dao.listCustomer();
 		return list;
 	}
-	
+
 	/*****************		고객 조회(회원 상세 페이지)		***************/
 	@Override
-	public CustomerDTO detailCustomer(String id) 
+	public CustomerDTO detailCustomer(String id)
 			throws ServletException, IOException {
 		System.out.println("========== 서비스 | detailCustomer | ==========");
-		
+
 		CustomerDTO dto = dao.detailCustomer(id);
 		return dto;
 	}
@@ -42,17 +44,17 @@ public class HyeServiceImpl implements HyeService{
 	public List<AccountDTO> detailAccountById(String id)
 			throws ServletException, IOException {
 		System.out.println("========== 서비스 | detailAccountById | ==========");
-		
+
 		List<AccountDTO> list = dao.detailAccountListById(id);
 		return list;
 	};
-	
+
 	/*****************		탈퇴 요청 고객 목록		***************/
 	@Override
 	public List<CustomerDTO> listCustomerWithdrawal(HttpServletRequest req, Model model)
 			throws ServletException, IOException {
 		System.out.println("========== 서비스 | listCustomerWithdrawal | ==========");
-		
+
 		List<CustomerDTO> list = dao.listWithdrawalCustomer();
 		return list;
 	}
@@ -94,7 +96,7 @@ public class HyeServiceImpl implements HyeService{
 		TransferDTO transfer = new TransferDTO();
 		transfer.setAcNumber(dto.getAcNumber());
 		transfer.setTDepositnum(dto.getFAcNumber());
-		transfer.setTAmount(dto.getFBalance());
+		transfer.setTAmount(dto.getFbalance());
 		System.out.println("acNumber : "+transfer.getAcNumber() + "depositnum : "+transfer.getTDepositnum()+"tAmount : "+transfer.getTAmount());
 		dao.insertFundAccount(dto);
 		dao.deductAccountAmount(dto);
@@ -122,18 +124,27 @@ public class HyeServiceImpl implements HyeService{
 	};
 	/**				펀드상품 구매 				**/
 	// 펀드상품 구매
-	public void insertBuyFund(FundAPIDTO dto)
+	public void insertBuyFund(FundProductDTO dto)
 			throws  ServletException, IOException{
 		System.out.println("========== 서비스 | insertBuyFund | ==========");
-		String isinCd = dao.checkIsinCd(dto.getIsinCd());
+		String isinCd = dao.checkIsinCd(dto.getFisinCd());
+
+		// transnum생성
+		LocalDateTime now =LocalDateTime.now();
+		DateTimeFormatter format= DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+		String ftrans = now.format(format);
+		dto.setFtransNum(Long.parseLong(ftrans));
+		System.out.println("total : " + dto.getFtotal());
 		if (isinCd != null){
-			// 보유내역 업데이트
+			// ** 보유내역 업데이트 ** //
 		}
 		else{
+			// 펀드계좌 update => 잔액 차감하기
+			dao.updateFundBalance(dto);
 			// 거래내역 + 보유내역 추가
 			dao.insertDetailTbl(dto);
 			dao.insertHavingTbl(dto);
-			// 펀드계좌 update => 잔액 차감하기
+
 		}
 	};
 

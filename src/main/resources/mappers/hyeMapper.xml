@@ -90,18 +90,27 @@
 		   AND  a.ID = #{id}
 	</select>
 	<!--***************  펀드 상품 구매  ***************-->
-	<!-- 보유내역 확인하기 -->
+	<!-- 보유내역 확인하기 , 고객 계좌랑 join해주세요 -->
 	<select id="checkIsinCd" parameterType="String" resultType="String">
 		SELECT FISINCD
 		FROM F_HAVING_TBL
-		WHERE FISINCD = #{isinCd}
+		WHERE FISINCD = #{fisinCd}
 	</select>
 	<!-- 거래내역에 추가 -->
-	<insert id="insertDetailTbl" parameterType="com.pigbank.project.dto.FundAPIDTO">
-
+	<insert id="insertDetailTbl" parameterType="com.pigbank.project.dto.FundProductDTO">
+		INSERT INTO F_DETAIL_TBL(fTransNum ,fNum , fTransDate ,fPdName ,fBuyPrice ,fTotal ,fCount ,fDetailState )
+		VALUES(#{ftransNum},#{fnum} ,sysdate , #{fpdName} , #{fbuyPrice} , #{ftotal} ,#{fcount} ,'매수')
 	</insert>
 	<!-- 보유내역에 추가 -->
-	<insert id="insertHavingTbl" parameterType="com.pigbank.project.dto.FundAPIDTO">
-
+	<insert id="insertHavingTbl" parameterType="com.pigbank.project.dto.FundProductDTO">
+		INSERT INTO F_HAVING_TBL(fHavingNum, fTransNum ,fNowPrice ,fNowProfit ,fProfit ,fNowTotal ,fHavingCnt, fPrincipal, fIsinCd)
+		VALUES((SELECT NVL(MAX(fHavingNum)+1, 1) FROM F_HAVING_TBL), #{ftransNum} ,#{fnowPrice} , 0 , 0 , #{ftotal} ,#{fcount}, #{ftotal}, #{fisinCd})
 	</insert>
+	<!-- 잔액 업데이트 -->
+	<update id="updateFundBalance" parameterType="com.pigbank.project.dto.FundProductDTO">
+		UPDATE 	F_ACCOUNT_TBL
+		   SET 	FBALANCE = FBALANCE - #{ftotal},
+				FLASTDATE = SYSDATE
+		 WHERE 	fTransNum = #{ftransNum}
+	</update>
 </mapper>

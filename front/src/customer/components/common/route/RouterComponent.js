@@ -177,7 +177,6 @@ const AppRouter = () => {
             <Route path="/customer/fund/list" Component={FundProductList} />
             <Route path="/customer/fund/detail" Component={FundProductDetail} />
 
-
             {/* 고객센터 */}
             <Route path="/customer/cscenter/cs_board" Component={CsBoard} />
             <Route path="/customer/cscenter/cs_board_detail/:nnum" Component={CsBoardDetail} />

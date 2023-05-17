@@ -48,7 +48,9 @@ public interface HyeMapper {
 	// 보유내역 확인하기
 	public String checkIsinCd(String fIsinCd);
 	// 거래내역에 추가
-	public  void insertDetailTbl(FundAPIDTO dto);
+	public  void insertDetailTbl(FundProductDTO dto);
 	// 보유내역에 추가
-	public void insertHavingTbl(FundAPIDTO dto);
+	public void insertHavingTbl(FundProductDTO dto);
+	// 잔액 업데이트
+	public void updateFundBalance(FundProductDTO dto);
 }

@@ -103,8 +103,9 @@ public class HyeController {
 		return  service.havingFundById(id);
 	}
 	@PostMapping(value = "/customer/fundBuy")
-	public void insertBuyFund(@RequestBody FundAPIDTO dto)
+	public void insertBuyFund(@RequestBody FundProductDTO dto)
 		throws ServletException, IOException{
 		logger.info("=== url | insertBuyFund ===");
+		service.insertBuyFund(dto);
 	}
 }

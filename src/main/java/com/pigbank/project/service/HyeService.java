@@ -57,7 +57,7 @@ public interface HyeService {
 
 	/**				펀드상품 구매 				**/
 	// 펀드상품 구매
-	public void insertBuyFund(FundAPIDTO dto)
+	public void insertBuyFund(FundProductDTO dto)
 		throws  ServletException, IOException;
 
 }

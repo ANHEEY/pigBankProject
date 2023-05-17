@@ -35,9 +35,9 @@ class FundAPIService {
     return axios.get(CONTROLLER_API + 'fundHavingList/' + id);
   }
   /*                      펀드 상품 구매                        */
-  fundProductBuy(fundItems){
+  fundProductBuy(buyItems){
     console.log('펀드 매수')
-    return axios.post(CONTROLLER_API + 'fundBuy',fundItems);
+    return axios.post(CONTROLLER_API + 'fundBuy',buyItems);
   }
 
   /*************      DJANGO_API_SERVICE        *************/
@@ -51,6 +51,10 @@ class FundAPIService {
     console.log('펀드상품 목록 출력')
     return axios.get(JANGOVIEW_API,{headers})
   }
-
+  // 펀드 상품 3개월의 데이터를 받아오기  JANGOVIEW_API = "http://127.0.0.1:8000/fund/";
+  getFundDetail(key){
+    console.log('펀드상품 3개월데이터를 가져옵니다')
+    return axios.get(JANGOVIEW_API+'detail/'+key)
+  }
 }
 export default new FundAPIService();
