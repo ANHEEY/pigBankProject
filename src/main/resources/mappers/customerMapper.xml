@@ -206,12 +206,12 @@
 	
 	<!-- 고객 자산 관리 페이지 - 펀드 부분 -->
 	<select id="assetsManagementFund" parameterType="String" resultType="com.pigbank.project.dto.AssetManagementDTO">
-		SELECT SUM(fh.FNOWPRICE*fh.FHAVINGCNT) AS fHavingTotal, fh.FISINCD  
+		SELECT SUM(fh.FNOWPRICE*fh.FHAVINGCNT) AS fHavingTotal, fd.fpdName  
 		  FROM F_DETAIL_TBL fd, F_HAVING_TBL fh, F_ACCOUNT_TBL fa
 		 WHERE fd.FTRANSNUM = fh.FTRANSNUM
 		   AND fd.FNUM = fa.FNUM
 		   AND fa.id=#{id}
-		 GROUP BY fh.FISINCD
+		 GROUP BY fd.fpdName
 	</select>
 	
 	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////// -->

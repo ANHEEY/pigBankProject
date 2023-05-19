@@ -385,9 +385,9 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		resultBuilder.append("[");
 		for(int i=0; i<list.size();i++) {
-			String fIsinCd = list.get(i).getFIsinCd();
+			String fpdName = list.get(i).getFpdName();
 			double fHavingTotal = list.get(i).getFHavingTotal();
-			resultBuilder.append("['").append(fIsinCd).append("',").append(fHavingTotal).append("]");
+			resultBuilder.append("['").append(fpdName).append("',").append(fHavingTotal).append("]");
 			if(i<list.size()-1) {
 				resultBuilder.append(",");
 			}

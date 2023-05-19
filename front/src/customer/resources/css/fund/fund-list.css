@@ -319,10 +319,11 @@
     border-radius: 10px;
     padding: 8px 13px;
     border: 1px solid #d6f7b1ca;
-    font-size: 18PX;
+    font-size: 16px;
     cursor: pointer;
     font-weight: bold;
-    text-shadow: 0px 1px 0px #6087bf7e;   
+    text-shadow: 0px 1px 0px #6087bf7e;
+    white-space: nowrap;
 }
 .lineChart{
     width: 650px;

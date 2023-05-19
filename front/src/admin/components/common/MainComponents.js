@@ -1,5 +1,5 @@
 import { Component } from "react";
-import piggy_bank from "../../resources/images/admin.png";
+import piggy_bank from "../../resources/images/adminMain.jpg";
 
 class MainComponents extends Component{
     render(){

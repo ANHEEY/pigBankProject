@@ -28,7 +28,9 @@ export default function FundBuyAccount({ onSelectAccount }) {
   }, []);
 
   const handleSelectAccount = (e) => {
+    
     const select = Number(e.target.value); //fnum 값 숫자형으로 받아오기
+
     var selected = faccount.filter((all) => {
       console.log(all.fnum);
       const allselect = all.fnum; // faccount에서 나온 모든 fnum

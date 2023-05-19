@@ -15,6 +15,6 @@ public class AssetManagementDTO {
 	
 	//고객 자산 관리 페이지 - 펀드 부분 
 	private double fHavingTotal;
-	private String fIsinCd;
+	private String fpdName;
 	
 }

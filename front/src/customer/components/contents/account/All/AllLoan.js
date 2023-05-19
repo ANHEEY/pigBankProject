@@ -32,7 +32,7 @@ function AllLoan (){
           console.log('reloadMemberList() Error!!',err);
         });
   }
-      
+
   const formatCurrency = (value) => {
     const formatter = new Intl.NumberFormat("ko-KR", {
       style: "currency",
