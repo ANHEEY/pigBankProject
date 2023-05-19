@@ -6,12 +6,13 @@ import { getId } from "../../../../helpers/axios_helper";
 import PdAccApiService from "../PdAccApiService";
 import { useNavigate } from "react-router-dom";
 
+// 입출금 가입에서 본인인증하는 페이지
 function FormSMS() {
     
     
     const [id, setId] = useState(getId());  // 고객정보
     const [acPwd, setAcPwd] = useState(''); // 정보입력 비밀번호 입력, 네이버 SENS API사용 본인인증
-    
+
     const navigate = useNavigate();
 
      // 약관 동의
@@ -57,8 +58,22 @@ function FormSMS() {
         });
       };
 
-    const FormSMS2 = () => {
-        navigate('/customer/product/account/FormSMS2');
+    const [recipientPhoneNumber, setRecipientPhoneNumber] = useState('');
+
+    const FormSMS2 = (e) => {
+       PdAccApiService.sendMessage(recipientPhoneNumber)
+       .then((res) => {
+            console.log('randomNumber: ', res);
+            let sessionStorage = window.sessionStorage;
+            sessionStorage.setItem("randomNumber", res.data);
+            alert('입력하신 번호로 인증번호가 전송되었습니다.');
+            navigate('/customer/product/account/sms_api/FormSMS2');
+       })
+       .catch((err) => {
+        console.log('인증번호 전송실패', err);
+       })
+
+       
     }
 
     const onChange = (e) => {
@@ -66,9 +81,12 @@ function FormSMS() {
         switch (name) {
             case "id":
                 setId(value);
-                break;
+                break; 
             case "acPwd":
                 setAcPwd(value);
+                break;
+            case "recipientPhoneNumber":
+                setRecipientPhoneNumber(value);
                 break;
             default:
                 break;
@@ -109,7 +127,7 @@ function FormSMS() {
                         <tr>
                             <td colSpan={2} style={{textAlign:"left"}}>
                                 <InputGroup className="mb-3" style={{width:"40%", justifyContent:"right"}}>
-                                    <Form.Control placeholder="전화번호를 입력하세요." name="hpSMS"  />       
+                                    <Form.Control placeholder="전화번호를 입력하세요." name="recipientPhoneNumber" value={recipientPhoneNumber} onChange={(e) => onChange(e)}/>       
                                     <Button variant="outline-dark" id="btn-sms" onClick={FormSMS2}>인증번호전송</Button> {/* onClick => window.open으로 본인인증 */}
                                 </InputGroup>
                                 <p style={{fontSize:"12px"}}>
@@ -134,7 +152,7 @@ function FormSMS() {
                         <tr>
                             <th style={{width:"160px"}}>상품명</th>
                             <td colSpan={4}>
-                                <Form.Control readOnly defaultValue="꿀꿀 자유입출금"  />
+                                <Form.Control readOnly defaultValue="꿀꿀 자유입출금"/>
                             </td>
                         </tr>
                         <tr>
@@ -161,11 +179,12 @@ function FormSMS() {
                     <p><b>1회 이체한도 </b> 2,000,000원</p>
                 </div>
                 <div className="d-grid gap-2">
-                    <Button style = {{background:'#9dc888',border:'#9dc888'}} size="lg" onClick={handleSubmit}> 가입하기 </Button>
+                    <Button style = {{background:'#9dc888',border:'#9dc888'}} size="lg" onClick={handleSubmit} disabled> 가입하기 </Button>
                 </div>
             </Form>
-        </div>
+        </div> 
 
    )
 }
+
 export default FormSMS;

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+     
+    <!-- namespace="패키지명.인터페이스" -->
+<mapper namespace="com.pigbank.project.dao.Exchange">
+
+<!-- 	<insert id="exchangeList" parameterType="com.pigbank.project.dto.ExchangeRateDTO">
+	    INSERT INTO chuexchange_tbl (exNo, exName, exPrice, exRate, exDate)
+	    VALUES ((SELECT NVL(MAX(exNo)+1, 1) FROM chuexchange_tbl), #{exName}, #{exPrice}, #{exRate}, SYSDATE)
+	</insert> -->
+	
+	 <update id="exchangeList" parameterType="com.pigbank.project.dto.ExchangeRateDTO">
+	    UPDATE chuexchange_tbl
+	    SET exName = #{name},
+	        exPrice = #{price},
+	        exRate = #{change},
+	        exDate = SYSDATE
+	    WHERE exName = #{name}
+	</update>
+	
+	<!-- <insert id="exchangeList2" parameterType="com.pigbank.project.dto.ExchangeRateDTO2">
+	
+	    INSERT INTO chuexchange_tbl2 (exNo, name, price, buy, sell, send, receive, exDate)
+	    VALUES ((SELECT NVL(MAX(exNo)+1, 1) FROM chuexchange_tbl2),#{name} ,#{price} ,#{buy} ,#{sell} ,#{send} ,#{receive} ,SYSDATE)
+ 	</insert> -->
+	
+	<update id="exchangeList2" parameterType="com.pigbank.project.dto.ExchangeRateDTO2">
+	 	UPDATE chuexchange_tbl2
+	    SET name = #{name},
+	        price = #{price},
+	        buy = #{buy},
+	        sell = #{sell},
+	        send = #{send},
+	        receive = #{receive},
+	        exDate = SYSDATE
+	    WHERE name = #{name}
+ 	</update> 
+</mapper>
+

@@ -17,12 +17,23 @@
 /*  회원 개인 정보 table */
 .admin-customer-info{
     width: 1000px;
-    margin: 30px 0 50px 0 ;
+    margin: 30px 0 80px 0 ;
 }
-.admin-customer-info th,td{
-    padding:  20px 10px;
+.admin-customer-info th{
+    text-align: end;
+    padding:  15px 10px;
     color: #595959;
 }
+.table-title th{
+    text-align: center;
+}
+.admin-customer-info td{
+    text-align: center;
+    padding:  15px 10px;
+    color: #595959;
+}
+
+
 
 /*  회원 계좌 정보 table */
 .admin-customer-account{
@@ -31,9 +42,41 @@
 }
 .admin-customer-account th,td{
     padding:  10px 10px;
+    text-align: center;
+    color: #666666;
 }
 .admin-customer-account tbody{
     padding:  20px 10px;
     text-align: center;
     color: #595959;
 }
+
+.customer_total_amount{
+
+}
+
+.updateState button{
+    margin-left: 20px;
+    box-shadow:inset 0px 2px 2px 0px #62c66e;
+    background:linear-gradient(to bottom, #62c66e 5%);
+    background-color: #62c66e;
+    color: #fff;
+    border-radius: 10px;
+    padding: 5px 10px 7px 10px;
+    border:1px solid #d6f7b1ca;
+    font-size: 15PX;
+    cursor: pointer;
+    font-weight:bold;
+    text-shadow:0px 1px 0px #698a647e;
+  }
+  
+  .updateState button:hover{
+    background:linear-gradient(to bottom, #3ABD66 5%, #6ec662 100%);
+      background-color:#62c66e;
+    transition: all 1s;
+  }
+  .updateState button:active{
+      position:relative;
+      top:1px;
+  }
+  

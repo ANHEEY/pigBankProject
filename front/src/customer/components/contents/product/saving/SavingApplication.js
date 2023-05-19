@@ -107,7 +107,7 @@ function SavingApplication(){
     
     const handleSubmit=() => {
         if(sAmount === "") {
-            alert('적금 가입금액을 입력하세요!');
+            alert('적금 가입금액을 입력하세요! (※ 가입금액 : '+ savingProduct.smin+'~'+savingProduct.smax+'만원)' );
             return false;
         }
         if(sAmount < savingProduct.smin*10000 || sAmount > savingProduct.smax*10000) {

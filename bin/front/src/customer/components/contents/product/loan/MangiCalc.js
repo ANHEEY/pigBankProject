@@ -11,12 +11,12 @@ import { Table } from 'react-bootstrap';
         let month = props.period * 12; // 대출기간 (년)
         let rate = (props.rate * 0.01) / 12;   // 대출금리 (년)
 
-        const totalPayment = Math.round(amount * (1 + rate * month)); // 만기시 내야하는 총 상환금액
-        const avgTotalPay = Math.round(totalPayment / month);
+        // const totalPayment = Math.round(amount * (1 + rate * month)); // 만기시 내야하는 총 상환금액
+        // const avgTotalPay = Math.round(totalPayment / month);
         const avgMonPrincipal = Math.round(amount / month); // 월 평균 상환 원금
         const avgMonInterest = Math.round(avgMonPrincipal * rate *month);
 
-        // 콤마 찍기
+        // 금액 콤마 찍기
         const comma = (number) => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }
@@ -24,7 +24,7 @@ import { Table } from 'react-bootstrap';
         return(
             <>
             <p><span style={style}>{comma(props.amount)}</span>만원을 {comma(props.period)}년동안 {comma(props.rate)}%로 대출받으시면 
-                원금만기일시상환 기준 매월 약 <span style={style}>{comma(avgTotalPay)}</span>원씩 상환하시면 됩니다.
+                만기일시상환 기준 매월 약 <span style={style}>{comma(avgMonInterest)}</span>원씩 상환하시면 됩니다.
             </p>
             <Table striped bordered hover>
                     <thead>
@@ -36,9 +36,9 @@ import { Table } from 'react-bootstrap';
                     </thead>
                     <tbody>
                         <tr>
-                        <td>{comma(avgMonPrincipal)}원</td>
+                        <td>0원</td>
                         <td>{comma(avgMonInterest)}원</td>
-                        <td>{comma(avgMonInterest + avgMonPrincipal)}원</td>
+                        <td>{comma(avgMonInterest)}원</td>
                         </tr>
                     </tbody>
                 </Table> 

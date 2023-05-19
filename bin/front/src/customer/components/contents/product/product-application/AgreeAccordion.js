@@ -84,11 +84,7 @@ function AgreeAccordion(props){
             다. 위의 신청과 관련하여 불편함을 느끼시거나 애로가 있으신 경우 [당행]의 신용정보관리·보호인/개인정
             보 보호책임자 또는 은행연합회, 금융감독원 개인신용정보보호담당자 앞으로 연락하여 주시기 바랍니
             다.
-            - 연락처
-            [당행] 고객 정보관리·보호인/개인정보 보호책임자 연락처 : 1544-8000
-            은행연합회 정보보호담당자 연락처 : 민원상담실 02-3705-5117~9
-            금융감독원 정보보호담당자 연락처 : 민원실(국번없이) 1332
-
+            
           </p>
           <div className='chkAgree'>
             <input type="checkbox" name="isChecked2" checked={isChecked2} onChange={handleCheckbox2}/> 본인은 개인정보 수집 및 이용에 대하여 동의합니다.

@@ -1,0 +1,26 @@
+ul{
+    list-style: none;
+}
+.fund-title{
+    color: #637364;
+    background-color: rgba(175, 196, 171, 0.304);
+    width:500px;
+    border-radius: 10px;
+    text-align: center;
+    justify-self: center;
+    padding: 10px 0 10px 0;
+    font-size: 24px;
+    box-shadow: 10px 10px 10px 0  #5c8944ae;
+    margin-bottom: 50px;
+}
+.fund-div{
+    display: grid;
+    justify-content: center;
+    margin-top: 50px;
+    text-align: center ;    
+}
+
+.fund-account{
+    width:1000px;
+    text-align: center ;
+}

@@ -2,28 +2,115 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
      
 <mapper namespace="com.pigbank.project.dao.HyeMapper">
-
+	<!--*************** 관리자 | 고객관리  ***************-->
 	<!-- 회원 정보 목록 -->
 	<select id="listCustomer" resultType="com.pigbank.project.dto.CustomerDTO">
 		SELECT id,name,regDate,grade,cusState
   		  FROM customer
  	  	 ORDER BY regDate DESC
 	</select>
-	
-<!-- 	고객 조회(회원 상세 페이지) 
-	<select id="detailCustomer" parameterType="String" resultType="com.pigbank.project.dto.CustomerAndAccountDTO">
-		SELECT  c.ID ,c.NAME ,c.EMAIL ,c.ADDRESS ,c.HP ,c.BIRTHDAY ,c.GRADE ,c.REGDATE ,c.CUSSTATE ,
-				a.ACNUMBER , a.BANKNAME ,a.ACSTATE ,a.ACBALANCE , a.ACTYPE ,a.NEWDATE ,a.LASTDATE ,a.TRSFLIMIT 
-	  	FROM 	CUSTOMER c ,
-				ACCOUNT_TBL a
-	 	WHERE 	c.ID = a.ID 
-	   	AND 	c.ID = #{id}
+	<!-- 고객 조회(회원 상세 페이지)  -->
+	<select id="detailCustomer" parameterType="String" resultType="com.pigbank.project.dto.CustomerDTO">
+		SELECT id,name,email,address,hp,birthday,grade,regDate,cusState
+		  FROM customer
+		 WHERE id = #{id}
 	</select>
-	
-	탈퇴 요청 고객 목록
+	<select id="detailAccountListById" parameterType="String" resultType="com.pigbank.project.dto.AccountDTO">
+		SELECT ID , ACNUMBER , BANKNAME , ACSTATE , ACBALANCE ,ACTYPE , NEWDATE , LASTDATE , TRSFLIMIT
+		  FROM ACCOUNT_TBL
+		 WHERE ID = #{id}
+	</select>
+	<!-- 탈퇴 요청 고객 목록 -->
 	<select id="listWithdrawalCustomer" resultType="com.pigbank.project.dto.CustomerDTO">
 		SELECT id,name,regDate,grade,cusState
 		  FROM customer
 		 WHERE cusState = '탈퇴요청'
-	</select> -->
+	</select>
+	<update id="updateStateApproval" parameterType="String">
+		UPDATE CUSTOMER
+		SET CUSSTATE  = '탈퇴승인',SHOW = 'n'
+		WHERE id = #{id}
+	</update>
+	<update id = "updateStateReject" parameterType="String">
+		UPDATE CUSTOMER
+		SET CUSSTATE  = '탈퇴불가능(사유:잔액존재)',SHOW = 'n'
+		WHERE id = #{id}
+	</update>
+
+	<!--*************** 펀드 계좌 만들기 ***************-->
+	<!-- 고객 입출금 계좌 조회 -->
+	<select id="selectAccountById" parameterType="String" resultType="com.pigbank.project.dto.AccountDTO">
+		SELECT ACNUMBER , ACBALANCE , BANKNAME , ACTYPE ,ACPWD
+		FROM ACCOUNT_TBL
+		 WHERE ACTYPE ='입출금통장'
+		   AND ID =#{id}
+	</select>
+	<!-- 펀드 계좌 생성 -->
+	<insert id="insertFundAccount" parameterType="com.pigbank.project.dto.FundProductDTO">
+		INSERT INTO F_ACCOUNT_TBL(fNum,fAcNumber ,id, fBalance ,fNewDate , fAcPwd)
+		VALUES((SELECT NVL(MAX(fNum)+1, 1) FROM F_ACCOUNT_TBL),#{fAcNumber},#{id},#{fBalance},sysdate,#{fAcPwd})
+	</insert>
+	<!-- 입출금 금액 차감-->
+	<update id="deductAccountAmount" parameterType="com.pigbank.project.dto.FundProductDTO">
+		UPDATE ACCOUNT_TBL
+		SET ACBALANCE = ACBALANCE - #{fBalance}
+		WHERE ACNUMBER = #{acNumber}
+	</update>
+	<!-- 입출금통장 차감금액 이체내역에 추가 -->
+	<insert id="insertDepositFund" parameterType="com.pigbank.project.dto.TransferDTO">
+		INSERT INTO TRANSFER_TBL(tNum, acNumber, tDepositnum, tDepositBank, tType, tAmount, myMemo, yourMemo, tDate)
+		VALUES((SELECT NVL(MAX(tNum) + 1, 1) FROM TRANSFER_TBL), #{acNumber}, #{tDepositnum}, '돼지은행', '출금', #{tAmount}, '펀드계좌개설', '펀드계좌개설', sysdate)
+	</insert>
+
+	<!--***************  펀드 거래내역 조회  ***************-->
+	<!-- 고객 펀드계좌 조회 -->
+	<select id="listFundAccountById" parameterType="String" resultType="com.pigbank.project.dto.FundAccountDTO">
+		SELECT fNum, fAcNumber ,fBalance ,fNewDate ,fLastDate , fAcPwd ,fTrsfLimit
+		FROM f_account_tbl
+		WHERE id = #{id}
+		ORDER BY fNewDate DESC
+	</select>
+	<!-- 계좌 상세 거래 내역 보기
+		 (펀드계좌아이디, 계좌번호, 펀드 거래번호, 거래날짜 , 거래종목명, 매수상태 , 종목현재가, 평가손익, 수익률, 평가금액 ) 	-->
+	<select id="detailAccountByFNum" parameterType="int" resultType="com.pigbank.project.dto.FundProductDTO">
+		SELECT  a.fNum, a.FACNUMBER , h.FTRANSNUM , d.FPDNAME ,d.FTRANSDATE , d.fDetailState, h.fNowPrice, h.fNowProfit, h.fProfit, h.fNowTotal
+		  FROM 	F_ACCOUNT_TBL a , F_DETAIL_TBL d , F_HAVING_TBL h
+		 WHERE 	a.FNUM =d.FNUM
+		   AND  d.FTRANSNUM  = h.FTRANSNUM
+		   AND  a.fNum = #{fNum}
+	</select>
+	<!-- 고객별 펀드 보유내역 조회
+		(종목 현재가, 평가손익, 수익률, 평가금액, 보유수량 , 거래종목명, 매수가) 	-->
+	<select id="havingFundById" parameterType="String" resultType="com.pigbank.project.dto.FundProductDTO">
+		SELECT  h.FHAVINGNUM ,h.FNOWPRICE ,h.FNOWPROFIT  ,h.FPROFIT ,h.FNOWTOTAL ,h.FHAVINGCNT ,h.FPRINCIPAL ,d.FPDNAME ,d.FBUYPRICE
+		  FROM 	F_ACCOUNT_TBL a , F_DETAIL_TBL d , F_HAVING_TBL h
+		 WHERE 	a.FNUM = d.FNUM
+		   AND  d.FTRANSNUM  = h.FTRANSNUM
+		   AND  d.FDETAILSTATE = '매수'
+		   AND  a.ID = #{id}
+	</select>
+	<!--***************  펀드 상품 구매  ***************-->
+	<!-- 보유내역 확인하기 , 고객 계좌랑 join해주세요 -->
+	<select id="checkIsinCd" parameterType="String" resultType="String">
+		SELECT FISINCD
+		FROM F_HAVING_TBL
+		WHERE FISINCD = #{fisinCd}
+	</select>
+	<!-- 거래내역에 추가 -->
+	<insert id="insertDetailTbl" parameterType="com.pigbank.project.dto.FundProductDTO">
+		INSERT INTO F_DETAIL_TBL(fTransNum ,fNum , fTransDate ,fPdName ,fBuyPrice ,fTotal ,fCount ,fDetailState )
+		VALUES(#{ftransNum},#{fnum} ,sysdate , #{fpdName} , #{fbuyPrice} , #{ftotal} ,#{fcount} ,'매수')
+	</insert>
+	<!-- 보유내역에 추가 -->
+	<insert id="insertHavingTbl" parameterType="com.pigbank.project.dto.FundProductDTO">
+		INSERT INTO F_HAVING_TBL(fHavingNum, fTransNum ,fNowPrice ,fNowProfit ,fProfit ,fNowTotal ,fHavingCnt, fPrincipal, fIsinCd)
+		VALUES((SELECT NVL(MAX(fHavingNum)+1, 1) FROM F_HAVING_TBL), #{ftransNum} ,#{fnowPrice} , 0 , 0 , #{ftotal} ,#{fcount}, #{ftotal}, #{fisinCd})
+	</insert>
+	<!-- 잔액 업데이트 -->
+	<update id="updateFundBalance" parameterType="com.pigbank.project.dto.FundProductDTO">
+		UPDATE 	F_ACCOUNT_TBL
+		   SET 	FBALANCE = FBALANCE - #{ftotal},
+				FLASTDATE = SYSDATE
+		 WHERE 	fTransNum = #{ftransNum}
+	</update>
 </mapper>

@@ -1,143 +1,160 @@
-// 예금조회
-import React, { Component } from "react"
-import {Form,Button, Row, Col,InputGroup} from 'react-bootstrap'
-import '../../../../resources/css/product/chu.css';
+// 적금조회
+import React, { useState, useEffect } from "react";
+import {Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import AllService from "../All/AllService";
-import {Link} from 'react-router-dom';
+import {Link, useNavigate } from 'react-router-dom';
+import "../../../../resources/css/product/saving.css";
+import { getAuthToken } from "../../../helpers/axios_helper";
+import axios from "axios";
+import { Button } from "react-bootstrap"; 
 
-class Deposit extends Component {
+function Deposit() {
 
-    constructor(props){
-        super(props);
+  const navigate = useNavigate();
 
-        this.state={
-            members:[],
-            message: null,
-            selectedOption: ""
-        }
-    }
+  const handleDpdNameClick = (acNumber) => {
+    const id = window.localStorage.getItem("id");
+    navigate(`/customer/account/deposit/depositdetail/${acNumber}/${id}`);
+  };
   
-    // 라이프 사이클 중 컴포넌트가 생성된 후 사용자에게 보여지기까지의 전체 과정을 랜더링
+  const [members, setMembers] = useState([]);
+  const [selectedOption, setSelectedOption] = useState("");
 
-    componentDidMount(){
-        this.reloadMemberList();
+  useEffect(() => {
+    if(getAuthToken() !== null){
+      axios.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`;
+    } else{
+      axios.defaults.headers.common['Authorization'] = ``;
     }
+    reloadMemberList(window.localStorage.getItem("id"));
+  }, []);
 
-    reloadMemberList = () => {
-        AllService.fetchDeposit()
-            .then(res=>{
-                this.setState({
-                    members:res.data
-                })
-            })
-            .catch(err=>{
-                console.log('reloadMemberList() Error!!',err);
-            });
-      }
-      
-      handleChange = (event) => {
-        this.setState({
-          selectedOption: event.target.value
-        });
-      }
+  const reloadMemberList = (id) => {
+    AllService.fetchDeposit(id)
+      .then(res => {
+        setMembers(res.data);
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log('reloadMemberList() Error!!',err);
+      });
+  }
 
+  const handleChange = (event) => {
+    setSelectedOption(event.target.value);
+  }
 
-    render(){
-        const filteredMembers = this.state.members.filter(
-          (member) => member.dpdName.indexOf(this.state.selectedOption) !== -1
-        );
+  const formatCurrency = (value) => {
+    const formatter = new Intl.NumberFormat("ko-KR", {
+      style: "currency",
+      currency: "KRW",
+    });
+    return formatter.format(value);
+  }
 
-        return (
-            <div>
-                
-                <div className="applicaiton">
-                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" type = "text/css"/>
-                    <h1>예금 계좌 조회</h1><br/>
-                    
-                    
-                    
-                    <Form className="formArea">
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2">계좌선택</Form.Label>
-                            <Col sm="5" value={this.state.selectedOption} onChange={this.handleChange}>
-                                <Form.Select>
-                                    <option value="">계좌선택</option>
-                                        {this.state.members.map((member) => (
-                                    <option key={member.dpdName} value={member.dpdName}>{member.dpdName}</option>
-                                    ))}  
-                                </Form.Select>                                     
-                            </Col>
-                        </Form.Group>
-                        
-                    </Form>
-                   
-                    
-                    {filteredMembers.map((member) => (
-                    <Form className="formArea" >
-                        
-                        <hr/>
-                        <br />
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2">계좌명</Form.Label>
-                            <Col sm="10">
-                                <Form.Control readOnly defaultValue={member.dpdName} />
-                            </Col>
-                        </Form.Group>
-                        <br/>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2">계좌번호</Form.Label>
-                            <Col sm="10">
-                                <Form.Control readOnly defaultValue={member.dnum} />
-                            </Col>
-                        </Form.Group>
-                        <br/>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2">잔액</Form.Label>
-                            <Col sm="10">
-                                <Form.Control readOnly defaultValue={member.damount} />
-                            </Col>
-                        </Form.Group>
-                        <br/>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2">가입날짜</Form.Label>
-                            <Col sm="10">
-                            <Form.Control readOnly defaultValue={member.djoinDate}/>
-                            </Col>
-                        </Form.Group>
-                        <br/>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2">만기날짜</Form.Label>
-                            <Col sm="10">
-                            <Form.Control readOnly defaultValue={member.dendDate}/>
-                            </Col>
-                        </Form.Group>
-                        <br/>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm="2">예상금리금액</Form.Label>
-                            <Col sm="10">
-                                <InputGroup className="mb-3">
-                                    <InputGroup.Text>₩</InputGroup.Text>
-                                    <Form.Control placeholder={member.dexpAmount}/> 
-                                </InputGroup>
-                            </Col>
-                        </Form.Group>
-                    </Form>
-                   
-                    ))}
-                    <div className="d-grid gap-2">
-                        <Button as={Link} to="/customer/account/All" type="submit" style={{ background: '#9dc888', border: '#9dc888' }} size="lg">
-                            HOME
-                        </Button>
+  const acNum = (acNumber) => {
+    const acNum = acNumber.toString().slice(0, 3) + '-' + acNumber.toString().slice(3);
+    return acNum;
+  }
+
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    date.setTime(date.getTime() + (9 * 60 * 60 * 1000)); 
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  const filteredMembers = members.filter(
+    (member) => member.dpdName.indexOf(selectedOption) !== -1
+  );
+
+  const tableHeadStyle={
+    fontWeight: "bold",
+  }
+
+  const depositCxlExp=(dnum)=>{
+    window.localStorage.setItem("dNum",dnum);
+    navigate('/customer/account/deposit/depositClose');
+  }
+
+  return (
+    <main className="main">
+      <section className="section">
+      </section>
+      <section className="section">
+        <div className="container">
+          <div className="title_div">
+            <div className="title_see">
+            예금계좌 조회
+            </div>
+          </div>
+          <div className="card text-center">
+            <div className="card-header" style={{backgroundColor:"#dbe2d872" }}>
+              <ul className="nav nav-tabs card-header-tabs">
+                <li className="nav-item">
+                  <a className="nav-link active" href="/customer/account/Account">입출금계좌</a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link disabled" href="/customer/account/Deposit">예금계좌</a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link active" href="/customer/account/Saving" >적금계좌</a>
+                </li>
+                <li className="nav-item">
+                    <a className="nav-link active" href="/customer/account/Loan">대출계좌</a>
+                </li>
+                </ul>
                     </div>
                 </div>
 
-                SELECT a.id, da.acNumber, da.d_pdName, da.d_amount, da.d_expAmount, da.d_joinDate, da.d_endDate, da.d_deAccount<br/>
-                FROM d_account_tbl da, deposit_product d, account_tbl a<br/>
-                WHERE da.d_pdName = d.d_pdName<br/>
-                AND da.acNumber = a.acNumber<br/>
-                AND a.id='hong1234'; -- 예금계좌 리스트<br/>
+                <div className="card-body">
+                    <Table>
+                      <TableHead >
+                        <TableRow >
+                          <TableCell style={tableHeadStyle}>계좌명</TableCell>
+                          <TableCell style={tableHeadStyle}>계좌번호</TableCell>
+                          <TableCell style={tableHeadStyle}>가입날짜</TableCell>
+                          <TableCell style={tableHeadStyle}>만기날짜</TableCell>
+                          <TableCell style={tableHeadStyle}>예상금리금액</TableCell>
+                          <TableCell style={tableHeadStyle}>잔액</TableCell>
+                          <TableCell style={tableHeadStyle}>해지</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {filteredMembers.map((member) => (
+                          <TableRow key={member.dnum} >
+                            <TableCell onClick={() => handleDpdNameClick(member.acNumber)}>
+                              <Link to={`/customer/account/deposit/depositdetail/${member.acNumber}/${member.id}`}>
+                                {member.dpdName}
+                              </Link>
+                            </TableCell>
+                            <TableCell>{acNum(member.acNumber)}</TableCell>
+                            <TableCell>{formatDate(member.djoinDate)}</TableCell>
+                            <TableCell>{formatDate(member.dendDate)}</TableCell>
+                            <TableCell>{formatCurrency(member.dexpAmount)}</TableCell>
+                            <TableCell>
+                              {member.damount !== 0 ? formatCurrency(member.damount) : <h5 style={{color:'green',fontWeight:'bold'}}>해지완료</h5>}
+                            </TableCell>
+                            <TableCell>
+                              { member.damount === 0 ?(
+                                <span className="btnbtn zero">해지불가</span>
+                              ) : (
+                              <button className="btnbtn"  onClick={()=>depositCxlExp(member.dnum)} disabled={member.damount === 0}>해지신청</button>
+                              )}
+                            </TableCell>
+                           </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                </div>
             </div>
-        )
-    }
-}
+              
+            </section>
+            <br/><br/><br/>
+          </main>
+        );
+      }
+
 export default Deposit;

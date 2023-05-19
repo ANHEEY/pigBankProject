@@ -7,8 +7,11 @@
     <!-- namespace="패키지명.인터페이스" -->
 <mapper namespace="com.pigbank.project.dao.ChuMapper">
 
+	<!-- 삭제된 상품 목록에서 지워지도록 WHERE 조건을 위해 수정했습니다.  -->
 	<select id="savingList" resultType="com.pigbank.project.dto.SavingProductDTO">
-		SELECT * FROM savings_product
+		SELECT * 
+		  FROM savings_product
+		 WHERE show = 'y'
 	</select>
 	
 	<select id="depositList" resultType="com.pigbank.project.dto.DepositProductDTO">
@@ -19,24 +22,187 @@
 		SELECT * FROM loan_product
 	</select>
 	
-	<select id="depositAccountList" resultType="com.pigbank.project.dto.DepositAccountDTO">
-		SELECT da.dNum, a.id, da.acNumber, da.dPdName, da.dAmount, da.dExpAmount, da.dJoinDate, da.dEndDate, da.dDeAccount
+	<select id="depositAccountList" parameterType="String" resultType="com.pigbank.project.dto.DepositAccountDTO">
+		SELECT  DISTINCT da.dNum, a.id,  da.acNumber, da.dPdName, da.dAmount, da.dExpAmount, da.dJoinDate, da.dEndDate, da.dDeAccount
                 FROM d_account_tbl da, deposit_product d, account_tbl a
                 WHERE da.dPdName = d.dPdName
                 AND da.acNumber = a.acNumber
-                AND a.id='hong1234'
+                AND a.id=#{id}
+                <!-- AND a.acState='OPEN' -->
 	</select>
 	
-	<select id="savingAccountList" resultType="com.pigbank.project.dto.SavingAccountDTO">
+	<select id="depositDetail" parameterType="long" resultType="com.pigbank.project.dto.TransferDTO">
+		SELECT DISTINCT t.tNum
+			, t.acNumber
+			, t.tDepositNum
+			, t.tDepositBank
+			, t.tType
+			, t.tAmount
+			, t.myMemo
+			, t.yourMemo
+			, t.tDate
+		FROM d_account_tbl da, transfer_tbl t
+		WHERE da.acNumber = t.acNumber 
+		AND t.acNumber = #{acNumber}
+		ORDER BY t.tDate DESC 
+	</select>
+	
+	<!-- 적금계좌 잔액 노출을 위해 수정했습니다. -->
+	<select id="savingAccountList" parameterType="String" resultType="com.pigbank.project.dto.SavingAccountDTO">
 		SELECT *  
-		FROM s_account_tbl s, ACCOUNT_TBL a  
-		WHERE s.ACNUMBER = a.ACNUMBER  
-		AND id='hong1234'
+		FROM s_account_tbl s, ACCOUNT_TBL a
+		WHERE s.ACNUMBER = a.ACNUMBER
+		  AND a.id=#{id}
+		<!-- AND a.acState='OPEN' 해지된 계좌 목록에 노출하기 위해서 수정했습니다. -->
 	</select>
 	
-	<select id="loanAccountList" resultType="com.pigbank.project.dto.LoanAccountDTO">
-		SELECT * FROM loan_req_tbl
-		WHERE id = 'hong1234'
+	<select id="savingDetail" parameterType="long" resultType="com.pigbank.project.dto.TransferDTO">
+		SELECT DISTINCT t.tNum
+			, t.acNumber
+			, t.tDepositNum
+			, t.tDepositBank
+			, t.tType
+			, t.tAmount
+			, t.myMemo
+			, t.yourMemo
+			, t.tDate
+		FROM s_account_tbl s, transfer_tbl t
+		WHERE s.ACNUMBER = t.ACNUMBER 
+		AND t.ACNUMBER = #{acNumber}
+		ORDER BY t.tDate DESC
 	</select>
+	
+	<!-- csy_ 대출 잔액이 노출되어야 하므로 고침 -->
+	<select id="loanAccountList" parameterType="String" resultType="com.pigbank.project.dto.LoanAccountDTO">
+		SELECT *
+		  FROM account_tbl a, l_account_tbl l, loan_req_tbl r
+		 WHERE l.acNumber = a.acNumber
+		   AND l.lreqNum = r.lreqNum 
+		   AND a.id = #{id}
+	</select>
+	
+	<select id="loanState" resultType="com.pigbank.project.dto.LoanAccountDTO">
+		SELECT lReqNum
+       		 , lPdName
+       		 , lAmount
+        	 , lState
+	    FROM loan_req_tbl
+	    WHERE id = 'hong1234'
+	</select>
+	
+	<select id="accountList" parameterType="String" resultType="com.pigbank.project.dto.AccountDTO">
+		SELECT *
+		FROM account_tbl
+		WHERE acType='입출금통장'
+		and acState='OPEN'
+	  	AND id=#{id}
+	</select>
+	
+	<select id="accountDetail" parameterType="long" resultType="com.pigbank.project.dto.TransferDTO">
+		SELECT DISTINCT t.tNum
+			, t.acNumber
+			, t.tDepositNum
+			, t.tDepositBank
+			, t.tType
+			, t.tAmount
+			, t.myMemo
+			, t.yourMemo
+			, t.tDate
+		FROM account_tbl a, transfer_tbl t
+		WHERE a.ACNUMBER = t.ACNUMBER 
+		AND a.ACNUMBER = #{acNumber}
+		ORDER BY t.tDate DESC
+	</select>
+	
+	<select id="transferList" resultType="com.pigbank.project.dto.TransferDTO">
+		SELECT tt.tNum
+			, tt.acNumber
+			, tt.tDepositNum
+			, tt.tDepositBank
+			, tt.tType
+			, tt.tAmount
+			, tt.myMemo
+			, tt.yourMemo
+			, tt.tDate
+			, at2.acType
+		 FROM transfer_tbl tt, account_tbl at2 
+		 WHERE tt.ACNUMBER = at2.ACNUMBER  
+		 ORDER BY tDate DESC
+	</select>
+	
+	<select id="exchangeList" resultType="com.pigbank.project.dto.ExchangeRateListDTO">
+		SELECT * FROM chuexchange_tbl2 
+	</select>
+	
+	<select id="sleepList" parameterType="String" resultType="com.pigbank.project.dto.AccountDTO">
+		SELECT *
+		FROM account_tbl
+		WHERE id = #{id}
+  		AND (acState = 'SLEEP' OR acState = '요청 확인 중')
+	</select>
+	
+	<update id="sleepRelease" parameterType="long">
+		UPDATE account_tbl
+		SET acState='요청 확인 중'
+		WHERE acNumber = #{acNumber}
+	</update>
+	
+	<!-- ===================[관리자]===================== -->
+	
+	<select id="adminSaving" resultType="com.pigbank.project.dto.SavingAccountDTO">
+		SELECT DISTINCT s.sNum, a.id, s.acNumber, s.sPdName, s.sAmount, s.sExpAmount, s.sJoinDate, s.sEndDate, a.acState
+		FROM s_account_tbl s, account_tbl a  
+		WHERE s.acNumber = a.acNumber  
+	</select>
+	
+	<select id="adminDeposit" resultType="com.pigbank.project.dto.DepositAccountDTO">
+		SELECT  DISTINCT a.acState, da.dNum, a.id,  da.acNumber, da.dPdName, da.dAmount, da.dExpAmount, da.dJoinDate, da.dEndDate, da.dDeAccount
+        FROM d_account_tbl da, deposit_product d, account_tbl a
+        WHERE da.dPdName = d.dPdName
+        AND da.acNumber = a.acNumber
+	</select>
+	
+	<select id="adminAccount" resultType="com.pigbank.project.dto.AccountDTO">
+		SELECT DISTINCT*
+		FROM account_tbl
+		WHERE acType='입출금통장'
+	</select>
+	
+	<select id="adminLoan" resultType="com.pigbank.project.dto.LoanAccountDTO">
+		SELECT DISTINCT *
+          FROM  l_account_tbl l, loan_req_tbl r, ACCOUNT_TBL a
+          WHERE l.LREQNUM  = r.LREQNUM 
+          AND l.ACNUMBER = a.ACNUMBER 
+	</select>
+	
+	<select id="adminSleep" resultType="com.pigbank.project.dto.AccountDTO">
+		SELECT *
+		FROM account_tbl
+  		WHERE (acState = 'SLEEP' OR acState = '요청 확인 중')
+	</select>
+	
+	<update id="adminSleepRelease" parameterType="long">
+		UPDATE account_tbl
+		SET acState='OPEN', lastDate=SYSDATE
+		WHERE acNumber = #{acNumber}
+	</update>
+	<!-- 휴면해제하면 마지막 거래일 업데이트 -->
+		
+	<!-- 마지막 거래일로부터 2년이 지난 계좌 불러오기 -->
+	<select id="breakAccountInfo" resultType="com.pigbank.project.dto.AccountDTO">
+		 <![CDATA[
+		SELECT * FROM ACCOUNT_TBL 
+		 WHERE LASTDATE < ADD_MONTHS(SYSDATE, -24)
+		   AND acType='입출금통장'
+		 ]]>
+	</select>
+	
+	<!-- 마지막 거래일로부터 2년지난 통장 휴면처리 -->
+	<update id="accountSleep" parameterType="long">
+		UPDATE account_tbl
+		   SET acState='SLEEP'
+		 WHERE acNumber=#{acNumber}
+	</update>
+	
 	
 </mapper>

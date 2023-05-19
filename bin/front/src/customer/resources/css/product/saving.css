@@ -1,0 +1,49 @@
+h2{
+    text-align: center;
+    font-size: 28px;
+}
+
+
+.thead1 {
+    text-align: right; /* 세로 가운데 정렬 */
+    justify-content: right;
+}
+
+.thead1 select{
+    text-align: center;
+    background-color:#dbe2d872;
+    border: 3px solid #333;
+    font-weight: lighter;
+    color: 1px solid #333;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 8px;
+    width: 10%;
+}
+.account_see{
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    margin-bottom: 100px;
+}
+.title_div{
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    margin-bottom: 30px;
+}
+.title_see{
+    display: inline-block;
+    width: 600px;
+    text-align: center;
+    margin: 20px;
+    padding: 10px 50px 10px 50px;
+    font-size: 30px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 2px 0px #6ab64e;
+    background-color: #cbcbcb22;
+    color: #6ab64e;
+    font-weight: bold;
+}
+
+

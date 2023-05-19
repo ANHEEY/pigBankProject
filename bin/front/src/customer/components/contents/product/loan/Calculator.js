@@ -18,6 +18,7 @@ const Calculator = () => {
     // tabs 클릭시 showResult 컨트롤
     const handleClick = () => {
         setShowResult(false);
+        reset();
     }
 
     const onChange = (e) => {
@@ -31,8 +32,8 @@ const Calculator = () => {
     }
    
     // 계산하기
-    const calculate = (e) => {
-        if((inputs.amount !== 0)&&(inputs.period !== 0)&&(inputs.rate !== 0)) {
+    const calculate = (inputs) => {
+        if((inputs.amount != 0)&&(inputs.period != 0)&&(inputs.rate != 0)) {
             setShowResult(true);
         }
         else {
@@ -96,7 +97,7 @@ const Calculator = () => {
                 %로 대출 받으면?&nbsp; &nbsp; &nbsp; &nbsp;       
                 <Col sm={3}>
                     <Stack direction="horizontal" gap={3} >
-                        <Button variant="dark" size="sm" onClick={(e) => calculate(e)}>계산하기</Button>
+                        <Button variant="dark" size="sm" onClick={() => calculate(inputs)}>계산하기</Button>
                         <Button variant="outline-dark" size="sm" onClick={reset}>초기화</Button>
                     </Stack>
                 </Col>
@@ -133,7 +134,7 @@ const Calculator = () => {
                     size="sm"
                     type="number"
                     id="rate"
-                    vaue={inputs.rate}
+                    value={inputs.rate}
                     placeholder="이자"
                     min={0}
                 />
@@ -141,7 +142,7 @@ const Calculator = () => {
                 %로 대출 받으면? &nbsp; &nbsp; &nbsp; &nbsp;       
                 <Col sm={3}>
                 <Stack direction="horizontal" gap={3} >
-                    <Button variant="dark" size="sm" onClick={(e) => calculate(e)}>계산하기</Button>
+                    <Button variant="dark" size="sm" onClick={() => calculate(inputs)}>계산하기</Button>
                     <Button variant="outline-dark" size="sm" onClick={reset}>초기화</Button>
                 </Stack>
                 </Col>
@@ -178,7 +179,7 @@ const Calculator = () => {
                     size="sm"
                     type="number"
                     id="rate"
-                    vaue={inputs.rate}
+                    value={inputs.rate}
                     placeholder="이자"
                     min={0}
                 />
@@ -186,7 +187,7 @@ const Calculator = () => {
                 %로 대출 받으면? &nbsp; &nbsp; &nbsp; &nbsp;       
                 <Col sm={3}>
                 <Stack direction="horizontal" gap={3} >
-                    <Button variant="dark" size="sm" onClick={(e) => calculate(e)}>계산하기</Button>
+                    <Button variant="dark" size="sm" onClick={() => calculate(inputs)}>계산하기</Button>
                     <Button variant="outline-dark" size="sm" onClick={reset}>초기화</Button>
                 </Stack>
                 </Col>

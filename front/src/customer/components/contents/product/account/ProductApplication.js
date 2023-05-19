@@ -5,13 +5,14 @@ import "../../../../resources/css/product/application-form.css";
 import { getId } from "../../../helpers/axios_helper";
 import PdAccApiService from "./PdAccApiService";
 import { useNavigate } from "react-router-dom";
-import FormSMS from "./sms_api/Form";
+
 
 function ProductApplication() {
     
     
     const [id, setId] = useState(getId());  // 고객정보
     const [acPwd, setAcPwd] = useState(''); // 정보입력 비밀번호 입력, 네이버 SENS API사용 본인인증
+    
     const navigate = useNavigate();
 
      // 약관 동의
@@ -57,8 +58,9 @@ function ProductApplication() {
         });
       };
 
+    // 본인인증 페이지로 이동
     const FormSMS = () => {
-        navigate('/customer/product/account/FormSMS');
+        navigate('/customer/product/account/sms_api/FormSMS');
     }
 
     const onChange = (e) => {
@@ -140,7 +142,7 @@ function ProductApplication() {
                     <p><b>1회 이체한도 </b> 2,000,000원</p>
                 </div>
                 <div className="d-grid gap-2">
-                    <Button style = {{background:'#9dc888',border:'#9dc888'}} size="lg" onClick={handleSubmit}> 가입하기 </Button>
+                    <Button style = {{background:'#9dc888',border:'#9dc888'}} size="lg" onClick={handleSubmit} disabled> 가입하기 </Button>
                 </div>
             </Form>
         </div>

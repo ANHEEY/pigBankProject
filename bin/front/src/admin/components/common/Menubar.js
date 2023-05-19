@@ -21,6 +21,10 @@ function MenuBar() {
             >
                 <SideNav.Toggle />
                 <SideNav.Nav defaultSelected="admin">
+                    <NavItem>
+                        <NavIcon></NavIcon>
+                        <NavText></NavText>
+                    </NavItem>
                     <NavItem eventKey="admin" disabled>
                         <NavIcon>
                             <FontAwesomeIcon icon={faHouse} />
@@ -54,9 +58,12 @@ function MenuBar() {
                         <NavItem eventKey="acSearch/acAccount">
                             <NavText>계좌조회</NavText>
                         </NavItem>
-                        <NavItem eventKey="acSearch/acDeposit">
+                        <NavItem eventKey="acSearch/acTransfer">
                             <NavText>이체내역조회</NavText>
-                        </NavItem>
+                        </NavItem>'
+                        <NavItem eventKey="acSearch/acLoanRequest">
+                            <NavText>대출신청목록조회</NavText>
+                        </NavItem>'
                         <NavItem eventKey="acSearch/acDormant">
                             <NavText>휴면계좌조회</NavText>
                         </NavItem>

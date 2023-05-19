@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <!DOCTYPE mapper
+     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+     
+<mapper namespace="com.pigbank.project.dao.KimMapper">
+	<!-- admin-SavingProduct -->
+	<select id="sPdList" resultType="com.pigbank.project.dto.SavingProductDTO">
+		SELECT * FROM savings_product
+		 WHERE show = 'y'
+		 ORDER BY sRegDate DESC
+	</select>
+	<select id="findByPdName" parameterType="String" resultType="com.pigbank.project.dto.SavingProductDTO">
+		SELECT * FROM savings_product
+		WHERE sPdName = #{spdname}
+	</select>
+	<insert id="sPdInsert" parameterType="com.pigbank.project.dto.SavingProductDTO">
+		INSERT INTO savings_product(sPdName, sContent, sPeriod, sRate, sMin, sMax, sCxlRate, sRegDate)
+		 VALUES(#{spdname}, #{scontent}, #{speriod}, #{srate}, #{smin}, #{smax}, #{scxlrate}, sysdate)
+	</insert>
+ 	<update id="sPdUpdate" parameterType="com.pigbank.project.dto.SavingProductDTO">
+		UPDATE savings_product
+		   SET sPdName=#{spdname}, sContent=#{scontent}, sPeriod=#{speriod}, sRate=#{srate}, sMin=#{smin}, sMax=#{smax}, sCxlRate=#{scxlrate}
+		 WHERE sPdName = #{spdname}
+	</update>	 
+ 	<update id="sPdDelete" parameterType="String">
+		UPDATE savings_product
+		   SET show = 'n'
+		 WHERE sPdName = #{spdname}
+	</update>
+	
+	<select id="spdSearch" parameterType="String" resultType="com.pigbank.project.dto.SavingProductDTO">
+		SELECT * FROM savings_product WHERE sPdName LIKE '%'||#{spdname}||'%' AND show='y'
+	</select>
+	
+	<!-- cust-Account(자유일출금 개설) -->
+	<insert id="aPdInsert" parameterType="com.pigbank.project.dto.AccountDTO">
+		INSERT INTO account_tbl(acNumber, id, bankName, acState, acType, acPwd, lastDate)
+		VALUES (
+		     '110' || LPAD(FLOOR(DBMS_RANDOM.VALUE(1, 10000000)), 7, '0'),
+	    #{id}, '돼지은행', 'OPEN', '입출금통장', #{acPwd}, sysdate)
+	</insert>
+	<!-- cust-SavingAccount(적금계좌 생성) -->
+	<!-- 1) 계좌 개설 -->
+	<insert id="custAPdInsert" parameterType="com.pigbank.project.dto.SavingAccountDTO">
+	  INSERT INTO account_tbl(acNumber, id, acBalance, bankName, acState, acType, acPwd, lastDate)
+	  VALUES (
+	    #{acNumber}, #{id}, 0,'돼지은행', 'OPEN', '적금계좌', #{acPwd}, sysdate)
+	</insert>
+	<!-- 2) 적금계좌 개설(acNumber => FK) -->
+	<insert id="custSPdInsert" parameterType="com.pigbank.project.dto.SavingAccountDTO">
+	  INSERT INTO s_account_tbl(sNum, acNumber, sPdName, sAmount, sExpAmount, sEndDate, sJoinDate, sDeAccount, sstartDate)
+	  VALUES (
+	    (SELECT NVL(MAX(sNum)+1,1) FROM s_account_tbl),
+	    #{acNumber},
+	    #{spdname},
+	    #{samount},
+	    #{sexpAmount},
+	    #{sendDate},
+	    sysdate,
+	    #{sdeAccount},
+	    #{sstartDate}
+	  )
+	</insert>
+	<!-- 적금 가입 후 입출금 통장에서 가입금액 빼기 -->
+	<update id="custSavingOpenWithdraw" parameterType="com.pigbank.project.dto.SavingAccountDTO">
+		UPDATE account_tbl
+		   SET acBalance=acBalance-#{samount}
+		 WHERE acNumber=#{withdrawAcNumber}
+	</update>
+	
+	<!-- 적금 중도해지 상세페이지 -->
+	<select id="findByCloseDetail" parameterType="long" resultType="com.pigbank.project.dto.SavingAccountDTO">
+		SELECT s.sNum, s.acNumber, s.spdName, s.samount, s.sexpAmount, s.sendDate, s.sjoinDate, s.sdeaccount, s.SSTARTDATE, p.speriod, p.scxlrate, p.srate, a.acPwd, a.acbalance
+		  FROM s_account_tbl s, savings_product p, account_tbl a
+		 WHERE s.sPdName = p.sPdName
+		   AND s.acNumber = a.acNumber
+		   AND s.acNumber = #{acNumber}
+	</select>
+	
+	<!-- 적금 중도해지 - 전체계좌 상태변경 -->
+	<update id="sAccClose" parameterType="com.pigbank.project.dto.SavingAccountDTO">
+		UPDATE account_tbl
+   		   SET acState='DELETE', acBalance=0
+   		 WHERE acNumber=#{acNumber}
+	</update>
+	
+	<!-- 적금 중도해지 - 만기시 입금계좌로 입금 -->
+	<update id="fSaivngPut" parameterType="com.pigbank.project.dto.SavingAccountDTO">
+		UPDATE account_tbl
+		   SET acBalance = acBalance + #{sexpAmount}
+   		 WHERE acNumber = #{sdeAccount}
+	</update>
+	
+	<!-- 적금 중도해지 - 입출금계좌 이체내역 추가 -->
+	<update id="accCxlTransfer" parameterType="com.pigbank.project.dto.SavingAccountDTO">
+		INSERT INTO transfer_tbl(tNum,acNumber,tDepositNum,tDepositBank,tType,tAmount,myMemo,yourMemo)
+		VALUES ((SELECT NVL(MAX(tNum)+1,1) FROM transfer_tbl),
+					#{sdeAccount},
+					#{acNumber},
+					'돼지은행',
+					'입금',
+					#{sexpAmount},
+					'적금해지 출금',
+					'적금해지 입금'
+				)
+	</update>
+	
+	<!-- 적금 중도해지 - 적금계좌 이체내역 추가 -->
+	<update id="savingCxlTransfer" parameterType="com.pigbank.project.dto.SavingAccountDTO">
+		INSERT INTO transfer_tbl(tNum,acNumber,tDepositNum,tDepositBank,tType,tAmount,myMemo,yourMemo)
+		VALUES ((SELECT NVL(MAX(tNum)+1,1) FROM transfer_tbl),#{acNumber}
+				,#{sdeAccount},'돼지은행','출금',#{sexpAmount},'적금해지 출금','적금해지 입금')
+	</update>
+	
+	<!-- 자동이체번호 불러오기 -->
+	<select id="selectANum" parameterType="long" resultType="int">
+		SELECT a.aNum
+		  FROM auto_transferReg_tbl a, s_account_tbl s, account_tbl ac
+		 WHERE ac.acNumber = s.acNumber
+		   AND s.acNumber = a.adepositNum
+		   AND s.acNumber = #{acNumber}
+	</select>
+
+</mapper>

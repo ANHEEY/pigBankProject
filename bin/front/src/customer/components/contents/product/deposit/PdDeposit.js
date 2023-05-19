@@ -1,11 +1,21 @@
-// 예금 상품
+// 고객 예금 상품 리스트
 import { Typography } from "@mui/material";
-import React from "react";
+import React,{useState,useEffect} from "react";
 import {Form, Col, Row, Button, InputGroup, ListGroup, Stack } from 'react-bootstrap';
 import { useNavigate,Link } from "react-router-dom";
+import PdDepositService from "./PdDepositService";
+import SearchItem from "./SearchItem";
 
 
 function PdDeposit () {
+    const [searchItem,setSearchItem]=useState('');
+    const [searchVisible,setSearchVisible]=useState(false);
+
+    const searchPd=()=>{
+        console.log("검색 누름!!!");
+        setSearchVisible(!searchVisible);
+    }
+
     const style = {
         color: "green",
     }
@@ -15,16 +25,23 @@ function PdDeposit () {
     }
 
     const navigate = useNavigate();
-    
-    const goDetail=(dpdName)=> { 
 
-        /* window.localStorage.setItem(); */
+    const [depositProducts,setDepositProducts]=useState([]);
+
+    useEffect(()=>{
+        PdDepositService.pdDepositList()
+            .then(res=>{
+                setDepositProducts(res.data);
+                console.log(res.data);
+            })
+            .catch(err=>{
+                console.log('pdDepositList() 오류!!!!',err);
+            });
+    },[]);
+    
+    const dPdDetail=(dpdName)=> { 
         window.localStorage.setItem("dpdName", dpdName);
         navigate('/customer/product/deposit/pdDepositDetail');
-        // PdDepositService.pdDepositDetailInfo(dpdName)
-        //     .then(res=>{
-
-        // });
     }
 
     return (
@@ -40,80 +57,44 @@ function PdDeposit () {
                     <Form.Control
                     placeholder="찾으시는 예금상품명을 입력하세요."
                     aria-label="Recipient's username"
-                    aria-describedby="basic-addon2"
+                    aria-describedby="basic-addon2" name="searchItem" value={searchItem}
+                    onChange={(e)=>setSearchItem(e.target.value)}
                     />
-                    <Button variant="outline-secondary" id="button-addon2">
-                    Button
+                    <Button variant="outline-secondary" onClick={searchPd}>
+                    검색
                     </Button>
                 </InputGroup>
             </Col>
             </Form.Group>
         </Form>
+        {searchVisible && <SearchItem inputs={searchItem}/>}
         
         <br/>
         <br/>
         <br/>
         <br/>
-        <hr />
-        <ListGroup variant="flush">
-            <ListGroup.Item>
-            <Row>
-                <Stack direction="horizontal" gap={3}>
-                <div>
-                        <p>인터넷뱅킹 | 피그뱅크 | 예금상품</p>
-                        <Typography variant="h4" style={{ fontWeight: 'bold'}}>예금상품명</Typography><br />
-                        <p>상품설명</p>
-                        <p>금리 <span style={style}>5%</span></p>
-                </div>
-                <div className="ms-auto">
-                <Button variant="success" onClick={goDetail}>신청하기</Button>
-                </div>
-                </Stack>
-            </Row>
-
-            </ListGroup.Item>
-        </ListGroup>
-
-        <hr />
-        <ListGroup variant="flush">
-            <ListGroup.Item>
-            <Row>
-                <Stack direction="horizontal" gap={3}>
-                <div>
-                        <p>인터넷뱅킹 | 피그뱅크 | 예금상품</p>
-                        <Typography variant="h4" style={{ fontWeight: 'bold'}}>예금상품명</Typography><br />
-                        <p>상품설명</p>
-                        <p>금리 <span style={style}>5%</span></p>
-                </div>
-                <div className="ms-auto">
-                <Button variant="success" onClick={goDetail}>신청하기</Button>
-                </div>
-                </Stack>
-            </Row>
-
-            </ListGroup.Item>
-        </ListGroup>
-
-        <hr />
-        <ListGroup variant="flush">
-            <ListGroup.Item>
-            <Row>
-                <Stack direction="horizontal" gap={3}>
-                <div>
-                        <p>인터넷뱅킹 | 피그뱅크 | 예금상품</p>
-                        <Typography variant="h4" style={{ fontWeight: 'bold'}}>예금상품명</Typography><br />
-                        <p>상품설명</p>
-                        <p>금리 <span style={style}>5%</span></p>
-                </div>
-                <div className="ms-auto">
-                <Button variant="success" onClick={goDetail}>신청하기</Button>
-                </div>
-                </Stack>
-            </Row>
-
-            </ListGroup.Item>
-        </ListGroup>
-        <Link to = '/customer/product/deposit/application'><h5>이곳을 클릭하면 상품 가입 페이지로 이동합니다 </h5></Link>
+        {!searchVisible && depositProducts.map(product=>
+            
+            <ListGroup variant="flush" key={product.dpdName}>
+                <ListGroup.Item style={{borderTop:'1px solid gray'}}>
+                <Row>
+                    <Stack direction="horizontal" gap={3}>
+                    <div>
+                            <p>인터넷뱅킹 | 피그뱅크 | 예금상품</p>
+                            <Typography variant="h4" style={{ fontWeight: 'bold'}}>{product.dpdName}</Typography><br />
+                            <p>{product.dcontent}</p>
+                            <p>금리 <span style={style}>{product.drate}%</span></p>
+                    </div>
+                    <div className="ms-auto">
+                    <Button variant="success" onClick={()=>dPdDetail(product.dpdName)}>신청하기</Button>
+                    </div>
+                    </Stack>
+                </Row>
+    
+                </ListGroup.Item>
+            </ListGroup>
+        )}
+        <hr/>
         </div>
       
 )

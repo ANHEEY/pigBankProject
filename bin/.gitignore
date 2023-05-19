@@ -18,8 +18,10 @@ target/
 *.iws
 *.iml
 *.ipr
+db.sqlite3
 
 ### NetBeans ###
+/venv
 /nbproject/private/
 /nbbuild/
 /dist/

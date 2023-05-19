@@ -1,14 +1,22 @@
 import React from "react";
 import { Container, Table } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
+import { useParams  } from "react-router-dom";
 
 function TransLimitAccept () {
+    const {trsfLimit , myvalue} = useParams();
+    
+    // navigate 함수로 받아온 get 값을 받아서 확인하는 페이지
+    const comma = Number(trsfLimit).toLocaleString('ko-kR');
+    const commanext = Number(myvalue).toLocaleString('ko-kR');
     return(
         <Container>
-        <h2 align="center">이체한도 변경 신청 완료</h2>
+            <div className="title_div">
+                <div className="title_see">
+                    이체한도 변경 완료
+                </div>
+            </div>
         <hr />
-        <br />
-        <br />
         <Table>
             <tbody>
                 <tr>
@@ -16,17 +24,17 @@ function TransLimitAccept () {
                         <label>
                             <h4>변경 전</h4>
                         </label>
-                        <td >
-                            10,000,000
-                        </td>
+                        <h4>
+                            {comma}원
+                        </h4>
                     </td>
                     <td>
                         <label>
                             <h4>변경 후</h4>
                         </label>
-                        <td >
-
-                        </td>
+                        <h4>
+                            {commanext}원
+                        </h4>
                     </td>
                 </tr>
             </tbody>

@@ -43,6 +43,7 @@ import PdAccount from "../../contents/product/account/PdAccount";
 import ProductApplication from "../../contents/product/account/ProductApplication";
 import FormSMS from "../../contents/product/account/sms_api/Form";
 import FormSMS2 from "../../contents/product/account/sms_api/Form2";
+import FormSMS3 from "../../contents/product/account/sms_api/Form3";
 
 // 상품 | 적금상품
 import PdSaving from "../../contents/product/saving/PdSaving";
@@ -144,8 +145,9 @@ const AppRouter = () => {
             {/* 상품(입출금) */}
             <Route path="/customer/product/pdAccount" Component={PdAccount} />
             <Route path="/customer/product/account/application" Component={ProductApplication} />
-            <Route path="/customer/product/account/FormSMS" Component={FormSMS} />
-            <Route path="/customer/product/account/FormSMS2" Component={FormSMS2} />
+            <Route path="/customer/product/account/sms_api/FormSMS" Component={FormSMS} />
+            <Route path="/customer/product/account/sms_api/FormSMS2" Component={FormSMS2} />
+            <Route path="/customer/product/account/sms_api/FormSMS3" Component={FormSMS3} />
            
             {/* 상품(예금) */}
             <Route path="/customer/product/pdDeposit" Component={PdDeposit} />

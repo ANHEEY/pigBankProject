@@ -1,5 +1,5 @@
 /* ----------- 관리자 - 고객관리 회원정보 목록 css ----------- */
-
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300&display=swap');
 .admin-customer-list{
   text-align: center;
   width: 900px;
@@ -12,7 +12,8 @@
 }
 
 .admin-customer-list thead{
-  background: #dfdfdf;
+  
+  background: #e3e3d7;
   border-style: solid;
 }
 
@@ -21,8 +22,10 @@
 }
 
 .admin-customer-list th{
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: large;
   padding: 10px 20px;
-  color: #6f6f6f;
+  color: #352a35;
   letter-spacing: 3px;
 }
 
@@ -32,17 +35,64 @@
 }
 
 .customerinfoBtn{
-  background-color: #3ABD66;
+  box-shadow:inset 0px 2px 2px 0px #62c66e;
+	background:linear-gradient(to bottom, #62c66e 5%);
+  background-color: #62c66e;
   color: #fff;
-  border-radius: 5px;
-  padding: 10px 15px;
-  border: none;
+  border-radius: 10px;
+  padding: 5px 10px 7px 10px;
+  border:1px solid #d6f7b1ca;
   font-size: 15PX;
   cursor: pointer;
+  font-weight:bold;
+  text-shadow:0px 1px 0px #698a647e;
 }
 
 .customerinfoBtn:hover{
-  background-color: #021422;
+  background:linear-gradient(to bottom, #3ABD66 5%, #6ec662 100%);
+	background-color:#62c66e;
   transition: all 1s;
 }
+.customerinfoBtn:active{
+	position:relative;
+	top:1px;
+}
 
+.grade-span{
+  font-size: 12px;
+  border-radius: 100%;
+  padding: 10px 8px;
+  font-family: 'Lato', sans-serif;
+  font-weight: bold;
+  text-shadow: 0px -1px 0px #898989;
+  outline: none;
+}
+.yellow{
+  font-size: 11px;
+  color: #ff9900;
+  border: 1px solid #ffee7d;
+  background: linear-gradient(180deg,#ffe896 0%,#f9e59c 20%, #ffdb58 60%,#ff9d00 100%);
+  box-shadow: inset 0px 1px 0px #ffffff80,0px 1px 3px rgba(0,0,0,0.3);
+  text-shadow: 0px -1px 0px #c1a376;
+}
+.red{
+  padding: 10px 18px;
+  color: #ffc1bb;
+  border: 1px solid rgb(255, 151, 151);
+  background: linear-gradient(180deg,#ff9d9d 0%,#ff5858 20%, #fb2d2d 60%,#ff0000 100%);
+  box-shadow: inset 0px 1px 0px #ffffff80,0px 1px 3px rgba(0,0,0,0.3);
+}
+.black{
+  padding: 10px 13px;
+  border-color: #111;
+  color: #ececec;
+  background: linear-gradient(180deg,#555 0%,#222 49%, #000 51%,#222 100%);
+  box-shadow: inset 0px 1px 0px #ffffff80,0px 1px 3px rgba(0,0,0,0.3);
+}
+.gold{
+  padding: 10px 14px;
+  border: 1px solid rgb(228, 215, 164);
+  color: #b0a98d;
+  background: -webkit-linear-gradient(top, #c2ae61, #fbe799  25%, #fff6e5 38%, rgb(241, 222, 148)  60%, #fbe799 87%, #c2ae61);
+  box-shadow: inset 0px 1px 0px #ffffff80,0px 1px 3px #0000004d;
+}

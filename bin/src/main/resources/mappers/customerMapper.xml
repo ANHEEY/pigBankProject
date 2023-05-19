@@ -6,13 +6,237 @@
      
 <mapper namespace="com.pigbank.project.dao.CustomerMapper">
 
-	<insert id="insertCustomer" parameterType="com.pigbank.project.dto.CustomerDTO">
-		INSERT INTO customer(id, pwd, name, email, address, hp, birthday, key)
-		VALUES(#{id},#{pwd},#{name},#{email},#{address},#{hp},#{birthday},5555)
+	<!-- 회원가입 -->
+   <insert id="insertCustomer" parameterType="com.pigbank.project.dto.CustomerDTO">
+      INSERT INTO customer(id, pwd, name, email, address, hp, birthday, key)
+      VALUES(#{id},#{pwd},#{name},#{email},#{address},#{hp},#{birthday},#{key})
+   </insert>
+   
+   <!-- 아이디 중복 체크 -->
+   <select id="duplicateId" parameterType="String" resultType="int">
+   		SELECT COUNT(*) FROM customer WHERE id=#{id}
+   </select>
+   
+   <!-- 로그인 전 이메일 인증 -->
+   <select id="selectKey" parameterType="String" resultType="int">
+   		SELECT COUNT(*) FROM customer WHERE key=#{key}
+   </select>
+   
+   <!-- 등급변경 -->
+   <update id="updateGrade" parameterType="String">
+   		UPDATE customer SET enabled=1 WHERE key=#{key}
+   </update>
+   
+   <!-- 회원 인증 -->
+   <select id="cusById" parameterType="String" resultType="com.pigbank.project.dto.CustomerDTO">
+   		SELECT * FROM customer WHERE id=#{id}
+   </select>
+   
+   <!--회원 수정,탈퇴 전 인증-->
+   <select id="passwordChk" parameterType="String" resultType="String">
+   		SELECT pwd FROM customer WHERE id=#{id}
+   </select>
+   
+   <!-- 회원 정보 불러오기 -->
+   <select id="customerDetail" parameterType="String" resultType="com.pigbank.project.dto.CustomerDTO">
+   		SELECT * FROM customer WHERE id=#{id}
+   </select>
+   
+   <!--  회원 정보 업데이트 -->
+   <update id="cusUpdate" parameterType="com.pigbank.project.dto.CustomerDTO">
+   		UPDATE customer
+   		   SET pwd=#{pwd},name=#{name},email=#{email},address=#{address},hp=#{hp},birthday=#{birthday}
+   		 WHERE id=#{id}
+   </update>
+      
+   <!-- 회원 탈퇴 신청 -->   
+   <update id="cusDelete" parameterType="String">
+   		UPDATE customer
+   		   SET cusState='탈퇴요청'
+   		 WHERE id=#{id}
+   </update>
+   
+   <!-- /////////////////////////////////////////////////////////////////////////// -->
+   
+   
+   <!-- 관리자 예금 상품 등록 -->
+   <insert id="depositPdSave" parameterType="com.pigbank.project.dto.DepositProductDTO">
+      INSERT INTO DEPOSIT_PRODUCT(dPdName,dPeriod,dRate,dContent,dMin,dMax,dCxlRate)
+      VALUES(#{dpdName},#{dperiod},#{drate},#{dcontent},#{dmin},#{dmax},#{dcxlRate})
+   </insert>
+   
+   <!-- 관리자 예금 상품 리스트 -->
+   <select id="depositProductList" resultType="com.pigbank.project.dto.DepositProductDTO">
+      SELECT * FROM DEPOSIT_PRODUCT WHERE show='y'ORDER BY dRegDate DESC
+   </select>
+   
+   <!-- 관리자 예금 상품상세페이지 -->
+   <select id="depositPdDetail" parameterType="String" resultType="com.pigbank.project.dto.DepositProductDTO">
+      SELECT * FROM DEPOSIT_PRODUCT WHERE dPdName = #{dpdName}
+   </select>
+   
+   <!-- 관리자 예금 상품 수정 -->
+   <update id="depositPdUpdate" parameterType="com.pigbank.project.dto.DepositProductDTO">
+   	UPDATE DEPOSIT_PRODUCT 
+   	   SET dPeriod=#{dperiod}, dContent=#{dcontent}, dMin=#{dmin}, dMax=#{dmax}
+ 	 WHERE dPdName =#{dpdName}
+   </update>
+   
+   <!-- 관리자 예금 상품 삭제 -->
+   <update id="depositPdDelete" parameterType="String">
+   		UPDATE DEPOSIT_PRODUCT 
+		   SET show='n'
+		 WHERE dPdName =#{dpdName} 
+   </update>
+   
+   <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+	<!-- 고객 예금 상품 리스트 -->
+	<select id="pdDepositList" resultType="com.pigbank.project.dto.DepositProductDTO">
+		SELECT * FROM DEPOSIT_PRODUCT WHERE show='y' ORDER BY dRegDate DESC
+	</select>
+	
+	<!-- 고객 예금 검색 리스트 -->
+	<select id="depositSearch" parameterType="String" resultType="com.pigbank.project.dto.DepositProductDTO">
+		SELECT * FROM DEPOSIT_PRODUCT WHERE dPdName LIKE '%'||#{dpdName}||'%' AND show='y'
+	</select>
+	
+	<!-- 고객 예금 상품 상세페이지 -->
+	<select id="pdDepositDetailInfo" parameterType="String" resultType="com.pigbank.project.dto.DepositProductDTO">
+		SELECT * FROM deposit_product WHERE dPdName=#{dpdName}
+	</select>   
+	
+	<!-- 고객 예금 상품 가입시 계좌번호 불러오기 -->
+	<select id="cusAccountList" parameterType="String" resultType="com.pigbank.project.dto.AccountDTO">
+		SELECT * FROM account_tbl WHERE id=#{id}
+	</select>
+	
+	<!-- 고객 예금 가입 - 전체 계좌 개설 -->
+	<insert id="cusDepositOpenAll" parameterType="com.pigbank.project.dto.DepositAccountDTO">
+		INSERT INTO account_tbl(acNumber,id,acBalance,acType,acPwd,acState,bankName,lastDate)
+		VALUES(#{acNumber},#{id},#{damount},'예금계좌',#{acPwd},'OPEN','돼지은행',SYSDATE)
+	</insert>
+	
+	<!-- 고객 예금 가입 - 예금 계좌 개설 -->
+	<insert id="cusDepositOpen" parameterType="com.pigbank.project.dto.DepositAccountDTO">
+		INSERT INTO D_ACCOUNT_TBL(dNum,acNumber,dPdName,dAmount,dExpAmount,dEndDate,dJoinDate,dDeAccount)
+		VALUES((SELECT NVL(MAX(dNum)+1,1) FROM d_account_tbl),#{acNumber},#{dpdName},#{damount},#{dexpAmount},#{dendDate},sysdate,#{ddeAccount})
+	</insert>
+	
+	<!-- 고객 예금 가입 - 입출금 통장에서 인출 -->
+	<update id="cusDepositOpenWithdraw" parameterType="com.pigbank.project.dto.DepositAccountDTO">
+		UPDATE account_tbl
+		   SET acBalance=acBalance-#{damount},lastDate=SYSDATE
+		 WHERE acNumber=#{withdrawAcNumber}
+	</update>
+	
+	<!-- 고객 예금 가입 - 입출금 통장에 계좌이체 내역 추가 -->
+	<insert id="normalToDepositTranfer" parameterType="com.pigbank.project.dto.DepositAccountDTO">
+		INSERT INTO transfer_tbl(tNum,acNumber,tDepositNum,tDepositBank,tType,tAmount,myMemo,yourMemo)
+		VALUES ((SELECT NVL(MAX(tNum)+1,1) FROM transfer_tbl),#{withdrawAcNumber},
+				#{acNumber},'돼지은행','출금',#{damount},'예금가입출금','예금가입금액')
+	</insert>
+   
+   	<!-- 고객 예금 가입 - 예금계좌에 계좌이체 내역 추가 -->
+   	<insert id="depositFromNormalTransfer" parameterType="com.pigbank.project.dto.DepositAccountDTO">
+		INSERT INTO transfer_tbl(tNum,acNumber,tDepositNum,tDepositBank,tType,tAmount,myMemo,yourMemo)
+		VALUES ((SELECT NVL(MAX(tNum)+1,1) FROM transfer_tbl),#{acNumber},
+				#{withdrawAcNumber},'돼지은행','입금',#{damount},'예금가입출금','예금가입금액')
+	</insert> 
+	
+	<!-- /////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+	<!-- 고객 예금 해지 예상 조회 -->
+   	<select id="cusDepositCxlExpInfo" parameterType="int" resultType="com.pigbank.project.dto.DepositAccountDTO">
+   		SELECT d.dnum, d.ACNUMBER, d.DPDNAME, d.DAMOUNT, d.DEXPAMOUNT, d.DENDDATE, d.DJOINDATE, d.DDEACCOUNT, a.ACPWD
+  		  FROM d_account_tbl d, ACCOUNT_TBL a
+ 		 WHERE d.ACNUMBER = a.ACNUMBER 
+   		   AND d.dnum=#{dNum}
+   	</select>
+   	
+   	<!-- 고객 예금 해지 예상 조회 - 중도 해지시 중도 해지 금리 받아오기 -->
+	<select id="depositMidCxlRate" parameterType="int" resultType="double">
+		SELECT dp.DCXLRATE 
+  		  FROM D_ACCOUNT_TBL d, DEPOSIT_PRODUCT dp 
+         WHERE d.DPDNAME = dp.DPDNAME 
+           AND d.dNum=#{dNum} 
+	</select>
+	
+   	<!-- 고객 예금 해지 신청 - 전체 계좌 내용 변경 -->
+   	<update id="cusDepositCxlReg" parameterType="com.pigbank.project.dto.DepositAccountDTO">
+   		UPDATE account_tbl
+   		   SET acState='DELETE', acBalance=0, lastDate=SYSDATE
+   		 WHERE acNumber=#{acNumber}
+   	</update>
+   	
+   	<!-- 고객 예금 해지 신청 - 예금 계좌 내용 번경 -->
+   	<update id="cusDepositCxlRegD" parameterType="com.pigbank.project.dto.DepositAccountDTO">
+   		UPDATE D_ACCOUNT_TBL
+   		   SET DAMOUNT=0
+   		 WHERE ACNUMBER=#{acNumber}
+   	</update>
+   	
+   	<!-- 고객 예금 해지 신청 후 만기시 입금계좌로 입금 -->
+   	<update id="cusDepositCxlPut" parameterType="com.pigbank.project.dto.DepositAccountDTO">
+   		UPDATE account_tbl
+   		   SET acBalance=acBalance+#{dexpAmount},lastDate=SYSDATE
+   		 WHERE acNumber=#{ddeAccount}
+   	</update>
+   	
+   	<!-- 고객 예금 해지 신청 - 입출금 통장에 계좌이체 내역 추가 -->
+   	<insert id="cxlNormalFromDepositTransfer" parameterType="com.pigbank.project.dto.DepositAccountDTO">
+		INSERT INTO transfer_tbl(tNum,acNumber,tDepositNum,tDepositBank,tType,tAmount,myMemo,yourMemo)
+		VALUES ((SELECT NVL(MAX(tNum)+1,1) FROM transfer_tbl),#{ddeAccount}
+				,#{acNumber},'돼지은행','입금',#{dexpAmount},'예금해지출금','예금해지입금')
+	</insert>
+   
+   	<!-- 고객 예금 해지 신청 - 예금계좌에 계좌이체 내역 추가 -->
+   	<insert id="cxlDepositToNormalTransfer" parameterType="com.pigbank.project.dto.DepositAccountDTO">
+		INSERT INTO transfer_tbl(tNum,acNumber,tDepositNum,tDepositBank,tType,tAmount,myMemo,yourMemo)
+		VALUES ((SELECT NVL(MAX(tNum)+1,1) FROM transfer_tbl),#{acNumber}
+				,#{ddeAccount},'돼지은행','출금',#{dexpAmount},'예금해지출금','예금해지입금')
 	</insert>
 
-	<select id="loginCustomer" parameterType="String" resultType="com.pigbank.project.dto.CustomerDTO">
-		SELECT * FROM customer WHERE id=#{id}
+	<!-- /////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	
+	<!-- 고객 자산 관리(예금, 적금, 입출금, 펀드) -->
+	<select id="assetsManagement1" parameterType="String" resultType="com.pigbank.project.dto.AssetManagementDTO">
+		SELECT sum(ACBALANCE) as acBalance,acType FROM account_tbl WHERE id=#{id} GROUP BY actype
 	</select>
+	
+	<!-- 고객 자산 관리 페이지 - 펀드 부분 -->
+	<select id="assetsManagementFund" parameterType="String" resultType="com.pigbank.project.dto.AssetManagementDTO">
+		SELECT SUM(fh.FNOWPRICE*fh.FHAVINGCNT) AS fHavingTotal, fh.FISINCD  
+		  FROM F_DETAIL_TBL fd, F_HAVING_TBL fh, F_ACCOUNT_TBL fa
+		 WHERE fd.FTRANSNUM = fh.FTRANSNUM
+		   AND fd.FNUM = fa.FNUM
+		   AND fa.id=#{id}
+		 GROUP BY fh.FISINCD
+	</select>
+	
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	
+	<!-- 입출금 계좌 상세페이지 정보 불러오기 -->
+	<select id="acDetailInfo" parameterType="long" resultType="com.pigbank.project.dto.AccountDTO">
+		SELECT * FROM account_tbl WHERE acNumber=#{acNumber}
+	</select>
+	
+	<!-- 예금 계좌 상세페이지 정보 불러오기 -->
+	<select id="deDetailInfo" parameterType="long" resultType="com.pigbank.project.dto.DepositAccountDTO">
+		SELECT d.ACNUMBER,d.DPDNAME,d.DAMOUNT,d.DJOINDATE,d.DENDDATE,d.DDEACCOUNT,d.DEXPAMOUNT 
+		  FROM D_ACCOUNT_TBL d, ACCOUNT_TBL a  
+		 WHERE a.ACNUMBER =d.ACNUMBER 
+		   AND d.ACNUMBER =#{acNumber}
+	</select>
+	
+	<!-- 적금 계좌 상세페이지 정보 불러오기 -->
+	<select id="saDetailInfo" parameterType="long" resultType="com.pigbank.project.dto.SavingAccountDTO">
+		SELECT s.ACNUMBER, s.SPDNAME, s.SAMOUNT, s.SEXPAMOUNT, s.SJOINDATE,s.SENDDATE,a.ACBALANCE, s.SDEACCOUNT, atr.ACNUMBER AS withdrawAcNumber
+  		  FROM S_ACCOUNT_TBL s, ACCOUNT_TBL a, auto_transferReg_tbl atr
+ 		 WHERE a.ACNUMBER =s.ACNUMBER
+   		   AND a.ACNUMBER = atr.ADEPOSITNUM 
+   		   AND s.ACNUMBER = #{acNumber}
+	</select>
+
 	
 </mapper>
