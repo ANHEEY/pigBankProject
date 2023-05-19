@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-     
+
 <mapper namespace="com.pigbank.project.dao.HyeMapper">
 	<!--*************** 관리자 | 고객관리  ***************-->
 	<!-- 회원 정보 목록 -->
@@ -42,18 +42,18 @@
 	<select id="selectAccountById" parameterType="String" resultType="com.pigbank.project.dto.AccountDTO">
 		SELECT ACNUMBER , ACBALANCE , BANKNAME , ACTYPE ,ACPWD
 		FROM ACCOUNT_TBL
-		 WHERE ACTYPE ='입출금통장'
-		   AND ID =#{id}
+		WHERE ACTYPE ='입출금통장'
+		  AND ID =#{id}
 	</select>
 	<!-- 펀드 계좌 생성 -->
 	<insert id="insertFundAccount" parameterType="com.pigbank.project.dto.FundProductDTO">
 		INSERT INTO F_ACCOUNT_TBL(fNum,fAcNumber ,id, fBalance ,fNewDate , fAcPwd)
-		VALUES((SELECT NVL(MAX(fNum)+1, 1) FROM F_ACCOUNT_TBL),#{fAcNumber},#{id},#{fBalance},sysdate,#{fAcPwd})
+		VALUES((SELECT NVL(MAX(fNum)+1, 1) FROM F_ACCOUNT_TBL),#{fAcNumber},#{id},#{fbalance},sysdate,#{fAcPwd})
 	</insert>
 	<!-- 입출금 금액 차감-->
 	<update id="deductAccountAmount" parameterType="com.pigbank.project.dto.FundProductDTO">
 		UPDATE ACCOUNT_TBL
-		SET ACBALANCE = ACBALANCE - #{fBalance}
+		SET ACBALANCE = ACBALANCE - #{fbalance}
 		WHERE ACNUMBER = #{acNumber}
 	</update>
 	<!-- 입출금통장 차감금액 이체내역에 추가 -->
@@ -62,7 +62,7 @@
 		VALUES((SELECT NVL(MAX(tNum) + 1, 1) FROM TRANSFER_TBL), #{acNumber}, #{tDepositnum}, '돼지은행', '출금', #{tAmount}, '펀드계좌개설', '펀드계좌개설', sysdate)
 	</insert>
 
-	<!--***************  펀드 거래내역 조회  ***************-->
+	<!--*************** 펀드 거래내역 조회 ***************-->
 	<!-- 고객 펀드계좌 조회 -->
 	<select id="listFundAccountById" parameterType="String" resultType="com.pigbank.project.dto.FundAccountDTO">
 		SELECT fNum, fAcNumber ,fBalance ,fNewDate ,fLastDate , fAcPwd ,fTrsfLimit
@@ -71,30 +71,30 @@
 		ORDER BY fNewDate DESC
 	</select>
 	<!-- 계좌 상세 거래 내역 보기
-		 (펀드계좌아이디, 계좌번호, 펀드 거래번호, 거래날짜 , 거래종목명, 매수상태 , 종목현재가, 평가손익, 수익률, 평가금액 ) 	-->
+    (펀드계좌아이디, 계좌번호, 펀드 거래번호, 거래날짜 , 거래종목명, 매수상태 , 종목현재가, 평가손익, 수익률, 평가금액 ) -->
 	<select id="detailAccountByFNum" parameterType="int" resultType="com.pigbank.project.dto.FundProductDTO">
-		SELECT  a.fNum, a.FACNUMBER , h.FTRANSNUM , d.FPDNAME ,d.FTRANSDATE , d.fDetailState, h.fNowPrice, h.fNowProfit, h.fProfit, h.fNowTotal
-		  FROM 	F_ACCOUNT_TBL a , F_DETAIL_TBL d , F_HAVING_TBL h
-		 WHERE 	a.FNUM =d.FNUM
-		   AND  d.FTRANSNUM  = h.FTRANSNUM
-		   AND  a.fNum = #{fNum}
+		SELECT a.fNum, a.FACNUMBER , h.FTRANSNUM , d.FPDNAME ,d.FTRANSDATE ,d.FBUYPRICE ,d.FSELLPRICE , d.fDetailState, d.FCOUNT,d.FTOTAL
+		FROM F_ACCOUNT_TBL a , F_DETAIL_TBL d , F_HAVING_TBL h
+		WHERE a.FNUM =d.FNUM
+		  AND d.FTRANSNUM = h.FTRANSNUM
+		  AND a.fNum = #{fnum}
 	</select>
 	<!-- 고객별 펀드 보유내역 조회
-		(종목 현재가, 평가손익, 수익률, 평가금액, 보유수량 , 거래종목명, 매수가) 	-->
+    (종목 현재가, 평가손익, 수익률, 평가금액, 보유수량 , 거래종목명, 매수가) -->
 	<select id="havingFundById" parameterType="String" resultType="com.pigbank.project.dto.FundProductDTO">
-		SELECT  h.FHAVINGNUM ,h.FNOWPRICE ,h.FNOWPROFIT  ,h.FPROFIT ,h.FNOWTOTAL ,h.FHAVINGCNT ,h.FPRINCIPAL ,d.FPDNAME ,d.FBUYPRICE
-		  FROM 	F_ACCOUNT_TBL a , F_DETAIL_TBL d , F_HAVING_TBL h
-		 WHERE 	a.FNUM = d.FNUM
-		   AND  d.FTRANSNUM  = h.FTRANSNUM
-		   AND  d.FDETAILSTATE = '매수'
-		   AND  a.ID = #{id}
+		SELECT h.FHAVINGNUM ,h.FNOWPRICE ,h.FNOWPROFIT ,h.FPROFIT ,h.FNOWTOTAL ,h.FHAVINGCNT ,h.FPRINCIPAL ,d.FPDNAME ,d.FBUYPRICE , h.FISINCD
+		FROM F_ACCOUNT_TBL a , F_DETAIL_TBL d , F_HAVING_TBL h
+		WHERE a.FNUM = d.FNUM
+		  AND d.FTRANSNUM = h.FTRANSNUM
+		  AND d.FDETAILSTATE = '매수'
+		  AND a.ID = #{id}
 	</select>
-	<!--***************  펀드 상품 구매  ***************-->
+	<!--*************** 펀드 상품 구매 ***************-->
 	<!-- 보유내역 확인하기 , 고객 계좌랑 join해주세요 -->
-	<select id="checkIsinCd" parameterType="String" resultType="String">
-		SELECT FISINCD
+	<select id="checkIsinCd" parameterType="String" resultType="com.pigbank.project.dto.FundHavingDTO">
+		SELECT *
 		FROM F_HAVING_TBL
-		WHERE FISINCD = #{fisinCd}
+		WHERE FISINCD = #{isinCd}
 	</select>
 	<!-- 거래내역에 추가 -->
 	<insert id="insertDetailTbl" parameterType="com.pigbank.project.dto.FundProductDTO">
@@ -108,9 +108,59 @@
 	</insert>
 	<!-- 잔액 업데이트 -->
 	<update id="updateFundBalance" parameterType="com.pigbank.project.dto.FundProductDTO">
-		UPDATE 	F_ACCOUNT_TBL
-		   SET 	FBALANCE = FBALANCE - #{ftotal},
-				FLASTDATE = SYSDATE
-		 WHERE 	fTransNum = #{ftransNum}
+		UPDATE F_ACCOUNT_TBL
+		SET FBALANCE = FBALANCE - #{ftotal},
+			FLASTDATE = SYSDATE
+		WHERE fnum = #{fnum}
 	</update>
+
+	<update id="updateHaving" parameterType="com.pigbank.project.dto.FundHavingDTO">
+		UPDATE F_HAVING_TBL
+		SET FNOWPROFIT = #{fnowProfit},
+			FPROFIT = #{fprofit},
+			FNOWTOTAL = #{fnowTotal},
+			FNOWPRICE = #{fnowPrice}
+		WHERE FISINCD = #{isinCd}
+	</update>
+	<select id="updateHavingByFIsinCd" parameterType="String" resultType="com.pigbank.project.dto.FundProductDTO">
+		SELECT h.FHAVINGNUM ,h.FNOWPRICE ,h.FNOWPROFIT ,h.FPROFIT ,h.FNOWTOTAL ,h.FHAVINGCNT ,h.FPRINCIPAL ,d.FPDNAME ,d.FBUYPRICE , h.FISINCD
+		FROM F_ACCOUNT_TBL a , F_DETAIL_TBL d , F_HAVING_TBL h
+		WHERE a.FNUM = d.FNUM
+		  AND d.FTRANSNUM = h.FTRANSNUM
+		  AND h.FISINCD = #{fisinCd}
+	</select>
+	<!--========= 매도 ===========-->
+	<!-- 펀드계좌 가져오기 -->
+	<select id="selectAccountByIsinCd" parameterType="com.pigbank.project.dto.FundProductDTO" resultType="int">
+		SELECT a.FNUM
+		FROM F_ACCOUNT_TBL a, F_DETAIL_TBL d, F_HAVING_TBL h
+		WHERE a.FNUM = d.FNUM
+		  AND d.FTRANSNUM = h.FTRANSNUM
+		  AND h.FISINCD = #{fisinCd}
+	</select>
+	<!-- 펀드계좌 update => 잔액 증감하기 -->
+	<update id="sellAccountUpdate" parameterType="com.pigbank.project.dto.FundProductDTO">
+		UPDATE F_ACCOUNT_TBL
+		SET fBalance = fBalance + #{ftotal}
+		WHERE fNum = #{fnum}
+	</update>
+	<!-- 거래내역에 추가 -->
+	<insert id="sellInsert" parameterType="com.pigbank.project.dto.FundProductDTO">
+		INSERT INTO F_DETAIL_TBL(fTransNum ,fNum , fTransDate ,fPdName ,fSellPrice ,fTotal ,fCount ,fDetailState )
+		VALUES(#{ftransNum}, #{fnum} ,sysdate , #{fpdName} , #{fnowPrice} , #{ftotal} ,#{fcount} ,'매도')
+	</insert>
+	<!-- 보유내역 업데이트 -->
+	<update id="sellHavingUpdate" parameterType="com.pigbank.project.dto.FundProductDTO">
+		UPDATE F_HAVING_TBL
+		SET FNOWTOTAL = #{fnowTotal},
+			FHAVINGCNT = FHAVINGCNT - #{fcount},
+			FPRINCIPAL = FPRINCIPAL - #{ftotal}
+		WHERE FISINCD = #{fisinCd}
+	</update>
+	<!-- 보유내역에서 count가 0이면 삭제 -->
+	<delete id="deleteNoneCount">
+		DELETE FROM F_HAVING_TBL
+		WHERE 0 >= FHAVINGCNT
+	</delete>
+
 </mapper>

@@ -89,11 +89,15 @@ public class HyeController {
 		return service.listFundAccountById(id);
 	}
 	// 펀드계좌 상세거래내역 목록 가져오기
-	@GetMapping(value = "/customer/fundAccountDetail/{fNum}")
-	public List<FundProductDTO> detailAccountByFNum(@PathVariable int fNum)
+	@GetMapping(value = "/customer/fundAccountDetail/{fnum}")
+	public List<FundProductDTO> detailAccountByFNum(@PathVariable String fnum)
 		throws  ServletException, IOException{
 		logger.info("=== url | detailAccountByFNum ===");
-		return  service.detailAccountByFNum(fNum);
+		System.out.println("fNum : "+ fnum);
+		int f_num = Integer.parseInt(fnum);
+		System.out.println("fnum : " + fnum);
+
+		return  service.detailAccountByFNum(f_num);
 	}
 	/*************				펀드 보유 내역 			******************/
 	@GetMapping(value = "/customer/fundHavingList/{id}")
@@ -102,10 +106,37 @@ public class HyeController {
 		logger.info("=== url | havingFundById ===");
 		return  service.havingFundById(id);
 	}
+	/*************				펀드 매수			******************/
 	@PostMapping(value = "/customer/fundBuy")
 	public void insertBuyFund(@RequestBody FundProductDTO dto)
 		throws ServletException, IOException{
 		logger.info("=== url | insertBuyFund ===");
 		service.insertBuyFund(dto);
+	}
+	/*************			펀드 보유내역 업데이트하여 목록에 가져오기 			******************/
+	@PostMapping(value = "/customer/updateHavingFund")
+	public void updateHavingFund(@RequestBody List<FundHavingDTO> list)
+			throws ServletException, IOException {
+		logger.info("=== url | insertBuyFund ===");
+
+		System.out.println(list);
+		String id = "";
+		for (FundHavingDTO dto : list) {
+			id = dto.getId();
+			service.updateHaving(dto);
+		}
+	}
+	@GetMapping(value = "/customer/fundUpdateHavingList/{id}")
+	public List<FundProductDTO> fundUpdateHavingList(@PathVariable String id)
+			throws  ServletException, IOException{
+		logger.info("=== url | havingFundById ===");
+		return  service.havingFundById(id);
+	}
+	/*************				펀드 매도			******************/
+	@PostMapping(value = "/customer/fundSell")
+	public void insertSellFund(@RequestBody FundProductDTO dto)
+			throws ServletException, IOException{
+		logger.info("=== url | insertBuyFund ===");
+		service.insertSellFund(dto);
 	}
 }

@@ -10,14 +10,14 @@ import javax.servlet.ServletException;
 
 @Mapper
 public interface HyeMapper {
-	
+
 	// 회원 정보 목록
 	public List<CustomerDTO> listCustomer();
 
 	// 고객 조회(회원 상세 페이지)
 	public CustomerDTO detailCustomer(String id);
 	public List<AccountDTO> detailAccountListById(String id);
-	
+
 	// 탈퇴 요청 고객 목록
 	public List<CustomerDTO> listWithdrawalCustomer();
 
@@ -44,13 +44,34 @@ public interface HyeMapper {
 	// 펀드 보유내역 조회
 	public List<FundProductDTO> havingFundById(String id);
 
-	/**				펀드상품 구매  				**/
+	/** 펀드상품 구매 **/
 	// 보유내역 확인하기
-	public String checkIsinCd(String fIsinCd);
+	public FundHavingDTO checkIsinCd(String isinCd);
 	// 거래내역에 추가
-	public  void insertDetailTbl(FundProductDTO dto);
+	public void insertDetailTbl(FundProductDTO dto);
 	// 보유내역에 추가
 	public void insertHavingTbl(FundProductDTO dto);
 	// 잔액 업데이트
 	public void updateFundBalance(FundProductDTO dto);
+
+	// 보유내역 데이터 가져오기
+	public FundProductDTO updateHavingByFIsinCd(String fisinCd);
+
+	// 펀드 보유내역 업데이트
+	public void updateHaving(FundHavingDTO dto);
+
+	/** 매도 */
+	// 펀드계좌 가져오기
+	public int selectAccountByIsinCd(FundProductDTO dto);
+	// 펀드계좌 update => 잔액 증감하기
+	public void sellAccountUpdate(FundProductDTO dto);
+
+	// 거래내역에 추가
+	public void sellInsert(FundProductDTO dto);
+
+	// 보유내역 업데이트
+	public void sellHavingUpdate(FundProductDTO dto);
+
+	// 보유내역에서 count가 0이면 삭제
+	public void deleteNoneCount();
 }

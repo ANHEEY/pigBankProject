@@ -48,16 +48,24 @@ public interface HyeService {
 		throws  ServletException, IOException;
 
 	// 계좌별 상세내역 보기
-	public List<FundProductDTO> detailAccountByFNum(int fNum)
+	public List<FundProductDTO> detailAccountByFNum(int fnum)
 		throws  ServletException, IOException;
 
 	// 고객별 펀드 보유내역 목록
 	public List<FundProductDTO> havingFundById(String id)
 		throws ServletException, IOException;
 
-	/**				펀드상품 구매 				**/
-	// 펀드상품 구매
+
+	/** 펀드상품 매수 **/
+	// 펀드상품 매수
 	public void insertBuyFund(FundProductDTO dto)
-		throws  ServletException, IOException;
+			throws ServletException, IOException;
+
+	// 펀드 보유내역 업데이트
+	public void updateHaving(FundHavingDTO dto)
+			throws ServletException,IOException;
+	/** 펀드상품 매도 **/
+	public void insertSellFund(FundProductDTO dto)
+			throws ServletException, IOException;
 
 }

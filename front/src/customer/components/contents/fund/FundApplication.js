@@ -16,13 +16,11 @@ function FundApplication() {
     const [acPwd, setAcPwd] = useState('');
     const [bankName, setBankName] = useState('');
     const [balance, setBalance] = useState('');
-
     const [fundAcInfo, setFundAcInfo] = useState({
         facPwd: '',
         reFacPwd: '',
         fbalance: ''
     });
-
     const onChange = (e) => {
         const { value, name } = e.target;
         setFundAcInfo((prev) => ({
@@ -31,13 +29,13 @@ function FundApplication() {
         }));
     };
     useEffect(() => {
-        // jwt 토큰 헤더에 저장
+        // jwt 토큰 헤더에 저장 
         if (getAuthToken() !== null) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`;
         } else {
             axios.defaults.headers.common['Authorization'] = ``;
         }
-        // 페이지 로딩시 고객 입출금 계좌 select
+        // 페이지 로딩시 고객 입출금 계좌 select 
         FundAPIService.selectAccountById(id)
             .then(res => {
                 setAccount(res.data);
@@ -46,7 +44,7 @@ function FundApplication() {
                 console.log('계좌정보를 가져오지 못함 ', err);
             })
     }, []);
-    //동의 약관 설정
+    //동의 약관 설정 
     const [agree, setAgree] = useState({
         isAgreed1: "",
         isAgreed2: "",
@@ -60,7 +58,6 @@ function FundApplication() {
             }
         });
     }
-    // ***** select 값이 변경될 때마다 업데이트 but 버튼 두번클릭해야 잔액 업데이트
     const handleSelectAccount = (e) => {
         const selectAccountInt = parseInt(e.target.value);
         const accountSelect = account.find(accountSelect => accountSelect.acNumber === selectAccountInt);
@@ -78,14 +75,10 @@ function FundApplication() {
             setBankName('');
         }
     }
-    // 계좌번호 => 문자열로 변환 후 slice
-    function acNum(acNumber) {
-        const acNum = acNumber.toString().slice(0, 3) + '-' + acNumber.toString().slice(3);
-        return acNum;
-    }
-    // 출금계좌 비밀번호 확인 및 잔액 조회
+    // 계좌번호 => 문자열로 변환 후 slice 
+    function acNum(acNumber) { return acNumber.toString().slice(0, 3) + '-' + acNumber.toString().slice(3); }
+    // 출금계좌 비밀번호 확인 및 잔액 조회 
     const chkBalance = () => {
-        // ***** 버튼 두번 클릭해야 잔액의 정확한 값 출력. setBalance 렌더링 되면서 나는 오류. [수정되면 이 주석은 지울예정.]
         setBalance(acBalance);
         const inputPwd = document.getElementById('acPwd').value;
         if (parseInt(inputPwd) === acPwd) {
@@ -98,7 +91,8 @@ function FundApplication() {
             alert('출금계좌의 비밀번호가 일치하지 않습니다.');
         }
     };
-    // 가입하기 버튼 클릭시
+
+    // 가입하기 버튼 클릭시 
     const handleSubmit = (e) => {
         e.preventDefault();
         const fundAccountInfo = {
@@ -106,6 +100,10 @@ function FundApplication() {
             facPwd: fundAcInfo.facPwd,
             fbalance: fundAcInfo.fbalance,
             acNumber: selectAccount,
+        }
+        if (!handleSelectAccount) {
+            alert("출금계좌를 선택하세요!")
+            return false;
         }
         if (!selectAccount) {
             alert("출금계좌를 선택하세요")
@@ -231,7 +229,16 @@ function FundApplication() {
                 </Form>
             </div>
         </div>
-
     )
 }
 export default FundApplication
+
+
+
+
+
+
+
+
+
+

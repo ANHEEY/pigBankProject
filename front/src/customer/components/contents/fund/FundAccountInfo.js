@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getAuthToken, getId } from "../../helpers/axios_helper";
 import axios from "axios";
 import FundAPIService from "./service/FundAPIService";
+import {Box, Button} from "@mui/material";
 
 function FundAccountInfo() {
     const navigate = useNavigate();
@@ -35,41 +36,27 @@ function FundAccountInfo() {
         const acNum = acNumber.toString().slice(0, 3) + '-' + acNumber.toString().slice(3);
         return acNum;
     }
-    //계좌 거래상세내역 확인 
-    // const viewDetail = (fnum, facPwd) => {
-    //     const account = faccount.find((f) => f.fnum === fnum);
-
-    //     if (!account) {
-    //         alert("해당 계좌가 존재하지 않습니다.");
-    //     } else if (account.facPwd === facPwd) {
-    //         const url = `/customer/fund/info/detail/${fnum}`;
-    //         const newWindow = window.open(url, "_blank", "width=800,height=600");
-    //         if (!newWindow) {
-    //             alert("팝업 차단을 해제해주세요.");
-    //         }
-    //     } else {
-    //         alert("비밀번호가 일치하지 않습니다. 다시 입력해주세요.");
-    //     }
-    // };
 
     const viewDetail = (fnum, pwd) => {
         if (Number(pwd) === Number(faccount.find(f => f.fnum === fnum).facPwd)) {
             const url = `/customer/fund/info/detail/${fnum}`;
-            const newWindow = window.open(url, "_blank", "width=800,height=600");
-            if (!newWindow) {
-                alert("팝업 차단을 해제해주세요.");
-            }
+            navigate(url)
         } else {
             console.log("pwd : " + pwd)
             console.log("facPwd : " + faccount.find(f => f.fnum === fnum).facPwd)
             alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요.')
         }
     }
+    const goBack=() =>{
+        navigate(-1)
+    }
     return (
         // fNum, fAcNumber ,fBalance ,fNewDate ,fLastDate , fAcPwd ,fTrsfLimit :계좌 + 계좌 펀드 거래 내역 리스트
         <div className="fund-div">
-            <div className="fund-title">
-                펀드계좌 거래내역
+            <div className="title_div"> 
+                <p className="fund-title">
+                    펀드계좌 거래내역
+                </p>
             </div>
             <div className="fund-contents">
                 {faccount.length === 0 ? (
@@ -123,13 +110,17 @@ function FundAccountInfo() {
                                         <td>
                                             <span>{acBal(faccount.fbalance)} 원</span>
                                         </td>
-                                        <th>마지막거래일</th>
-                                        <td>
-                                            {faccount.flastDate === null ?
-                                                (<span>마지막거래일이 없습니다</span>) :
-                                                (<span>{faccount.flastDate}</span>)
-                                            }
-                                        </td>
+                                        <th>마지막거래일</th> 
+                                        <td> 
+                                            {faccount.flastDate === null ? 
+                                                (<span>마지막거래일이 없습니다</span>) : 
+                                                (<span> 
+                                                    {new Date(faccount.flastDate).getFullYear()}년 &nbsp; 
+                                                    {new Date(faccount.flastDate).getMonth() + 1}월 &nbsp; 
+                                                    {new Date(faccount.flastDate).getDate()}일 
+                                                </span>) 
+                                            } 
+                                        </td> 
                                     </tr>
                                     <tr>
                                         <td colSpan={4}>
@@ -141,11 +132,14 @@ function FundAccountInfo() {
                                         </td>
                                     </tr>
                                 </tbody>
-
+                                
                             </table>
                         </div>
                     ))
                 )}
+                <div className="facCard">
+                        <button onClick={goBack}>뒤로가기</button>
+                </div>
             </div>
         </div>
     )

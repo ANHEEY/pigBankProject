@@ -69,8 +69,10 @@ function FundProductList() {
     }
     return (
         <div className="fund-div">
-            <div className="fund-title">
-                펀드 상품 목록
+            <div className="title_div"> 
+                <p className="fund-title">
+                    펀드 상품 목록
+                </p>
             </div>
             <div className="fund-contents fundProduct-list">
                 <table className="fund-listTbl">
@@ -110,15 +112,19 @@ function FundProductList() {
                         </tr>
                     ))}
                     </tbody>
-                        <td colSpan={7} style={{textAlign:"center"}}>
-                            <Box display="flex" justifyContent="center">
-                                <Pagination 
-                                count={Math.ceil(fund.length / itemsPerPage)}
-                                page={currentPage}
-                                onChange={handlePageChange}
-                                />
-                            </Box>
-                        </td>
+                    <tfoot>
+                        <tr>
+                            <td colSpan={7} style={{textAlign:"center"}}>
+                                <Box display="flex" justifyContent="center">
+                                    <Pagination 
+                                    count={Math.ceil(fund.length / itemsPerPage)}
+                                    page={currentPage}
+                                    onChange={handlePageChange}
+                                    />
+                                </Box>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>

@@ -27,11 +27,12 @@ public class FundProductDTO {
     private int fcount;
     private String fdetailState;
 
+
     // f_having_tbl (매수한 펀드 보유 리스트) column
     private long fhavingNum;    // PK
     private long fnowPrice;
-    private int fnowProfit;
-    private String fprofit;
+    private long fnowProfit;
+    private float fprofit;
     private long fnowTotal;
     private int fhavingCnt;
     private long fprincipal;
@@ -49,13 +50,7 @@ public class FundProductDTO {
     private String trqu;        // 거래량
     private String trPrc;       // 거래대금
     private String nPptTotAmt;  // 순자산
+    private String basDt;       // 거래기준일
 
-    public long getFtotal() {
-        return ftotal;
-    }
-
-    public void setFTotal(long ftotal) {
-        this.ftotal = ftotal;
-    }
 
 }
