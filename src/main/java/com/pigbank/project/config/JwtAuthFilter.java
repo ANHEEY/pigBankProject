@@ -29,7 +29,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		
 		if(header != null) { // 길이가 정확하고 Bearer 토큰이어야 한다.
 			String[] elements = header.split(" ");
-			
 			if(elements.length == 2 && "Bearer".equals(elements[0])) {
 				try {
 					// 자격증명이 유효하면 보안 컨텍스트에 인증빈을 추가한다.

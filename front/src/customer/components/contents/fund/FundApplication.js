@@ -15,7 +15,6 @@ function FundApplication() {
     const [acBalance, setAcBalance] = useState('');
     const [acPwd, setAcPwd] = useState('');
     const [bankName, setBankName] = useState('');
-    const [balance, setBalance] = useState('');
 
     const [fundAcInfo, setFundAcInfo] = useState({
         facPwd: '',
@@ -85,11 +84,9 @@ function FundApplication() {
     }
     // 출금계좌 비밀번호 확인 및 잔액 조회
     const chkBalance = () => {
-        // ***** 버튼 두번 클릭해야 잔액의 정확한 값 출력. setBalance 렌더링 되면서 나는 오류. [수정되면 이 주석은 지울예정.]
-        setBalance(acBalance);
         const inputPwd = document.getElementById('acPwd').value;
         if (parseInt(inputPwd) === acPwd) {
-            document.getElementById('balanceP').innerText = `${Number(balance).toLocaleString()}원`;
+            document.getElementById('balanceP').innerText = `${Number(acBalance).toLocaleString()}원`;
         }
         else if (inputPwd === '') {
             alert("비밀번호를 입력하세요.")

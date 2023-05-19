@@ -83,7 +83,7 @@ function TransReConfirm (props) {
             }
         }
         else{
-            alert('다른 은행 전송중..');
+            alert('타 은행 이체중..');
             console.log("other",acnumber);
             TransferService.othersave(acnumber)
               .then(res => {

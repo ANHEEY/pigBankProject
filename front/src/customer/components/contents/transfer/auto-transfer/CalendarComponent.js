@@ -104,6 +104,8 @@ if(state === 'using'){
     return {
       title: `${num} : ${name} / 시작하는날 `,
       date: formattedStartDate,
+      backgroundColor: '#abf7af',
+      borderColor : '#ffffff',
       extendedProps: {
         amount: amounts,
         astartDate: formattedStartDate,
@@ -115,7 +117,8 @@ if(state === 'using'){
     return {
       title: `${num} : ${name} / 해지 `,
       date: formattedStartDate,
-      backgroundColor: '#A9A9A9',
+      backgroundColor: '#C0C0C0',
+      borderColor : '#ffffff',
       extendedProps: {
         amount: amounts,
         astartDate: formattedStartDate,
@@ -135,14 +138,16 @@ if(state === 'using'){
       return {
         title: `${atnums} : ${bank},${result}`,
         date: date,
-        backgroundColor: '#F08080', // 이벤트 배경색 설정
+        backgroundColor: '#f7a1a1', // 이벤트 배경색 설정
+        borderColor: '#ffffff'
       };
     }
     else {
       return {
         title: `${atnums} : ${bank},${result}`,
         date: date,
-        backgroundColor: '#ADFF2F',// 이벤트 배경색 설정
+        backgroundColor: '#81a4e4d5',// 이벤트 배경색 설정
+        borderColor: '#ffffff',
         extendedProps: {
           amount: attamounts,
           result: result,
@@ -162,6 +167,8 @@ if(state === 'using'){
     return {
       title: `${num} : ${name} / 끝나는날 `, 
       date: formattedEndDate,
+      backgroundColor: '#FBED57',
+      borderColor: '#ffffff',
       extendedProps: {
         amount: amounts,
         astartDate: startdate,
@@ -173,7 +180,8 @@ if(state === 'using'){
     return {
       title: `${num} : ${name} / 해지 `,
       date: formattedEndDate,
-      backgroundColor: '#A9A9A9',
+      backgroundColor: '#C0C0C0',
+      borderColor: '#ffffff',
       extendedProps: {
         amount: amounts,
         astartDate: startdate,

@@ -189,10 +189,10 @@ function AccountComponent() {
     <div className="component-div">
       <h1><FontAwesomeIcon icon={faSearch} /> 계좌목록 </h1>
       <ul>
-        <li><SearchBar value={Search} onSearchChange={handleSearchChange} /></li>
+        <SearchBar value={Search} onSearchChange={handleSearchChange} />
         <br />
-        <li><p>은행명과 계좌명,계좌번호(-를 제외한)로 조회하세요.</p></li>
         <br />
+        <p>은행명과 계좌명,계좌번호(-를 제외한)로 조회하세요.</p>
       </ul>
       {loading ? (
         <p style={{ textAlign: "center" }}>Loading...</p>

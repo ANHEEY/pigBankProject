@@ -63,7 +63,6 @@ public interface LeeService {
 	// 이체한도 수정	
 	public void updatetrsfLimit(AccountDTO dto)
 			throws ServletException,IOException;
-	
 	// -- 공지사항 
 	public List<NoticeDTO> noticeList(HttpServletRequest req, Model model)
 			throws ServletException,IOException;

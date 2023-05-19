@@ -262,11 +262,12 @@ function AcTransferComponent() {
 
             <ul>
                 <hr />
-                <li><SearchBar value={Search} onSearchChange={handleSearchChange} /></li>
+                <SearchBar value={Search} onSearchChange={handleSearchChange} />
                 <br />
-                <li><p>은행명과 계좌명,계좌번호(-를 제외한)로 조회하세요.</p></li>
                 <br />
-                <li><ReactDatePicker selectedDate={selectedDate} onDateChange={handleDateChange} /></li>
+                <p>은행명과 계좌명,계좌번호(-를 제외한)로 조회하세요.</p>
+                <br />
+                <ReactDatePicker selectedDate={selectedDate} onDateChange={handleDateChange} />
             </ul>
             <div>
                 <button onClick={deposited} className="btnbtn small"> 입금 내역 </button>
