@@ -122,65 +122,67 @@ export default function FundProductDetail() {
                 <p className="lineChart"> </p> 
                 <div className="buysell"> 
                     <table className="fundBuy"> 
-                        <tr> 
-                            <td>출금계좌</td> 
-                            <td> 
-                                <FundBuyAccount onSelectAccount={handleSelectAccount} /> 
-                            </td> 
-                        </tr> 
-                        <tr> 
-                            <td>구매수량</td> 
-                            <td> 
-                                <input type="number" value={count} onChange={e => setCount(parseInt(e.target.value))} /> 
-                            </td> 
-                        </tr> 
-                        <tr> 
-                            <td colSpan={2}> 
-                                <button onClick={buyEtfFund}>매수</button> 
-                            </td> 
-                        </tr> 
+                        <thead>
+                            <tr> 
+                                <td colSpan={2}>출금계좌</td> 
+                                <td colSpan={2}> 
+                                    <FundBuyAccount onSelectAccount={handleSelectAccount} /> 
+                                </td> 
+                            </tr> 
+                            <tr> 
+                                <td colSpan={2}>구매수량</td> 
+                                <td colSpan={2}> 
+                                    <input type="number" value={count} onChange={e => setCount(parseInt(e.target.value))} /> 
+                                </td> 
+                            </tr> 
+                            <tr> 
+                                <td colSpan={4}> 
+                                    <button onClick={buyEtfFund}>매수</button> 
+                                </td> 
+                            </tr> 
+                        </thead> 
+                        <tbody>
+                                <tr> 
+                                    <th>종가</th> 
+                                    <td> 
+                                        {loCale(fundItems.clpr)}원 
+                                    </td> 
+                                    <th>전일대비</th> 
+                                    <td> 
+                                        {Number(fundItems.vs) > 0 ? ( 
+                                            <span className="plusPre">▲ {(fundItems.vs)} % </span> 
+                                        ) : ( 
+                                            <span className="minusPre">▼ {abs(fundItems.vs)} % </span> 
+                                        )} 
+                                    </td> 
+                                </tr> 
+                                <tr> 
+                                    <th>등락률</th> 
+                                    <td> 
+                                        {Number(fundItems.fltRt) > 0 ? ( 
+                                            <span className="plusPre">{format(fundItems.fltRt)}</span> 
+                                        ) : ( 
+                                            <span className="minusPre">{format(fundItems.fltRt)}</span> 
+                                        )} 
+                                    </td> 
+                                    <th>거래량</th> 
+                                    <td> 
+                                        {loCale(fundItems.trqu)} 
+                                    </td> 
+                                </tr> 
+                                <tr> 
+                                    <th>거래대금</th> 
+                                    <td> 
+                                        {loCale(fundItems.trPrc)} 원 
+                                    </td> 
+                                    <th>순자산총액</th> 
+                                    <td> 
+                                        {loCale(fundItems.nPptTotAmt)} 원 
+                                    </td> 
+                                </tr> 
+                        </tbody>
                     </table> 
-                </div> 
-                <table className="fund-info fund-listTbl"> 
-                    <tr> 
-                        <th>종가</th> 
-                        <td> 
-                            {loCale(fundItems.clpr)}원 
-                        </td> 
-                        <th>전일대비</th> 
-                        <td> 
-                            {Number(fundItems.vs) > 0 ? ( 
-                                <span className="plusPre">▲ {(fundItems.vs)} % </span> 
-                            ) : ( 
-                                <span className="minusPre">▼ {abs(fundItems.vs)} % </span> 
-                            )} 
-                        </td> 
-                    </tr> 
-                    <tr> 
-                        <th>등락률</th> 
-                        <td> 
-                            {Number(fundItems.fltRt) > 0 ? ( 
-                                <span className="plusPre">{format(fundItems.fltRt)}</span> 
-                            ) : ( 
-                                <span className="minusPre">{format(fundItems.fltRt)}</span> 
-                            )} 
-                        </td> 
-                        <th>거래량</th> 
-                        <td> 
-                            {loCale(fundItems.trqu)} 
-                        </td> 
-                    </tr> 
-                    <tr> 
-                        <th>거래대금</th> 
-                        <td> 
-                            {loCale(fundItems.trPrc)} 원 
-                        </td> 
-                        <th>순자산총액</th> 
-                        <td> 
-                            {loCale(fundItems.nPptTotAmt)} 원 
-                        </td> 
-                    </tr> 
-                </table> 
+                </div>
             </div> 
         </div> 
     ) 

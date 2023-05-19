@@ -71,11 +71,6 @@ export default function FundHavingList() {
             }); 
     }, [fundCd], [update], [having]); 
 
-    function calculateProfitRate(principal, nowTotal) {
-        const profit = nowTotal - principal;
-        const profitRate = (profit / principal) * 100;
-        return profitRate.toFixed(2);
-    }
     // 매도 
     const sellEtfFund = (isinCd) => { 
         if (count === 0){
