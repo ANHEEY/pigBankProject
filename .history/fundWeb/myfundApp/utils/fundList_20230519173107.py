@@ -9,12 +9,12 @@ import ssl
 # 일반 인증키(Decoding)	= zC0NCRtOkyKmmp/lYj1jwn9fMTkMWlT9b+8LMz9QqRlpfZssfsDbZuSRs5w0f/ZBqTQiH4Q/jreSevtU057hrg==
 # EndPoint+Encoding+Type=Json:  "https://apis.data.go.kr/1160100/service/GetSecuritiesProductInfoService/getETFPriceInfo?serviceKey=zC0NCRtOkyKmmp%2FlYj1jwn9fMTkMWlT9b%2B8LMz9QqRlpfZssfsDbZuSRs5w0f%2FZBqTQiH4Q%2FjreSevtU057hrg%3D%3D&resultType=json"
 
-# 한 페이지 결과수 30, 페이지번호 1 , 구분 json , 시가총액 1000000000 이상 
+# 한 페이지 결과수 30, 페이지번호 1 , 구분 json , 시가총액 50000000 이상 
 # https://apis.data.go.kr/1160100/service/GetSecuritiesProductInfoService/getETFPriceInfo?serviceKey=zC0NCRtOkyKmmp%2FlYj1jwn9fMTkMWlT9b%2B8LMz9QqRlpfZssfsDbZuSRs5w0f%2FZBqTQiH4Q%2FjreSevtU057hrg%3D%3D&#pageNo=1&resultType=json&beginMrktTotAmt=50000000 
 # url + serviceKey + 한 페이지 결과수 30개
 
 def get_json_fund():
-    requestURL = "http://apis.data.go.kr/1160100/service/GetSecuritiesProductInfoService/getETFPriceInfo?serviceKey=zC0NCRtOkyKmmp%2FlYj1jwn9fMTkMWlT9b%2B8LMz9QqRlpfZssfsDbZuSRs5w0f%2FZBqTQiH4Q%2FjreSevtU057hrg%3D%3D&numOfRows=1000&pageNo=1&resultType=json&beginMrktTotAmt=1000000000"
+    requestURL = "http://apis.data.go.kr/1160100/service/GetSecuritiesProductInfoService/getETFPriceInfo?serviceKey=zC0NCRtOkyKmmp%2FlYj1jwn9fMTkMWlT9b%2B8LMz9QqRlpfZssfsDbZuSRs5w0f%2FZBqTQiH4Q%2FjreSevtU057hrg%3D%3D&numOfRows=1000&pageNo=1&resultType=json&beginMrktTotAmt=5000000"
     response = requests.get(requestURL, verify=False)
 
     contents = response.text
