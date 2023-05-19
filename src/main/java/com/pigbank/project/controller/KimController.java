@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pigbank.project.dto.AccountDTO;
 import com.pigbank.project.dto.AutoTransferDTO;
-
+import com.pigbank.project.dto.CustomerDTO;
 import com.pigbank.project.dto.SavingAccountDTO;
 import com.pigbank.project.dto.SavingProductDTO;
 import com.pigbank.project.service.KimServiceImpl;
@@ -98,12 +98,14 @@ public class KimController {
 	}
 	
 	// 네이버 SENS API 문자인증 - 본인인증버튼 클릭
-//	@GetMapping(value="/app/send")
-//	public customerDTO listByHP() throws ServletException, IOException {
+//	@PostMapping(value="/user/sms")
+//	public CustomerDTO listByHP() 
+//			throws ServletException, IOException {
 //		logger.info("NAVER SENS API");
 //		
 //		
 //		System.out.println("문자전송");
+//		return null;
 //	}
 	
 	// 네이버 SENS API 문자인증 - 인증번호 확인

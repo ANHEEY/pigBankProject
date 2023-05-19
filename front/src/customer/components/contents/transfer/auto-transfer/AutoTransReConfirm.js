@@ -73,7 +73,7 @@ function AutoTransReConfirm (props) {
         }
     }
         else {
-            alert('다른 은행 이체 등록..')
+            alert('타 은행 이체 등록..')
             TransferService.autoSave(acnumber)
             .then(res => { // axios를 통해 백엔드에서 실행이 완료되면 auto_trans_accept 페이지로 이동 get방식으로 값 넘기기
                 alert("등록완료");
