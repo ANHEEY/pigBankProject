@@ -79,7 +79,11 @@ export default function AccountListComponent(props) {
                                 {new Date(account.newDate).getMonth() + 1}월
                                 {new Date(account.newDate).getDate()}일
                             </td>
-                            <td>{account.lastDate}</td>
+                            <td>
+                                {new Date(account?.lastDate).getFullYear()}년
+                                {new Date(account?.lastDate).getMonth() + 1}월
+                                {new Date(account?.lastDate).getDate()}일
+                            </td>
                             <td>{account.trsfLimit}</td>
                             <td>{account.acState}</td>
                         </tr>

@@ -118,7 +118,6 @@ public class HyeController {
 	public void updateHavingFund(@RequestBody List<FundHavingDTO> list)
 			throws ServletException, IOException {
 		logger.info("=== url | insertBuyFund ===");
-
 		System.out.println(list);
 		String id = "";
 		for (FundHavingDTO dto : list) {

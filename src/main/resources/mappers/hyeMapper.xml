@@ -73,11 +73,8 @@
 	<!-- 계좌 상세 거래 내역 보기
     (펀드계좌아이디, 계좌번호, 펀드 거래번호, 거래날짜 , 거래종목명, 매수상태 , 종목현재가, 평가손익, 수익률, 평가금액 ) -->
 	<select id="detailAccountByFNum" parameterType="int" resultType="com.pigbank.project.dto.FundProductDTO">
-		SELECT a.fNum, a.FACNUMBER , h.FTRANSNUM , d.FPDNAME ,d.FTRANSDATE ,d.FBUYPRICE ,d.FSELLPRICE , d.fDetailState, d.FCOUNT,d.FTOTAL
-		FROM F_ACCOUNT_TBL a , F_DETAIL_TBL d , F_HAVING_TBL h
-		WHERE a.FNUM =d.FNUM
-		  AND d.FTRANSNUM = h.FTRANSNUM
-		  AND a.fNum = #{fnum}
+		SELECT *
+		FROM F_DETAIL_TBL WHERE FNUM = #{fnum}
 	</select>
 	<!-- 고객별 펀드 보유내역 조회
     (종목 현재가, 평가손익, 수익률, 평가금액, 보유수량 , 거래종목명, 매수가) -->

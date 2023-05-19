@@ -143,7 +143,7 @@ export default function FundProductDetail() {
                         </thead> 
                         <tbody>
                                 <tr> 
-                                    <th>종가</th> 
+                                    <th>현재가</th> 
                                     <td> 
                                         {loCale(fundItems.clpr)}원 
                                     </td> 

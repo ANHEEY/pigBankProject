@@ -36,7 +36,6 @@ function InfoDetailComponent() {
 
     function updateCustomerState(id) {
         if (total === '0') {
-            alert("업데이트 함수를 탑니다.");
             CustomerApiService.updateCustomerState(id)
                 .then(res => {
                     setIsLoading(false);

@@ -4,13 +4,18 @@ import '../../../resources/css/fund/fund-list.css'
 import FundAPIService from "./service/FundAPIService";
 import { getAuthToken, getId } from "../../helpers/axios_helper";
 import axios from "axios";
+import {Box} from "@mui/material";
+import Pagination from "@mui/material/Pagination";
+
 
 export default function FundAccountDetail() {
     // url에서 id값을 받아오는  useParams 
     const { fnum } = useParams(); 
     const navigate = useNavigate();
-
+    const [itemsPerPage] = useState(30);
+    const [currentPage, setCurrentPage] = useState(1);
     const [detail, setDetail] = useState([]); 
+
     useEffect(() => { 
         if (getAuthToken() !== null) { 
             axios.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`; 
@@ -25,10 +30,16 @@ export default function FundAccountDetail() {
                 console.log('FundAccountDetail 에러', err); 
             }) 
     }, []) 
+
+    const handlePageChange = (event, pageNumber) => { setCurrentPage(pageNumber);};
+    const goBack=() =>{navigate(-1)}
     function loCale(number) {return Number(number).toLocaleString();} 
-    const goBack=() =>{
-        navigate(-1)
-    }
+    
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const fundlist = detail.slice(indexOfFirstItem, indexOfLastItem);
+
     return ( 
         <div className="fundProduct-list fund-div"> 
             <div className="title_div"> 
@@ -83,10 +94,26 @@ export default function FundAccountDetail() {
                             </tr> 
                         ))} 
                 </tbody>
+                <tfoot>
+                    <tr style={{height:'100px'}}>
+                        <td colSpan={7} style={{textAlign:"center"}}>
+                            <Box display="flex" justifyContent="center">
+                                <Pagination 
+                                count={Math.ceil(detail.length / itemsPerPage)}
+                                page={currentPage}
+                                onChange={handlePageChange}
+                                />
+                            </Box>
+                        </td>
+                    </tr>
+                    <tr style={{height:'50px'}}>
+                        <td colSpan={7}>
+                            <button onClick={goBack}>뒤로가기</button>
+                        </td>
+                    </tr>
+                </tfoot>
             </table> 
-            <div className="-div">
-                <button onClick={goBack}>뒤로가기</button>
-            </div>
+
         </div> 
     ) 
 } 
