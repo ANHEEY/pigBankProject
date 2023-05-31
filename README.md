@@ -4,6 +4,7 @@
 
 ## ✔️ 프로젝트 소개
 pigbank는 중요한 핵심 기능만을 모아 간결하면서도 직관적인 메뉴로 구성된 Rest API 기반의 은행 시스템 웹 사이트를 구현한 프로젝트입니다.
+> https://youtu.be/nHA-XNhoJzw
 
 <br/>
 
